@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>QUIC全集 on Autumn Navigation</title>
-    <link>/quic/</link>
+    <link>/fangqiuhang/quic/</link>
     <description>Recent content in QUIC全集 on Autumn Navigation</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language><atom:link href="/quic/index.xml" rel="self" type="application/rss+xml" />
+    <language>cn</language><atom:link href="/fangqiuhang/quic/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
