@@ -1,0 +1,16 @@
+---
+title: "QUIC四层"
+anchor: "QUIC_for_Transport_Layer"
+weight: 210
+rank: "h2"
+---
+
+### 一、[RFC8999中译：QUIC版本通用属性](/RFC8999_Chinese_Translation)
+【[这是译文地址](/RFC8999_Chinese_Translation)】
+
+RFC8999定下了QUIC协议版本升级及协商所需要遵守的规范，后世所有QUIC版本均须遵守，故译“QUIC版本通用属性”。
+
+### 二、[RFC9000中译：QUIC，一种基于UDP的安全多路复用传输协议](/RFC9000_Chinese_Translation)
+【[这是译文地址](/RFC9000_Chinese_Translation)】
+
+RFC9000详细描绘了QUIC四层可靠传输协议，一般简称为“QUIC传输协议”。同时，由于该文是自QUIC问世以来的发版的第一份RFC正式文档，因此其定义的QUIC协议也称被为“QUIC第1版”。

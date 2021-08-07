@@ -1,0 +1,32 @@
+baseURL = "/"
+languageCode = "cn"
+title = "Autumn Navigation"
+
+defaultContentLanguage  = "cn"
+theme = "kraiklyn"
+
+pygmentsCodeFences = true
+pygmentsStyle = "monokailight"
+
+[params]
+  externalTitle = ""
+  sidebarColor = "quic"
+  customCss = ["css/fangqiuhang.css"]
+
+[[menu.shortcuts]]
+  name = "RFC8999 QUIC版本通用属性"
+  weight = 10
+  [menu.shortcuts.Params]
+    lateralurl = "/RFC8999_Chinese_Translation/"
+
+[[menu.shortcuts]]
+  name = "RFC9000 QUIC传输协议"
+  weight = 10
+  [menu.shortcuts.Params]
+    lateralurl = "/RFC9000_Chinese_Translation/"
+
+[markup]
+  #defaultMarkdownHandler = "goldmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
