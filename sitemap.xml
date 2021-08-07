@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/fangqiuhang/autumn_navigation/</loc>
+    <loc>/autumn_navigation/</loc>
   </url><url>
-    <loc>/fangqiuhang/quic/</loc>
+    <loc>/quic/</loc>
   </url><url>
-    <loc>/fangqiuhang/quic/quic_for_transport_layer/</loc>
+    <loc>/quic/quic_for_transport_layer/</loc>
   </url><url>
-    <loc>/fangqiuhang/quic/quic_for_application_layer/</loc>
+    <loc>/quic/quic_for_application_layer/</loc>
   </url><url>
-    <loc>/fangqiuhang/</loc>
+    <loc>/</loc>
   </url><url>
-    <loc>/fangqiuhang/categories/</loc>
+    <loc>/categories/</loc>
   </url><url>
-    <loc>/fangqiuhang/tags/</loc>
+    <loc>/tags/</loc>
   </url>
 </urlset>
