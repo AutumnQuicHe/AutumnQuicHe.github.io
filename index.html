@@ -105,7 +105,7 @@
     </div>
 
     <div class="version">
-            generated on Aug 7, 2021
+            generated on Aug 8, 2021
     </div>
 </div>
 
@@ -224,6 +224,18 @@
         
     
 </div>
+  <script>
+    
+    var pElements = document.getElementsByTagName('p');
+    
+    var i;
+    for (i = 0; i < pElements.length; i++) {
+      var content = pElements[i].innerHTML;
+      content = content.replace(/(\r)/g, "");
+      content = content.replace(/(\n)/g, "");
+      pElements[i].innerHTML = content;
+    }
+  </script>
 </body>
 </html>
 

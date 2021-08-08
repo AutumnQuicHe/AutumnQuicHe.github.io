@@ -39,6 +39,18 @@
 <a href="/" class="not-found">
     Well, a fine little mess. Easy in, easy out. Another triumph.
 </a>
+  <script>
+    
+    var pElements = document.getElementsByTagName('p');
+    
+    var i;
+    for (i = 0; i < pElements.length; i++) {
+      var content = pElements[i].innerHTML;
+      content = content.replace(/(\r)/g, "");
+      content = content.replace(/(\n)/g, "");
+      pElements[i].innerHTML = content;
+    }
+  </script>
 </body>
 </html>
 
