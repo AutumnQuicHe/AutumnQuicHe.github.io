@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  xml:lang="cn" lang="cn" >
+
+<head>
+  <meta name="generator" content="Hugo 0.86.0" />
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>RFC8999中文：QUIC版本通用属性</title>
+  
+
+  <link rel="shortcut icon" href="https://iknow-pic.cdn.bcebos.com/c75c10385343fbf271c706c8bb7eca8064388f76"
+    type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+    
+  <link rel="stylesheet" href="/RFC8999_Chinese_Translation/css/RFC8999.css">
+    
+  <link href="" rel="alternate"
+    type="application/rss+xml" title="RFC8999中文：QUIC版本通用属性" />
+  
+
+</head>
+
+
+<body class="body-rfc8999">
+
+<div class="sidebar sidebar-rfc8999">
+    <div class="navigation">
+      
+        <div><a href="/">在下秋航</a></div>
+        <h1 class="site-title"><a href="/RFC8999_Chinese_Translation/">RFC8999中文：QUIC版本通用属性</a></h1>
+      
+
+
+        <nav class="internal">
+            <ul>
+    
+        
+            
+    <li>
+        <a href="#RFC8999_QUIC">RFC8999 QUIC版本通用属性</a>
+
+        <ul>
+            
+                
+                    <li><a href="#Forword">前言</a></li>
+                
+            
+                
+                    <li><a href="#Abstract">摘要</a></li>
+                
+            
+                
+                    <li><a href="#Status_of_This_Memo">备忘状态</a></li>
+                
+            
+                
+                    <li><a href="#Copyright_Notice">版权声明</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#1_An_Extremely_Abstract_Description_of_QUIC">1. 关于QUIC的超级简单描述</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#2_Fixed_Properties_of_All_QUIC_Versions">2. 所有QUIC版本之间保持不变的属性</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#3_Conventions_and_Definitions">3. 规范及定义</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#4_Notational_Conventions">4. 标准规范</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#5_QUIC_Packets">5. QUIC数据包</a>
+
+        <ul>
+            
+                
+                    <li><a href="#5.1_Long_Header">5.1 长包头</a></li>
+                
+            
+                
+                    <li><a href="#5.2_Short_Header">5.2 短包头</a></li>
+                
+            
+                
+                    <li><a href="#5.3_Connection_ID">5.3 连接ID</a></li>
+                
+            
+                
+                    <li><a href="#5.4_Version">5.4 版本</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#6_Version_Negotiation">6. 版本协商</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#7_Security_and_Privacy_Considerations">7. 安全及隐私有关考虑</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#8_References">8. 参考文献</a>
+
+        <ul>
+            
+                
+                    <li><a href="#8.1_Normative_References">8.1. 标准参考文献</a></li>
+                
+            
+                
+                    <li><a href="#8.2_Informative_References">8.2. 非标准参考文献</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Appendix_A_Incorrect_Assumptions">附录A：不正确的猜想</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Author_s_Address">作者地址</a>
+
+    </li>
+
+
+        
+    
+</ul>
+
+        </nav>
+
+        <nav class="external">
+          
+            <ul id="shortcuts">
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+            </ul>
+            <br>
+          
+        </nav>
+    </div>
+
+    <div class="version">
+            generated on Aug 19, 2021
+    </div>
+</div>
+
+<div class="content">
+    
+        
+                <section class="page" id="RFC8999_QUIC">
+    
+        <h1>
+    
+            <a href="#RFC8999_QUIC">RFC8999 QUIC版本通用属性</a>
+    
+        </h1>
+    
+    <div class="content">
+        <br>
+<br>
+<table border="3" frame="void" rules="none">
+  <tr>
+    <td>状态：</td>
+    <td colspan="2">建议标准</td>
+  </tr>
+  <tr>
+    <td>更多信息：</td>
+    <td colspan="2">
+      <a href="https://datatracker.ietf.org/doc/rfc8999">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=8999&submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc8999">信息页</a>
+    </td>
+  </tr>
+  <tr>
+    <td>组织：</td>
+    <td colspan="2">互联网工程工作组（IETF）</td>
+  </tr>
+  <tr>
+    <td>RFC编号：</td>
+    <td colspan="2">
+      <a href="https://www.rfc-editor.org/info/rfc8999">8999</a>
+    </td>
+  </tr>
+  <tr>
+    <td>分类：</td>
+    <td colspan="2">标准追踪</td>
+  </tr>
+  <tr>
+    <td>出版时间：</td>
+    <td colspan="2">2021年5月</td>
+  </tr>
+  <tr>
+    <td>国际标准期刊编号：</td>
+    <td colspan="2">2070-1721</td>
+  </tr>
+  <tr>
+    <td>作者：</td>
+    <td colspan="2">M. Thomson, Ed. <br><i>Mozilla</i></td>
+  </tr>
+</table>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="Forword">
+    
+        <h2>
+    
+            <a href="#Forword">前言</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>大家好，我是文档译者。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。为了让广大国人能够尽快了解这个协议，故作此译文。</p>
+<p>本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Abstract">
+    
+        <h2>
+    
+            <a href="#Abstract">摘要</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本文定义了在所有版本的QUIC传输协议间均通用的属性。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Status_of_This_Memo">
+    
+        <h2>
+    
+            <a href="#Status_of_This_Memo">备忘状态</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Copyright_Notice">
+    
+        <h2>
+    
+            <a href="#Copyright_Notice">版权声明</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="1_An_Extremely_Abstract_Description_of_QUIC">
+    
+        <h1>
+    
+            <a href="#1_An_Extremely_Abstract_Description_of_QUIC">1. 关于QUIC的超级简单描述</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>QUIC是一个终端之间面向连接的协议。终端之间通过UDP协议报文交互。这些UDP报文包含QUIC数据包。QUIC终端使用QUIC数据包建立终端之间共享协议状态的连接。</p>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="2_Fixed_Properties_of_All_QUIC_Versions">
+    
+        <h1>
+    
+            <a href="#2_Fixed_Properties_of_All_QUIC_Versions">2. 所有QUIC版本之间保持不变的属性</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>除了提供安全、多路复用的传输功能，QUIC《<a href="#QUIC_TRANSPORT">QUIC协议</a>》还支持版本协商。这将使得协议能够在以后的岁月中为适应新的需求而更新，而协议的诸多特性可以随着版本的迭代而不断改变。</p>
+<p>本文阐述QUIC的一些在新的QUIC版本开发及部署的过程中依旧保持不变的属性。所有这些不变属性都与IP版本无关。</p>
+<p>本文的主要目标是确保后续QUIC新版本的迭代。通过陈述QUIC的这些不可更改的属性，本文试图维持QUIC终端对QUIC协议任何其他方面的改动进行协商的能力。因此，这也保证了暴露到一条QUIC连接两个终端之外的信息量最少。QUIC协议在本文明确禁止之外的任何方面，都是可以在不同版本之间修改的。</p>
+<p><a href="#Appendix_A_Incorrect_Assumptions">附录A</a>包含一份非详尽的清单，列出了一些基于对QUIC版本1的了解可能做出的不正确的猜想，这些不适用于QUIC的任何版本。</p>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="3_Conventions_and_Definitions">
+    
+        <h1>
+    
+            <a href="#3_Conventions_and_Definitions">3. 规范及定义</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="#RFC2119">RFC2119</a>》《<a href="#RFC8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文定义了未来QUIC版本需要的属性，即使没有使用规范语言。</p>
+<p>本文使用了《<a href="#QUIC_TRANSPORT">QUIC协议</a>》的术语及标准转换。</p>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="4_Notational_Conventions">
+    
+        <h1>
+    
+            <a href="#4_Notational_Conventions">4. 标准规范</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>数据包的格式使用本章定义的符号描述，这些符号与《<a href="#QUIC_TRANSPORT">QUIC协议</a>》中使用的一致。</p>
+<p>复杂的字段被命名后，由紧随命名的一个以一对花括号括起来的字段列表描述，列表中的字段以逗号分隔。</p>
+<p>单个字段包括长度信息、带正号的定值、可选值或本字段的副本。单个字段使用下述标准规范，且所有长度都以比特为单位：</p>
+<p><code>x (A)</code>: 表示<code>x</code>是<code>A</code>比特长度</p>
+<p><code>x (A..B)</code>: 表示<code>x</code>的长度可以是从<code>A</code>到<code>B</code>的所有值，省略<code>A</code>表示最小零位，并且省略<code>B</code>表示没有设置上限。这种格式的值总是以字符边界结束。</p>
+<p><code>x (L) = C</code>: 表示<code>x</code>有一个定值<code>C</code>，且<code>x</code>的长度为<code>L</code>，<code>L</code>可以用上述任何长度格式</p>
+<p><code>x (L)...</code>: 表示<code>x</code>重复0次或以上次数，且每个实例长度为<code>L</code></p>
+<p>本文使用网络字节序（也就是大端）值。字段每个字节的各个比特从高位到低位排列。</p>
+<p><a href="#Figure_1_Example_Structure">图1</a>是一个示例结构：</p>
+<div id=Figure_1_Example_Structure class="block ref">
+<pre><code>示例结构 {
+  一个比特位字段 (1),
+  有固定值的7个比特位字段 (7) = 61,
+  任意长度字段 (..),
+  变量长度字段 (8..24),
+  重复字段 (8) ...,
+}
+</code></pre><p><a href="#Figure_1_Example_Structure">图1：示例格式</a></p>
+</div>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="5_QUIC_Packets">
+    
+        <h1>
+    
+            <a href="#5_QUIC_Packets">5. QUIC数据包</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>QUCI终端之间交换包含一个或多个QUIC数据包的UDP报文。本章描述QUIC包的不变特性。一个版本的QUIC准许多个QUIC数据包包含于同一个UDP报文里，但是其不变的特性只要求报文里的首个数据包保持。</p>
+<p>QUIC定义了两类数据包头：长包头与短包头。有长包头的数据包由其首个字节的首个比特位设置为1判定，而短包头数据包这个比特位设置为0。</p>
+<p>QUIC数据包可能被完全保护，包括包头。然而，QUIC版本协商包不会被完全保护，详见<a href="#6_Version_Negotiation">第6章</a>。</p>
+<p>除了这里描述的值之外，QUIC数据包的有效负载是由各个版本决定且任意长度的。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="5.1_Long_Header">
+    
+        <h2>
+    
+            <a href="#5.1_Long_Header">5.1 长包头</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><a href="#Figure_2_QUIC_Long_Header">图2</a>是QUIC长包头的格式。</p>
+<div id=Figure_2_QUIC_Long_Header class="block ref">
+<pre><code>长包头 {
+  包头格式 (1) = 1,
+  版本特定相关位 (7),
+  版本 (32),
+  目标连接ID长度 (8),
+  目标连接ID (0..2040),
+  源连接ID长度 (8),
+  源连接ID (0..2040),
+  版本特定相关数据 (..),
+}
+</code></pre><p><a href="#Figure_2_QUIC_Long_Header">图2：QUIC长包头</a></p>
+</div>
+<p>QUIC长包头数据包其首字节最高比特位设置为1，其余比特位则视具体版本而定。</p>
+<p>随后的四个字节包含一个32位版本字段，关于版本详见<a href="#5.4_Version">第5.4章</a>。</p>
+<p>接下来的一个字节包含紧随其后的目标连接ID字段的长度，且该长度值以字节计数，并被编码为一个8位无符号整数。目标连接ID字段紧随目标连接ID长度字段，其长度在0到255字节之间。连接ID详见<a href="#5.3_Connection_ID">第5.3章</a>。</p>
+<p>接下来的一个字节包含紧随其后的源连接ID字段的长度，且该长度值以字节计数，并被编码为一个8位无符号整数。源连接ID字段紧随源连接ID长度字段，其长度在0-255字节之间。</p>
+<p>数据包接下来剩余字段包含与QUIC版本特定相关的内容。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="5.2_Short_Header">
+    
+        <h2>
+    
+            <a href="#5.2_Short_Header">5.2 短包头</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><a href="#Figure_3_QUIC_Short_Header">图3</a>是QUIC短包头的格式。</p>
+<div id=Figure_3_QUIC_Short_Header class="block ref">
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">短包头 {
+  包头格式 (1) = 0,
+  版本特定相关位 (7),
+  目标连接ID (..),
+  版本特定相关数据 (..),
+}
+</code></pre></div><p><a href="#Figure_3_QUIC_Short_Header">图3：QUIC短包头</a></p>
+</div>
+<p>一个有着短包头的QUIC数据包其首字节的最高位设置为0。</p>
+<p>短包头数据包紧随首字节之后是一个目标连接ID。短包头不会包含目标连接ID长度、源连接ID长度、源连接ID或版本字段。目标连接ID的长度不会编码在短包头数据包里，也不会受限于这个特性。</p>
+<p>数据包接下来剩余字段有与版本特定相关的语义。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="5.3_Connection_ID">
+    
+        <h2>
+    
+            <a href="#5.3_Connection_ID">5.3 连接ID</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>连接ID是一个任意长度的不透明字段（这里理解成这是一个二进制字段就行）。</p>
+<p>连接ID的主要功能是确保底层协议（UDP、IP及更底层的协议栈）发生地址变更时不会导致一个QUIC连接的数据包被传输到错误的QUIC终端上。连接ID由终端及支持的中间设备用以确保每个数据包能够被调度到相应终端的正确实体上。对于终端而言，连接ID用于标识数据包对应的QUIC连接。</p>
+<p>连接ID由每个终端根据版本特定的方式选择，而同一个QUIC连接的数据包可能使用不同的连接ID。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="5.4_Version">
+    
+        <h2>
+    
+            <a href="#5.4_Version">5.4 版本</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>版本字段包含一个4字节标识符。该值可供终端用以标识一个QUIC版本。一个值为0x00000000的版本字段保留给版本协商使用，详见<a href="#6_Version_Negotiation">第6章</a>，而任何其余值均可能有效。</p>
+<p>本文描述的属性适用于所有版本的QUIC。不符合本文所述属性的协议不是QUIC协议。后续文档可以给特定一个或一系列QUIC版本增加其他的属性。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="6_Version_Negotiation">
+    
+        <h1>
+    
+            <a href="#6_Version_Negotiation">6. 版本协商</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>一个QUIC终端收到一个有长包头的数据包及一个版本其不能理解或不支持的话，就可能回复一个版本协商包。短包头数据包不会触发版本协商。</p>
+<p>一个版本协商包设置上首个字节的高位，也就是说它是一个<a href="#5.1_Long_Header">第5.1章</a>定义的长包头数据包。一个版本协商包可以通过其版本字段识别，因为这个字段会被设置为0x00000000。</p>
+<p><a href="#Figure_4_Version_Negotiation_Packet">图4</a>是一个示例结构：</p>
+<div id=Figure_4_Version_Negotiation_Packet class="block ref">
+<pre><code>版本协商包 {
+  Header Form (1) = 1,
+  Unused (7),
+  Version (32) = 0,
+  Destination Connection ID Length (8),
+  Destination Connection ID (0..2040),
+  Source Connection ID Length (8),
+  Source Connection ID (0..2040),
+  Supported Version (32) ...,
+}
+</code></pre><p><a href="#Figure_4_Version_Negotiation_Packet">图4：版本协商包</a></p>
+</div>
+<p>一个版本协商包只有首字节最重要的那个比特位有着任意定义的值。其剩余的7个比特位标记为“未使用”，在发送的时候可以被设置为任意值，且<em><strong>必须</strong></em>被接收端忽略。</p>
+<p>在源连接ID字段后面，版本协商包包涵一个支持版本字段列表，每个字段标识一个终端能够支持的版本（也就是客户端支持的QUIC版本的版本号挨个列下去）。一个版本协商包不包含其他字段，一个终端<em><strong>必须</strong></em>忽略没有支持版本字段或包含一个不完全的版本值的包。</p>
+<p>版本协商包不使用完全的或加密的保护。某些特定的QUIC版本可能包含准许终端鉴别支持版本列表里的值是否存在修改或损坏的协议手段。</p>
+<p>一个终端<em><strong>必须</strong></em>在其目标连接ID字段包含它收到的数据包的源连接ID值。<em><strong>必须</strong></em>将收到数据包的目标连接ID字段值复制给源连接ID字段，该值是客户端随机产生的。回显两个连接ID给客户端一些保证，表明服务端收到了包，且版本协商包不是由对其不可见的攻击者生成的。</p>
+<p>终端收到版本协商包后，可以在随后的数据包中更改QUIC版本。终端更改QUIC版本的条件将取决于其选择的版本。</p>
+<p>《<a href="#QUIC_TRANSPORT">QUIC协议</a>》详细描述了支持QUIC版本1的终端如何创建和处理一个版本协商包。</p>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="7_Security_and_Privacy_Considerations">
+    
+        <h1>
+    
+            <a href="#7_Security_and_Privacy_Considerations">7. 安全及隐私有关考虑</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>中间件可能能够识别特定版本的QUIC的一些特性，并假设其他版本的QUIC表现出类似特征时，其底层正在表达一致的语义。这样的特性有好几个，详见<a href="#Appendix_A_Incorrect_Assumptions">附录A</a>。QUIC版本1已经做了一些工作消除或隐藏一些可见的特征，但是许多这样的特性仍然维持现状。后续其他QUIC版本可能改变设计从而表现出不同的特征。</p>
+<p>QUIC版本号不会出现在所有QUIC数据包中，这意味着以一个基于版本的特征从一条流中可靠地提取信息需要中间件为每个连接ID保留状态。</p>
+<p>本文所述版本协商包不会被完整保护，仅仅对攻击者的介入做了适度保护。如果终端试图改用不同的QUIC版本，那么它<em><strong>必须</strong></em>验证版本协商包的语义内容。</p>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="8_References">
+    
+        <h1>
+    
+            <a href="#8_References">8. 参考文献</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="8.1_Normative_References">
+    
+        <h2>
+    
+            <a href="#8.1_Normative_References">8.1. 标准参考文献</a>
+    
+        </h2>
+    
+    <div class="content">
+        <div id=RFC2119 class="out_ref">
+    <p>
+        <a href=#RFC2119>[RFC2119]</a>
+        Bradner, S.
+    </p>
+<p>《RFC文档中用于指出要求级别的关键字（Key words for use in RFCs to Indicate Requirement Levels）》, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div id=RFC8174 class="out_ref">
+    <p>
+        <a href=#RFC8174>[RFC8174]</a>
+        Leiba, B. 
+    </p>
+<p>《RFC2119中关键字大写与小写的歧义（Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words）》, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="8.2_Informative_References">
+    
+        <h2>
+    
+            <a href="#8.2_Informative_References">8.2. 非标准参考文献</a>
+    
+        </h2>
+    
+    <div class="content">
+        <div id=QUIC_TLS class="out_ref">
+    <p>
+        <a href=#QUIC_TLS>[QUIC TLS]</a>
+        Thomson, M., Ed. and S. Turner, Ed.
+    </p>
+<p>《使用TLS加密QUIC（Using TLS to Secure QUIC）》, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div id=QUIC_TRANSPORT class="out_ref">
+    <p>
+        <a href=#QUIC_TRANSPORT>[QUIC传输协议]</a>
+        Iyengar, J., Ed. and M. Thomson, Ed.
+    </p>
+<p>《QUIC：一种基于UDP的多路复用安全传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）》, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div id=RFC5116 class="out_ref">
+    <p>
+        <a href=#RFC5116>[RFC5116]</a>
+        McGrew, D.
+    </p>
+<p>《一种用于认证加密的接口及算法（An Interface and Algorithms for Authenticated Encryption）》, RFC 5116, DOI 10.17487/RFC5116, January 2008, <a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>.</p>
+</div>
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="Appendix_A_Incorrect_Assumptions">
+    
+        <h1>
+    
+            <a href="#Appendix_A_Incorrect_Assumptions">附录A：不正确的猜想</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>QUIC版本1《<a href="#QUIC_TRANSPORT">QUIC协议</a>》有一系列特性没有被保护为外部不可见，但是一般认为在后续的QUIC版本中会更改。</p>
+<p>本章列出了基于QUIC版本1的了解可能做出的一些错误猜想，其中一些陈述甚至对QUIC版本1也是错误的。这个列举并不充分，目的在于做一些阐述。</p>
+<p><strong>对于一个QUIC版本，下述所有的陈述都可能是错的</strong>：</p>
+<ul>
+<li>QUIC使用TLS《<a href="#QUIC_TLS">QUIC TLS</a>》，而链路上一些TLS的信息是可见的。</li>
+<li>QUIC长包头只在连接建立阶段发生更改。</li>
+<li>五元组上的每条流都会包含一个连接建立过程。</li>
+<li>一条流的前几个包使用长包头。</li>
+<li>在一段长时间的静默前的最后一个只包含一个确认信息。</li>
+<li>QUIC使用关联数据加密认证（AEAD）函数（AEAD_AES_128_GCM，详见<a href="#RFC5116">RFC5116</a>）保护在连接建立阶段交换的数据包。</li>
+<li>QUIC数据包号是加密的，且是数据包的初始加密字节。</li>
+<li>QUIC数据包号每发送一个包递增1。</li>
+<li>客户端发送的首个QUIC握手包不能小于一个特定尺寸。</li>
+<li>QUIC规定客户端发送第一个包。</li>
+<li>QUIC数据包首字节的第二个比特位总是设置为1的（0x40）。</li>
+<li>QUIC版本协商包只会由服务端发出。</li>
+<li>QUIC连接ID很少发生改变。</li>
+<li>QUIC终端会在发送完一个版本协商包后改变QUIC版本。</li>
+<li>QUIC长包头的版本字段在两个方向上都是一样的。</li>
+<li>一个QUIC包版本字段有一个代表某QUIC版本的值意味着连接用的就是相应的QUIC版本。</li>
+<li>任何一对QUIC终端之间一次只有一个QUIC连接建联。</li>
+</ul>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="Author_s_Address">
+    
+        <h1>
+    
+            <a href="#Author_s_Address">作者地址</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>Martin Thomson</p>
+<p>Mozilla</p>
+<p>Email: <a href="mailto:mt@lowentropy.net">mt@lowentropy.net</a></p>
+
+    </div>
+</section>
+
+
+
+
+        
+    
+</div>
+  <script>
+    
+    var pElements = document.getElementsByTagName('p');
+    
+    var i;
+    for (i = 0; i < pElements.length; i++) {
+      var content = pElements[i].innerHTML;
+      content = content.replace(/(\r)/g, "");
+      content = content.replace(/(\n)/g, "");
+      pElements[i].innerHTML = content;
+    }
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>4. 流量控制 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Flow_Control/</link>
+    <description>Recent content in 4. 流量控制 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Flow_Control/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>4.1. 数据流量控制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</guid>
+      <description>QUIC使用一个基于限制的流量控制模型，接收者给出其准备在给定流或整个连接上准备接收的总字节数的上限。 这使得QUIC中存在两层数据流量控制：
+ 流的流量控制：通过限制每条流可以发送的数据量，防止单条流耗尽一条连接的全部接收缓冲区； 连接流量控制：通过限制所有流经由流帧可以发送的数据量，防止发送方超过连接接收方的缓冲区容量。  发送方发送数据必须不能超过上述任何一个限制。
+接收方可以通过发送一个含相关流ID的最大流数据帧告知对方提高流接收缓存区上限。 最大流数据帧表示流的最大绝对字节偏移量。 接收方可以根据当前流消耗数据的偏移量确定后续发出的流量控制的偏移量。
+接收方可以通过发送一个最大数据帧告知对方提高连接的接收缓存区上限，亦即所有流绝对字节偏移量之和的上限。 接收方维护一个在所有流上累计接收数据的总字节数，用以检查是否超过了连接或流流量控制上限。 接收方可以基于在所有流上消耗数据总字节数确定后续发出的最大数据偏移量。
+接收方发布连接或流的流量控制上限若低于之前的上限，这不是错误，只是这个更低的上限不会生效而已。
+如果发送方违反了推荐的连接或流的流量控制上限，接收方必须以FLOW_CONTROL_ERROR类型错误关闭连接，更多错误处理相关细节详见第11章。
+发送方必须忽略任何不会提高流量控制上限的最大流数据帧或最大数据帧。
+如果发送方发送数据达到了流量控制上限，其将不能再发送新数据，且应认为其被阻塞住了。 发送方应该发送一个流数据阻塞帧或数据阻塞帧来告知接收方其有数据要写出但是被流量控制所阻塞。 如果发送方被阻塞的时间超过空等超时时间（第10.1章），接收方可以关闭连接，即便发送方有可传输的数据。 为了保持连接不被关闭，在没有可引发ACK的数据包处于传输中时，被流量控制限制所阻塞的发送方应该定期发送一个流数据阻塞帧或数据阻塞帧。</description>
+    </item>
+    
+    <item>
+      <title>4.2. 提高流量控制限制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.2_Increasing_Flow_Control_Limits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.2_Increasing_Flow_Control_Limits/</guid>
+      <description>QUIC实现决定什么时候以什么额度通过最大流数据帧及最大数据帧提高流量控制限制，但是本章提出了一些注意事项。
+为了避免阻塞发送方，接收方可以在一个往返时间（RTT）内多次发送一个最大流数据帧或最大数据帧，或者尽可能早地发送，从而为帧的丢失及随后的恢复留出时间。
+控制帧也会引入连接开销。 也就是说频繁发送最大流数据帧及最大数据帧做极其微小的调整是不可取的。 另一方面，如果更新不够频繁，每次更新时就要对接收方上限做更大幅度的提升以防发送方被阻塞，使得接收方耗费需要更多资源。 因此，确定决定接收方推荐上限需要权衡资源耗费与连接开销。
+接收方可以使用一个常见于TCP实现的基于往返时间及接收数据应用层消耗速率的自动调谐机制来调整推荐接收上限的频率和增量。 作为优化，终端只有在有其他帧要发送时才可以发送流量控制相关帧，以确保流量控制不会导致额外的数据包发送。
+被阻塞发送方不需要发送流阻塞帧或数据阻塞帧。 也就是说，接收方必须不能在发送最大流数据帧及最大数据帧前等待接收流阻塞帧或数据阻塞帧，否则可能导致发送方在连接的其余部分被阻塞。 即使发送方发送了这些帧，等待它们也会导致发送方至少被阻塞一个完整的往返周期。
+当终端在阻塞期间收到可发送数据额度时，它可能会回复大量数据，造成短暂的拥塞，详见《QUIC快速恢复》第7.7章有关终端如何避免这类拥塞的讨论。
+**秋航注**：这里将credit翻译为额度、增量等，指的是**最大流数据帧**及**最大数据帧**所带来的接收方新流量控制上限相对之前的提升量，这个提升量是发送方后续可发送新数据的空间。  </description>
+    </item>
+    
+    <item>
+      <title>4.3. 流量控制性能</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.3_Flow_Control_Performance/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.3_Flow_Control_Performance/</guid>
+      <description>如果终端不能确保其对端始终在该连接上有大于对端带宽时延积的流量控制额度，其接收吞吐量将被流量控制限制。
+包丢失会导致接收缓冲区出现空隙，从而阻碍应用层消耗数据并释放接收缓冲空间。
+发送</description>
+    </item>
+    
+    <item>
+      <title>4.4. 处理流取消</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.4_Handling_Stream_Cancellation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.4_Handling_Stream_Cancellation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>4.5. 流的最终容量</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>4.6. 并发控制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

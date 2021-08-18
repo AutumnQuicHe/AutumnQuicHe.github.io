@@ -6,5 +6,519 @@
     <description>Recent content on Autumn Navigation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前言</title>
+      <link>/RFC8999_Chinese_Translation/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/Foreword/forword/</guid>
+      <description>大家好，我是文档译者。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。为了让广大国人能够尽快了解这个协议，故作此译文。
+本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！</description>
+    </item>
+    
+    <item>
+      <title>前言</title>
+      <link>/RFC9000_Chinese_Translation/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Foreword/forword/</guid>
+      <description>大家好，我是文档译者。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。为了让广大国人能够尽快了解这个协议，故作此译文。
+本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC8999_Chinese_Translation/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/Foreword/abstract/</guid>
+      <description>本文定义了在所有版本的QUIC传输协议间均通用的属性。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9000_Chinese_Translation/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Foreword/abstract/</guid>
+      <description>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的秘钥协商、丢包检测及众多拥塞控制算法整合。</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC8999_Chinese_Translation/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc8999。</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC9000_Chinese_Translation/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9000。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>1.1. 文档结构</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.1_document_structure/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.1_document_structure/</guid>
+      <description>本文描述了QUIC协议的核心部分，文章组织如下：
+  第1章流是QUIC支持的基本服务抽象层。
+ 第2章描述流相关的核心概念， 第3章提供一个流状态的参考模型， 第4章概述流量控制的过程。    连接是QUIC终端交流的上下文。
+ 第5章描述连接相关的核心概念， 第6章描述版本协商 第7章详细描述连接连接建立的过程， 第8章描述地址验证及危险的拒绝服务迁移攻击， 第9章描述终端如何将一个连接迁移到新的网络通道上， 第10章列举关闭一个已打开连接的各个方式，以及 第11章给流与连接错误处理提供指导。    数据包和帧是QUIC交流的基本单元。
+ 第12章描述数据包与帧相关的概念， 第13章定义数据传输、重传和确认的模型，以及 第14章描述指定携带QUIC数据包的数据报大小的规则。    最后，QUIC协议要素的编码细节描述在：
+ 第15章版本， 第16章整形编码， 第17章数据包头部， 第18章传输参数， 第19章帧，以及 第20章错误。    相关文档《QUIC恢复》描述QUIC的数据丢失检测及拥塞控制，《QUIC TLS》描述TLS及其他加密机制的使用。
+本文定义了QUIC版本1，支持《QUIC不变量》所定义的不变量。
+若引用QUIC版本1，请引用本文（你还是引用《》吧）。若引用QUIC支持的独立版本的某个子集，请引用《QUIC不变量原文》。</description>
+    </item>
+    
+    <item>
+      <title>1.2. 术语及定义</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</guid>
+      <description>本文中的关键字“必须（MUST）”、“必须不（MUST NOT）”、“需要（REQUIRED）”、“强烈要求（SHALL）”、“强烈要求不（SHALL NOT）”、“应该（SHOULD）”、“不应该（SHOULD NOT）”、“推荐（RECOMMENDED）”、“不推荐（NOT RECOMMENDED）”、“可以（MAY）”，以及“可选（OPTIONAL）”应理解为BCP 14 《RFC2119》《RFC8174》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。
+本文常用术语列述如下：
+QUIC：本文描述的传输协议。QUIC是名称，不是首字母缩写。
+终端（Endpoint）：一个能够以创建、接收及处理QUIC数据包参与QUIC连接的实体。QUIC终端有两种类型：客户端（client）及服务端（server）。
+客户端：初始化QUIC连接的终端。
+服务端：接收QUIC连接的终端。
+QUIC数据包：QUIC的一个可以封装进UDP报文中的完整处理单元。单个UDP报文可以封装进一个或多个QUIC数据包。
+ACK触发包：一个包含除确认帧（ACK）、填充帧（PADING）及连接关闭帧（CONNECTION_CLOSE）外的帧的QUIC数据包。接收方收到这类包会发确认，详见第13.2.1章。
+帧：一个结构化的协议信息单元。帧有多种类型，不同类型的帧携带不同类型的信息。帧由QUIC数据包承载。
+地址：当使用不受限制，由IP版本、IP地址及UDP端口号构成的元组表示网络通道的一端。
+连接ID：终端用来标识一条QUIC连接的标识符。每个终端选择一个或多个连接ID，从而在对端发送给本端的QUIC包中包含这些连接ID。该值对对端是不透明的。
+流：QUIC连接上一个单向或双向的有序字节通道。一个QUIC连接可以同时承载多条流。
+应用：一个使用QUIC发送及接收数据的实体。
+本文使用术语“QUIC数据包”、“UDP报文”及“IP数据包”表示相应协议的传输单元。换言之，一个或多个QUIC包被封装到一个UDP报文里，最终封装到一个IP数据包中。</description>
+    </item>
+    
+    <item>
+      <title>1.3. 标准规范</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.3_notational_conventions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.3_notational_conventions/</guid>
+      <description>本文数据包及帧的图解使用一种定制格式，目的是总结而不是定义协议元素。文中定义了完整的语义及详细的结构。
+复杂的字段被命名后，由紧随命名的一个以一对花括号括起来的字段列表描述，列表中的字段以逗号分隔。
+单个字段包括长度信息、带正号的定值、可选值或本字段的副本。单个字段使用下述标准规范，且所有长度都以比特为单位：
+x (A): 表示x是A比特长度
+x (i): 表示x是一个使用第6章描述的变量长度编码的整形值
+x (A..B): 表示x的长度可以是从A到B的所有值，省略A表示最小零位，并且省略B表示没有设置上限。这种格式的值总是以字符边界结束。
+x (L) = C: 表示x有一个定值C，且x的长度为L，L可以用上述任何长度格式
+x (L) = C..D: 表示x的值介于C到D之间，包括边界值C和D，L表示长度，同上
+[x (L)]: 表示x是一个可选的值，长度为L
+x (L)...: 表示x重复0次或以上次数，且每个实例长度为L
+本文使用网络字节序（也就是大端）值。字段每个字节的各个比特从高位到低位排列。
+约定单个字段通过使用复合字段的名称引用复合字段。</description>
+    </item>
+    
+    <item>
+      <title>2.1. 流类型及标识符</title>
+      <link>/RFC9000_Chinese_Translation/Streams/2.1_Stream_Types_and_Identifiers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Streams/2.1_Stream_Types_and_Identifiers/</guid>
+      <description>流可以是单向或双向的。单向流往一个方向传输数据：从流发起端向对端发送；双向流允许双端向对端发送数据。
+在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（0-2^62^-1），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见第16章。一个QUIC终端 必须不 能在同一个连接的不同流上重复使用同一个数值作为流ID。
+流ID的最小有效位（0x01）标识流的发起者。客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。
+流ID的次小有效位（0x02）标识流是双向流（该位被置为0）抑或单向流（该位被置为1）。
+也就是说，流ID的最小两个有效位用来标识一条流是总共四种流类型中的哪一种，总结在如下表格1中：
+   位 流类型     0x00 客户端创建的双向流   0x01 服务端创建的双向流   0x02 客户端创建的单向流   0x03 服务端创建的单向流    表格1：流类型
+ 每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</description>
+    </item>
+    
+    <item>
+      <title>2.2. 数据发送与接收</title>
+      <link>/RFC9000_Chinese_Translation/Streams/2.2_Sending_and_Receiving_Data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Streams/2.2_Sending_and_Receiving_Data/</guid>
+      <description>流帧（第19.8章）封装应用层发送的数据。终端使用流帧的流ID及偏移字段整理数据。
+终端 必须 将流数据以一个有序字节流传递给应用层。传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。
+QUIC对于传递流的无序数据并没有做额外的打算。然而，实现上 可以 选择支持传递无序数据给应用层接收。
+终端可以从一条流的同一个偏移位置多次接收数据。如果数据已经被接收过了，就会直接被丢弃。处在任何偏移位置的数据如果被重复发送，其 必须不 能更改。终端 可以 将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。
+流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。
+终端 必须不 能在对端设置的流量控制限制之外发送任何数据。流量控制详见第4章。</description>
+    </item>
+    
+    <item>
+      <title>2.3. 流优先级</title>
+      <link>/RFC9000_Chinese_Translation/Streams/2.3_Stream_Prioritization/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Streams/2.3_Stream_Prioritization/</guid>
+      <description>如果资源以正确的优先级分配给多条流，那么流的多路复用可以对应用性能产生显著影响。
+QUIC并不支持交换优先级信息，相反，其依赖从应用层接收的优先级信息。
+QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各条流的相对优先级。一种实现是使用应用层提供的信息决定分配多少资源来激活流。</description>
+    </item>
+    
+    <item>
+      <title>2.4. 流操作</title>
+      <link>/RFC9000_Chinese_Translation/Streams/2.4._Operations_on_Streams/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Streams/2.4._Operations_on_Streams/</guid>
+      <description>本文没有定义QUIC API，而是定义了一系列流操作相关的函数可以用于应用层协议的构建。应用层协议可以假定QUIC有关实现提供了本章描述的操作对应的接口。为一个特定应用层协议设计实现的QUIC协议可能仅仅提供该协议需要的这些操作。
+在流的发送部分，应用层协议可以：
+ 写数据，只有当流量控制给数据写出留足空间（第4.1章）才能成功写出； 结束流（清理并关闭），发送一个设置FIN位为1的流帧（第19.8章）； 重置流（中止并关闭），当流未处在终止状态时发送一个RESET_STREAM帧（第19.4章）。  在流的接收部分，应用层协议可以：
+ 读数据，以及 中止读取流数据并请求关闭流，该操作可能需要发送STOP_SENDING帧（第19.5章）。  应用层协议也可以请求在流状态改变的时候收到通知信息，包括当对端开启或重置流、对端中止流数据读取、有新数据可以读取、以及数据可以写出或因流控不能写出。</description>
+    </item>
+    
+    <item>
+      <title>3.1. 流发送状态</title>
+      <link>/RFC9000_Chinese_Translation/Stream_States/3.1_Sending_Stream_States/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Stream_States/3.1_Sending_Stream_States/</guid>
+      <description>图2展示了通过流向对端发送发送数据的状态。
+ 图2：流数据发送部分状态
+ 终端发起的流的发送部分（客户端发起的流类型是0和2，1和3则是由服务端发起的）由应用层打开。 用于发送的流数据可能被缓存起来。
+发送首个流帧（STREAM）或流阻塞帧（STREAM_DATA_BLOCKED）使流的发送部分进入“发送”状态。 QUIC实现可以选择延迟分配流ID直到其发送首个流帧并进入“发送”状态，这样可以实现更好的流优先级。
+由对端发起的双向流的发送部分（服务端发起的流类型是0，客户端发起的是1）在接收部分创建时就已处于“就绪”状态，并从此状态开始。
+在“发送”状态，终端通过流帧传输——必要时重传——流数据。 终端遵从其对端设置的流量控制限制，同时持续接收与处理最大流数据帧（MAX_STREAM_DATA）。 当发送过程被流的流量控制限制（第4.1章）所阻塞时，处在“发送”状态的终端会生成流阻塞帧。
+在应用层表示所有应用数据及一个带FIN置位的流帧都发送完成后，流的发送部分进入“发送完成”状态。 从这个状态开始，终端只会做必要的数据重传。 在对端收到最终流下标前，都有可能收到最大流数据帧。 处与此状态的终端可以忽略任何其收到的最大流数据帧，这样是安全的。
+当所有流数据都被成功确认后，发送部分进入“接收完成”状态，这是一个最终状态。
+处在“就绪”、“发送”及“发送完成”状态中的任何一个状态时，应用层都可以提出取消发送流数据。 相应地，终端也可能从其对端收到一个停止发送帧（STOP_SENDING）。 不论哪种情况，终端都会发送流重置帧（RESET_STREAM），随后流进入“重置发送”状态。
+终端可以发送一个流重置帧作为流的首个帧，这会导致该流的发送部分开启然后立即转到“重置发送”状态。
+一旦一个包含流重置帧的数据包被确认，流的发送部分即进入“重置接收”状态，这也是一个最终状态。</description>
+    </item>
+    
+    <item>
+      <title>3.2. 接收流状态</title>
+      <link>/RFC9000_Chinese_Translation/Stream_States/3.2_Receiving_Stream_States/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Stream_States/3.2_Receiving_Stream_States/</guid>
+      <description>图3展示了通过流从对端接收数据的状态。 流的接收部分只会反映对端流发送部分的一些状态。 流的接收部分不能追踪发送部分那些不可见的状态，例如“就绪”状态。 相反，流的接收部分追踪向应用层传递的数据，其中一些数据对发送端不可见。
+ 图3：流数据接收部分状态
+ 由对端发起的流（客户端发起的流类型是1和3，服务端发起的是0和2）的接收部分在收到该流的第一个流帧、流阻塞帧或流重置帧时创建。 对于由对端创建的双向流，发送部分收到最大流数据帧或停止发送帧时也会创建该流的接收部分。 流的接收部分的初始状态是“发送”状态。
+由本端发起的双向流（客户端发起的流类型是0，服务端发起的是1），当其发送部分进入“就绪”状态时，其接收部分进入“接收”状态。
+终端在收到最大流数据帧或停止发送帧后打开一条双向流。 接收到一条未开启的流的最大流数据帧意味着对端已经开启了该流，并开始支持流量控制信用。 而接收到一条未开启流的停止发送帧意味着对端不会再从该流接收数据。 无论这两种帧的哪一种都可能先于流帧或流阻塞帧到达本端，原因是包丢失或乱序。
+在一条流创建前，所有数值小于该流ID的同类型流都必须被创建。 这样能确保双端流的创建次序保持一致。
+在“接收”状态，终端接收流帧和流阻塞帧。 传入数据将被缓存，并可以按照正确顺序重组以便递给应用层。 随着应用层不断消耗数据，缓冲区重新空出来，终端发送最大流数据帧告知对端可以发送更多数据。
+当收到一个带FIN置位的流帧时，数据的最终大小确定下来，详见第4.5章。 流的接收部分随后转到“数据量确认”状态。 在此状态，终端不再需要发送最大流数据帧，只需要接收重传数据即可。
+一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。 【TODO further transmition】 在接收到导致状态转换到“接收量确认”的流帧后，可能同时导致转入“接收完成”状态。 在所有数据都收完后，可以丢弃该流的任何流帧或流阻塞帧。
+“接收完成”状态会一直持续直到数据全部传递到应用层。 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。
+如果在“接收”或“数据量确认”状态收到一个流重置帧，将导致流转到“重置接收”状态。 这可能打断流数据传递到应用层。
+流重置帧也有可能在所有流数据都收完后才收到（即在“接收完成”阶段）。 同样地，也可能在收完流重置帧后收到了剩下的流数据（即在“重置接收”状态）。 在QUIC的具体实现上，可以自由选择如何处理这两种情况。
+发送流重置帧意味着终端不能保证流数据的传输。 然而，并没有要求在收到流重置帧后不传输流数据。 QUIC实现可以打断流数据的传输，丢弃任何没有被消耗的数据，并通知对端收到了流重置帧。 如果流数据完成了接收并被缓存起来以供应用层读取，此时收到流重置帧信号，则该信号可能被抑制或扣留。 如果流重置帧被抑制，流的接收部分仍然维持在“接收完成”状态。
+一旦应用层收到流被重置的信号，流的接收部分转到“重置读取”阶段，这是一个最终状态。</description>
+    </item>
+    
+    <item>
+      <title>3.3. 许可帧</title>
+      <link>/RFC9000_Chinese_Translation/Stream_States/3.3_Permitted_Frame_Types/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Stream_States/3.3_Permitted_Frame_Types/</guid>
+      <description>流的发送端发送的帧只有三种能同时影响发送端和接收端状态：流帧（第19.8章）、流阻塞帧（第19.13章），以及流重置帧（第19.4章）。
+发送端必须不在最终状态（“接收完成”或“重置接收”）发送任何这些帧。当流处在“重置发送”或任何最终状态时，发送端必须不发送流帧或流阻塞帧——也就是说，在发送完一个流重置帧后。接收端可以在任何状态接收这三种帧，原因在于被延迟的包可能携带这些帧。
+流的接收端发送最大流数据帧（第19.19章）及停止发送帧（第19.5章）。
+接收端只可以在“接收”状态发送最大流数据帧。如果接收端尚未收到过流重置帧，其可以在任何状态发送一个停止发送帧——也就是除“重置接收”、“重置读取”之外的状态。然而，在“接收完成”状态发送停止发送帧意义不大，因为所有流数据都已经收到了。由于可能存在数据包延迟，因此发送端可以在任何状态接收这两种帧。</description>
+    </item>
+    
+    <item>
+      <title>3.4. 双向流状态</title>
+      <link>/RFC9000_Chinese_Translation/Stream_States/3.4_Bidirectional_Stream_States/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Stream_States/3.4_Bidirectional_Stream_States/</guid>
+      <description>双向流同时包括接收部分和发送部分。 QUIC的实现可以将双向流的状态表示成发送及接收流状态的组合状态。 在最简单的模型里，当发送和接收部分均处在非最终状态时，表示流处于“打开”状态；当两者均处于最终状态时，表示流处于“关闭”状态。
+表格2展示了一个更复杂的双向流状态映射，粗略对应HTTP/2（HTTP2）中定义的流状态。 这表明流的发送或接收部分多个状态映射到同一个组合状态。 注意这仅仅是一个可能的映射，这种映射需要数据全部被确认后才能转入“关闭”或“半关闭”状态。
+   发送部分 接收部分 组合状态     无流、就绪 无流、接收① 空闲   就绪、发送、发送完成 接收、数据量确认 打开   就绪、发送、发送完成 接收完成、读取完成 半关闭（对端）   就绪、发送、发送完成 重置接收、重置读取 半关闭（对端）   接收完成 接收、数据量确认 半关闭（本端）   重置发送、重置接收 接收、数据量确认 半关闭（本端）   重置发送、重置接收 接收完成、读取完成 关闭   重置发送、重置接收 重置接收、重置读取 关闭   接收完成 接收完成、读取完成 关闭   接收完成 重置接收、重置读取 关闭    表2：流状态到HTTP/2间可能的映射方式
+  注意（①）：如果一条流尚未被创建或其接收部分处于“接收”状态而尚未收到任何帧，则流处于“空闲”状态。</description>
+    </item>
+    
+    <item>
+      <title>3.5. 请求状态转换</title>
+      <link>/RFC9000_Chinese_Translation/Stream_States/3.5_Solicited_State_Transitions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Stream_States/3.5_Solicited_State_Transitions/</guid>
+      <description>如果应用层不再需要流接收到的数据，应用层可以中止流的读取，并指定一个应用层错误码。
+如果流处在“接收”或“数据量确认”状态，传输层应该发送一个停止发送帧通知对端及时在反方向关闭流。 这通常表明接收方应用层不再读取流接收到的数据，但这并不意味着传入的数据一定会被忽略。
+在发送完停止发送帧后收到的流帧仍然会被连接及流级别的流量控制统计，即使这些帧可能在接收时即被丢弃。
+停止发送帧请求接收端发送一个流重置帧。 如果流处在“就绪”或“发送”状态，收到停止发送帧的一端必须发送一个流重置帧。 如果流处在“发送完成”状态，终端可以推迟发送流重置帧直到含有未发完数据的数据包被确认或明确的被丢弃。 如果任何未发完数据得到明确被丢弃了，终端应该发送一个流重置帧而非重传数据。
+终端应该从停止发送帧复制错误码到要发出的流重置帧，但是其可以使用任何应用层错误码。 发送停止发送帧的终端可以忽略任何随后被流接收到的流重置帧里的错误码。
+停止发送帧应该只能在流尚未被对端重置前发送出去。 停止发送帧主要在流的“接收”或“数据量确认”状态使用。
+如果包含前一个停止发送帧的数据包丢失了，期望终端发送另外的停止发送帧。 然而，一旦流收到了所有流数据或一个流重置帧——也就是说流处在“接收”或“数据量确认”之外的状态——发送停止发送帧就不再必要了。
+如果双向流的一端想要将流的两个方向同时关闭，那么其可以通过发送一个流重置帧关闭一个方向，并发送一个停止发送帧促使相反方向也迅速得到关闭。</description>
+    </item>
+    
+    <item>
+      <title>4.1. 数据流量控制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</guid>
+      <description>QUIC使用一个基于限制的流量控制模型，接收者给出其准备在给定流或整个连接上准备接收的总字节数的上限。 这使得QUIC中存在两层数据流量控制：
+ 流的流量控制：通过限制每条流可以发送的数据量，防止单条流耗尽一条连接的全部接收缓冲区； 连接流量控制：通过限制所有流经由流帧可以发送的数据量，防止发送方超过连接接收方的缓冲区容量。  发送方发送数据必须不能超过上述任何一个限制。
+接收方可以通过发送一个含相关流ID的最大流数据帧告知对方提高流接收缓存区上限。 最大流数据帧表示流的最大绝对字节偏移量。 接收方可以根据当前流消耗数据的偏移量确定后续发出的流量控制的偏移量。
+接收方可以通过发送一个最大数据帧告知对方提高连接的接收缓存区上限，亦即所有流绝对字节偏移量之和的上限。 接收方维护一个在所有流上累计接收数据的总字节数，用以检查是否超过了连接或流流量控制上限。 接收方可以基于在所有流上消耗数据总字节数确定后续发出的最大数据偏移量。
+接收方发布连接或流的流量控制上限若低于之前的上限，这不是错误，只是这个更低的上限不会生效而已。
+如果发送方违反了推荐的连接或流的流量控制上限，接收方必须以FLOW_CONTROL_ERROR类型错误关闭连接，更多错误处理相关细节详见第11章。
+发送方必须忽略任何不会提高流量控制上限的最大流数据帧或最大数据帧。
+如果发送方发送数据达到了流量控制上限，其将不能再发送新数据，且应认为其被阻塞住了。 发送方应该发送一个流数据阻塞帧或数据阻塞帧来告知接收方其有数据要写出但是被流量控制所阻塞。 如果发送方被阻塞的时间超过空等超时时间（第10.1章），接收方可以关闭连接，即便发送方有可传输的数据。 为了保持连接不被关闭，在没有可引发ACK的数据包处于传输中时，被流量控制限制所阻塞的发送方应该定期发送一个流数据阻塞帧或数据阻塞帧。</description>
+    </item>
+    
+    <item>
+      <title>4.2. 提高流量控制限制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.2_Increasing_Flow_Control_Limits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.2_Increasing_Flow_Control_Limits/</guid>
+      <description>QUIC实现决定什么时候以什么额度通过最大流数据帧及最大数据帧提高流量控制限制，但是本章提出了一些注意事项。
+为了避免阻塞发送方，接收方可以在一个往返时间（RTT）内多次发送一个最大流数据帧或最大数据帧，或者尽可能早地发送，从而为帧的丢失及随后的恢复留出时间。
+控制帧也会引入连接开销。 也就是说频繁发送最大流数据帧及最大数据帧做极其微小的调整是不可取的。 另一方面，如果更新不够频繁，每次更新时就要对接收方上限做更大幅度的提升以防发送方被阻塞，使得接收方耗费需要更多资源。 因此，确定决定接收方推荐上限需要权衡资源耗费与连接开销。
+接收方可以使用一个常见于TCP实现的基于往返时间及接收数据应用层消耗速率的自动调谐机制来调整推荐接收上限的频率和增量。 作为优化，终端只有在有其他帧要发送时才可以发送流量控制相关帧，以确保流量控制不会导致额外的数据包发送。
+被阻塞发送方不需要发送流阻塞帧或数据阻塞帧。 也就是说，接收方必须不能在发送最大流数据帧及最大数据帧前等待接收流阻塞帧或数据阻塞帧，否则可能导致发送方在连接的其余部分被阻塞。 即使发送方发送了这些帧，等待它们也会导致发送方至少被阻塞一个完整的往返周期。
+当终端在阻塞期间收到可发送数据额度时，它可能会回复大量数据，造成短暂的拥塞，详见《QUIC快速恢复》第7.7章有关终端如何避免这类拥塞的讨论。
+**秋航注**：这里将credit翻译为额度、增量等，指的是**最大流数据帧**及**最大数据帧**所带来的接收方新流量控制上限相对之前的提升量，这个提升量是发送方后续可发送新数据的空间。  </description>
+    </item>
+    
+    <item>
+      <title>4.3. 流量控制性能</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.3_Flow_Control_Performance/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.3_Flow_Control_Performance/</guid>
+      <description>如果终端不能确保其对端始终在该连接上有大于对端带宽时延积的流量控制额度，其接收吞吐量将被流量控制限制。
+包丢失会导致接收缓冲区出现空隙，从而阻碍应用层消耗数据并释放接收缓冲空间。
+发送</description>
+    </item>
+    
+    <item>
+      <title>4.4. 处理流取消</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.4_Handling_Stream_Cancellation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.4_Handling_Stream_Cancellation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>4.5. 流的最终容量</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>4.6. 并发控制</title>
+      <link>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>5.1 长包头</title>
+      <link>/RFC8999_Chinese_Translation/QUIC_Packets/5.1_Long_Header/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/QUIC_Packets/5.1_Long_Header/</guid>
+      <description>图2是QUIC长包头的格式。
+长包头 { 包头格式 (1) = 1, 版本特定相关位 (7), 版本 (32), 目标连接ID长度 (8), 目标连接ID (0..2040), 源连接ID长度 (8), 源连接ID (0..2040), 版本特定相关数据 (..), } 图2：QUIC长包头
+ QUIC长包头数据包其首字节最高比特位设置为1，其余比特位则视具体版本而定。
+随后的四个字节包含一个32位版本字段，关于版本详见第5.4章。
+接下来的一个字节包含紧随其后的目标连接ID字段的长度，且该长度值以字节计数，并被编码为一个8位无符号整数。目标连接ID字段紧随目标连接ID长度字段，其长度在0到255字节之间。连接ID详见第5.3章。
+接下来的一个字节包含紧随其后的源连接ID字段的长度，且该长度值以字节计数，并被编码为一个8位无符号整数。源连接ID字段紧随源连接ID长度字段，其长度在0-255字节之间。
+数据包接下来剩余字段包含与QUIC版本特定相关的内容。</description>
+    </item>
+    
+    <item>
+      <title>5.1.1 发布连接ID</title>
+      <link>/RFC9000_Chinese_Translation/Connections/Connection_IDs/5.1.1_Issuing_Connection_IDs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/Connection_IDs/5.1.1_Issuing_Connection_IDs/</guid>
+      <description>当新连接ID帧或撤销连接ID帧指向同一个值时，每个连接ID都有一个相关联的序列号用于协助检测。一个终端发出的初始连接ID是通过握手阶段（第17.2章）的长包头的源连接ID字段发送的。初始连接ID的序列号是0。如果发送了传输参数preferred_address（推荐地址），发出的连接ID的序列号就是1。
+额外的连接ID通过新连接ID帧（第19.5章）传输给对方。新发出的连接ID的序列号必须递增1。客户端给其发出的第一个目标连接ID字段的连接ID及重试包的连接ID不会分配序列号。
+当一个终端发出一个连接ID，其必须在连接存活期间或在对端通过撤销连接ID帧（第19.16章）取消连接前接收携带该连接ID的数据包。 连接ID被发出且没有被取消，即是活跃的；任何活跃的连接ID在连接任何时间、对其任何类型的数据包都可以有效使用。这包括被服务端通过推荐地址传输参数发出的连接ID。
+终端应该确保其对端有足够数量可用且未使用的连接ID。 终端使用active_connection_id_limit（活跃连接ID限制）传输参数指定它们想要维持的活跃连接ID的数目。 一个终端必须不能提供超过对端限制数目的连接ID。 如果新连接ID帧也要求终止任何多余的连接ID，终端可以通过在“撤销前”字段包含一个足够大的值来发送临时超过对端限制数量的连接ID。
+终端可以根据新连接ID帧的“撤销前”字段内容添加一些活跃连接ID并终止其他连接ID。 在处理完一个新连接ID帧，添加及撤销一些活跃连接ID后，如果活跃连接ID数量仍然超过active_connection_id_limit传输参数建议的值，终端必须以CONNECTION_ID_LIMIT_ERROR（连接ID限制）错误关闭连接。
+当对端撤销一个连接ID后，终端应该提供一个新的连接ID。 如果终端提供的连接ID数目小于对端active_connection_id_limit值，则其可以在收到一个包含之前撤销的连接ID的数据包时提供一个新的连接ID。 终端也可以限制连接ID的发布以降低其维护的通道层面的状态量，例如通道验证状态，因为对端可能有多少连接ID就用多少通道与其交互。
+启动连接迁移且需要非零长度连接ID的终端应该确保其连接ID池对端可得，从而使对端能在连接迁移时用新的连接ID，因为如果连接ID池耗尽，对端将无法回复。
+在握手阶段选择零长度连接ID的终端不能发布新的连接ID。通过任何通道发往一个这样的终端的所有包使用零长度目标连接ID字段。</description>
+    </item>
+    
+    <item>
+      <title>5.1.2 消耗及撤销连接ID</title>
+      <link>/RFC9000_Chinese_Translation/Connections/Connection_IDs/5.1.2_Consuming_and_Retiring_Connection_IDs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/Connection_IDs/5.1.2_Consuming_and_Retiring_Connection_IDs/</guid>
+      <description>终端可以在连接期间任何时候将其与对端交互的连接ID更改为另一个可用的连接ID。 在对端进行迁移连接时，终端会消耗连接ID，更多详见第9.5章。
+终端维护一个接收自对端的连接ID集合，其中每个ID均可用于发送数据包。当终端想要停止使用一个连接ID，其可以发送一个撤销连接ID帧给对端。 发送一个撤销连接ID帧意味着将不会再次使用该连接ID，同时请求对端通过新连接ID帧换一个新的连接ID。
+如第9.5章所述，终端限制使用一个连接ID从一个单一本地地址向一个单一目标地址发送数据包。当使用连接ID的本地或目标地址不再活跃的时候，终端应该撤销这些连接ID。
+在特定场合，终端可能需要停止接收先前发布的连接ID。 这种终端会导致对端通过发送带有值已增加的“撤销前”字段的新连接ID帧停用这些连接ID。 终端应该继续接收先前发布的连接ID直到它们被对端撤销。如果终端不能再处理指定的连接ID，其可以关闭连接。
+一旦收到一个值增加的“撤销前”字段，对端必须停止使用相关连接ID，并在添加新提供的连接ID到活跃连接ID集合之前，通过撤销连接ID帧停用这些连接ID。 这么安排使得终端能够替换全部活跃连接ID，而不会出现对端没有可用连接ID的情况，也不会使活跃连接ID数超过对端传输参数active_connection_id_limit设下的限制，详见第18.2章。 无法停止使用连接ID可能导致连接错误，因为发布端可能不能在当前连接上继续使用这些连接ID。
+如果撤销连接ID帧尚未被确认，那么终端应该限制本地已撤销连接ID的数量。 终端应该允许发送中及可追踪的撤销连接ID帧数量至少是传输参数active_connection_id_limit值的两倍。 终端必须不在没有撤销一个连接ID前忘记它，尽管其可以选择将仍然使用达到该限制而需要被撤销的连接ID的情况视为一个CONNECTION_ID_LIMIT_ERROR类型的连接错误。
+在收到撤销由先前的“撤销前”字段指定的全部连接ID的撤销连接ID帧前，终端不应该发布更新“撤销前”字段。</description>
+    </item>
+    
+    <item>
+      <title>5.2 短包头</title>
+      <link>/RFC8999_Chinese_Translation/QUIC_Packets/5.2_Short_Header/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/QUIC_Packets/5.2_Short_Header/</guid>
+      <description>图3是QUIC短包头的格式。
+短包头 { 包头格式 (1) = 0, 版本特定相关位 (7), 目标连接ID (..), 版本特定相关数据 (..), } 图3：QUIC短包头
+ 一个有着短包头的QUIC数据包其首字节的最高位设置为0。
+短包头数据包紧随首字节之后是一个目标连接ID。短包头不会包含目标连接ID长度、源连接ID长度、源连接ID或版本字段。目标连接ID的长度不会编码在短包头数据包里，也不会受限于这个特性。
+数据包接下来剩余字段有与版本特定相关的语义。</description>
+    </item>
+    
+    <item>
+      <title>5.2.1 客户端数据包处理</title>
+      <link>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.1_Client_Packet_Handling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.1_Client_Packet_Handling/</guid>
+      <description>发往客户端的有效数据包往往包含一个与客户端选择的值匹配的目标连接ID。 选择接收零长度连接ID的客户端可以使用本地地址和端口识别一个连接。 不能与已存在连接匹配的数据包——基于目标连接ID或目标连接ID为零长度时基于本地IP地址和端口——将被丢弃。
+由于数据包乱序或丢失，客户端可能收到使用尚未算出的密钥加密的数据包。客户端可以丢弃这些包，也可以缓存起来以备后续数据包使其可以计算出密钥。
+如果客户端收到一个包使用了与初始化阶段选择不同的QUIC版本，其必须丢弃该包。</description>
+    </item>
+    
+    <item>
+      <title>5.2.2 服务端数据包处理</title>
+      <link>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.2_Server_Packet_Handling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.2_Server_Packet_Handling/</guid>
+      <description>如果服务端收到一个来自不支持版本的数据包而其又足够初始化一个任何支持版本的新连接，服务端应该发送一个版本协商包，详见第6.1章。 服务端可以限制其回复的版本协商包的数量。 服务端必须丢弃属于不支持版本的小包。
+一个不支持版本的第一个包可以对任何与具体版本有关的字段使用不同语义和编码。 尤其是不同的版本可能使用不同的数据包保护密钥。 不支持一个特定版本的服务端不太可能解密数据包的有效负载或正确解释其内容。 当数据报文足够长时，服务端应该回复一个版本协商包。
+有一个支持版本或没有版本字段的数据包通过连接ID或——对于零长度连接ID的数据包——本地地址和端口与一个连接匹配，这些包在该连接上处理；否则，服务端继续做如下处理。
+如果数据包是完全符合规范的初始化包，则服务端继续进行握手（第7章）。 服务端会指派为客户端选择的版本。
+如果服务端拒绝接收一个新连接，它应该发送一个带连接关闭帧的初始化包给客户端，其中连接关闭帧的错误码设置为CONNECTION_REFUSED（连接拒绝）。
+如果数据包是一个0-RTT包，服务端可以进行有限数量的缓存，因为后续预期会收到初始化包。 由于客户端不可能先于收到服务端回复发送握手包，所以服务端应该忽略任何这样的包。
+服务端必须丢弃任何其他场合收到的数据包。</description>
+    </item>
+    
+    <item>
+      <title>5.2.3 关于简单负载均衡</title>
+      <link>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.3_Considerations_for_Simple_Load_Balancers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.3_Considerations_for_Simple_Load_Balancers/</guid>
+      <description>服务端部署可以仅仅使用源与目的IP地址和端口在服务器之间进行负载均衡。 改变客户端IP地址或端口可能导致数据包被转发到错误的服务器上。 这种服务端部署可以从如下方法中选择一个用于在客户端地址变换时维持连接。
+ 服务端可以使用带外机制，根据连接ID将数据包转发到正确的服务器； 如果服务器可以使用固定的IP地址或端口，且不同于客户端初始建联时访问的那个，它们可以使用传输参数preferred_address（推荐地址）请求客户端迁移到那个固定的地址上。 注意客户端可以选择不使用推荐地址。  服务端的一台服务器如果不支持在客户端改变地址时维持连接，其应该通过传输参数disable_active_migration（关闭活动迁移）告知对端当前不支持连接迁移。 在客户端预先拿到preferred_address参数后，传输参数disable_active_migration将不能阻止客户端进行连接迁移。
+应用本简单形式负载均衡进行部署后，服务端必须避免创建无状态重置指示，详见第21.11章。</description>
+    </item>
+    
+    <item>
+      <title>5.3 连接ID</title>
+      <link>/RFC8999_Chinese_Translation/QUIC_Packets/5.3_Connection_ID/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/QUIC_Packets/5.3_Connection_ID/</guid>
+      <description>连接ID是一个任意长度的不透明字段（这里理解成这是一个二进制字段就行）。
+连接ID的主要功能是确保底层协议（UDP、IP及更底层的协议栈）发生地址变更时不会导致一个QUIC连接的数据包被传输到错误的QUIC终端上。连接ID由终端及支持的中间设备用以确保每个数据包能够被调度到相应终端的正确实体上。对于终端而言，连接ID用于标识数据包对应的QUIC连接。
+连接ID由每个终端根据版本特定的方式选择，而同一个QUIC连接的数据包可能使用不同的连接ID。</description>
+    </item>
+    
+    <item>
+      <title>5.3 连接操作</title>
+      <link>/RFC9000_Chinese_Translation/Connections/5.3_Operations_on_Connections/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connections/5.3_Operations_on_Connections/</guid>
+      <description>本文没有定义QUIC的API，而是定义了一系列有关QUIC连接的函数，用于应用层协议进行依赖。 应用层协议可以假设一个QUIC的实现提供了一个包括本章所述操作的接口。 针对一个特定应用层协议而设计的实现可能只提供该协议用到的那些操作。
+当实现用户端时，应用层协议可以：
+ 创建一个连接，开始进行第7章描述的交互过程； 如果支持，启用早期数据功能； 当早期数据被服务端接受或拒绝时，收到通知。  当实现服务端时，应用层协议可以：
+ 监听传入的连接，准备进行第7章描述的交互过程； 如果支持早期数据，在发送给客户端的TLS恢复ticket中嵌入应用层控制数据； 如果支持早期数据，从接收自客户端的恢复ticket中恢复应用层控制数据，并根据该信息接受或拒绝早期数据。  当同时实现客户端及服务端时，应用层协议可以：
+ 如传输参数（第7.4章）所述，为每种类型允许的流的配置最小的初始数量； 通过设置流级别及连接级别的流量控制限制，限制接收缓存区资源分配； 识别握手已经成功结束抑或仍在进行中； 保持连接不被默认关闭，即通过PING帧（第19.2章）或其他请求使得传输层在空闲超时（第10.1章）前发送额外的帧；以及 立即关闭连接（第10.2章）。  </description>
+    </item>
+    
+    <item>
+      <title>5.4 版本</title>
+      <link>/RFC8999_Chinese_Translation/QUIC_Packets/5.4_Version/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/QUIC_Packets/5.4_Version/</guid>
+      <description>版本字段包含一个4字节标识符。该值可供终端用以标识一个QUIC版本。一个值为0x00000000的版本字段保留给版本协商使用，详见第6章，而任何其余值均可能有效。
+本文描述的属性适用于所有版本的QUIC。不符合本文所述属性的协议不是QUIC协议。后续文档可以给特定一个或一系列QUIC版本增加其他的属性。</description>
+    </item>
+    
+    <item>
+      <title>8.1. 标准参考文献</title>
+      <link>/RFC8999_Chinese_Translation/References/8.1_Normative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/References/8.1_Normative_References/</guid>
+      <description>[RFC2119] Bradner, S. 《RFC文档中用于指出要求级别的关键字（Key words for use in RFCs to Indicate Requirement Levels）》, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, https://www.rfc-editor.org/info/rfc2119.
+  [RFC8174] Leiba, B. 《RFC2119中关键字大写与小写的歧义（Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words）》, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, https://www.rfc-editor.org/info/rfc8174.</description>
+    </item>
+    
+    <item>
+      <title>8.2. 非标准参考文献</title>
+      <link>/RFC8999_Chinese_Translation/References/8.2_Informative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC8999_Chinese_Translation/References/8.2_Informative_References/</guid>
+      <description>[QUIC TLS] Thomson, M., Ed. and S. Turner, Ed. 《使用TLS加密QUIC（Using TLS to Secure QUIC）》, RFC 9001, DOI 10.17487/RFC9001, May 2021, https://www.rfc-editor.org/info/rfc9001.
+  [QUIC传输协议] Iyengar, J., Ed. and M. Thomson, Ed. 《QUIC：一种基于UDP的多路复用安全传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）》, RFC 9000, DOI 10.17487/RFC9000, May 2021, https://www.rfc-editor.org/info/rfc9000.
+  [RFC5116] McGrew, D. 《一种用于认证加密的接口及算法（An Interface and Algorithms for Authenticated Encryption）》, RFC 5116, DOI 10.17487/RFC5116, January 2008, https://www.rfc-editor.org/info/rfc5116.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/RFC9000_Chinese_Translation/README/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/README/</guid>
+      <description>RFC9000及相关QUIC文档翻译 本站点用来翻译RFC9000等一系列QUIC相关文档。
+搭建运行环境 本站点基于hugo。下面介绍如何运行本站开发环境：
+如何运行安装及运行hugo Linux下可以直接apt install hugo安装环境，mac下可以用brew命令安装，windows下则需要去hugo站点下载hugo.exe执行文件并添加到环境变量里， 使得在命令行下执行hugo --help不会提示说找不到执行文件。
+更多请移步Hugo文档。
+关于本人 大家好，我是文档译者秋航。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。为了让广大国人能够尽快了解这个协议，故作此译文。
+本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！
+翻译说明 在翻译的过程中，深刻体会到英语与汉语语法思维上的差别，其也体现在行文的方方面面。以下记录翻译QUIC系列文档时应该做的处理：
+1. 方括号引用参考文献 形如：
+The integration of TLS and QUIC is described in more detail in [[QUIC-TLS](#QUIC-TLS)]. [QUIC-TLS]是句子里实际提到的参考文献，这个结构本身参与语法构建，按照中文的习惯一般使用书名号《》将这种引用括起来。因此其应该翻译为：
+《[QUIC TLS](#QUIC-TLS)》 但是下述这种：
+QUIC integrates the TLS handshake [[TLS13](#TLS13)]. [TLS13]并不是语句的一部分，更类似于书本中的上标或下标引用。本站将其统一用html的上标引用之：
+TLS握手&amp;lt;sup&amp;gt;[TLS 1.3](#TLS13)&amp;lt;/sup&amp;gt; 2. 图或表格 为了支持文档中的图及表格，这里fork了kraiklyn主题并添加了一个shortcode方法专门用来绘图及表格，例如：
+&amp;lt;div id=Table_1_Stream_ID_Types class=&amp;#34;block ref&amp;#34;&amp;gt; \`\`\` |位 |流类型| |:---|:-----| |0x00|客户端创建的双向流| |0x01|服务端创建的双向流| |0x02|客户端创建的单向流| |0x03|服务端创建的单向流| \`\`\` [表格1：流类型](#Table_1_Stream_ID_Types) &amp;lt;/div&amp;gt; 这里，block_ref是专门定义的shortcode，indx用来指定锚点（请注意锚点不能使用的特殊字符），title表示图表名称。 block_ref会将title转成一个带跳转的href结构。引用该图表的方式：
+[表1](#Table_1_Stream_ID_Types) 3. 何时添加英语原文 只在如下情况添加：
+ 在正式介绍一个名词的时候，在该章节其首次出现的地方用中文括号（）添加英语原文； 使用英语括号()括起来的一个名词或短语在翻译时使用中文括号（）括起来翻译内容，并在逗号后添加英语原文，逗号用中文；  4.</description>
+    </item>
+    
   </channel>
 </rss>

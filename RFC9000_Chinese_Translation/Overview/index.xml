@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>1. 综述 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Overview/</link>
+    <description>Recent content in 1. 综述 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Overview/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1.1. 文档结构</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.1_document_structure/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.1_document_structure/</guid>
+      <description>本文描述了QUIC协议的核心部分，文章组织如下：
+  第1章流是QUIC支持的基本服务抽象层。
+ 第2章描述流相关的核心概念， 第3章提供一个流状态的参考模型， 第4章概述流量控制的过程。    连接是QUIC终端交流的上下文。
+ 第5章描述连接相关的核心概念， 第6章描述版本协商 第7章详细描述连接连接建立的过程， 第8章描述地址验证及危险的拒绝服务迁移攻击， 第9章描述终端如何将一个连接迁移到新的网络通道上， 第10章列举关闭一个已打开连接的各个方式，以及 第11章给流与连接错误处理提供指导。    数据包和帧是QUIC交流的基本单元。
+ 第12章描述数据包与帧相关的概念， 第13章定义数据传输、重传和确认的模型，以及 第14章描述指定携带QUIC数据包的数据报大小的规则。    最后，QUIC协议要素的编码细节描述在：
+ 第15章版本， 第16章整形编码， 第17章数据包头部， 第18章传输参数， 第19章帧，以及 第20章错误。    相关文档《QUIC恢复》描述QUIC的数据丢失检测及拥塞控制，《QUIC TLS》描述TLS及其他加密机制的使用。
+本文定义了QUIC版本1，支持《QUIC不变量》所定义的不变量。
+若引用QUIC版本1，请引用本文（你还是引用《》吧）。若引用QUIC支持的独立版本的某个子集，请引用《QUIC不变量原文》。</description>
+    </item>
+    
+    <item>
+      <title>1.2. 术语及定义</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</guid>
+      <description>本文中的关键字“必须（MUST）”、“必须不（MUST NOT）”、“需要（REQUIRED）”、“强烈要求（SHALL）”、“强烈要求不（SHALL NOT）”、“应该（SHOULD）”、“不应该（SHOULD NOT）”、“推荐（RECOMMENDED）”、“不推荐（NOT RECOMMENDED）”、“可以（MAY）”，以及“可选（OPTIONAL）”应理解为BCP 14 《RFC2119》《RFC8174》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。
+本文常用术语列述如下：
+QUIC：本文描述的传输协议。QUIC是名称，不是首字母缩写。
+终端（Endpoint）：一个能够以创建、接收及处理QUIC数据包参与QUIC连接的实体。QUIC终端有两种类型：客户端（client）及服务端（server）。
+客户端：初始化QUIC连接的终端。
+服务端：接收QUIC连接的终端。
+QUIC数据包：QUIC的一个可以封装进UDP报文中的完整处理单元。单个UDP报文可以封装进一个或多个QUIC数据包。
+ACK触发包：一个包含除确认帧（ACK）、填充帧（PADING）及连接关闭帧（CONNECTION_CLOSE）外的帧的QUIC数据包。接收方收到这类包会发确认，详见第13.2.1章。
+帧：一个结构化的协议信息单元。帧有多种类型，不同类型的帧携带不同类型的信息。帧由QUIC数据包承载。
+地址：当使用不受限制，由IP版本、IP地址及UDP端口号构成的元组表示网络通道的一端。
+连接ID：终端用来标识一条QUIC连接的标识符。每个终端选择一个或多个连接ID，从而在对端发送给本端的QUIC包中包含这些连接ID。该值对对端是不透明的。
+流：QUIC连接上一个单向或双向的有序字节通道。一个QUIC连接可以同时承载多条流。
+应用：一个使用QUIC发送及接收数据的实体。
+本文使用术语“QUIC数据包”、“UDP报文”及“IP数据包”表示相应协议的传输单元。换言之，一个或多个QUIC包被封装到一个UDP报文里，最终封装到一个IP数据包中。</description>
+    </item>
+    
+    <item>
+      <title>1.3. 标准规范</title>
+      <link>/RFC9000_Chinese_Translation/Overview/1.3_notational_conventions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Overview/1.3_notational_conventions/</guid>
+      <description>本文数据包及帧的图解使用一种定制格式，目的是总结而不是定义协议元素。文中定义了完整的语义及详细的结构。
+复杂的字段被命名后，由紧随命名的一个以一对花括号括起来的字段列表描述，列表中的字段以逗号分隔。
+单个字段包括长度信息、带正号的定值、可选值或本字段的副本。单个字段使用下述标准规范，且所有长度都以比特为单位：
+x (A): 表示x是A比特长度
+x (i): 表示x是一个使用第6章描述的变量长度编码的整形值
+x (A..B): 表示x的长度可以是从A到B的所有值，省略A表示最小零位，并且省略B表示没有设置上限。这种格式的值总是以字符边界结束。
+x (L) = C: 表示x有一个定值C，且x的长度为L，L可以用上述任何长度格式
+x (L) = C..D: 表示x的值介于C到D之间，包括边界值C和D，L表示长度，同上
+[x (L)]: 表示x是一个可选的值，长度为L
+x (L)...: 表示x重复0次或以上次数，且每个实例长度为L
+本文使用网络字节序（也就是大端）值。字段每个字节的各个比特从高位到低位排列。
+约定单个字段通过使用复合字段的名称引用复合字段。</description>
+    </item>
+    
+  </channel>
+</rss>
