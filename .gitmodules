@@ -1,3 +1,7 @@
 [submodule "themes/kraiklyn"]
 	path = themes/kraiklyn
 	url = git@github.com:fangqiuhang/kraiklyn.git
+[submodule "content/RFC8999_Chinese_Translation"]
+	path = content/RFC8999_Chinese_Translation
+	url = git@github.com:fangqiuhang/RFC8999_Chinese_Translation
+	branch = main

@@ -8,6 +8,8 @@ theme = "kraiklyn"
 pygmentsCodeFences = true
 pygmentsStyle = "monokailight"
 
+disablePathToLower = true
+
 [params]
   externalTitle = ""
   sidebarColor = "quic"
