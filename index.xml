@@ -209,15 +209,6 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
     </item>
     
     <item>
-      <title>文档翻译规范</title>
-      <link>/bak/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/bak/</guid>
-      <description>移步文档翻译规范。</description>
-    </item>
-    
-    <item>
       <title>3.1. 流发送状态</title>
       <link>/RFC9000_Chinese_Translation/Stream_States/3.1_Sending_Stream_States/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -562,6 +553,24 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <description>[QUIC TLS] Thomson, M., Ed. and S. Turner, Ed. 《使用TLS加密QUIC（Using TLS to Secure QUIC）》, RFC 9001, DOI 10.17487/RFC9001, May 2021, https://www.rfc-editor.org/info/rfc9001.
   [QUIC传输协议] Iyengar, J., Ed. and M. Thomson, Ed. 《QUIC：一种基于UDP的多路复用安全传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）》, RFC 9000, DOI 10.17487/RFC9000, May 2021, https://www.rfc-editor.org/info/rfc9000.
   [RFC5116] McGrew, D. 《一种用于认证加密的接口及算法（An Interface and Algorithms for Authenticated Encryption）》, RFC 5116, DOI 10.17487/RFC5116, January 2008, https://www.rfc-editor.org/info/rfc5116.</description>
+    </item>
+    
+    <item>
+      <title>18.1 保留传输参数</title>
+      <link>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>18.2 传输参数定义</title>
+      <link>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</guid>
+      <description></description>
     </item>
     
     <item>

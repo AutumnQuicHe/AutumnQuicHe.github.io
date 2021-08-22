@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>18. 传输参数编码 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/</link>
+    <description>Recent content in 18. 传输参数编码 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>18.1 保留传输参数</title>
+      <link>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>18.2 传输参数定义</title>
+      <link>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

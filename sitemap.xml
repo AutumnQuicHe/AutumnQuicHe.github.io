@@ -60,8 +60,6 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Conventions_and_Definitions/</loc>
   </url><url>
-    <loc>/bak/</loc>
-  </url><url>
     <loc>/RFC9000_Chinese_Translation/Stream_States/3.1_Sending_Stream_States/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Stream_States/3.2_Receiving_Stream_States/</loc>
@@ -143,6 +141,12 @@
     <loc>/RFC8999_Chinese_Translation/Appendix_A_Incorrect_Assumptions/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Author_s_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/README/</loc>
   </url><url>
