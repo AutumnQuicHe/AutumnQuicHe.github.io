@@ -5,3 +5,9 @@
 	path = content/RFC8999_Chinese_Translation
 	url = git@github.com:fangqiuhang/RFC8999_Chinese_Translation
 	branch = main
+[submodule "content/RFC9000_Chinese_Translation"]
+	path = content/RFC9000_Chinese_Translation
+	url = git@github.com:fangqiuhang/RFC9000_Chinese_Translation
+[submodule "content/Translation_Norms"]
+	path = content/Translation_Norms
+	url = git@github.com:fangqiuhang/Translation_Norms.git

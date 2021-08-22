@@ -1,0 +1,10 @@
+{{ $img_type := (.Get "type") }}
+{{ $img := (.Get "src") }}
+<div id={{ .Get "indx" }} class="block ref">
+    {{ if eq $img_type "svg" }}
+        <object data="{{ $img }}" type="image/svg+xml" style='width:93%'></object>
+    {{ else }}
+        <img src="{{ $img }}">
+    {{ end }}
+    <p><a href="#{{ .Get "indx" }}">{{ .Get "title" }}</a></p>
+</div>

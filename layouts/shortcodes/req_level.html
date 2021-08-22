@@ -1,0 +1,13 @@
+{{ with $word := .Get 0 }}<em><strong>{{ if
+    eq $word "MUST"}}必须{{ else if
+    eq $word "MUST_NOT" }}必须不{{ else if
+    eq $word "REQUIRED"}}需要{{ else if
+    eq $word "SHALL"}}强烈要求{{ else if
+    eq $word "SHALL_NOT"}}强烈要求不{{ else if
+    eq $word "SHOULD"}}应该{{ else if eq $word "SHOULD_NOT"}}不应该{{ else if
+    eq $word "RECOMMENDED"}}推荐{{ else if
+    eq $word "NOT_RECOMMENDED"}}不推荐{{ else if
+    eq $word "MAY"}}可以{{ else if
+    eq $word "OPTIONAL"}}可选{{ else
+    }}错误的关键字{{ end
+}}</strong></em>{{ end }}

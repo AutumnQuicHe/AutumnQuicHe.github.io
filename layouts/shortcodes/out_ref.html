@@ -1,0 +1,7 @@
+<div id={{ .Get "ref" }} class="out_ref">
+    <p>
+        <a href=#{{ .Get "ref" }}>[{{ .Get "title" }}]</a>
+        {{ .Get "authors" }}
+    </p>
+    {{ .Inner }}
+</div>

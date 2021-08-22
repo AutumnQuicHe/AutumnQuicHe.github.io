@@ -1,0 +1,14 @@
+  <script>
+    // 获取所有的P元素
+    var pElements = document.getElementsByTagName('p');
+    // 删除所有P元素中的空行
+    var i;
+    for (i = 0; i < pElements.length; i++) {
+      var content = pElements[i].innerHTML;
+      content = content.replace(/(\r)/g, "");
+      content = content.replace(/(\n)/g, "");
+      pElements[i].innerHTML = content;
+    }
+  </script>
+</body>
+</html>
