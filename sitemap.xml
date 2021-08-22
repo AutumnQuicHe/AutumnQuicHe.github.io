@@ -26,9 +26,13 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Overview/</loc>
   </url><url>
+    <loc>/Translation_Norms/For_RFCs/</loc>
+  </url><url>
     <loc>/Autumn_Navigation/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Overview/1.1_document_structure/</loc>
+  </url><url>
+    <loc>/Translation_Norms/For_RFCs/QUIC_related/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</loc>
   </url><url>
@@ -56,7 +60,7 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Conventions_and_Definitions/</loc>
   </url><url>
-    <loc>/Translation_Norms/</loc>
+    <loc>/bak/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Stream_States/3.1_Sending_Stream_States/</loc>
   </url><url>
@@ -118,9 +122,19 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Version_Negotiation/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Version_Negotiation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Security_and_Privacy_Considerations/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/</loc>
+  </url><url>
+    <loc>/Translation_Norms/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/8.1_Normative_References/</loc>
   </url><url>

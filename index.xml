@@ -103,6 +103,18 @@
     </item>
     
     <item>
+      <title>QUIC相关翻译说明</title>
+      <link>/Translation_Norms/For_RFCs/QUIC_related/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/Translation_Norms/For_RFCs/QUIC_related/</guid>
+      <description>1. 帧类型等翻译展示 ACK、STREAM、NEW_CONNECTION_ID等帧类型如果直接使用原文实为不妥，并不直观。然而，其又以大写形式表现，固所以需要进行特别处理。
+本文决定暂时采用将其加粗展示的方式进行区分。
+2. 错误类型翻译展示 形如CONNECTION_ID_LIMIT_ERROR的错误类型也比较麻烦，因其可能细碎地提前引用。因此，需要将其特别考虑。 在其正式介绍前，如果首次出现在一个大章节中，则该大写字段以括号（）附上中文翻译。同章节后续再出现则不再附上翻译。
+3. 传输参数翻译展示 传输参数（transport parameters）展示方式同第5点。</description>
+    </item>
+    
+    <item>
       <title>1.2. 术语及定义</title>
       <link>/RFC9000_Chinese_Translation/Overview/1.2_terms_and_definitions/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -194,6 +206,15 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
 在流的发送部分，应用层协议可以：
  写数据，只有当流量控制给数据写出留足空间（第4.1章）才能成功写出； 结束流（清理并关闭），发送一个设置FIN位为1的流帧（第19.8章）； 重置流（中止并关闭），当流未处在终止状态时发送一个RESET_STREAM帧（第19.4章）。  在流的接收部分，应用层协议可以：
  读数据，以及 中止读取流数据并请求关闭流，该操作可能需要发送STOP_SENDING帧（第19.5章）。  应用层协议也可以请求在流状态改变的时候收到通知信息，包括当对端开启或重置流、对端中止流数据读取、有新数据可以读取、以及数据可以写出或因流控不能写出。</description>
+    </item>
+    
+    <item>
+      <title>文档翻译规范</title>
+      <link>/bak/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/bak/</guid>
+      <description>移步文档翻译规范。</description>
     </item>
     
     <item>
@@ -339,7 +360,11 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</guid>
-      <description>流的最终数据量是流消耗的流量控制额度的总量。 假设流的每个连续的字节只被发送一次，那么其最终数据量就是发出的总字节数。 更一般地来说，这比流上发送的最大偏移的字节高1，若无字节发送则为0。</description>
+      <description>流的最终数据量是流消耗的流量控制额度的总量。 假设流的每个连续的字节只被发送一次，那么其最终数据量就是发出的总字节数。 更一般地来说，这比流上发送的最大偏移的字节高1，若无字节发送则为0。
+不管流是如何终止的，发送方始终试图将流的最终数据量可靠地发送给接收方。 最终数据量是 带有FIN置位的流帧的Offset（下标）和Length（长度）字段值的总和，注意这些字段可能是隐式的。 或者，流重置帧的Final Size字段也可以携带最终数据量值。 这保证了双端发送方在该流上消耗的流量控制额度上达成一致。
+终端在流的接收部分转入“数据量确认”或“重置接收”状态（第3章）后将得知最终数据量。 接收方必须根据流的最终数据量在其连接层流量控制上统计该流发送的字节数。
+终端在一条流上发送的数据必须不能大于或等于其最终数据量。
+一旦流的最终数据量得到确认，就不能再更改。 如果收到流重置神或流帧表示要修改流的最终数据量，终端应该回复一个FINAL_SIZE_ERROR类型的错误，更多细节详见第11章有关错误处理部分。 接收方应该将收到达到或超过最终数据量数据的情况视为FINAL_SIZE_ERROR类型的错误，即使是在关闭后收到的。 并不强制要求生成这些错误，因为终端若要做到这一点往往意味着终端需要给已关闭流维持一个最终数据量状态，也就意味着需要增加一个重要的状态确认。</description>
     </item>
     
     <item>
@@ -348,7 +373,12 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</guid>
-      <description></description>
+      <description>终端限制对端累计可以开启的流的数量。 只有流ID小于(max_streams * 4 + first_stream_id_of_type)的流可以被开启，详见表1。 初始化限制由传输参数设置，详见第18.2章。 随后的限制由最大流帧推出，详见第19.11。 针对单向及双向流由单独的限制。
+如果经由max_streams传输参数或最大流帧收到的值大于260，这将使得最大流ID不能表示为变长整数，详见第16章。 如果收到了这两者的其中一个，必须立即关闭连接： 如果这个值是通过传输参数收到的，就以TRANSPORT_PARAMETER_ERROR错误关闭连接；如果是通过帧收到的，就以FRAME_ENCODING_ERROR错误关闭连接，详见第10.2章。
+终端必须不能触达对端设置的流数量限制。 终端收到一个有个触达其设置的流数量上限的流ID的帧的情况必须视为STREAM_LIMIT_ERROR类型的连接错误，更多有关错误梳理的细节详见第11章。
+一旦接收方通过最大流帧推荐了一个流数量上限，再推荐一个更小的上限将不再生效。 必须忽略不会提高流数量上限的最大流帧。
+正如流及连接层流量控制，本文让实现者来决定通过最大流帧发布的流数量上限的时间及数值。 QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端可以使用的流的数量大体对等。
+终端因对端设置的流数量上限而不能再开启新流时，应该发送一个流阻塞帧（第19.14章）。 可以认为这个信号主要用于调试。 终端必须不在对端发布额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发流阻塞帧时则等待可能会是无限期的。</description>
     </item>
     
     <item>
@@ -479,6 +509,38 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <guid>/RFC8999_Chinese_Translation/QUIC_Packets/5.4_Version/</guid>
       <description>版本字段包含一个4字节标识符。该值可供终端用以标识一个QUIC版本。一个值为0x00000000的版本字段保留给版本协商使用，详见第6章，而任何其余值均可能有效。
 本文描述的属性适用于所有版本的QUIC。不符合本文所述属性的协议不是QUIC协议。后续文档可以给特定一个或一系列QUIC版本增加其他的属性。</description>
+    </item>
+    
+    <item>
+      <title>6.1 发送版本协商包</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</guid>
+      <description>如果客户端选择的版本服务端不接受，服务端会响应一个版本协商包，详见第17.2.1章。 版本协商包包含一个服务端支持的版本的列表。 终端必须不能给一个版本协商包回应一个版本协商包。
+这个系统允许服务端处理不支持的数据包而不保持状态。 即使作为响应发出的初始包或版本协商包都可能丢失，客户端也会发新的包直到收到回复或放弃建连尝试。
+服务端可以限制其发送版本协商包的数量。 例如，能识别0-RTT包的服务端可能会选择不发送版本协商包来响应0-RTT包，而是期望最终能收到初始包。</description>
+    </item>
+    
+    <item>
+      <title>6.2 处理版本协商包</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</guid>
+      <description>设计版本协商包的目的是为了让QUIC能够给未来定义的功能协商QUIC版本用于连接。 未来标准追踪规范可能改变支持多版本QUIC对于收到的用于回复给试图使用这个版本建立连接的版本协商包进行应对的实现方式。
+仅仅支持这个版本的客户端如果收到一个版本协商包，其必须放弃当前建联尝试，除非是下述两种例外： 如果已经收到且成功处理任何其他类型的包，客户端必须忽略任何版本协商包； 客户端必须忽略包含其选择的QUIC版本的版本协商包。
+如何执行版本协商留作由未来标准追踪规范定义的未来工作。 特别是，未来工作将确保在抵御版本降级攻击时具有健壮性，详见第21.12章。</description>
+    </item>
+    
+    <item>
+      <title>6.3 使用保留版本</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</guid>
+      <description>对于将来使用新版本QUIC的服务端，客户端需要正确处理不支持的版本。 一些版本号（如0x?a?a?a?a，见第15章）保留作包含版本号的字段。
+终端可以添加保留版本到任意未知或不支持版本中会被忽略的字段，用以测试对端是否正确地忽略了该值。 例如，终端可以发版本协商包中包含一个保留版本，详见第17.2.1章)。 终端可以发送一个保留版本的数据包来测试对端是否会正确丢弃该包。</description>
     </item>
     
     <item>

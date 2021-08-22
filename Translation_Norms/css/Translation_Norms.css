@@ -1,22 +1,18 @@
 html,
 body {
-    color: rgb(17, 0, 7);
+    /* 谨以此配色“致敬”二柱子 */
+    color: rgb(2, 2, 2);
 }
 
-/*.body-rfc8999 {
-    color: rgb(17, 0, 7);
-}*/
-
-.sidebar.sidebar-rfc8999 {
-    background-color: rgb(17, 0, 7);
+.sidebar.sidebar-quic {
+    background-color: rgb(2, 2, 2);
 }
 
 section.page h1,
 section.page h2,
 section.page h3,
 section.page h4 {
-    /* 谨以此配色“致敬”朱蛋挞（周丹泰） */
-    border-color: rgb(58, 0, 0);
+    border-color: rgb(48, 48, 48);
 }
 
 section.page a,
@@ -34,5 +30,5 @@ section.page h1 a:visited,
 section.page h2 a:visited,
 section.page h3 a:visited,
 section.page h4 a:visited {
-    color: rgb(58, 0, 0);
+    color: rgb(48, 48, 48);
 }

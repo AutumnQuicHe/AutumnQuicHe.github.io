@@ -21,15 +21,13 @@
     
   <link rel="stylesheet" href="/RFC9000_Chinese_Translation/css/RFC9000.css">
     
-  <link href="" rel="alternate"
+  <link href="/RFC9000_Chinese_Translation/index.xml" rel="alternate"
     type="application/rss+xml" title="RFC9000中文：QUIC传输协议" />
   
 
 </head>
 
-
-<body class="body-rfc9000">
-
+<body>
 <div class="sidebar sidebar-rfc9000">
     <div class="navigation">
       
@@ -254,6 +252,30 @@
 
 
         
+            
+    <li>
+        <a href="#6_Version_Negotiation">6. 版本协商</a>
+
+        <ul>
+            
+                
+                    <li><a href="#6.1_Sending_Version_Negotiation_Packets">6.1 发送版本协商包</a></li>
+                
+            
+                
+                    <li><a href="#6.2_Handling_Version_Negotiation_Packets">6.2 处理版本协商包</a></li>
+                
+            
+                
+                    <li><a href="#6.3_Using_Reserved_Versions">6.3 使用保留版本</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
     
 </ul>
 
@@ -275,6 +297,8 @@
                 
                     
                 
+                    
+                
             </ul>
             <br>
           
@@ -282,7 +306,7 @@
     </div>
 
     <div class="version">
-            generated on Aug 20, 2021
+            generated on Aug 22, 2021
     </div>
 </div>
 
@@ -1138,6 +1162,17 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
         <p>流的最终数据量是流消耗的流量控制额度的总量。
 假设流的每个连续的字节只被发送一次，那么其最终数据量就是发出的总字节数。
 更一般地来说，这比流上发送的最大偏移的字节高1，若无字节发送则为0。</p>
+<p>不管流是如何终止的，发送方始终试图将流的最终数据量可靠地发送给接收方。
+最终数据量是 带有FIN置位的<strong>流帧</strong>的Offset（下标）和Length（长度）字段值的总和，注意这些字段可能是隐式的。
+或者，<strong>流重置帧</strong>的Final Size字段也可以携带最终数据量值。
+这保证了双端发送方在该流上消耗的流量控制额度上达成一致。</p>
+<p>终端在流的接收部分转入“数据量确认”或“重置接收”状态（<a href="">第3章</a>）后将得知最终数据量。
+接收方<em><strong>必须</strong></em>根据流的最终数据量在其连接层流量控制上统计该流发送的字节数。</p>
+<p>终端在一条流上发送的数据<em><strong>必须不</strong></em>能大于或等于其最终数据量。</p>
+<p>一旦流的最终数据量得到确认，就不能再更改。
+如果收到<strong>流重置神</strong>或<strong>流帧</strong>表示要修改流的最终数据量，终端<em><strong>应该</strong></em>回复一个FINAL_SIZE_ERROR类型的错误，更多细节详见<a href="">第11章</a>有关错误处理部分。
+接收方<em><strong>应该</strong></em>将收到达到或超过最终数据量数据的情况视为FINAL_SIZE_ERROR类型的错误，即使是在关闭后收到的。
+并不强制要求生成这些错误，因为终端若要做到这一点往往意味着终端需要给已关闭流维持一个最终数据量状态，也就意味着需要增加一个重要的状态确认。</p>
 
     </div>
 </section>
@@ -1154,7 +1189,24 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
         </h2>
     
     <div class="content">
-        
+        <p>终端限制对端累计可以开启的流的数量。
+只有流ID小于<code>(max_streams * 4 + first_stream_id_of_type)</code>的流可以被开启，详见<a href="#Table_1_Stream_ID_Types">表1</a>。
+初始化限制由传输参数设置，详见<a href="">第18.2章</a>。
+随后的限制由<strong>最大流帧</strong>推出，详见<a href="">第19.11</a>。
+针对单向及双向流由单独的限制。</p>
+<p>如果经由<code>max_streams</code>传输参数或<strong>最大流帧</strong>收到的值大于2<sup>60</sup>，这将使得最大流ID不能表示为变长整数，详见<a href="">第16章</a>。
+如果收到了这两者的其中一个，<em><strong>必须</strong></em>立即关闭连接：
+如果这个值是通过传输参数收到的，就以TRANSPORT_PARAMETER_ERROR错误关闭连接；如果是通过帧收到的，就以FRAME_ENCODING_ERROR错误关闭连接，详见<a href="">第10.2章</a>。</p>
+<p>终端<em><strong>必须不</strong></em>能触达对端设置的流数量限制。
+终端收到一个有个触达其设置的流数量上限的流ID的帧的情况<em><strong>必须</strong></em>视为STREAM_LIMIT_ERROR类型的连接错误，更多有关错误梳理的细节详见<a href="">第11章</a>。</p>
+<p>一旦接收方通过<strong>最大流帧</strong>推荐了一个流数量上限，再推荐一个更小的上限将不再生效。
+<em><strong>必须</strong></em>忽略不会提高流数量上限的<strong>最大流帧</strong>。</p>
+<p>正如流及连接层流量控制，本文让实现者来决定通过<strong>最大流帧</strong>发布的流数量上限的时间及数值。
+QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端可以使用的流的数量大体对等。</p>
+<p>终端因对端设置的流数量上限而不能再开启新流时，<em><strong>应该</strong></em>发送一个<strong>流阻塞帧</strong>（<a href="">第19.14章</a>）。
+可以认为这个信号主要用于调试。
+终端<em><strong>必须不</strong></em>在对端发布额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发<strong>流阻塞帧</strong>时则等待可能会是无限期的。</p>
+
     </div>
 </section>
 
@@ -1419,6 +1471,98 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
 <li>保持连接不被默认关闭，即通过PING帧（<a href="">第19.2章</a>）或其他请求使得传输层在空闲超时（<a href="">第10.1章</a>）前发送额外的帧；以及</li>
 <li>立即关闭连接（<a href="">第10.2章</a>）。</li>
 </ul>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="6_Version_Negotiation">
+    
+        <h1>
+    
+            <a href="#6_Version_Negotiation">6. 版本协商</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>版本协商使得服务端可以表明其不支持客户端使用的版本。
+服务端发送一个版本协商包用于回复任何可能导致创建新连接的数据包，更多细节详见<a href="">第5.2章</a>。</p>
+<p>客户端发送的第一个包的大小决定服务端是否发送版本协商包。
+支持多个QUIC版本的客户端<em><strong>应该</strong></em>确保其发出的第一个UDP报文的大小合乎其支持的所有版本的最小数据报文大小中的最大值，必要时可以用<strong>填充帧</strong>补齐（<a href="">第19.1章</a>）。
+这确保如果有相互支持的版本，服务端能够响应。
+如果收到的报文小于一个不同版本的最小数据包大小，服务端可能不会发出版本协商包。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="6.1_Sending_Version_Negotiation_Packets">
+    
+        <h1>
+    
+            <a href="#6.1_Sending_Version_Negotiation_Packets">6.1 发送版本协商包</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>如果客户端选择的版本服务端不接受，服务端会响应一个版本协商包，详见<a href="">第17.2.1章</a>。
+版本协商包包含一个服务端支持的版本的列表。
+终端<em><strong>必须不</strong></em>能给一个版本协商包回应一个版本协商包。</p>
+<p>这个系统允许服务端处理不支持的数据包而不保持状态。
+即使作为响应发出的初始包或版本协商包都可能丢失，客户端也会发新的包直到收到回复或放弃建连尝试。</p>
+<p>服务端<em><strong>可以</strong></em>限制其发送版本协商包的数量。
+例如，能识别0-RTT包的服务端可能会选择不发送版本协商包来响应0-RTT包，而是期望最终能收到初始包。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="6.2_Handling_Version_Negotiation_Packets">
+    
+        <h1>
+    
+            <a href="#6.2_Handling_Version_Negotiation_Packets">6.2 处理版本协商包</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>设计版本协商包的目的是为了让QUIC能够给未来定义的功能协商QUIC版本用于连接。
+未来标准追踪规范可能改变支持多版本QUIC对于收到的用于回复给试图使用这个版本建立连接的版本协商包进行应对的实现方式。</p>
+<p>仅仅支持这个版本的客户端如果收到一个版本协商包，其<em><strong>必须</strong></em>放弃当前建联尝试，除非是下述两种例外：
+如果已经收到且成功处理任何其他类型的包，客户端<em><strong>必须</strong></em>忽略任何版本协商包；
+客户端<em><strong>必须</strong></em>忽略包含其选择的QUIC版本的版本协商包。</p>
+<p>如何执行版本协商留作由未来标准追踪规范定义的未来工作。
+特别是，未来工作将确保在抵御版本降级攻击时具有健壮性，详见<a href="">第21.12章</a>。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="6.3_Using_Reserved_Versions">
+    
+        <h1>
+    
+            <a href="#6.3_Using_Reserved_Versions">6.3 使用保留版本</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>对于将来使用新版本QUIC的服务端，客户端需要正确处理不支持的版本。
+一些版本号（如<code>0x?a?a?a?a</code>，见<a href="">第15章</a>）保留作包含版本号的字段。</p>
+<p>终端<em><strong>可以</strong></em>添加保留版本到任意未知或不支持版本中会被忽略的字段，用以测试对端是否正确地忽略了该值。
+例如，终端可以发版本协商包中包含一个保留版本，详见<a href="">第17.2.1章</a>)。
+终端<em><strong>可以</strong></em>发送一个保留版本的数据包来测试对端是否会正确丢弃该包。</p>
 
     </div>
 </section>

@@ -1,21 +1,12 @@
-html,
-
-.body-rfc8999 {
-    color: rgb(17, 0, 7);
-}
-
 .sidebar.sidebar-quic {
     background-color: rgb(4, 7, 22);
-}
-
-.sidebar.sidebar-rfc8999 {
-    background-color: rgb(17, 0, 7);
 }
 
 section.page h1,
 section.page h2,
 section.page h3,
 section.page h4 {
+    /* 谨以此配色“致敬”二柱子 */
     border-color: rgb(11, 11, 77);
 }
 

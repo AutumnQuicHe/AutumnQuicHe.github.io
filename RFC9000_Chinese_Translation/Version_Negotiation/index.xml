@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6. 版本协商 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Version_Negotiation/</link>
+    <description>Recent content in 6. 版本协商 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Version_Negotiation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>6.1 发送版本协商包</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</guid>
+      <description>如果客户端选择的版本服务端不接受，服务端会响应一个版本协商包，详见第17.2.1章。 版本协商包包含一个服务端支持的版本的列表。 终端必须不能给一个版本协商包回应一个版本协商包。
+这个系统允许服务端处理不支持的数据包而不保持状态。 即使作为响应发出的初始包或版本协商包都可能丢失，客户端也会发新的包直到收到回复或放弃建连尝试。
+服务端可以限制其发送版本协商包的数量。 例如，能识别0-RTT包的服务端可能会选择不发送版本协商包来响应0-RTT包，而是期望最终能收到初始包。</description>
+    </item>
+    
+    <item>
+      <title>6.2 处理版本协商包</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</guid>
+      <description>设计版本协商包的目的是为了让QUIC能够给未来定义的功能协商QUIC版本用于连接。 未来标准追踪规范可能改变支持多版本QUIC对于收到的用于回复给试图使用这个版本建立连接的版本协商包进行应对的实现方式。
+仅仅支持这个版本的客户端如果收到一个版本协商包，其必须放弃当前建联尝试，除非是下述两种例外： 如果已经收到且成功处理任何其他类型的包，客户端必须忽略任何版本协商包； 客户端必须忽略包含其选择的QUIC版本的版本协商包。
+如何执行版本协商留作由未来标准追踪规范定义的未来工作。 特别是，未来工作将确保在抵御版本降级攻击时具有健壮性，详见第21.12章。</description>
+    </item>
+    
+    <item>
+      <title>6.3 使用保留版本</title>
+      <link>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</guid>
+      <description>对于将来使用新版本QUIC的服务端，客户端需要正确处理不支持的版本。 一些版本号（如0x?a?a?a?a，见第15章）保留作包含版本号的字段。
+终端可以添加保留版本到任意未知或不支持版本中会被忽略的字段，用以测试对端是否正确地忽略了该值。 例如，终端可以发版本协商包中包含一个保留版本，详见第17.2.1章)。 终端可以发送一个保留版本的数据包来测试对端是否会正确丢弃该包。</description>
+    </item>
+    
+  </channel>
+</rss>

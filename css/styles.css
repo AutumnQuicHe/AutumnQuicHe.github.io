@@ -38,36 +38,6 @@ html, body {
   display: flex;
   flex-direction: column;
 }
-.sidebar.sidebar-default {
-  background-color: #363636;
-}
-.sidebar.sidebar-green {
-  background-color: #459D61;
-}
-.sidebar.sidebar-purple {
-  background-color: #77518A;
-}
-.sidebar.sidebar-pink {
-  background-color: #AD6AA9;
-}
-.sidebar.sidebar-red {
-  background-color: #B05353;
-}
-.sidebar.sidebar-cyan {
-  background-color: #5399B0;
-}
-.sidebar.sidebar-blue {
-  background-color: #5378B0;
-}
-.sidebar.sidebar-grey {
-  background-color: #959492;
-}
-.sidebar.sidebar-orange {
-  background-color: #DAA35C;
-}
-.sidebar.sidebar-black {
-  background-color: #000000;
-}
 @media (min-width: 48em) {
   .sidebar {
     position: fixed;
@@ -91,7 +61,7 @@ html, body {
 }
 
 .sidebar a:hover {
-  color: rgb(223, 223, 223);;
+  color: rgb(220, 220, 220);;
 }
 
 .sidebar ul {
