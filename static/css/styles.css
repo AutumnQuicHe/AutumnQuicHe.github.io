@@ -1,17 +1,43 @@
 html, body {
   font-family: "Open Sans", sans-serif;
   height: 100%;
+  font-size: 15px;
+}
+
+h1 {
+  font-size: 27px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 21px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5, h6 {
+  font-size: 17px;
+}
+
+dt {
+  break-before: auto;
+  break-after: avoid-page;
 }
 
 @media (min-width: 48em) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 
 @media (min-width: 58em) {
   html {
-    font-size: 20px;
+    font-size: 15px;
   }
 }
 
@@ -51,6 +77,7 @@ html, body {
 
 .site-title {
   margin-top: 0px;
+  margin-bottom: 12px;
 }
 
 .sidebar a,
@@ -71,7 +98,7 @@ html, body {
 
 .sidebar ul li {
   list-style: none;
-  padding-left: 2em;
+  padding-left: 1.2em;
 }
 
 nav {
@@ -191,7 +218,7 @@ nav {
 
 /* Section of the page */
 section.page {
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 }
 
 section.page h1 {
@@ -218,8 +245,18 @@ section.page h4 {
   margin-bottom: 0;
 }
 
+section.page blockquote {
+  border-left: 0.7em groove;
+  margin-inline-start: 0em;
+  padding-left: 0.3em;
+}
+
 section.page .content {
   margin-left: 0.5em;
+}
+
+p em {
+  padding-right: 0.1em;
 }
 
 section.page h1 a, section.page h2 a, section.page h3 a, section.page h4 a,

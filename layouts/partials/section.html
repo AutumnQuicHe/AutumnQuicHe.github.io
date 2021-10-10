@@ -1,0 +1,24 @@
+<section class="page" id="{{ .Params.anchor }}">
+    {{ if eq .Params.rank "h2" }}
+        <h2>
+    {{ else if eq .Params.rank "h3" }}
+        <h3>
+    {{ else if eq .Params.rank "h4" }}
+        <h4>
+    {{ else }}
+        <h1>
+    {{ end }}
+            <a href="#{{ .Params.anchor }}">{{ .Title }}</a>
+    {{ if eq .Params.rank "h2" }}
+        </h2>
+    {{ else if eq .Params.rank "h3" }}
+        </h3>
+    {{ else if eq .Params.rank "h4" }}
+        </h4>
+    {{ else }}
+        </h1>
+    {{ end }}
+    <div class="content">
+        {{ .Content }}
+    </div>
+</section>

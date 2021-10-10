@@ -1,0 +1,14 @@
+{{ if or (eq .Params.subpage "enabled") (eq .Params.subpage "has_content") }}
+
+{{ partial "head.html" . }}
+{{ partial "sidebar.html" . }}
+<div class="content">
+    {{ with .Sections }}
+        {{ range .ByWeight }}
+            {{ partial "section_list.html" . }}
+        {{ end }}
+    {{ end }}
+</div>
+{{ partial "tail.html" . }}
+
+{{ end }}

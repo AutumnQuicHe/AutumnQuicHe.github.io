@@ -1,0 +1,19 @@
+{{ if (and (isset .Params "subpage")
+           (or (eq .Params.subpage "enabled")
+               (eq .Params.subpage "has_content"))) }}
+    <li>
+        <a href="{{.Permalink}}#{{ .Params.anchor }}">{{ .Title }}</a>
+{{ if .Pages }}
+        <ul>
+            {{ range .Pages.ByWeight }}
+                {{ if (and .IsSection
+                           (or (eq .Params.subpage "enabled")
+                               (eq .Params.subpage "has_content"))) }}
+                    {{ partial "menu_page_list.html" . }}
+                {{ end }}
+            {{ end }}
+        </ul>
+{{ end }}
+    </li>
+
+{{ end }}

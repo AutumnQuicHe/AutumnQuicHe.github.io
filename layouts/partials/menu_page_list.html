@@ -1,0 +1,19 @@
+{{ if (and (ne .Params.subpage "has_content") (ne .Params.subpage "enabled")) }}
+    <li>
+        <a href="#{{ .Params.anchor }}">{{ .Title }}</a>
+{{ if .Pages }}
+        <ul>
+            {{ range .Pages.ByWeight }}
+                {{ if .IsSection }}
+                    {{ partial "menu_page_list.html" . }}
+                {{ else }}
+                    <li><a href="#{{ .Params.anchor }}">{{ .Title }}</a></li>
+                {{ end }}
+            {{ end }}
+        </ul>
+{{ end }}
+    </li>
+
+{{ else if .Params.hascontent }}
+    <li><a href="#{{ .Params.anchor }}">{{ .Title }}</a></li>
+{{ end }}

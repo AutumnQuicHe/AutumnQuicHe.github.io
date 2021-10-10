@@ -1,0 +1,11 @@
+    {{ partial "section.html" . }}
+{{ if .Pages }}
+    {{ range .Pages.ByWeight }}
+        {{ if (and .IsSection (ne .Params.subpage "enabled")) }}
+            {{ partial "section_list.html" . }}
+        {{ else if ne .Params.subpage "enabled" }}
+            {{ partial "section.html" . }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
