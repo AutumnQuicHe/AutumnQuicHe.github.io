@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"  xml:lang="cn" lang="cn" >
-
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cn" lang="cn">
 <head>
   <meta name="generator" content="Hugo 0.86.0" />
 
@@ -26,7 +25,6 @@
   
 
 </head>
-
 <body>
 <div class="sidebar sidebar-rfc9000">
     <div class="navigation">
@@ -296,6 +294,120 @@
 
 
         
+            
+    <li>
+        <a href="#19_Frame_Types_and_Formats">19. 传输参数编码</a>
+
+        <ul>
+            
+                
+                    <li><a href="#19.1_PADDING_Frames">19.1 填充帧</a></li>
+                
+            
+                
+                    <li><a href="#19.2_PING_Frames">19.2 Ping帧</a></li>
+                
+            
+                
+                    
+    <li>
+        <a href="#19.3_ACK_Frames">19.3 ACK帧</a>
+
+        <ul>
+            
+                
+                    <li><a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a></li>
+                
+            
+                
+                    <li><a href="#19.3.1_ACK_Ranges">19.3.1 ACK块</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+                
+            
+                
+                    <li><a href="#19.4_RESET_STREAM_Frames">19.4 重置帧</a></li>
+                
+            
+                
+                    <li><a href="#19.5_STOP_SENDING_Frames">19.5 停止发送帧</a></li>
+                
+            
+                
+                    <li><a href="#19.6_CRYPTO_Frames">19.6 加密帧</a></li>
+                
+            
+                
+                    <li><a href="#19.7_NEW_TOKEN_Frames">19.7 新令牌帧</a></li>
+                
+            
+                
+                    <li><a href="#19.8_STREAM_Frames">19.8 流帧</a></li>
+                
+            
+                
+                    <li><a href="#19.9_MAX_DATA_Frames">19.9 最大数据量帧</a></li>
+                
+            
+                
+                    <li><a href="#19.10_MAX_STREAM_DATA_Frames">19.10 最大流数据量帧</a></li>
+                
+            
+                
+                    <li><a href="#19.11_MAX_STREAMS_Frames">19.11 最大流数量帧</a></li>
+                
+            
+                
+                    <li><a href="#19.12_DATA_BLOCKED_Frames">19.12 数据阻塞帧</a></li>
+                
+            
+                
+                    <li><a href="#19.13_STREAM_DATA_BLOCKED_Frames">19.13 流数据阻塞帧</a></li>
+                
+            
+                
+                    <li><a href="#19.14_STREAMS_BLOCKED_Frames">19.14 流阻塞帧</a></li>
+                
+            
+                
+                    <li><a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接帧</a></li>
+                
+            
+                
+                    <li><a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 退休连接ID帧</a></li>
+                
+            
+                
+                    <li><a href="#19.17_PATH_CHALLENGE_Frames">19.17 通道挑战帧</a></li>
+                
+            
+                
+                    <li><a href="#19.18_PATH_RESPONSE_Frames">19.18 回复通道帧</a></li>
+                
+            
+                
+                    <li><a href="#19.19_CONNECTION_CLOSE_Frames">19.19 连接关闭帧</a></li>
+                
+            
+                
+                    <li><a href="#19.20_HANDSHAKE_DONE_Frames">19.20 握手完成帧</a></li>
+                
+            
+                
+                    <li><a href="#19.21_Extension_Frames">19.21 扩展帧</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
     
 </ul>
 
@@ -321,6 +433,8 @@
                 
                     
                 
+                    
+                
             </ul>
             <br>
           
@@ -328,7 +442,7 @@
     </div>
 
     <div class="version">
-            generated on Aug 22, 2021
+            generated on Oct 10, 2021
     </div>
 </div>
 
@@ -625,8 +739,11 @@
     
     <div class="content">
         <p>QUIC的流给应用提供了一个轻量、有序的字节流抽象，可以单向或双向的。</p>
-<p>流可以通过发送数据创建。其他有关流管理的过程——结束、取消及流量控制——均是以引入最小开销为前提设计的。例如，一个流帧（<a href="">第19.8章</a>）能够开启、承载数据以及关闭一条流。流也能长时间存在并持续连接的整个生命周期。</p>
-<p>流能够被双端的任何一端创建，与其他流并发发送数据，以及被取消。QUIC不给不同流之间的数据提供任何形式的顺序保证。</p>
+<p>流可以通过发送数据创建。
+其他有关流管理的过程——结束、取消及流量控制——均是以引入最小开销为前提设计的。
+例如，一个流帧（<a href="">第19.8章</a>）能够开启、承载数据以及关闭一条流。流也能长时间存在并持续连接的整个生命周期。</p>
+<p>流能够被双端的任何一端创建，与其他流并发发送数据，以及被取消。
+QUIC不给不同流之间的数据提供任何形式的顺序保证。</p>
 <p>QUIC允许任意数量的流并发，也允许任意量的数据在任何流上发送，不过这必须接受流量控制的限制及流数量的限制，详见<a href="">第4章</a>。</p>
 
     </div>
@@ -645,8 +762,9 @@
     
     <div class="content">
         <p>流可以是单向或双向的。单向流往一个方向传输数据：从流发起端向对端发送；双向流允许双端向对端发送数据。</p>
-<p>在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（0-2^62^-1），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见<a href="">第16章</a>。一个QUIC终端 <em><strong>必须不</strong></em> 能在同一个连接的不同流上重复使用同一个数值作为流ID。</p>
-<p>流ID的最小有效位（0x01）标识流的发起者。客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。</p>
+<p>在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（<code>0</code>-<code>2<sup>62</sup>-1</code>），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见<a href="">第16章</a>。一个QUIC终端<em><strong>必须不</strong></em>能在同一个连接的不同流上重复使用同一个数值作为流ID。</p>
+<p>流ID的最小有效位（0x01）标识流的发起者。
+客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。</p>
 <p>流ID的次小有效位（0x02）标识流是双向流（该位被置为0）抑或单向流（该位被置为1）。</p>
 <p>也就是说，流ID的最小两个有效位用来标识一条流是总共四种流类型中的哪一种，总结在如下<a href="#Table_1_Stream_ID_Types">表格1</a>中：</p>
 <div id=Table_1_Stream_ID_Types class="block ref">
@@ -678,7 +796,8 @@
 </table>
 <p><a href="#Table_1_Stream_ID_Types">表格1：流类型</a></p>
 </div>
-<p>每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</p>
+<p>每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。
+一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</p>
 
     </div>
 </section>
@@ -695,12 +814,19 @@
         </h2>
     
     <div class="content">
-        <p>流帧（<a href="">第19.8章</a>）封装应用层发送的数据。终端使用流帧的流ID及偏移字段整理数据。</p>
-<p>终端 <em><strong>必须</strong></em> 将流数据以一个有序字节流传递给应用层。传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。</p>
-<p>QUIC对于传递流的无序数据并没有做额外的打算。然而，实现上 <em><strong>可以</strong></em> 选择支持传递无序数据给应用层接收。</p>
-<p>终端可以从一条流的同一个偏移位置多次接收数据。如果数据已经被接收过了，就会直接被丢弃。处在任何偏移位置的数据如果被重复发送，其 <em><strong>必须不</strong></em> 能更改。终端 <em><strong>可以</strong></em> 将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。</p>
-<p>流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。</p>
-<p>终端 <em><strong>必须不</strong></em> 能在对端设置的流量控制限制之外发送任何数据。流量控制详见<a href="">第4章</a>。</p>
+        <p>流帧（<a href="">第19.8章</a>）封装应用层发送的数据。
+终端使用流帧的流ID及偏移字段整理数据。</p>
+<p>终端<em><strong>必须</strong></em>将流数据以一个有序字节流传递给应用层。
+传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。</p>
+<p>QUIC对于传递流的无序数据并没有做额外的打算。
+然而，实现上 <em><strong>可以</strong></em>选择支持传递无序数据给应用层接收。</p>
+<p>终端可以从一条流的同一个偏移位置多次接收数据。
+如果数据已经被接收过了，就会直接被丢弃。
+处在任何偏移位置的数据如果被重复发送，其<em><strong>必须不</strong></em>能更改。
+终端<em><strong>可以</strong></em>将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。</p>
+<p>流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。
+流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。</p>
+<p>终端<em><strong>必须不</strong></em>能在对端设置的流量控制限制之外发送任何数据。流量控制详见<a href="">第4章</a>。</p>
 
     </div>
 </section>
@@ -719,7 +845,8 @@
     <div class="content">
         <p>如果资源以正确的优先级分配给多条流，那么流的多路复用可以对应用性能产生显著影响。</p>
 <p>QUIC并不支持交换优先级信息，相反，其依赖从应用层接收的优先级信息。</p>
-<p>QUIC在实现上 <em><strong>应该</strong></em> 提供某种方法使得应用层能够因此确定各条流的相对优先级。一种实现是使用应用层提供的信息决定分配多少资源来激活流。</p>
+<p>QUIC在实现上<em><strong>应该</strong></em>提供某种方法使得应用层能够因此确定各条流的相对优先级。
+一种实现是使用应用层提供的信息决定分配多少资源来激活流。</p>
 
     </div>
 </section>
@@ -736,7 +863,9 @@
         </h2>
     
     <div class="content">
-        <p>本文没有定义QUIC API，而是定义了一系列流操作相关的函数可以用于应用层协议的构建。应用层协议可以假定QUIC有关实现提供了本章描述的操作对应的接口。为一个特定应用层协议设计实现的QUIC协议可能仅仅提供该协议需要的这些操作。</p>
+        <p>本文没有定义QUIC API，而是定义了一系列流操作相关的函数可以用于应用层协议的构建。
+应用层协议可以假定QUIC有关实现提供了本章描述的操作对应的接口。
+为一个特定应用层协议设计实现的QUIC协议可能仅仅提供该协议需要的这些操作。</p>
 <p>在流的发送部分，应用层协议可以：</p>
 <ul>
 <li>写数据，只有当流量控制给数据写出留足空间（<a href="">第4.1章</a>）才能成功写出；</li>
@@ -1604,9 +1733,25 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         </h1>
     
     <div class="content">
-        <p>The extension_data field of the quic_transport_parameters extension defined in [QUIC-TLS] contains the QUIC transport parameters. They are encoded as a sequence of transport parameters, as shown in Figure 20:</p>
-<p>18.1. Reserved_Transport_Parameters</p>
-<p>18.2. Transport_Parameter_Definitions</p>
+        <p>在《<a href="">QUIC TLS</a>》定义的<code>quic_transport_parameters</code>其<code>extension_data</code>字段包含QUIC传输参数。
+它们被编码为一个传输参数序列，如<a href="#Figure_20_Sequence_of_Transport_Parameters">图20</a>所示：</p>
+<div id=Figure_20_Sequence_of_Transport_Parameters class="block ref">
+<pre><code>Transport Parameters {
+  Transport Parameter (..) ...,
+}
+</code></pre><p><a href="#Figure_20_Sequence_of_Transport_Parameters">图20：传输参数序列</a></p>
+</div>
+<p>每个传输参数被编码为一个形如<code>(标识符,长度,值)</code>的元组，如<a href="#Figure_21_Transport_Parameter_Encoding">图21</a>所示：</p>
+<div id=Figure_21_Transport_Parameter_Encoding class="block ref">
+<pre><code>传输参数 {
+  传输参数ID (i),
+  传输参数长度 (i),
+  传输参数值 (..),
+}
+</code></pre><p><a href="#Figure_21_Transport_Parameter_Encoding">图21：传输参数编码</a></p>
+</div>
+<p><code>传输参数长度</code>字段包含<code>传输参数值</code>的字节长度。</p>
+<p>QUIC编码传输参数为一个字节序列，并包含于加密握手中。</p>
 
     </div>
 </section>
@@ -1623,7 +1768,9 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         </h2>
     
     <div class="content">
-        
+        <p>标识符为<code>31 * N + 27</code>——其中<code>N</code>为整数——的传输参数保留用于执行未知传输参数。
+这些传输参数没有语义，可以携带任意值。</p>
+
     </div>
 </section>
 
@@ -1635,6 +1782,945 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         <h2>
     
             <a href="#18.2_Transport_Parameter_Definitions">18.2 传输参数定义</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本章描述本文定义的传输参数的细节。</p>
+<p>这里列出的许多传输参数都是整型值。
+那些整型的传输参数使用变长整数编码，详见<a href="">第16章</a>。
+除非有额外说明，否则传输参数在不设置时的默认值是0。</p>
+<p>各个传输参数具体定义如下：</p>
+<dl>
+<dt>原始目标连接ID<code>original_destination_connection_id</code> (<code>0x00</code>)：</dt>
+<dd>
+<p>这个参数是由客户端发出的第一个初始包的目标连接ID字段的值，详见<a href="">第16章</a>。
+该传输参数只会由服务端发出。</p>
+</dd>
+<dt>最大空闲超时时间<code>max_idle_timeout</code> (<code>0x01</code>)：</dt>
+<dd>
+<p>最大空闲超时是一个编码为整型的值，单位毫秒，详见<a href="">第10.1章</a>。
+当双端忽略空闲超时设置其值为0时，空闲超时将被禁用。</p>
+</dd>
+<dt>无状态重置令牌<code>stateless_reset_token</code> (<code>0x02</code>)：</dt>
+<dd>
+<p>无状态重置令牌用于验证无状态重置，详见<a href="">第10.3章</a>。
+这个传输参数是一个16字节的序列。
+客户端<em><strong>必须不</strong></em>能发送这个参数，但是服务端<em><strong>可以</strong></em>发送。
+没有发送次参数的服务端不能对握手期间协商的连接ID使用无状态重置。</p>
+</dd>
+<dt>最大UDP载荷<code>max_udp_payload_size</code> (<code>0x03</code>)：</dt>
+<dd>
+<p>最大UDP载荷参数是一个整型值，用于终端限制愿意接收的UDP载荷的大小。
+UDP报文的载荷如果大于这个限制将不太可能被服务端处理。</p>
+</dd>
+<dd>
+<p>该参数默认值是最大UDP载荷65527。
+该值不能小于1200。</p>
+</dd>
+<dd>
+<p>这个限制是对报文大小的一个与通道MTU一样的附加约束，但其是终端的属性而非通道的属性，详见<a href="">第14章</a>。
+应该认为这是终端用于保存传人数据包的空间。</p>
+</dd>
+<dt>初始最大数据量<code>initial_max_data</code> (<code>0x04</code>)：</dt>
+<dd>
+<p>初始最大数据量参数是一个包含连接可发送初始最大数据量的整型值。
+等效于连接在完成握手后立即发送一个<code>最大数据帧</code>（<code>MAX_DATA</code>，详见<a href="">第19.9章</a>）。</p>
+</dd>
+<dt>初始本地最大双向流数据量<code>initial_max_stream_data_bidi_local</code> (<code>0x05</code>)：</dt>
+<dd>
+<p>本参数是一个整型值，用于指定本地初始化的双向流的初始流量控制限制。
+这个限制适用于由发送传输参数端打开的新创建双向流。
+在客户端传输参数中，其适用于流标识符最低两个有效位设置为<code>0x00</code>的流；在服务端，其适用于流标识符最低两个有效位设置为<code>0x01</code>的流。</p>
+</dd>
+<dt>初始远端最大双向流数据量<code>initial_max_stream_data_bidi_remote</code> (<code>0x06</code>):</dt>
+<dd>
+<p>本参数是一个整型值，用于指定对端初始化的双向流的初始流量控制限制。
+这个限制适用于由接收传输参数端打开的新创建双向流。
+在客户端传输参数中，其适用于流标识符最低两个有效位设置为<code>0x01</code>的流；在服务端，其适用于流标识符最低两个有效位设置为<code>0x00</code>的流。</p>
+</dd>
+<dt>初始最大单向流数据量<code>initial_max_stream_data_uni</code> (<code>0x07</code>):</dt>
+<dd>
+<p>本参数是一个整型值，用于指定单向流的初始流量控制限制。
+这个限制适用于接收传输参数端打开的新创建单向流。
+在客户端传输参数中，其适用于流标识符最低两个有效位设置为<code>0x03</code>的流；在服务端，其适用于流标识符最低两个有效位设置为<code>0x02</code>的流。</p>
+</dd>
+<dt>初始最大双向流数量<code>initial_max_streams_bidi</code> (<code>0x08</code>):</dt>
+<dd>
+<p>初始最大双向流数量参数是一个整型值，包含接收该传输参数的终端允许初始化的最大双向流数量。
+如果这个参数未设置或置为0，则对端不能开启双向流直到发完<code>最大流帧</code>。
+设置该参数等效于发送一个相关流类型的数值一致的<code>最大流帧</code>（<a href="">第19.11章</a>）。</p>
+</dd>
+<dt>初始最大单向流数量<code>initial_max_streams_uni</code> (<code>0x09</code>):</dt>
+<dd>
+<p>初始最大单向流数量参数是一个整型值，包含接收该传输参数的终端允许初始化的最大单向流数量。
+如果该参数未设置或设置为0，则对端不能开启单向流直到发完<code>最大流帧</code>。
+设置该参数等效于发送一个相关流类型的数值一致的<code>最大流帧</code>（<a href="">第19.11章</a>）。</p>
+</dd>
+<dt>ACK延迟指数<code>ack_delay_exponent</code> (<code>0x0a</code>):</dt>
+<dd>
+<p>确认延迟指数是一个整型值，用于指定一个指数解码<code>ACK帧</code>的“ACK延迟”字段（<a href="">第19.2章</a>）。
+如果该值未设置，则置一个默认值3（表示8的乘数）。
+大于20的值非法。</p>
+</dd>
+<dt>最大ACK延迟<code>max_ack_delay</code> (<code>0x0b</code>):</dt>
+<dd>
+<p>最大确认延迟是一个整型值，表示终端会延迟发送确认包的最大毫秒数。
+该值<em><strong>应该</strong></em>包括警报触发时接收者的预期延迟。
+例如，如果接收者设置了一个5ms超时的定时器，且警报通常会延迟1ms，那么它应该发送一个值为6ms的<code>max_ack_delay</code>参数。
+如果该值未设置，则会设置默认值25ms。
+该值为214及以上非法。</p>
+</dd>
+<dt>禁止活跃迁移<code>disable_active_migration</code> (<code>0x0c</code>):</dt>
+<dd>
+<p>禁止活动迁移传输参数是在终端握手阶段所使用的地址不支持活跃连接迁移（<a href="">第9章</a>）时加入的。
+收到该传输参数的终端<em><strong>必须不</strong></em>使用一个新的本地地址发往对端在握手阶段使用的地址。
+该传输参数不能在<code>preferred_address</code>已经在客户端生效后阻止连接迁移。
+该参数是一个非零值。</p>
+</dd>
+<dt>首选地址<code>preferred_address</code> (<code>0x0d</code>):</dt>
+<dd>
+<p>服务端首选地址用于在握手最后变更服务端地址，如<a href="">第9.6章</a>所述。
+该传输参数只由服务端发送。
+服务端<em><strong>可以</strong></em>选择只发送一个地址族中的一个首选地址，另一个地址族则发送全零地址及端口（<code>0.0.0.0:0</code>或<code>[::]:0</code>）。
+IP地址以网络字节序编码。</p>
+<p><code>preferred_address</code>传输参数包含一个IPv4和一个IPv6的地址和端口。
+4字节IPv4地址字段后接相关的2字节IPv4端口字段。
+接下来紧随一个16字节IPv6地址字段和一个2字节IPv6端口字段。
+在地址和端口组合之后的是连接ID长度字段，描述接下来的连接ID的长度。
+最后是一个与连接ID相关的16字节无状态重置令牌字段。
+本传输参数格式如下述<a href="#Figure_22_Preferred_Address_Format">图22</a>所示。</p>
+<p>连接ID字段及无状态重置令牌字段包含一个可选的序列号为1的连接ID，详见<a href="">第5.1.1章</a>。
+将这些值与首选地址一起发送，可以确保当客户端开始迁移到首选地址时，至少有一个未使用的活动连接ID。</p>
+<p>首选地址的连接ID和无状态重置令牌字段在语法和语义上与<code>新连接ID帧</code>相应字段相同（详见<a href="">第19.15章</a>）。
+服务端若选择了一个零长度的连接ID，则<em><strong>必须不</strong></em>提供首选地址。
+同理，服务端<em><strong>必须不</strong></em>在首选地址传输参数里包含零长度连接ID。
+客户端<em><strong>必须</strong></em>必须将违反这些要求的情况视为一个<code>TRANSPORT_PARAMETER_ERROR</code>类型的连接错误。</p>
+</dd>
+</dl>
+<div id=Figure_22_Preferred_Address_Format class="block ref">
+<pre><code>首选地址 {
+  IPv4地址 (32),
+  IPv4端口 (16),
+  IPv6地址 (128),
+  IPv6端口 (16),
+  连接ID长度 (8),
+  连接ID (..),
+  无状态重置令牌 (128),
+}
+</code></pre><p><a href="#Figure_22_Preferred_Address_Format">图22：首选地址格式</a></p>
+</div>
+<dl>
+<dt>活跃连接ID上限<code>active_connection_id_limit</code> (<code>0x0e</code>):</dt>
+<dd>
+<p>这是一个整型值，用于指定终端愿意存储的来自对端的最大连接ID数量。
+该值包括握手阶段收到的连接ID，包括从<code>preferred_address</code>参数及<code>新连接ID帧</code>里收到的。
+该值<em><strong>必须</strong></em>大于等于2。
+终端收到小于2的值<em><strong>必须</strong></em>以错误类型<code>TRANSPORT_PARAMETER_ERROR</code>关闭连接。
+如果没有设置该传输参数，则默认值为2。
+如果终端指定一个零长度连接ID，则其永远不会发送<code>新连接ID帧</code>，且会忽略从对端发来的<code>active_connection_id_limit</code>参数值。</p>
+</dd>
+<dt>初始源连接ID<code>initial_source_connection_id</code> (<code>0x0f</code>):</dt>
+<dd>
+<p>这是终端给相应连接发送的首个初始包的源连接ID字段包含的值，详见<a href="">第7.3章</a>。</p>
+</dd>
+<dt>重试源连接ID<code>retry_source_connection_id</code> (<code>0x10</code>):</dt>
+<dd>
+<p>这是服务端包含于一个重试包的源连接ID字段的值，详见<a href="">第7.3章</a>。
+该传输参数仅由服务端发出。</p>
+</dd>
+</dl>
+<p>如果存在，用于设置初始化每条流的流量控制上限的传输参数（<code>initial_max_stream_data_bidi_local</code>、<code>initial_max_stream_data_bidi_remote</code>及<code>initial_max_stream_data_uni</code>）等效于在每条流开启后立即给它发送相应流类型的<em>最大流数据帧</em>（详见<a href="">第19.10章</a>）。
+如果相应传输参数没有设置，则其对应流类型的流其初始流量控制上限就是0。</p>
+<p>客户端<em><strong>必须不</strong></em>包含任何只有服务端可以发送的传输参数：<code>original_destination_connection_id</code>、<code>preferred_address</code>、<code>retry_source_connection_id</code>或<code>stateless_reset_token</code>。
+服务端<em><strong>必须</strong></em>将收到任何此类传输参数的情况视为<code>TRANSPORT_PARAMETER_ERROR</code>类型连接错误。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="19_Frame_Types_and_Formats">
+    
+        <h1>
+    
+            <a href="#19_Frame_Types_and_Formats">19. 传输参数编码</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>正如<a href="">第12.4章</a>所述，数据包包含一个或多个帧。
+本章描述QUIC帧类型的格式和语义。</p>
+<p>19.1_PADDING_Frames
+19.2_PING_Frames
+19.3_ACK_Frames
+19.3.1_ACK_Ranges
+19.3.2_ECN_Counts
+19.4_RESET_STREAM_Frames
+19.5_STOP_SENDING_Frames
+19.6_CRYPTO_Frames
+19.7_NEW_TOKEN_Frames
+19.8_STREAM_Frames
+19.9_MAX_DATA_Frames
+19.10_MAX_STREAM_DATA_Frames
+19.11_MAX_STREAMS_Frames
+19.12_DATA_BLOCKED_Frames
+19.13_STREAM_DATA_BLOCKED_Frames
+19.14_STREAMS_BLOCKED_Frames
+19.15_NEW_CONNECTION_ID_Frames
+19.16_RETIRE_CONNECTION_ID_Frames
+19.17_PATH_CHALLENGE_Frames
+19.18_PATH_RESPONSE_Frames
+19.19_CONNECTION_CLOSE_Frames
+19.20_HANDSHAKE_DONE_Frames
+19.21_Extension_Frames</p>
+<p>PADDING_Frames
+PING_Frames
+ACK_Frames
+ACK_Ranges
+ECN_Counts
+RESET_STREAM_Frames
+STOP_SENDING_Frames
+CRYPTO_Frames
+NEW_TOKEN_Frames
+STREAM_Frames
+MAX_DATA_Frames
+MAX_STREAM_DATA_Frames
+MAX_STREAMS_Frames
+DATA_BLOCKED_Frames
+STREAM_DATA_BLOCKED_Frames
+STREAMS_BLOCKED_Frames
+NEW_CONNECTION_ID_Frames
+RETIRE_CONNECTION_ID_Frames
+PATH_CHALLENGE_Frames
+PATH_RESPONSE_Frames
+CONNECTION_CLOSE_Frames
+HANDSHAKE_DONE_Frames
+Extension_Frames</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="19.1_PADDING_Frames">
+    
+        <h2>
+    
+            <a href="#19.1_PADDING_Frames">19.1 填充帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><strong>填充帧</strong>（PADDING frame，类型<code>0x00</code>）无语义值。
+<strong>填充帧</strong>可以用于提高数据包大小。
+填充可以用于填充初始包以达到被要求的最小包大小，或对受保护数据包进行流量分析提供保护。</p>
+<p><strong>填充帧</strong>的格式如<a href="#Figure_23_PADDING_Frame_Format">图23</a>所示，可见<strong>填充帧</strong>没有内容。
+也就是说，<strong>填充帧</strong>由标识该帧类型的单个字节构成。</p>
+<div id=Figure_23_PADDING_Frame_Format class="block ref">
+<pre><code>填充帧 {
+  类型 (i) = 0x00,
+}
+</code></pre><p><a href="#Figure_23_PADDING_Frame_Format">图23：填充帧格式</a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.2_PING_Frames">
+    
+        <h2>
+    
+            <a href="#19.2_PING_Frames">19.2 Ping帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>终端可以使用<strong>Ping帧</strong>（类型为<code>0x01</code>）验证其对端是否仍然活跃，或检查到对端的可达性。</p>
+<p><strong>Ping帧</strong>格式如<a href="">图24</a>所示，可见<strong>Ping帧</strong>无内容。</p>
+<div id=Figure_24_PING_Frame_Format class="block ref">
+<pre><code>填充帧 {
+  类型 (i) = 0x01,
+}
+</code></pre><p><a href="#Figure_24_PING_Frame_Format">图24：Ping帧格式</a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+                <section class="page" id="19.3_ACK_Frames">
+    
+        <h2>
+    
+            <a href="#19.3_ACK_Frames">19.3 ACK帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>接收方发送<strong>ACK帧</strong>（类型为<code>0x02</code>或<code>0x03</code>）通知发送方其发出的数据包已经收到并处理完成了。
+<strong>ACK帧</strong>包含一个或多个ACK块（ACK Range）。
+ACK块标识被确认的数据包。
+如果帧类型为<code>0x03</code>，<strong>ACK帧</strong>也会包含到目前为止在该连接上收到的带有相关ECN标记的QUIC数据包的累计值。
+QUIC实现<em><strong>必须</strong></em>准确处理这两种类型，并且，如果其对发送数据包采用了ECN，其<em><strong>应该</strong></em>使用ECN块中的信息管理其拥塞状态。</p>
+<p>QUIC的确认是不可撤销的。
+数据包一旦被确认，其就会维持在被确认状态，即使其没有出现在后续的<strong>ACK帧</strong>中。
+这一点不同于TCP选择性确认（SACK）违约（《<a href="">RFC2018</a>》）。</p>
+<p>属于不同数据包号空间的数据包可以使用相同的数值标识。
+数据包的一个确认需要同时标明数据包号和数据包号空间。
+这是通过让每个<strong>ACK帧</strong>只确认其所在数据包的相同数据包号空间内的数据包实现的。</p>
+<p>不能确认版本协商和重试包，因为它们不包含数据包号。
+这些数据包与其依靠<strong>ACK帧</strong>，不如通过后续客户端发送的初始包隐式确认。</p>
+<p><strong>ACK帧</strong>格式如<a href="#Figure_25_ACK_Frame_Format">图25</a>所示。</p>
+<div id=Figure_25_ACK_Frame_Format class="block ref">
+<pre><code>ACK帧 {
+  类型 (i) = 0x02..0x03,
+  最大确认数 (i),
+  ACK延迟 (i),
+  ACK块计数 (i),
+  首个ACK块 (i),
+  ACK块 (..) ...,
+  [ECN计数 (..)],
+}
+</code></pre><p><a href="#Figure_25_ACK_Frame_Format">图25：ACK帧格式</a></p>
+</div>
+<p><strong>ACk帧</strong>包含下述字段：</p>
+<dl>
+<dt>最大确认数（Largest Acknowledged）：</dt>
+<dd>
+<p>一个可变长度整型，表示对端确认的最大数据包号；
+这通常是对端在生成<strong>ACK帧</strong>前收到的最大数据包号。
+不同于QUIC长包头或短包头里的数据包号，<strong>ACK帧</strong>内的包号没有截断。</p>
+</dd>
+<dt>ACK延迟（ACK Delay）：</dt>
+<dd>
+<p>一个可变长度整型，编码ACK延迟，单位微秒，详见<a href="">第13.2.5章</a>。
+其通过将字段中的值乘以2的<code>ack_delay_exponent</code>次方来解码的，其中<code>ack_delay_exponent</code>传输参数值是由<strong>ACK帧</strong>发送方发出的，详见<a href="">第18.2章</a>。
+相比于简单地用整型表示延迟，这种编码在相同字节数内支持更大范围的值，代价是分辨率较低。</p>
+</dd>
+<dt>ACK块计数（ACK Range Count）：</dt>
+<dd>
+<p>一个可变长度整型，表示<strong>ACK帧</strong>中ACK块字段的数目。</p>
+</dd>
+<dt>首个ACK块（First ACK Range）：</dt>
+<dd>
+<p>一个可变长度整型，表示在最大确认数之前正在被确认的连续的数据包的数量。
+也就是说，块内最小被确认的数据包的包号可以通过最大确认数减去首个ACK块值得到。</p>
+</dd>
+<dt>ACK块：</dt>
+<dd>
+<p>包含额外的数据包区段，这些数据包可以是未被确认的，也可以是已被确认的，详见<a href="">第19.3.1章</a>。</p>
+</dd>
+<dt>ECN计数：</dt>
+<dd>
+<p>三个ECN统计，详见<a href="">第19.3.2章</a>。</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="19.3.2_ECN_Counts">
+    
+        <h3>
+    
+            <a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a>
+    
+        </h3>
+    
+    <div class="content">
+        <p><strong>ACK帧</strong>使用类型值的最小有效位（也就是类型<code>0x03</code>）表示ECN反馈，并通告收到在IP头部中带有与ECT(0)、ECT(1)或ECN-CE有关的ECN码点（codepoint）的QUIC数据包。
+ECN计数只由类型为<code>0x03</code>的<strong>ACK帧</strong>携带。</p>
+<p><strong>ACK帧</strong>中ECN计数如<a href="#Figure_27_ECN_Count_Format">图27</a>所示。</p>
+<div id=Figure_27_ECN_Count_Format class="block ref">
+<pre><code>ECN计数 {
+  ECT0计数 (i),
+  ECT1计数 (i),
+  ECN-CE计数 (i),
+}
+</code></pre><p><a href="#Figure_27_ECN_Count_Format">图27：ACK帧格式</a></p>
+</div>
+<p>ECN计数各个字段分别是：</p>
+<dl>
+<dt>ECT0计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(0)码点的数据包总数。</p>
+</dd>
+<dt>ECT1计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(1)码点的数据包总数。</p>
+</dd>
+<dt>ECN-CE计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECN-CE码点的数据包总数。</p>
+</dd>
+</dl>
+<p>每个数据包号空间单独维护各自的ECN计数。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.3.1_ACK_Ranges">
+    
+        <h3>
+    
+            <a href="#19.3.1_ACK_Ranges">19.3.1 ACK块</a>
+    
+        </h3>
+    
+    <div class="content">
+        <p>每个ACK块由交替的空档和ACK块长度值构成，按包号降序排列。
+ACK块可以重复。
+空档和ACK块长度值的数量由ACK块计数字段决定，每个ACK块中的一个值（空档或ACK块长度）对应ACK块计数字段的每个值。</p>
+<p>ACK块的结构如<a href="">图26</a>所示。</p>
+<p>构成ACK块的字段是：</p>
+<dl>
+<dt>空档（Gap）：</dt>
+<dd>
+<p>一个可变长度整型值，表示比前述ACK块中的最小数据包号小一的数据包之前连续未被确认数据包的数目。</p>
+</dd>
+<dt>ACK块长度（ACK Range Length）：</dt>
+<dd>
+<p>一个可变长度整型值，表示先前空档确定的最大数据包号之前连续被确认数据包的数目。</p>
+</dd>
+</dl>
+<p>空档和ACK块长度值使用一个相对整型编码以提高效率。
+即使每个编码结果是正值，但也会被减去，因此每个ACK块表示的都是包号逐渐递减的数据包。</p>
+<p>每个ACK块确认一段包号连续的数据包，通过ACK块内包号最大的被确认数据包之前的包数指定确认范围。
+值为0表示只有包号最大的数据包被确认。
+更大的ACK块值表示更大的确认范围，与此同时该块内最小数据包号则更小。
+换言之，给定ACK块最大数据包号，则最小数据包号通过下述公式计算：</p>
+<pre><code>最小数据包号 = 最大数据包号 - ACK块值
+</code></pre><p>一个ACK块确认最小数据包号到最大数据包号之间的全部数据包，包含两端。</p>
+<p>一个ACK块的最大数据包号通过累积减去先前的所有ACK块长度和空档确定。</p>
+<p>每个空档表示一段未被确认的数据包。
+空档内未被确认的数据包数目比空档字段中的编码值多1。</p>
+<p>空档字段值使用以下公式为后续ACK块生成最大的数据包号值：</p>
+<pre><code>最大数据包号 = 先前最小数据包号 - 空档值 - 2
+</code></pre><p>如果任何有关计算得到的数据包号是负数，则终端<em><strong>必须</strong></em>产生一个<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+    
+        
+            <section class="page" id="19.4_RESET_STREAM_Frames">
+    
+        <h2>
+    
+            <a href="#19.4_RESET_STREAM_Frames">19.4 重置帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>终端使用<strong>重置帧</strong>（RESET_STREAM frame，类型为<code>0x04</code>）立即关闭流的发送部分。</p>
+<p>发送完<strong>重置帧</strong>后，终端停止在相应的流上传输或重传<strong>流帧</strong>。
+<strong>重置帧</strong>的接收方可以忽略任何已经在该流上收到的数据。</p>
+<p>终端收到一条只用于发送的流的<strong>重置</strong>帧时<em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型错误关闭连接。</p>
+<p><strong>重置帧</strong>格式如<a href="#Figure_28_RESET_STREAM_Frame_Format">图28</a>所示。</p>
+<div id=Figure_28_RESET_STREAM_Frame_Format class="block ref">
+<pre><code>重置帧 {
+  类型 (i) = 0x04,
+  流ID (i),
+  应用层协议错误码 (i),
+  最终大小 (i),
+}
+</code></pre><p><a href="#Figure_28_RESET_STREAM_Frame_Format">图28：重置帧格式</a></p>
+</div>
+<p><strong>重置帧</strong>包含下述字段：</p>
+<dl>
+<dt>流ID：</dt>
+<dd>
+<p>一个可变长度整型，编码需要关闭的流的流ID。</p>
+</dd>
+<dt>应用层协议错误码（Application Protocol Error Code）：</dt>
+<dd>
+<p>一个可变长度整型值，包含表明为何关闭该流的应用层协议错误码（详见<a href="">第20.2章</a>）。</p>
+</dd>
+<dt>最终大小（Final Size）：</dt>
+<dd>
+<p>一个可变长度整型值，表示<strong>重置帧</strong>发送方的流最终大小，单位字节，详见<a href="">第4.5章</a>。</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.5_STOP_SENDING_Frames">
+    
+        <h2>
+    
+            <a href="#19.5_STOP_SENDING_Frames">19.5 停止发送帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>终端使用<strong>停止发送帧</strong>（STOP_SENDING frame，类型是<code>0x05</code>）告知对方收到每个应用层请求时传入的数据将被丢弃。
+<strong>停止发送帧</strong>要求对端停止在某条流上传输数据。</p>
+<p>一个<strong>停止发送帧</strong>可以在流的“接收”和“数据量确认”状态发送，详见<a href="">第3.2章</a>。
+收到一条本地由初始化但是却尚未被创建的流的<strong>停止发送帧</strong><em><strong>必须</strong></em>视为一个<code>STREAM_STATE_ERROR</code>类型的连接错误。
+终端收到只用于接收的流的<strong>停止发送帧</strong>{&lt; req_level MUST &gt;}}以<code>STREAM_STATE_ERROR</code>类型的错误关闭连接。</p>
+<p><strong>停止发送帧</strong>格式如<a href="#Figure_29_STOP_SENDING_Frame_Format">图29</a>所示。</p>
+<div id=Figure_29_STOP_SENDING_Frame_Format class="block ref">
+<pre><code>停止发送帧 {
+  类型 (i) = 0x05,
+  流ID (i),
+  应用层协议错误码 (i),
+}
+</code></pre><p><a href="#Figure_29_STOP_SENDING_Frame_Format">图29：停止发送帧格式</a></p>
+</div>
+<p><strong>停止发送帧</strong>包含如下字段：</p>
+<dl>
+<dt>流ID：</dt>
+<dd>
+<p>一个可变长度整型值，携带需要忽略其数据的流的流ID。</p>
+</dd>
+<dt>应用层协议错误码（Application Protocol Error Code）：</dt>
+<dd>
+<p>一个可变长度整型值，包含应用层指定的发送者忽略该流数据的原因，详见<a href="">第20.2章</a>。</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.6_CRYPTO_Frames">
+    
+        <h2>
+    
+            <a href="#19.6_CRYPTO_Frames">19.6 加密帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><strong>加密帧</strong>（CRYPTO frame，类型是<code>0x06</code>）用于传输加密握手信息。
+其可以被除0-RTT包以外的其他类型包发送。
+<strong>加密帧</strong>为加密协议提供了一个有序的字节流。
+<strong>加密帧</strong>除了不携带流标识符（流ID）、不进行流控，以及不携带可选偏移量、可选长度及流结束标记外，它们在功能上与<strong>流帧</strong>完全相同。</p>
+<p><strong>加密帧</strong>格式如<a href="#Figure_30_CRYPTO_Frame_Format">图30</a>所示。</p>
+<div id=Figure_30_CRYPTO_Frame_Format class="block ref">
+<pre><code>加密帧 {
+  类型 (i) = 0x06,
+  偏移 (i),
+  长度 (i),
+  加密数据 (i),
+}
+</code></pre><p><a href="#Figure_30_CRYPTO_Frame_Format">图30：加密帧格式</a></p>
+</div>
+<p><strong>加密帧</strong>包含下述字段：</p>
+<dl>
+<dt>偏移（Offset）：</dt>
+<dd>
+<p>一个可变长度整型值，表示<strong>加密帧</strong>中加密数据在数据流中的字节偏移量。</p>
+</dd>
+<dt>长度：</dt>
+<dd>
+<p>一个可变长度整型值，表示<strong>加密帧</strong>的加密数据字段携带数据长度。</p>
+</dd>
+<dt>加密数据（Crypto Data）：</dt>
+<dd>
+<p>加密信息数据。</p>
+</dd>
+</dl>
+<p>每个加密级别都有一条单独的加密握手数据流，每条流都从偏移量0开始。
+也就是说每个加密级别都被视为一条单独的加密数据流。</p>
+<p>这样的数据流其最大偏移量——偏移量与数据长度之和——不能超过<code>2<sup>26</sup>-1</code>。
+收到一个超过此上限的的帧<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型或<code>CRYPTO_BUFFER_EXCEEDED</code>类型的连接错误。</p>
+<p>不同于<strong>流帧</strong>有着流ID用以区分数据属于哪条流，<strong>加密帧</strong>为每个加密级别携带单条流的数据。
+数据流没有一个明确的结束点，所以<strong>加密帧</strong>没有FIN位。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.7_NEW_TOKEN_Frames">
+    
+        <h2>
+    
+            <a href="#19.7_NEW_TOKEN_Frames">19.7 新令牌帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>服务端发送<strong>新令牌帧</strong>（NEW_TOKEN  frame，类型是<code>0x07</code>）给客户端提供一张令牌，以便客户端在一条后续流的初始包包头中携带该令牌发送过来。</p>
+<p><strong>新令牌帧</strong>格式如<a href="#Figure_31_NEW_TOKEN_Frame_Format">图31</a>所示。</p>
+<div id=Figure_31_NEW_TOKEN_Frame_Format class="block ref">
+<pre><code>新令牌帧 {
+  类型 (i) = 0x07,
+  令牌长度 (i),
+  令牌 (i),
+}
+</code></pre><p><a href="#Figure_31_NEW_TOKEN_Frame_Format">图30：新令牌帧格式</a></p>
+</div>
+<p><strong>新令牌帧</strong>包含如下字段：</p>
+<dl>
+<dt>令牌长度（Token Length）：</dt>
+<dd>
+<p>一个可变长度整型值，表示令牌的字节长度。</p>
+</dd>
+<dt>令牌：</dt>
+<dd>
+<p>一个不透明blob，客户端可以在后续的初始包中使用。
+令牌<em><strong>必须不</strong></em>为空。
+客户端<em><strong>必须</strong></em>将收到带空令牌字段的<strong>新令牌帧</strong>的情况视为一个<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+</dd>
+</dl>
+<p>如果包含这类帧的数据包被误认为丢失了，那么客户端可能收到多个携带相同令牌值的<strong>新令牌帧</strong>。
+客户端负责丢弃重复的令牌，这些令牌可能用于连接重试，详见<a href="">第8.1.3章</a>。</p>
+<p>客户端<em><strong>必须不</strong></em>能发送<strong>新令牌帧</strong>。
+服务端<em><strong>必须</strong></em>将收到<strong>新令牌帧</strong>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.8_STREAM_Frames">
+    
+        <h2>
+    
+            <a href="#19.8_STREAM_Frames">19.8 流帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><strong>流帧</strong>明确地创建一条流并携带流数据。
+<strong>流帧</strong>的类型字段格式形如<code>0b00001XXX</code>（即从<code>0x08</code>到<code>0x0f</code>之间的值）。
+帧类型的三个低比特位标示帧的如下字段：</p>
+<ul>
+<li>帧类型中的<code>OFF</code>位（<code>0x04</code>）用于标识帧的偏移字段。
+当置为1，则表示偏移字段存在。
+当置为0，则偏移字段不存在，且流数据的偏移量从0另开（也就是说，该帧携带这条流的起始字节，或该流的终点且不携带任何数据）。</li>
+<li>帧类型的<code>LEN</code>位（<code>0x02</code>）用于标识帧的长度字段。
+当置为1，则表示长度字段不存在，且流数据字段延续到数据包的末尾。
+当置为1，则表示长度字段存在。</li>
+<li>帧类型的<code>FIN</code>位（<code>0x01</code>）标志流的结束。
+流的最终数据量等于偏移量与该帧的长度之和。</li>
+</ul>
+<p>如果收到属于一条由本地初始化却尚未创建的流或一条只用于发送的流的<strong>流帧</strong>，则终端<em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型错误关闭连接。</p>
+<p><strong>流帧</strong>格式如<a href="#Figure_32_STREAM_Frame_Format">图32</a>所示。</p>
+<div id=Figure_32_STREAM_Frame_Format class="block ref">
+<pre><code>流帧 {
+  类型 (i) = 0x08..0x0f,
+  流ID (i),
+  [偏移 (i)],
+  [长度 (i)],
+  流数据 (..),
+}
+</code></pre><p><a href="#Figure_32_STREAM_Frame_Format">图32：流帧格式</a></p>
+</div>
+<p><strong>流帧</strong>包含如下字段：</p>
+<dl>
+<dt>流ID：</dt>
+<dd>
+<p>一个可变长度整型值，表示流的流ID，详见<a href="">第2.1章</a>。</p>
+</dd>
+<dt>偏移（Offset）：</dt>
+<dd>
+<p>一个可变长度整型值，表示<strong>流帧</strong>中的流数据在整条流中的字节偏移量。
+这个字段在<code>OFF</code>位置为1时存在。
+当偏移字段不存在时，偏移量为0。</p>
+</dd>
+<dt>长度：</dt>
+<dd>
+<p>一个可变长度整型值，表示<strong>流帧</strong>中的流数据字段的长度。
+该字段在<code>LEN</code>位置为1时存在。
+当<code>LEN</code>位置为0，则流数据字段会囊括数据包的所有剩余字节。</p>
+</dd>
+<dt>流数据（Stream Data）：</dt>
+<dd>
+<p>指定流中需要传递的字节。</p>
+</dd>
+</dl>
+<p>当流数据字段长度为0，流帧的偏移量就是下一个将要发送的字节的偏移量。</p>
+<p>流的首字节的偏移量是0。
+流传输的最大偏移量——帧的偏移值与数据长度之和——不能超过<code>2<sup>62</sup>-1</code>，因为无法为这样的数据量分配流量控制额度。
+收到一个超过该限制的帧的情况<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型或<code>FLOW_CONTROL_ERROR</code>类型的连接错误。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.9_MAX_DATA_Frames">
+    
+        <h2>
+    
+            <a href="#19.9_MAX_DATA_Frames">19.9 最大数据量帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><strong>最大数据量帧</strong>（MAX_DATA frame，类型是<code>0x10</code>）用于流量控制，告知对端可以在整个连接上发送的最大数据量。</p>
+<p><strong>最大数据量帧</strong>格式如<a href="#Figure_33_MAX_DATA_Frame_Format">图33</a>所示。</p>
+<div id=Figure_33_MAX_DATA_Frame_Format class="block ref">
+<pre><code>最大数据量帧 {
+  类型 (i) = 0x10,
+  最大数据量 (i),
+}
+</code></pre><p><a href="#Figure_33_MAX_DATA_Frame_Format">图32：最大数据量帧格式</a></p>
+</div>
+<p><strong>最大数据量帧</strong>包含下述字段：</p>
+<dl>
+<dt>最大数据量（Maximum Data）：</dt>
+<dd>
+<p>一个可变长度整型值，表示可以在整个连接上发送的最大数据量，单位字节。</p>
+</dd>
+</dl>
+<p>流帧上发送的所有数据的总和趋近该限制。
+所有流的最终数据量之和——包括处于关闭状态的流——<em><strong>必须不</strong></em>可超过接收方指定的这个值。
+如果终端收到的数据量超过了它发出的最大数据量值，其<em><strong>必须</strong></em>以<code>FLOW_CONTROL_ERROR</code>类型错误关闭流。
+这包括违背早期数据记录的限制，详见<a href="">第7.4.1章</a>。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.10_MAX_STREAM_DATA_Frames">
+    
+        <h2>
+    
+            <a href="#19.10_MAX_STREAM_DATA_Frames">19.10 最大流数据量帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p><strong>最大流数据量帧</strong>（MAX_STREAM_DATA frame，类型是<code>0x11</code>）用于流量控制中通知对端一条流上可以发送的最大数据量。</p>
+<p><strong>最大流数据量帧</strong>可以在流的“接收”状态发送，详见<a href="">第3.2章</a>。
+收到一条由本地初始化却尚未创建的流的<strong>最大流数据量帧</strong>的情况<em><strong>必须</strong></em>视为一个<code>STREAM_STATE_ERROR</code>类型连接错误。
+收到只用于发送的流的<strong>最大流数据量帧</strong>的终端<em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型错误关闭连接。</p>
+<p><strong>最大流数据量帧</strong>格式如<a href="#Figure_34_MAX_STREAM_DATA_Frame_Format">图34</a>所示。</p>
+<div id=Figure_34_MAX_STREAM_DATA_Frame_Format class="block ref">
+<pre><code>最大流数据量帧 {
+  类型 (i) = 0x11,
+  流ID (i),
+  最大流数据量 (i),
+}
+</code></pre><p><a href="#Figure_34_MAX_STREAM_DATA_Frame_Format">图34：最大流数据量帧格式</a></p>
+</div>
+<p><strong>最大流数据量帧</strong>包含如下字段：</p>
+<dl>
+<dt>流ID：</dt>
+<dd>
+<p>被作用的流的流ID，以可变长度整数值编码。</p>
+</dd>
+<dt>最大流数据量（Maximum Stream Data）：</dt>
+<dd>
+<p>一个可变长度整型值，表示可以在标识流上发送的最大数据量，单位字节。</p>
+</dd>
+</dl>
+<p>当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。
+丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。
+收到<strong>流帧</strong>可能不会提升最大接收偏移量。</p>
+<p>流上发送的数据<em><strong>必须不</strong></em>可以超过接收方发出的最大流数据量值的最大值。
+如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端<em><strong>必须</strong></em>以<code>FLOW_CONTROL_ERROR</code>类型错误关闭连接。
+这包括违背早期数据记录的限制，详见<a href="">第7.4.1章</a>。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.11_MAX_STREAMS_Frames">
+    
+        <h2>
+    
+            <a href="#19.11_MAX_STREAMS_Frames">19.11 最大流数量帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.12_DATA_BLOCKED_Frames">
+    
+        <h2>
+    
+            <a href="#19.12_DATA_BLOCKED_Frames">19.12 数据阻塞帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.13_STREAM_DATA_BLOCKED_Frames">
+    
+        <h2>
+    
+            <a href="#19.13_STREAM_DATA_BLOCKED_Frames">19.13 流数据阻塞帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.14_STREAMS_BLOCKED_Frames">
+    
+        <h2>
+    
+            <a href="#19.14_STREAMS_BLOCKED_Frames">19.14 流阻塞帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.15_NEW_CONNECTION_ID_Frames">
+    
+        <h2>
+    
+            <a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.16_RETIRE_CONNECTION_ID_Frames">
+    
+        <h2>
+    
+            <a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 退休连接ID帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.17_PATH_CHALLENGE_Frames">
+    
+        <h2>
+    
+            <a href="#19.17_PATH_CHALLENGE_Frames">19.17 通道挑战帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.18_PATH_RESPONSE_Frames">
+    
+        <h2>
+    
+            <a href="#19.18_PATH_RESPONSE_Frames">19.18 回复通道帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.19_CONNECTION_CLOSE_Frames">
+    
+        <h2>
+    
+            <a href="#19.19_CONNECTION_CLOSE_Frames">19.19 连接关闭帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.20_HANDSHAKE_DONE_Frames">
+    
+        <h2>
+    
+            <a href="#19.20_HANDSHAKE_DONE_Frames">19.20 握手完成帧</a>
+    
+        </h2>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.21_Extension_Frames">
+    
+        <h2>
+    
+            <a href="#19.21_Extension_Frames">19.21 扩展帧</a>
     
         </h2>
     

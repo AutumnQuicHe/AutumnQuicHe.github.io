@@ -148,6 +148,54 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.1_PADDING_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.2_PING_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.2_ECN_Counts/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.1_ACK_Ranges/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.4_RESET_STREAM_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.5_STOP_SENDING_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.6_CRYPTO_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.7_NEW_TOKEN_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.8_STREAM_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.9_MAX_DATA_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.10_MAX_STREAM_DATA_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.11_MAX_STREAMS_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.12_DATA_BLOCKED_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.13_STREAM_DATA_BLOCKED_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.14_STREAMS_BLOCKED_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.15_NEW_CONNECTION_ID_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.16_RETIRE_CONNECTION_ID_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.17_PATH_CHALLENGE_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.18_PATH_RESPONSE_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.20_HANDSHAKE_DONE_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.21_Extension_Frames/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/README/</loc>
   </url><url>
     <loc>/</loc>

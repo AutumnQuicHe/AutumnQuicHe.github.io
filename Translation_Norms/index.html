@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"  xml:lang="cn" lang="cn" >
-
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cn" lang="cn">
 <head>
   <meta name="generator" content="Hugo 0.86.0" />
 
@@ -26,7 +25,6 @@
   
 
 </head>
-
 <body>
 <div class="sidebar sidebar-quic">
     <div class="navigation">
@@ -74,7 +72,7 @@
     </div>
 
     <div class="version">
-            generated on Aug 22, 2021
+            generated on Oct 10, 2021
     </div>
 </div>
 
@@ -139,14 +137,24 @@
         </h1>
     
     <div class="content">
-        <h3 id="1-帧类型等翻译展示">1. 帧类型等翻译展示</h3>
+        <h2 id="1-帧类型翻译展示">1. 帧类型翻译展示</h2>
 <p><code>ACK</code>、<code>STREAM</code>、<code>NEW_CONNECTION_ID</code>等帧类型如果直接使用原文实为不妥，并不直观。然而，其又以大写形式表现，固所以需要进行特别处理。</p>
 <p>本文决定暂时采用将其加粗展示的方式进行区分。</p>
-<h3 id="2-错误类型翻译展示">2. 错误类型翻译展示</h3>
+<h2 id="2-帧字段翻译展示">2. 帧字段翻译展示</h2>
+<p>如下是重置帧的定义：</p>
+<pre><code>RESET_STREAM Frame {
+  Type (i) = 0x04,
+  Stream ID (i),
+  Application Protocol Error Code (i),
+  Final Size (i),
+}
+</code></pre><p>其中Type、Stream ID等均是帧字段。
+用“”将字段括起来。</p>
+<h2 id="2-错误类型翻译展示">2. 错误类型翻译展示</h2>
 <p>形如<code>CONNECTION_ID_LIMIT_ERROR</code>的错误类型也比较麻烦，因其可能细碎地提前引用。因此，需要将其特别考虑。
 在其正式介绍前，如果首次出现在一个大章节中，则该大写字段以括号（）附上中文翻译。同章节后续再出现则不再附上翻译。</p>
-<h3 id="3-传输参数翻译展示">3. 传输参数翻译展示</h3>
-<p>传输参数（transport parameters）展示方式同第5点。</p>
+<h2 id="3-传输参数翻译展示">3. 传输参数翻译展示</h2>
+<p>传输参数（transport parameters）展示方式同第2点。</p>
 
     </div>
 </section>

@@ -1,20 +1,47 @@
 html, body {
   font-family: "Open Sans", sans-serif;
   height: 100%;
+  font-size: 15px;
+}
+
+h1 {
+  font-size: 27px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 21px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5, h6 {
+  font-size: 17px;
+}
+
+dt {
+  break-before: auto;
+  break-after: avoid-page;
 }
 
 @media (min-width: 48em) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 
 @media (min-width: 58em) {
   html {
-    font-size: 20px;
+    font-size: 15px;
   }
 }
 
+/* Content */
 @media (min-width: 48em) {
   .content {
     margin-left: 21rem;
@@ -29,12 +56,24 @@ html, body {
   }
 }
 
+.content code,
+.content em strong {
+  border-radius: 2px;
+  padding-right: 2px;
+}
+
+.content code {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  padding-left: 2px;
+}
+
 /* Sidebar */
 .sidebar {
   overflow: auto;
   text-align: center;
   padding: 1rem 1rem;
-  color: white;
+  color: snow;
   display: flex;
   flex-direction: column;
 }
@@ -51,6 +90,24 @@ html, body {
 
 .site-title {
   margin-top: 0px;
+  margin-bottom: 12px;
+}
+
+/* Scroll bar for sidebar and body */
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    border-radius: 4px;
 }
 
 .sidebar a,
@@ -61,7 +118,7 @@ html, body {
 }
 
 .sidebar a:hover {
-  color: rgb(220, 220, 220);;
+  color: dimgray;
 }
 
 .sidebar ul {
@@ -71,7 +128,7 @@ html, body {
 
 .sidebar ul li {
   list-style: none;
-  padding-left: 2em;
+  padding-left: 1.2em;
 }
 
 nav {
@@ -105,6 +162,8 @@ nav {
   border-top: 34px solid;
   position: relative;
   overflow-wrap: break-word;
+  display: block;
+  z-index: -1; /* to ensure under sidebar */
 }
 
 .block:before {
@@ -191,7 +250,7 @@ nav {
 
 /* Section of the page */
 section.page {
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 }
 
 section.page h1 {
@@ -216,6 +275,12 @@ section.page h4 {
   border-left: 1px solid;
   padding-left: 0.7em;
   margin-bottom: 0;
+}
+
+section.page blockquote {
+  border-left: 0.7em groove;
+  margin-inline-start: 0em;
+  padding-left: 0.3em;
 }
 
 section.page .content {

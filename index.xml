@@ -108,10 +108,12 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/Translation_Norms/For_RFCs/QUIC_related/</guid>
-      <description>1. 帧类型等翻译展示 ACK、STREAM、NEW_CONNECTION_ID等帧类型如果直接使用原文实为不妥，并不直观。然而，其又以大写形式表现，固所以需要进行特别处理。
+      <description>1. 帧类型翻译展示 ACK、STREAM、NEW_CONNECTION_ID等帧类型如果直接使用原文实为不妥，并不直观。然而，其又以大写形式表现，固所以需要进行特别处理。
 本文决定暂时采用将其加粗展示的方式进行区分。
+2. 帧字段翻译展示 如下是重置帧的定义：
+RESET_STREAM Frame { Type (i) = 0x04, Stream ID (i), Application Protocol Error Code (i), Final Size (i), } 其中Type、Stream ID等均是帧字段。 用“”将字段括起来。
 2. 错误类型翻译展示 形如CONNECTION_ID_LIMIT_ERROR的错误类型也比较麻烦，因其可能细碎地提前引用。因此，需要将其特别考虑。 在其正式介绍前，如果首次出现在一个大章节中，则该大写字段以括号（）附上中文翻译。同章节后续再出现则不再附上翻译。
-3. 传输参数翻译展示 传输参数（transport parameters）展示方式同第5点。</description>
+3. 传输参数翻译展示 传输参数（transport parameters）展示方式同第2点。</description>
     </item>
     
     <item>
@@ -163,12 +165,12 @@ x (L)...: 表示x重复0次或以上次数，且每个实例长度为L
       
       <guid>/RFC9000_Chinese_Translation/Streams/2.1_Stream_Types_and_Identifiers/</guid>
       <description>流可以是单向或双向的。单向流往一个方向传输数据：从流发起端向对端发送；双向流允许双端向对端发送数据。
-在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（0-2^62^-1），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见第16章。一个QUIC终端 必须不 能在同一个连接的不同流上重复使用同一个数值作为流ID。
-流ID的最小有效位（0x01）标识流的发起者。客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。
+在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（0-262-1），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见第16章。一个QUIC终端必须不能在同一个连接的不同流上重复使用同一个数值作为流ID。
+流ID的最小有效位（0x01）标识流的发起者。 客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。
 流ID的次小有效位（0x02）标识流是双向流（该位被置为0）抑或单向流（该位被置为1）。
 也就是说，流ID的最小两个有效位用来标识一条流是总共四种流类型中的哪一种，总结在如下表格1中：
    位 流类型     0x00 客户端创建的双向流   0x01 服务端创建的双向流   0x02 客户端创建的单向流   0x03 服务端创建的单向流    表格1：流类型
- 每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</description>
+ 每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。 一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</description>
     </item>
     
     <item>
@@ -177,12 +179,12 @@ x (L)...: 表示x重复0次或以上次数，且每个实例长度为L
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Streams/2.2_Sending_and_Receiving_Data/</guid>
-      <description>流帧（第19.8章）封装应用层发送的数据。终端使用流帧的流ID及偏移字段整理数据。
-终端 必须 将流数据以一个有序字节流传递给应用层。传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。
-QUIC对于传递流的无序数据并没有做额外的打算。然而，实现上 可以 选择支持传递无序数据给应用层接收。
-终端可以从一条流的同一个偏移位置多次接收数据。如果数据已经被接收过了，就会直接被丢弃。处在任何偏移位置的数据如果被重复发送，其 必须不 能更改。终端 可以 将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。
-流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。
-终端 必须不 能在对端设置的流量控制限制之外发送任何数据。流量控制详见第4章。</description>
+      <description>流帧（第19.8章）封装应用层发送的数据。 终端使用流帧的流ID及偏移字段整理数据。
+终端必须将流数据以一个有序字节流传递给应用层。 传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。
+QUIC对于传递流的无序数据并没有做额外的打算。 然而，实现上 可以选择支持传递无序数据给应用层接收。
+终端可以从一条流的同一个偏移位置多次接收数据。 如果数据已经被接收过了，就会直接被丢弃。 处在任何偏移位置的数据如果被重复发送，其必须不能更改。 终端可以将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。
+流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。 流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。
+终端必须不能在对端设置的流量控制限制之外发送任何数据。流量控制详见第4章。</description>
     </item>
     
     <item>
@@ -193,7 +195,7 @@ QUIC对于传递流的无序数据并没有做额外的打算。然而，实现�
       <guid>/RFC9000_Chinese_Translation/Streams/2.3_Stream_Prioritization/</guid>
       <description>如果资源以正确的优先级分配给多条流，那么流的多路复用可以对应用性能产生显著影响。
 QUIC并不支持交换优先级信息，相反，其依赖从应用层接收的优先级信息。
-QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各条流的相对优先级。一种实现是使用应用层提供的信息决定分配多少资源来激活流。</description>
+QUIC在实现上应该提供某种方法使得应用层能够因此确定各条流的相对优先级。 一种实现是使用应用层提供的信息决定分配多少资源来激活流。</description>
     </item>
     
     <item>
@@ -202,7 +204,7 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Streams/2.4._Operations_on_Streams/</guid>
-      <description>本文没有定义QUIC API，而是定义了一系列流操作相关的函数可以用于应用层协议的构建。应用层协议可以假定QUIC有关实现提供了本章描述的操作对应的接口。为一个特定应用层协议设计实现的QUIC协议可能仅仅提供该协议需要的这些操作。
+      <description>本文没有定义QUIC API，而是定义了一系列流操作相关的函数可以用于应用层协议的构建。 应用层协议可以假定QUIC有关实现提供了本章描述的操作对应的接口。 为一个特定应用层协议设计实现的QUIC协议可能仅仅提供该协议需要的这些操作。
 在流的发送部分，应用层协议可以：
  写数据，只有当流量控制给数据写出留足空间（第4.1章）才能成功写出； 结束流（清理并关闭），发送一个设置FIN位为1的流帧（第19.8章）； 重置流（中止并关闭），当流未处在终止状态时发送一个RESET_STREAM帧（第19.4章）。  在流的接收部分，应用层协议可以：
  读数据，以及 中止读取流数据并请求关闭流，该操作可能需要发送STOP_SENDING帧（第19.5章）。  应用层协议也可以请求在流状态改变的时候收到通知信息，包括当对端开启或重置流、对端中止流数据读取、有新数据可以读取、以及数据可以写出或因流控不能写出。</description>
@@ -561,7 +563,7 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</guid>
-      <description></description>
+      <description>标识符为31 * N + 27——其中N为整数——的传输参数保留用于执行未知传输参数。 这些传输参数没有语义，可以携带任意值。</description>
     </item>
     
     <item>
@@ -570,6 +572,296 @@ QUIC在实现上 应该 提供某种方法使得应用层能够因此确定各�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</guid>
+      <description>本章描述本文定义的传输参数的细节。
+这里列出的许多传输参数都是整型值。 那些整型的传输参数使用变长整数编码，详见第16章。 除非有额外说明，否则传输参数在不设置时的默认值是0。
+各个传输参数具体定义如下：
+ 原始目标连接IDoriginal_destination_connection_id (0x00)：  这个参数是由客户端发出的第一个初始包的目标连接ID字段的值，详见第16章。 该传输参数只会由服务端发出。
+ 最大空闲超时时间max_idle_timeout (0x01)：  最大空闲超时是一个编码为整型的值，单位毫秒，详见第10.1章。 当双端忽略空闲超时设置其值为0时，空闲超时将被禁用。
+ 无状态重置令牌stateless_reset_token (0x02)：  无状态重置令牌用于验证无状态重置，详见第10.3章。 这个传输参数是一个16字节的序列。 客户端必须不能发送这个参数，但是服务端可以发送。 没有发送次参数的服务端不能对握手期间协商的连接ID使用无状态重置。
+ 最大UDP载荷max_udp_payload_size (0x03)：  最大UDP载荷参数是一个整型值，用于终端限制愿意接收的UDP载荷的大小。 UDP报文的载荷如果大于这个限制将不太可能被服务端处理。
+  该参数默认值是最大UDP载荷65527。 该值不能小于1200。
+  这个限制是对报文大小的一个与通道MTU一样的附加约束，但其是终端的属性而非通道的属性，详见第14章。 应该认为这是终端用于保存传人数据包的空间。
+ 初始最大数据量initial_max_data (0x04)：  初始最大数据量参数是一个包含连接可发送初始最大数据量的整型值。 等效于连接在完成握手后立即发送一个最大数据帧（MAX_DATA，详见第19.9章）。
+ 初始本地最大双向流数据量initial_max_stream_data_bidi_local (0x05)：  本参数是一个整型值，用于指定本地初始化的双向流的初始流量控制限制。 这个限制适用于由发送传输参数端打开的新创建双向流。 在客户端传输参数中，其适用于流标识符最低两个有效位设置为0x00的流；在服务端，其适用于流标识符最低两个有效位设置为0x01的流。
+ 初始远端最大双向流数据量initial_max_stream_data_bidi_remote (0x06):  本参数是一个整型值，用于指定对端初始化的双向流的初始流量控制限制。 这个限制适用于由接收传输参数端打开的新创建双向流。 在客户端传输参数中，其适用于流标识符最低两个有效位设置为0x01的流；在服务端，其适用于流标识符最低两个有效位设置为0x00的流。
+ 初始最大单向流数据量initial_max_stream_data_uni (0x07):  本参数是一个整型值，用于指定单向流的初始流量控制限制。 这个限制适用于接收传输参数端打开的新创建单向流。 在客户端传输参数中，其适用于流标识符最低两个有效位设置为0x03的流；在服务端，其适用于流标识符最低两个有效位设置为0x02的流。
+ 初始最大双向流数量initial_max_streams_bidi (0x08):  初始最大双向流数量参数是一个整型值，包含接收该传输参数的终端允许初始化的最大双向流数量。 如果这个参数未设置或置为0，则对端不能开启双向流直到发完最大流帧。 设置该参数等效于发送一个相关流类型的数值一致的最大流帧（第19.</description>
+    </item>
+    
+    <item>
+      <title>19.1 填充帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.1_PADDING_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.1_PADDING_Frames/</guid>
+      <description>填充帧（PADDING frame，类型0x00）无语义值。 填充帧可以用于提高数据包大小。 填充可以用于填充初始包以达到被要求的最小包大小，或对受保护数据包进行流量分析提供保护。
+填充帧的格式如图23所示，可见填充帧没有内容。 也就是说，填充帧由标识该帧类型的单个字节构成。
+填充帧 { 类型 (i) = 0x00, } 图23：填充帧格式
+ </description>
+    </item>
+    
+    <item>
+      <title>19.2 Ping帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.2_PING_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.2_PING_Frames/</guid>
+      <description>终端可以使用Ping帧（类型为0x01）验证其对端是否仍然活跃，或检查到对端的可达性。
+Ping帧格式如图24所示，可见Ping帧无内容。
+填充帧 { 类型 (i) = 0x01, } 图24：Ping帧格式
+ </description>
+    </item>
+    
+    <item>
+      <title>19.3.2 ECN计数</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.2_ECN_Counts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.2_ECN_Counts/</guid>
+      <description>ACK帧使用类型值的最小有效位（也就是类型0x03）表示ECN反馈，并通告收到在IP头部中带有与ECT(0)、ECT(1)或ECN-CE有关的ECN码点（codepoint）的QUIC数据包。 ECN计数只由类型为0x03的ACK帧携带。
+ACK帧中ECN计数如图27所示。
+ECN计数 { ECT0计数 (i), ECT1计数 (i), ECN-CE计数 (i), } 图27：ACK帧格式
+ ECN计数各个字段分别是：
+ ECT0计数：  一个可变长度整型值，表示收到的ACK帧所在数据包号空间里且携带ECT(0)码点的数据包总数。
+ ECT1计数：  一个可变长度整型值，表示收到的ACK帧所在数据包号空间里且携带ECT(1)码点的数据包总数。
+ ECN-CE计数：  一个可变长度整型值，表示收到的ACK帧所在数据包号空间里且携带ECN-CE码点的数据包总数。
+  每个数据包号空间单独维护各自的ECN计数。</description>
+    </item>
+    
+    <item>
+      <title>19.3.1 ACK块</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.1_ACK_Ranges/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.1_ACK_Ranges/</guid>
+      <description>每个ACK块由交替的空档和ACK块长度值构成，按包号降序排列。 ACK块可以重复。 空档和ACK块长度值的数量由ACK块计数字段决定，每个ACK块中的一个值（空档或ACK块长度）对应ACK块计数字段的每个值。
+ACK块的结构如图26所示。
+构成ACK块的字段是：
+ 空档（Gap）：  一个可变长度整型值，表示比前述ACK块中的最小数据包号小一的数据包之前连续未被确认数据包的数目。
+ ACK块长度（ACK Range Length）：  一个可变长度整型值，表示先前空档确定的最大数据包号之前连续被确认数据包的数目。
+  空档和ACK块长度值使用一个相对整型编码以提高效率。 即使每个编码结果是正值，但也会被减去，因此每个ACK块表示的都是包号逐渐递减的数据包。
+每个ACK块确认一段包号连续的数据包，通过ACK块内包号最大的被确认数据包之前的包数指定确认范围。 值为0表示只有包号最大的数据包被确认。 更大的ACK块值表示更大的确认范围，与此同时该块内最小数据包号则更小。 换言之，给定ACK块最大数据包号，则最小数据包号通过下述公式计算：
+最小数据包号 = 最大数据包号 - ACK块值 一个ACK块确认最小数据包号到最大数据包号之间的全部数据包，包含两端。
+一个ACK块的最大数据包号通过累积减去先前的所有ACK块长度和空档确定。
+每个空档表示一段未被确认的数据包。 空档内未被确认的数据包数目比空档字段中的编码值多1。
+空档字段值使用以下公式为后续ACK块生成最大的数据包号值：
+最大数据包号 = 先前最小数据包号 - 空档值 - 2 如果任何有关计算得到的数据包号是负数，则终端必须产生一个FRAME_ENCODING_ERROR类型的连接错误。</description>
+    </item>
+    
+    <item>
+      <title>19.4 重置帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.4_RESET_STREAM_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.4_RESET_STREAM_Frames/</guid>
+      <description>终端使用重置帧（RESET_STREAM frame，类型为0x04）立即关闭流的发送部分。
+发送完重置帧后，终端停止在相应的流上传输或重传流帧。 重置帧的接收方可以忽略任何已经在该流上收到的数据。
+终端收到一条只用于发送的流的重置帧时必须以STREAM_STATE_ERROR类型错误关闭连接。
+重置帧格式如图28所示。
+重置帧 { 类型 (i) = 0x04, 流ID (i), 应用层协议错误码 (i), 最终大小 (i), } 图28：重置帧格式
+ 重置帧包含下述字段：
+ 流ID：  一个可变长度整型，编码需要关闭的流的流ID。
+ 应用层协议错误码（Application Protocol Error Code）：  一个可变长度整型值，包含表明为何关闭该流的应用层协议错误码（详见第20.2章）。
+ 最终大小（Final Size）：  一个可变长度整型值，表示重置帧发送方的流最终大小，单位字节，详见第4.5章。
+  </description>
+    </item>
+    
+    <item>
+      <title>19.5 停止发送帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.5_STOP_SENDING_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.5_STOP_SENDING_Frames/</guid>
+      <description>终端使用停止发送帧（STOP_SENDING frame，类型是0x05）告知对方收到每个应用层请求时传入的数据将被丢弃。 停止发送帧要求对端停止在某条流上传输数据。
+一个停止发送帧可以在流的“接收”和“数据量确认”状态发送，详见第3.2章。 收到一条本地由初始化但是却尚未被创建的流的停止发送帧必须视为一个STREAM_STATE_ERROR类型的连接错误。 终端收到只用于接收的流的停止发送帧{&amp;lt; req_level MUST &amp;gt;}}以STREAM_STATE_ERROR类型的错误关闭连接。
+停止发送帧格式如图29所示。
+停止发送帧 { 类型 (i) = 0x05, 流ID (i), 应用层协议错误码 (i), } 图29：停止发送帧格式
+ 停止发送帧包含如下字段：
+ 流ID：  一个可变长度整型值，携带需要忽略其数据的流的流ID。
+ 应用层协议错误码（Application Protocol Error Code）：  一个可变长度整型值，包含应用层指定的发送者忽略该流数据的原因，详见第20.2章。
+  </description>
+    </item>
+    
+    <item>
+      <title>19.6 加密帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.6_CRYPTO_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.6_CRYPTO_Frames/</guid>
+      <description>加密帧（CRYPTO frame，类型是0x06）用于传输加密握手信息。 其可以被除0-RTT包以外的其他类型包发送。 加密帧为加密协议提供了一个有序的字节流。 加密帧除了不携带流标识符（流ID）、不进行流控，以及不携带可选偏移量、可选长度及流结束标记外，它们在功能上与流帧完全相同。
+加密帧格式如图30所示。
+加密帧 { 类型 (i) = 0x06, 偏移 (i), 长度 (i), 加密数据 (i), } 图30：加密帧格式
+ 加密帧包含下述字段：
+ 偏移（Offset）：  一个可变长度整型值，表示加密帧中加密数据在数据流中的字节偏移量。
+ 长度：  一个可变长度整型值，表示加密帧的加密数据字段携带数据长度。
+ 加密数据（Crypto Data）：  加密信息数据。
+  每个加密级别都有一条单独的加密握手数据流，每条流都从偏移量0开始。 也就是说每个加密级别都被视为一条单独的加密数据流。
+这样的数据流其最大偏移量——偏移量与数据长度之和——不能超过226-1。 收到一个超过此上限的的帧必须视为一个FRAME_ENCODING_ERROR类型或CRYPTO_BUFFER_EXCEEDED类型的连接错误。
+不同于流帧有着流ID用以区分数据属于哪条流，加密帧为每个加密级别携带单条流的数据。 数据流没有一个明确的结束点，所以加密帧没有FIN位。</description>
+    </item>
+    
+    <item>
+      <title>19.7 新令牌帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.7_NEW_TOKEN_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.7_NEW_TOKEN_Frames/</guid>
+      <description>服务端发送新令牌帧（NEW_TOKEN frame，类型是0x07）给客户端提供一张令牌，以便客户端在一条后续流的初始包包头中携带该令牌发送过来。
+新令牌帧格式如图31所示。
+新令牌帧 { 类型 (i) = 0x07, 令牌长度 (i), 令牌 (i), } 图30：新令牌帧格式
+ 新令牌帧包含如下字段：
+ 令牌长度（Token Length）：  一个可变长度整型值，表示令牌的字节长度。
+ 令牌：  一个不透明blob，客户端可以在后续的初始包中使用。 令牌必须不为空。 客户端必须将收到带空令牌字段的新令牌帧的情况视为一个FRAME_ENCODING_ERROR类型的连接错误。
+  如果包含这类帧的数据包被误认为丢失了，那么客户端可能收到多个携带相同令牌值的新令牌帧。 客户端负责丢弃重复的令牌，这些令牌可能用于连接重试，详见第8.1.3章。
+客户端必须不能发送新令牌帧。 服务端必须将收到新令牌帧视为一个PROTOCOL_VIOLATION类型连接错误。</description>
+    </item>
+    
+    <item>
+      <title>19.8 流帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.8_STREAM_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.8_STREAM_Frames/</guid>
+      <description>流帧明确地创建一条流并携带流数据。 流帧的类型字段格式形如0b00001XXX（即从0x08到0x0f之间的值）。 帧类型的三个低比特位标示帧的如下字段：
+ 帧类型中的OFF位（0x04）用于标识帧的偏移字段。 当置为1，则表示偏移字段存在。 当置为0，则偏移字段不存在，且流数据的偏移量从0另开（也就是说，该帧携带这条流的起始字节，或该流的终点且不携带任何数据）。 帧类型的LEN位（0x02）用于标识帧的长度字段。 当置为1，则表示长度字段不存在，且流数据字段延续到数据包的末尾。 当置为1，则表示长度字段存在。 帧类型的FIN位（0x01）标志流的结束。 流的最终数据量等于偏移量与该帧的长度之和。  如果收到属于一条由本地初始化却尚未创建的流或一条只用于发送的流的流帧，则终端必须以STREAM_STATE_ERROR类型错误关闭连接。
+流帧格式如图32所示。
+流帧 { 类型 (i) = 0x08..0x0f, 流ID (i), [偏移 (i)], [长度 (i)], 流数据 (..), } 图32：流帧格式
+ 流帧包含如下字段：
+ 流ID：  一个可变长度整型值，表示流的流ID，详见第2.1章。
+ 偏移（Offset）：  一个可变长度整型值，表示流帧中的流数据在整条流中的字节偏移量。 这个字段在OFF位置为1时存在。 当偏移字段不存在时，偏移量为0。
+ 长度：  一个可变长度整型值，表示流帧中的流数据字段的长度。 该字段在LEN位置为1时存在。 当LEN位置为0，则流数据字段会囊括数据包的所有剩余字节。
+ 流数据（Stream Data）：  指定流中需要传递的字节。
+  当流数据字段长度为0，流帧的偏移量就是下一个将要发送的字节的偏移量。
+流的首字节的偏移量是0。 流传输的最大偏移量——帧的偏移值与数据长度之和——不能超过262-1，因为无法为这样的数据量分配流量控制额度。 收到一个超过该限制的帧的情况必须视为一个FRAME_ENCODING_ERROR类型或FLOW_CONTROL_ERROR类型的连接错误。</description>
+    </item>
+    
+    <item>
+      <title>19.9 最大数据量帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.9_MAX_DATA_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.9_MAX_DATA_Frames/</guid>
+      <description>最大数据量帧（MAX_DATA frame，类型是0x10）用于流量控制，告知对端可以在整个连接上发送的最大数据量。
+最大数据量帧格式如图33所示。
+最大数据量帧 { 类型 (i) = 0x10, 最大数据量 (i), } 图32：最大数据量帧格式
+ 最大数据量帧包含下述字段：
+ 最大数据量（Maximum Data）：  一个可变长度整型值，表示可以在整个连接上发送的最大数据量，单位字节。
+  流帧上发送的所有数据的总和趋近该限制。 所有流的最终数据量之和——包括处于关闭状态的流——必须不可超过接收方指定的这个值。 如果终端收到的数据量超过了它发出的最大数据量值，其必须以FLOW_CONTROL_ERROR类型错误关闭流。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
+    </item>
+    
+    <item>
+      <title>19.10 最大流数据量帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.10_MAX_STREAM_DATA_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.10_MAX_STREAM_DATA_Frames/</guid>
+      <description>最大流数据量帧（MAX_STREAM_DATA frame，类型是0x11）用于流量控制中通知对端一条流上可以发送的最大数据量。
+最大流数据量帧可以在流的“接收”状态发送，详见第3.2章。 收到一条由本地初始化却尚未创建的流的最大流数据量帧的情况必须视为一个STREAM_STATE_ERROR类型连接错误。 收到只用于发送的流的最大流数据量帧的终端必须以STREAM_STATE_ERROR类型错误关闭连接。
+最大流数据量帧格式如图34所示。
+最大流数据量帧 { 类型 (i) = 0x11, 流ID (i), 最大流数据量 (i), } 图34：最大流数据量帧格式
+ 最大流数据量帧包含如下字段：
+ 流ID：  被作用的流的流ID，以可变长度整数值编码。
+ 最大流数据量（Maximum Stream Data）：  一个可变长度整型值，表示可以在标识流上发送的最大数据量，单位字节。
+  当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。 收到流帧可能不会提升最大接收偏移量。
+流上发送的数据必须不可以超过接收方发出的最大流数据量值的最大值。 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端必须以FLOW_CONTROL_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
+    </item>
+    
+    <item>
+      <title>19.11 最大流数量帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.11_MAX_STREAMS_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.11_MAX_STREAMS_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.12 数据阻塞帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.12_DATA_BLOCKED_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.12_DATA_BLOCKED_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.13 流数据阻塞帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.13_STREAM_DATA_BLOCKED_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.13_STREAM_DATA_BLOCKED_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.14 流阻塞帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.14_STREAMS_BLOCKED_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.14_STREAMS_BLOCKED_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.15 新连接帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.15_NEW_CONNECTION_ID_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.15_NEW_CONNECTION_ID_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.16 退休连接ID帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.16_RETIRE_CONNECTION_ID_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.16_RETIRE_CONNECTION_ID_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.17 通道挑战帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.17_PATH_CHALLENGE_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.17_PATH_CHALLENGE_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.18 回复通道帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.18_PATH_RESPONSE_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.18_PATH_RESPONSE_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.19 连接关闭帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.20 握手完成帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.20_HANDSHAKE_DONE_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.20_HANDSHAKE_DONE_Frames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>19.21 扩展帧</title>
+      <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.21_Extension_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.21_Extension_Frames/</guid>
       <description></description>
     </item>
     
