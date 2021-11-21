@@ -2781,12 +2781,11 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        <p>终端发送<strong>停用连接ID帧</strong>（类型是<code>0x19</code>）来表明其将不再使用对端发布的某个连接ID。
+        <p>终端发送<strong>停用连接ID帧</strong>（RETIRE_CONNECTION_ID frame，类型是<code>0x19</code>）来表明其将不再使用对端发布的某个连接ID。
 这包含握手期间提供的连接ID。
 发送一个<strong>停用连接ID帧</strong>也作为一个请求令对端发送额外的连接ID以备后续使用，详见<a href="">第5.1章</a>。
 新连接ID可以通过<strong>新连接ID帧</strong>发往对端。</p>
 <p>停用一个连接ID会令该连接ID关联的无状态重置令牌失效。</p>
-<p>RETIRE_CONNECTION_ID frames are formatted as shown in Figure 40.</p>
 <p><strong>停用连接ID帧</strong>格式如<a href="#Figure_40_RETIRE_CONNECTION_ID_Frame_Format">图40</a>所示。</p>
 <div id=Figure_40_RETIRE_CONNECTION_ID_Frame_Format class="block ref">
 <pre><code>停用连接ID帧 {
@@ -2823,7 +2822,25 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>终端可以使用<strong>通道挑战帧</strong>（PATH_CHALLENGE frame，类型是<code>0x1a</code>）检查到对端的可达性以及进行连接迁移过程中的通道验证。</p>
+<p><strong>通道挑战帧</strong>格式如<a href="#Figure_41_PATH_CHALLENGE_Frame_Format">图41</a>所示。</p>
+<div id=Figure_41_PATH_CHALLENGE_Frame_Format class="block ref">
+<pre><code>停用连接ID帧 {
+  类型 (i) = 0x1a,
+  数据 (64),
+}
+</code></pre><p><a href="#Figure_41_PATH_CHALLENGE_Frame_Format">图40：停用连接ID帧格式</a></p>
+</div>
+<p><strong>通道挑战帧</strong>包含如下字段：</p>
+<dl>
+<dt>数据：</dt>
+<dd>
+<p>8字节字段包含一段任意数据。</p>
+</dd>
+</dl>
+<p>包含64位任意数据的<strong>通道挑战帧</strong>确保接收数据包比猜测值的正确性更简单。</p>
+<p>接收方收到该帧后<em><strong>必须</strong></em>生成一个包含同样数据字段内容的<strong>回复通道帧</strong>（详见<a href="">第19.18章</a>）。</p>
+
     </div>
 </section>
 
@@ -2839,7 +2856,10 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p><strong>回复通道帧</strong>（PATH_RESPONSE frame，类型为<code>0x1b</code>）作为<strong>通道挑战帧</strong>的响应发送。
+其格式与<strong>通道挑战帧</strong>（详见<a href="">第19.17章</a>）相同。</p>
+<p>如果<strong>回复通道帧</strong>的内容与先前发送的<strong>通道挑战帧</strong>内容不匹配，终端<em><strong>可以</strong></em>生成一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+
     </div>
 </section>
 
