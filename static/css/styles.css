@@ -41,6 +41,7 @@ dt {
   }
 }
 
+/* Content */
 @media (min-width: 48em) {
   .content {
     margin-left: 21rem;
@@ -55,12 +56,24 @@ dt {
   }
 }
 
+.content code,
+.content em strong {
+  border-radius: 2px;
+  padding-right: 2px;
+}
+
+.content code {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  padding-left: 2px;
+}
+
 /* Sidebar */
 .sidebar {
   overflow: auto;
   text-align: center;
   padding: 1rem 1rem;
-  color: white;
+  color: snow;
   display: flex;
   flex-direction: column;
 }
@@ -80,6 +93,23 @@ dt {
   margin-bottom: 12px;
 }
 
+/* Scroll bar for sidebar and body */
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    border-radius: 2px;
+}
+
 .sidebar a,
 .sidebar a:hover,
 .sidebar a:visited {
@@ -88,7 +118,7 @@ dt {
 }
 
 .sidebar a:hover {
-  color: rgb(220, 220, 220);;
+  color: dimgray;
 }
 
 .sidebar ul {
@@ -132,6 +162,8 @@ nav {
   border-top: 34px solid;
   position: relative;
   overflow-wrap: break-word;
+  display: block;
+  z-index: -1; /* to ensure under sidebar */
 }
 
 .block:before {
@@ -253,10 +285,6 @@ section.page blockquote {
 
 section.page .content {
   margin-left: 0.5em;
-}
-
-p em {
-  padding-right: 0.1em;
 }
 
 section.page h1 a, section.page h2 a, section.page h3 a, section.page h4 a,
