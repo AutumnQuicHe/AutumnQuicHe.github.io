@@ -102,12 +102,12 @@ body::-webkit-scrollbar,
 
 body::-webkit-scrollbar-thumb,
 .sidebar::-webkit-scrollbar-thumb {
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .sidebar a,

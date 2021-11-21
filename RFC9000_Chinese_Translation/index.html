@@ -359,7 +359,7 @@
                 
             
                 
-                    <li><a href="#19.11_MAX_STREAMS_Frames">19.11 最大流数量帧</a></li>
+                    <li><a href="#19.11_MAX_STREAMS_Frames">19.11 最大流帧</a></li>
                 
             
                 
@@ -375,11 +375,11 @@
                 
             
                 
-                    <li><a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接帧</a></li>
+                    <li><a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接ID帧</a></li>
                 
             
                 
-                    <li><a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 退休连接ID帧</a></li>
+                    <li><a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 停用连接ID帧</a></li>
                 
             
                 
@@ -442,7 +442,7 @@
     </div>
 
     <div class="version">
-            generated on Oct 10, 2021
+            generated on Nov 21, 2021
     </div>
 </div>
 
@@ -517,8 +517,7 @@
         </h2>
     
     <div class="content">
-        <p>大家好，我是文档译者。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。为了让广大国人能够尽快了解这个协议，故作此译文。</p>
-<p>本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！</p>
+        <p>本文是QUIC传输层协议的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
 
     </div>
 </section>
@@ -2545,8 +2544,8 @@ ACK块可以重复。
 </dl>
 <p>当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。
 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。
-收到<strong>流帧</strong>可能不会提升最大接收偏移量。</p>
-<p>流上发送的数据<em><strong>必须不</strong></em>可以超过接收方发出的最大流数据量值的最大值。
+收到<strong>流帧</strong>可能不会提升最大接收偏移量。
+流上发送的数据<em><strong>必须不</strong></em>可以超过接收方发出的最大流数据量值的最大值。
 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端<em><strong>必须</strong></em>以<code>FLOW_CONTROL_ERROR</code>类型错误关闭连接。
 这包括违背早期数据记录的限制，详见<a href="">第7.4.1章</a>。</p>
 
@@ -2560,12 +2559,39 @@ ACK块可以重复。
     
         <h2>
     
-            <a href="#19.11_MAX_STREAMS_Frames">19.11 最大流数量帧</a>
+            <a href="#19.11_MAX_STREAMS_Frames">19.11 最大流帧</a>
     
         </h2>
     
     <div class="content">
-        
+        <p><strong>最大流帧</strong>（MAX_STREAMS frame，类型是<code>0x12</code>或<code>0x13</code>）用于告知对端允许打开给定类型的流的累积数量。
+类型<code>0x12</code>的<strong>最大流帧</strong>用于双向流，类型<code>0x13</code>的则用于单向流。</p>
+<p><strong>最大流帧</strong>格式如<a href="#Figure_35_MAX_STREAMS_Frame_Format">图35</a>所示。</p>
+<div id=Figure_35_MAX_STREAMS_Frame_Format class="block ref">
+<pre><code>最大流帧 {
+  类型 (i) = 0x12..0x13,
+  最大流数 (i),
+}
+</code></pre><p><a href="#Figure_35_MAX_STREAMS_Frame_Format">图35：最大流帧格式</a></p>
+</div>
+<p><strong>最大流帧</strong>包含下述字段：</p>
+<dl>
+<dt>最大流数：</dt>
+<dd>
+<p>在连接的生命周期内可以打开的相应类型流的累积总数。
+该值不能超过<code>2<sup>60</sup></code>，因为不能编码大于<code>2<sup>60</sup>-1</code>的流ID。
+收到允许开启高于该限制数量流的<strong>最大流帧</strong>的情况<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+</dd>
+</dl>
+<p>丢失或乱序可能导致终端收到一个<strong>最大流帧</strong>，其限制低于之前收到的<strong>最大流帧</strong>。
+<em><strong>必须</strong></em>忽略不能提高流数量限制的<strong>最大流帧</strong>。</p>
+<p>终端<em><strong>必须不</strong></em>打开超过其对端设置的当前流限制所允许的更多的流。
+例如，服务端收到限制单向流数量为3，则其可以打开流3、7和11，但是不能打开流15。
+如果对端打开超过其被允许的流，那么终端<em><strong>必须</strong></em>以<code>STREAM_LIMIT_ERROR</code>类型错误关闭连接。
+这包括违背早期数据记录的限制，详见<a href="">第7.4.1章</a>。</p>
+<p>注意这些帧（以及有关传输参数）并未描述可以并发打开的流的数量。
+该限制包括已经关闭的流和打开的流。</p>
+
     </div>
 </section>
 
@@ -2581,7 +2607,24 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>发送方<em><strong>应该</strong></em>在其希望发送数据却因连接级流量控制而无法发送时，发送<strong>数据阻塞帧</strong>（DATA_BLOCKED frame，类型是<code>0x14</code>），详见<a href="">第4章</a>。
+<strong>数据阻塞帧</strong>可以用于流量控制算法的调控输入。</p>
+<p><strong>数据阻塞帧</strong>格式如<a href="#Figure_36_DATA_BLOCKED_Frame_Format">图36</a>所示。</p>
+<div id=Figure_36_DATA_BLOCKED_Frame_Format class="block ref">
+<pre><code>数据阻塞帧 {
+  类型 (i) = 0x14,
+  最大数据量 (i),
+}
+</code></pre><p><a href="#Figure_36_DATA_BLOCKED_Frame_Format">图36：数据阻塞帧格式</a></p>
+</div>
+<p><strong>数据阻塞帧</strong>包含下述字段：</p>
+<dl>
+<dt>最大数据量：</dt>
+<dd>
+<p>一个可变长度整型值，表示连接阻塞时的连接级限制。</p>
+</dd>
+</dl>
+
     </div>
 </section>
 
@@ -2597,7 +2640,29 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>发送方<em><strong>应该</strong></em>在其希望发送数据却因流级流量控制而无法发送时，发送<strong>流数据阻塞帧</strong>（STREAM_DATA_BLOCKED frame，类型是<code>0x15</code>）。
+该传输参数类似于<strong>数据阻塞帧</strong>，详见<a href="">第19.12章</a>。</p>
+<p>收到一条只用于发送的流的<strong>流数据阻塞帧</strong>时，终端<em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型错误关闭连接。</p>
+<p><strong>流数据阻塞帧</strong>格式如<a href="#Figure_37_STREAM_DATA_BLOCKED_Frame_Format">图37</a>所示。</p>
+<div id=Figure_37_STREAM_DATA_BLOCKED_Frame_Format class="block ref">
+<pre><code>流数据阻塞帧 {
+  类型 (i) = 0x15,
+  最大流数据量 (i),
+}
+</code></pre><p><a href="#Figure_37_STREAM_DATA_BLOCKED_Frame_Format">图37：流数据阻塞帧格式</a></p>
+</div>
+<p><strong>流数据阻塞帧</strong>包含如下字段：</p>
+<dl>
+<dt>流ID：</dt>
+<dd>
+<p>一个可变长度整型值，表示被流量控制阻塞的流。</p>
+</dd>
+<dt>最大流数据量：</dt>
+<dd>
+<p>一个可变长度整型值，表示阻塞发生时流的偏移量。</p>
+</dd>
+</dl>
+
     </div>
 </section>
 
@@ -2613,7 +2678,27 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>发送方<em><strong>应该</strong></em>在其希望打开一条流但是被对端设置的最大流上限（详见<a href="">第19.11章</a>）所限制时，发送<strong>流阻塞帧</strong>（STREAM_BLOCKED frame，类型是<code>0x16</code>或<code>0x17</code>）。
+类型为<code>0x16</code>的<strong>流阻塞帧</strong>用于表示双向流达到上限，而类型<code>0x17</code>则表示单向流达到上限。</p>
+<p><strong>流阻塞帧</strong>不会打开流，而是告知对端需要打开一条流，但是当前的流数上限阻止了这条流的创建。</p>
+<p><strong>流阻塞帧</strong>格式如<a href="#Figure_38_STREAM_BLOCKED_Frame_Format">图38</a>所示。</p>
+<div id=Figure_38_STREAM_BLOCKED_Frame_Format class="block ref">
+<pre><code>流阻塞帧 {
+  类型 (i) = 0x16..0x17,
+  最大流数 (i),
+}
+</code></pre><p><a href="#Figure_38_STREAM_BLOCKED_Frame_Format">图38：流阻塞帧格式</a></p>
+</div>
+<p><strong>流阻塞帧</strong>包含如下字段：</p>
+<dl>
+<dt>最大流数：</dt>
+<dd>
+<p>一个可变长度整型值，表示该帧发送时允许创建的最大流数量。
+该值不能超过<code>2<sup>60</sup></code>，因为不能编码超过<code>2<sup>62-1</sup></code>的流ID。
+收到编码值超过这个限制的<strong>流阻塞帧</strong>的情况<em><strong>必须</strong></em>被视为一个<code>STREAM_LIMIT_ERROR</code>或<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+</dd>
+</dl>
+
     </div>
 </section>
 
@@ -2624,12 +2709,63 @@ ACK块可以重复。
     
         <h2>
     
-            <a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接帧</a>
+            <a href="#19.15_NEW_CONNECTION_ID_Frames">19.15 新连接ID帧</a>
     
         </h2>
     
     <div class="content">
-        
+        <p>终端发送<strong>新连接ID帧</strong>（NEW_CONNECTION_ID frame，类型为<code>0x18</code>）给对端提供可选连接ID，其可以用于连接迁移时中断连接性，详见<a href="">第9.5章</a>。</p>
+<p><strong>新连接ID帧</strong>格式如<a href="#Figure_39_NEW_CONNECTION_ID_Frame_Format">图39</a>所示。</p>
+<div id=Figure_39_NEW_CONNECTION_ID_Frame_Format class="block ref">
+<pre><code>新连接ID帧 {
+  类型 (i) = 0x18,
+  序列号 (i),
+  停用前 (i),
+  长度 (i),
+  连接ID (8..160),
+  无状态重置令牌 (128),
+}
+</code></pre><p><a href="#Figure_39_NEW_CONNECTION_ID_Frame_Format">图39：新连接ID帧格式</a></p>
+</div>
+<p><strong>新连接ID帧</strong>包含如下字段：</p>
+<dl>
+<dt>序列号：</dt>
+<dd>
+<p>序列号由发送方分配给连接ID，编码为可变长度整型值，详见<a href="">第15.11章</a>。</p>
+</dd>
+<dt>停用前（Retire Prior To）：</dt>
+<dd>
+<p>一个可变长度整型值，表示被停用的连接ID（们），详见<a href="">第5.1.2章</a>。</p>
+</dd>
+<dt>长度（Length）：</dt>
+<dd>
+<p>一个8位无符号整型值，包含连接ID的长度。
+小于1或大于20的长度值均是无效的，且<em><strong>必须</strong></em>视其为一个<code>FRAME_ENCODING_ERROR</code>类型连接错误。</p>
+</dd>
+<dt>连接ID：</dt>
+<dd>
+<p>一个指定长度的连接ID。</p>
+</dd>
+<dt>无状态重置令牌（Stateless Reset Token）：</dt>
+<dd>
+<p>一个128位值，在对关联的连接ID进行无状态重置时使用，详见<a href="">第10.3章</a>。</p>
+</dd>
+</dl>
+<p>如果它现在需要对端使用0长度的目标连接ID发送包，终端禁止发送这个帧。</p>
+<p>如果终端当前需要对端使用0长度的目标连接ID，那么其<em><strong>必须不</strong></em>能发送该帧。
+将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。
+终端发送0长度目标连接ID的数据包时，<em><strong>必须</strong></em>将收到<strong>新连接ID帧</strong>的情况视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+<p>传输错误、超时和重传可能导致相同的<strong>新连接ID帧</strong>被重复接收。
+重复接收相同的该类帧的情况<em><strong>必须不</strong></em>能被当作连接错误处理。
+接收方可以根据<strong>新连接ID帧</strong>提供的序列号处理重复收到相同<strong>新连接ID帧</strong>的情况。</p>
+<p>如果终端收到一个<strong>新连接ID帧</strong>重复了之前发布的连接ID，却有着不同的无状态重置令牌或不同的序列号字段值或该序列号用于其他不同的连接ID，终端<em><strong>可以</strong></em>将之视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+<p>“停用前”字段适用于在连接设置期间创建的连接ID以及<code>preferred_address</code>传输参数，详见<a href="">第5.1.2章</a>。
+“停用前”字段值<em><strong>必须</strong></em>小于或等于“序列号”字段值。
+收到“停用前”字段值大于序列号字段值<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型连接错误。</p>
+<p>一旦发生方指定了一个“停用前”字段值，在后续<strong>新连接ID帧</strong>中发送的较小值就不再发挥作用了。
+接收方<em><strong>必须</strong></em>忽略任何没有提高最大“停用前”值的“停用前”字段。</p>
+<p>收到序列号小于已收到<strong>新连接ID帧</strong>的“停用前”字段值的<strong>新连接ID帧</strong>的终端<em><strong>必须</strong></em>发送一个相应的停用新收到连接ID的<strong>停用连接ID帧</strong>，除非其已经对该序列号发过这个帧了。</p>
+
     </div>
 </section>
 
@@ -2640,12 +2776,38 @@ ACK块可以重复。
     
         <h2>
     
-            <a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 退休连接ID帧</a>
+            <a href="#19.16_RETIRE_CONNECTION_ID_Frames">19.16 停用连接ID帧</a>
     
         </h2>
     
     <div class="content">
-        
+        <p>终端发送<strong>停用连接ID帧</strong>（类型是<code>0x19</code>）来表明其将不再使用对端发布的某个连接ID。
+这包含握手期间提供的连接ID。
+发送一个<strong>停用连接ID帧</strong>也作为一个请求令对端发送额外的连接ID以备后续使用，详见<a href="">第5.1章</a>。
+新连接ID可以通过<strong>新连接ID帧</strong>发往对端。</p>
+<p>停用一个连接ID会令该连接ID关联的无状态重置令牌失效。</p>
+<p>RETIRE_CONNECTION_ID frames are formatted as shown in Figure 40.</p>
+<p><strong>停用连接ID帧</strong>格式如<a href="#Figure_40_RETIRE_CONNECTION_ID_Frame_Format">图40</a>所示。</p>
+<div id=Figure_40_RETIRE_CONNECTION_ID_Frame_Format class="block ref">
+<pre><code>停用连接ID帧 {
+  类型 (i) = 0x19,
+  序列号 (i),
+}
+</code></pre><p><a href="#Figure_40_RETIRE_CONNECTION_ID_Frame_Format">图40：停用连接ID帧格式</a></p>
+</div>
+<p><strong>停用连接ID帧</strong>包含如下字段：</p>
+<dl>
+<dt>序列号：</dt>
+<dd>
+<p>被停用的连接ID的序列号，详见<a href="">第5.1.2章</a>。</p>
+</dd>
+</dl>
+<p>收到包含大于任何先前发往对端的序列号的<strong>停用连接ID帧</strong>的情况<em><strong>必须</strong></em>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+<p><strong>停用连接ID帧</strong>指定的序列号<em><strong>必须不</strong></em>能指向包含该帧的数据包的目标连接ID。
+对端<em><strong>可以</strong></em>将这种情况视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+<p>如果对端提供过一个零长度连接ID，终端不能发生这类帧。
+提供零长度连接ID的终端<em><strong>必须</strong></em>将收到<strong>停用连接ID帧</strong>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+
     </div>
 </section>
 

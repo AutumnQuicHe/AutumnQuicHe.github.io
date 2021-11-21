@@ -144,17 +144,23 @@ Ping帧格式如图24所示，可见Ping帧无内容。
  最大流数据量帧包含如下字段：
  流ID：  被作用的流的流ID，以可变长度整数值编码。
  最大流数据量（Maximum Stream Data）：  一个可变长度整型值，表示可以在标识流上发送的最大数据量，单位字节。
-  当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。 收到流帧可能不会提升最大接收偏移量。
-流上发送的数据必须不可以超过接收方发出的最大流数据量值的最大值。 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端必须以FLOW_CONTROL_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
+  当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。 收到流帧可能不会提升最大接收偏移量。 流上发送的数据必须不可以超过接收方发出的最大流数据量值的最大值。 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端必须以FLOW_CONTROL_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
     </item>
     
     <item>
-      <title>19.11 最大流数量帧</title>
+      <title>19.11 最大流帧</title>
       <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.11_MAX_STREAMS_Frames/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.11_MAX_STREAMS_Frames/</guid>
-      <description></description>
+      <description>最大流帧（MAX_STREAMS frame，类型是0x12或0x13）用于告知对端允许打开给定类型的流的累积数量。 类型0x12的最大流帧用于双向流，类型0x13的则用于单向流。
+最大流帧格式如图35所示。
+最大流帧 { 类型 (i) = 0x12..0x13, 最大流数 (i), } 图35：最大流帧格式
+ 最大流帧包含下述字段：
+ 最大流数：  在连接的生命周期内可以打开的相应类型流的累积总数。 该值不能超过260，因为不能编码大于260-1的流ID。 收到允许开启高于该限制数量流的最大流帧的情况必须视为一个FRAME_ENCODING_ERROR类型的连接错误。
+  丢失或乱序可能导致终端收到一个最大流帧，其限制低于之前收到的最大流帧。 必须忽略不能提高流数量限制的最大流帧。
+终端必须不打开超过其对端设置的当前流限制所允许的更多的流。 例如，服务端收到限制单向流数量为3，则其可以打开流3、7和11，但是不能打开流15。 如果对端打开超过其被允许的流，那么终端必须以STREAM_LIMIT_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。
+注意这些帧（以及有关传输参数）并未描述可以并发打开的流的数量。 该限制包括已经关闭的流和打开的流。</description>
     </item>
     
     <item>
@@ -163,7 +169,12 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.12_DATA_BLOCKED_Frames/</guid>
-      <description></description>
+      <description>发送方应该在其希望发送数据却因连接级流量控制而无法发送时，发送数据阻塞帧（DATA_BLOCKED frame，类型是0x14），详见第4章。 数据阻塞帧可以用于流量控制算法的调控输入。
+数据阻塞帧格式如图36所示。
+数据阻塞帧 { 类型 (i) = 0x14, 最大数据量 (i), } 图36：数据阻塞帧格式
+ 数据阻塞帧包含下述字段：
+ 最大数据量：  一个可变长度整型值，表示连接阻塞时的连接级限制。
+  </description>
     </item>
     
     <item>
@@ -172,7 +183,14 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.13_STREAM_DATA_BLOCKED_Frames/</guid>
-      <description></description>
+      <description>发送方应该在其希望发送数据却因流级流量控制而无法发送时，发送流数据阻塞帧（STREAM_DATA_BLOCKED frame，类型是0x15）。 该传输参数类似于数据阻塞帧，详见第19.12章。
+收到一条只用于发送的流的流数据阻塞帧时，终端必须以STREAM_STATE_ERROR类型错误关闭连接。
+流数据阻塞帧格式如图37所示。
+流数据阻塞帧 { 类型 (i) = 0x15, 最大流数据量 (i), } 图37：流数据阻塞帧格式
+ 流数据阻塞帧包含如下字段：
+ 流ID：  一个可变长度整型值，表示被流量控制阻塞的流。
+ 最大流数据量：  一个可变长度整型值，表示阻塞发生时流的偏移量。
+  </description>
     </item>
     
     <item>
@@ -181,25 +199,55 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.14_STREAMS_BLOCKED_Frames/</guid>
-      <description></description>
+      <description>发送方应该在其希望打开一条流但是被对端设置的最大流上限（详见第19.11章）所限制时，发送流阻塞帧（STREAM_BLOCKED frame，类型是0x16或0x17）。 类型为0x16的流阻塞帧用于表示双向流达到上限，而类型0x17则表示单向流达到上限。
+流阻塞帧不会打开流，而是告知对端需要打开一条流，但是当前的流数上限阻止了这条流的创建。
+流阻塞帧格式如图38所示。
+流阻塞帧 { 类型 (i) = 0x16..0x17, 最大流数 (i), } 图38：流阻塞帧格式
+ 流阻塞帧包含如下字段：
+ 最大流数：  一个可变长度整型值，表示该帧发送时允许创建的最大流数量。 该值不能超过260，因为不能编码超过262-1的流ID。 收到编码值超过这个限制的流阻塞帧的情况必须被视为一个STREAM_LIMIT_ERROR或FRAME_ENCODING_ERROR类型的连接错误。
+  </description>
     </item>
     
     <item>
-      <title>19.15 新连接帧</title>
+      <title>19.15 新连接ID帧</title>
       <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.15_NEW_CONNECTION_ID_Frames/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.15_NEW_CONNECTION_ID_Frames/</guid>
-      <description></description>
+      <description>终端发送新连接ID帧（NEW_CONNECTION_ID frame，类型为0x18）给对端提供可选连接ID，其可以用于连接迁移时中断连接性，详见第9.5章。
+新连接ID帧格式如图39所示。
+新连接ID帧 { 类型 (i) = 0x18, 序列号 (i), 停用前 (i), 长度 (i), 连接ID (8..160), 无状态重置令牌 (128), } 图39：新连接ID帧格式
+ 新连接ID帧包含如下字段：
+ 序列号：  序列号由发送方分配给连接ID，编码为可变长度整型值，详见第15.11章。
+ 停用前（Retire Prior To）：  一个可变长度整型值，表示被停用的连接ID（们），详见第5.1.2章。
+ 长度（Length）：  一个8位无符号整型值，包含连接ID的长度。 小于1或大于20的长度值均是无效的，且必须视其为一个FRAME_ENCODING_ERROR类型连接错误。
+ 连接ID：  一个指定长度的连接ID。
+ 无状态重置令牌（Stateless Reset Token）：  一个128位值，在对关联的连接ID进行无状态重置时使用，详见第10.3章。
+  如果它现在需要对端使用0长度的目标连接ID发送包，终端禁止发送这个帧。
+如果终端当前需要对端使用0长度的目标连接ID，那么其必须不能发送该帧。 将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。 终端发送0长度目标连接ID的数据包时，必须将收到新连接ID帧的情况视为一个PROTOCOL_VIOLATION类型连接错误。
+传输错误、超时和重传可能导致相同的新连接ID帧被重复接收。 重复接收相同的该类帧的情况必须不能被当作连接错误处理。 接收方可以根据新连接ID帧提供的序列号处理重复收到相同新连接ID帧的情况。
+如果终端收到一个新连接ID帧重复了之前发布的连接ID，却有着不同的无状态重置令牌或不同的序列号字段值或该序列号用于其他不同的连接ID，终端可以将之视为一个PROTOCOL_VIOLATION类型连接错误。
+“停用前”字段适用于在连接设置期间创建的连接ID以及preferred_address传输参数，详见第5.1.2章。 “停用前”字段值必须小于或等于“序列号”字段值。 收到“停用前”字段值大于序列号字段值必须视为一个FRAME_ENCODING_ERROR类型连接错误。
+一旦发生方指定了一个“停用前”字段值，在后续新连接ID帧中发送的较小值就不再发挥作用了。 接收方必须忽略任何没有提高最大“停用前”值的“停用前”字段。
+收到序列号小于已收到新连接ID帧的“停用前”字段值的新连接ID帧的终端必须发送一个相应的停用新收到连接ID的停用连接ID帧，除非其已经对该序列号发过这个帧了。</description>
     </item>
     
     <item>
-      <title>19.16 退休连接ID帧</title>
+      <title>19.16 停用连接ID帧</title>
       <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.16_RETIRE_CONNECTION_ID_Frames/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.16_RETIRE_CONNECTION_ID_Frames/</guid>
-      <description></description>
+      <description>终端发送停用连接ID帧（类型是0x19）来表明其将不再使用对端发布的某个连接ID。 这包含握手期间提供的连接ID。 发送一个停用连接ID帧也作为一个请求令对端发送额外的连接ID以备后续使用，详见第5.1章。 新连接ID可以通过新连接ID帧发往对端。
+停用一个连接ID会令该连接ID关联的无状态重置令牌失效。
+RETIRE_CONNECTION_ID frames are formatted as shown in Figure 40.
+停用连接ID帧格式如图40所示。
+停用连接ID帧 { 类型 (i) = 0x19, 序列号 (i), } 图40：停用连接ID帧格式
+ 停用连接ID帧包含如下字段：
+ 序列号：  被停用的连接ID的序列号，详见第5.1.2章。
+  收到包含大于任何先前发往对端的序列号的停用连接ID帧的情况必须视为一个PROTOCOL_VIOLATION类型连接错误。
+停用连接ID帧指定的序列号必须不能指向包含该帧的数据包的目标连接ID。 对端可以将这种情况视为一个PROTOCOL_VIOLATION类型连接错误。
+如果对端提供过一个零长度连接ID，终端不能发生这类帧。 提供零长度连接ID的终端必须将收到停用连接ID帧视为一个PROTOCOL_VIOLATION类型连接错误。</description>
     </item>
     
     <item>
