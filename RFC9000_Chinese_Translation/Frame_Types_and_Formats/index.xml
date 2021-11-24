@@ -257,7 +257,7 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.17_PATH_CHALLENGE_Frames/</guid>
       <description>终端可以使用通道挑战帧（PATH_CHALLENGE frame，类型是0x1a）检查到对端的可达性以及进行连接迁移过程中的通道验证。
 通道挑战帧格式如图41所示。
-停用连接ID帧 { 类型 (i) = 0x1a, 数据 (64), } 图40：停用连接ID帧格式
+通道挑战帧 { 类型 (i) = 0x1a, 数据 (64), } 图41：通道挑战帧格式
  通道挑战帧包含如下字段：
  数据：  8字节字段包含一段任意数据。
   包含64位任意数据的通道挑战帧确保接收数据包比猜测值的正确性更简单。
@@ -270,8 +270,10 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.18_PATH_RESPONSE_Frames/</guid>
-      <description>回复通道帧（PATH_RESPONSE frame，类型为0x1b）作为通道挑战帧的响应发送。 其格式与通道挑战帧（详见第19.17章）相同。
-如果回复通道帧的内容与先前发送的通道挑战帧内容不匹配，终端可以生成一个PROTOCOL_VIOLATION类型连接错误。</description>
+      <description>回复通道帧（PATH_RESPONSE frame，类型为0x1b）作为通道挑战帧的响应发送。
+回复通道帧格式如图42所示。 回复通道帧格式与通道挑战帧一致，详见第19.17章。
+回复通道帧 { 类型 (i) = 0x1a, 数据 (64), } 图42：回复通道帧格式
+ 如果回复通道帧的内容与先前发送的通道挑战帧内容不匹配，终端可以生成一个PROTOCOL_VIOLATION类型连接错误。</description>
     </item>
     
     <item>
@@ -280,7 +282,16 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</guid>
-      <description></description>
+      <description>终端发送连接关闭帧（CONNECTION_CLOSE frame，类型是0x1c或0x1d）通知对端连接正在关闭中。 0x1c类型的连接关闭帧用于QUIC层发送错误信号，或没有错误（携带NO_ERROR码）。 0x1d类型的连接关闭帧用于使用QUIC的应用程序发送错误信号。
+如果有打开的流尚未被显示关闭，当连接关闭时它们将被隐式关闭。
+连接关闭帧格式如图43所示。
+连接关闭帧 { 类型 (i) = 0x1c..0x1d, 错误码 (i), [帧类型 (i)], 原因语句长度 (i), 原因语句 (..), } 图43：连接关闭帧格式
+ 连接关闭帧包含如下字段：
+ 错误码：  一个可变长度整型值，表示关闭该连接的原因。 0x1c类型连接关闭帧使用第20.1章定义的错误码； 0x1d类型连接关闭帧使用第20.2章定义的错误码。
+ 帧类型：  一个可变长度整型值，编码触发该错误的帧类型。 值为0（相当于填充帧）用于未知帧类型。 应用层型连接关闭帧（类型0x1d）不包含此字段。
+ 原因语句长度（Reason Phrase Length）：  一个可变长度整型值，指定原因语句的字节长度。 由于连接关闭帧不能被拆分到多个数据包，因此任何对数据包大小作出的限制也会相应得限制原因语句的可用空间。
+ 原因语句（Reason Phrase）：  关闭相关的附加诊断信息。 如果发送方选择不在错误码之外给出更多细节，该字段可以是零长度。 该字段应该是UTF-8编码字符串RFC3629，即使该帧没有携带如语言标签之类的信息，这些信息有助于帮助创建文本之外的其他实体理解。
+  连接关闭帧（0x1d类型）的应用指定变量只可以通过0-RTT或1-RTT包发送，详见第12.5章。 当应用层意图在握手阶段放弃一条连接时，终端可以通过初始包或握手包发送一个错误码为APPLICATION_ERROR的连接关闭帧（类型0x1c）。</description>
     </item>
     
     <item>
@@ -289,7 +300,10 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.20_HANDSHAKE_DONE_Frames/</guid>
-      <description></description>
+      <description>服务端使用握手完成帧（HANDSHAKE_DONE frame，类型0x1e）向客户端发送确认握手的信号。
+握手完成帧格式如图44所示，可见该类帧没有内容。
+握手完成帧 { 类型 (i) = 0x1e, } 图44：握手完成帧格式
+ 握手完成帧只可以由服务端发送。 服务端必须不能在完成握手前发送握手完成帧。 服务的必须必须将收到握手完成帧视为一个PROTOCOL_VIOLATION类型连接错误。</description>
     </item>
     
     <item>
@@ -298,7 +312,11 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.21_Extension_Frames/</guid>
-      <description></description>
+      <description>QUIC帧不使用自描述编码。 终端因而需要理解所有帧的语法才能成功处理数据包。 这使帧的编码得以高效，但是也意味着终端不能发送一个对端不知道类型的帧。
+意图使用新类型帧的QUIC扩展必须事先确保对端能够理解该帧。 终端可以使用传输参数表示其愿意接收的扩展帧类型。 一个传输参数可以表示支持一个或多个扩展帧类型。
+修改或替换核心协议功能（包括帧类型）的扩展将难以与其他修改相同功能的扩展兼容，除非明确定义了组合的行为方式。 这种扩展应该定义如何与先前定义的修改了相同协议组件的扩展进行互动。
+扩展帧必须是受拥塞控制的，且必须触发ACK帧发送。 替换或补充ACK帧的扩展帧除外。 扩展帧不包含在流量控制中，除非在扩展中有指定。
+IANA注册表用于管理帧类型的分配，详见第22.2章。</description>
     </item>
     
   </channel>

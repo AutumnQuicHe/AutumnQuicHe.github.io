@@ -873,7 +873,7 @@ ACK块的结构如图26所示。
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.17_PATH_CHALLENGE_Frames/</guid>
       <description>终端可以使用通道挑战帧（PATH_CHALLENGE frame，类型是0x1a）检查到对端的可达性以及进行连接迁移过程中的通道验证。
 通道挑战帧格式如图41所示。
-停用连接ID帧 { 类型 (i) = 0x1a, 数据 (64), } 图40：停用连接ID帧格式
+通道挑战帧 { 类型 (i) = 0x1a, 数据 (64), } 图41：通道挑战帧格式
  通道挑战帧包含如下字段：
  数据：  8字节字段包含一段任意数据。
   包含64位任意数据的通道挑战帧确保接收数据包比猜测值的正确性更简单。
@@ -886,8 +886,10 @@ ACK块的结构如图26所示。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.18_PATH_RESPONSE_Frames/</guid>
-      <description>回复通道帧（PATH_RESPONSE frame，类型为0x1b）作为通道挑战帧的响应发送。 其格式与通道挑战帧（详见第19.17章）相同。
-如果回复通道帧的内容与先前发送的通道挑战帧内容不匹配，终端可以生成一个PROTOCOL_VIOLATION类型连接错误。</description>
+      <description>回复通道帧（PATH_RESPONSE frame，类型为0x1b）作为通道挑战帧的响应发送。
+回复通道帧格式如图42所示。 回复通道帧格式与通道挑战帧一致，详见第19.17章。
+回复通道帧 { 类型 (i) = 0x1a, 数据 (64), } 图42：回复通道帧格式
+ 如果回复通道帧的内容与先前发送的通道挑战帧内容不匹配，终端可以生成一个PROTOCOL_VIOLATION类型连接错误。</description>
     </item>
     
     <item>
@@ -896,7 +898,16 @@ ACK块的结构如图26所示。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</guid>
-      <description></description>
+      <description>终端发送连接关闭帧（CONNECTION_CLOSE frame，类型是0x1c或0x1d）通知对端连接正在关闭中。 0x1c类型的连接关闭帧用于QUIC层发送错误信号，或没有错误（携带NO_ERROR码）。 0x1d类型的连接关闭帧用于使用QUIC的应用程序发送错误信号。
+如果有打开的流尚未被显示关闭，当连接关闭时它们将被隐式关闭。
+连接关闭帧格式如图43所示。
+连接关闭帧 { 类型 (i) = 0x1c..0x1d, 错误码 (i), [帧类型 (i)], 原因语句长度 (i), 原因语句 (..), } 图43：连接关闭帧格式
+ 连接关闭帧包含如下字段：
+ 错误码：  一个可变长度整型值，表示关闭该连接的原因。 0x1c类型连接关闭帧使用第20.1章定义的错误码； 0x1d类型连接关闭帧使用第20.2章定义的错误码。
+ 帧类型：  一个可变长度整型值，编码触发该错误的帧类型。 值为0（相当于填充帧）用于未知帧类型。 应用层型连接关闭帧（类型0x1d）不包含此字段。
+ 原因语句长度（Reason Phrase Length）：  一个可变长度整型值，指定原因语句的字节长度。 由于连接关闭帧不能被拆分到多个数据包，因此任何对数据包大小作出的限制也会相应得限制原因语句的可用空间。
+ 原因语句（Reason Phrase）：  关闭相关的附加诊断信息。 如果发送方选择不在错误码之外给出更多细节，该字段可以是零长度。 该字段应该是UTF-8编码字符串RFC3629，即使该帧没有携带如语言标签之类的信息，这些信息有助于帮助创建文本之外的其他实体理解。
+  连接关闭帧（0x1d类型）的应用指定变量只可以通过0-RTT或1-RTT包发送，详见第12.5章。 当应用层意图在握手阶段放弃一条连接时，终端可以通过初始包或握手包发送一个错误码为APPLICATION_ERROR的连接关闭帧（类型0x1c）。</description>
     </item>
     
     <item>
@@ -905,7 +916,10 @@ ACK块的结构如图26所示。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.20_HANDSHAKE_DONE_Frames/</guid>
-      <description></description>
+      <description>服务端使用握手完成帧（HANDSHAKE_DONE frame，类型0x1e）向客户端发送确认握手的信号。
+握手完成帧格式如图44所示，可见该类帧没有内容。
+握手完成帧 { 类型 (i) = 0x1e, } 图44：握手完成帧格式
+ 握手完成帧只可以由服务端发送。 服务端必须不能在完成握手前发送握手完成帧。 服务的必须必须将收到握手完成帧视为一个PROTOCOL_VIOLATION类型连接错误。</description>
     </item>
     
     <item>
@@ -914,7 +928,42 @@ ACK块的结构如图26所示。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.21_Extension_Frames/</guid>
-      <description></description>
+      <description>QUIC帧不使用自描述编码。 终端因而需要理解所有帧的语法才能成功处理数据包。 这使帧的编码得以高效，但是也意味着终端不能发送一个对端不知道类型的帧。
+意图使用新类型帧的QUIC扩展必须事先确保对端能够理解该帧。 终端可以使用传输参数表示其愿意接收的扩展帧类型。 一个传输参数可以表示支持一个或多个扩展帧类型。
+修改或替换核心协议功能（包括帧类型）的扩展将难以与其他修改相同功能的扩展兼容，除非明确定义了组合的行为方式。 这种扩展应该定义如何与先前定义的修改了相同协议组件的扩展进行互动。
+扩展帧必须是受拥塞控制的，且必须触发ACK帧发送。 替换或补充ACK帧的扩展帧除外。 扩展帧不包含在流量控制中，除非在扩展中有指定。
+IANA注册表用于管理帧类型的分配，详见第22.2章。</description>
+    </item>
+    
+    <item>
+      <title>20.1. 传输层错误码</title>
+      <link>/RFC9000_Chinese_Translation/Error_Codes/20.1_Transport_Error_Codes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Codes/20.1_Transport_Error_Codes/</guid>
+      <description>本章列出可能在0x1c类型连接关闭帧中使用的QUIC错误码的定义。 这些错误可能在接关闭帧**中携带该错误码以通知连接在没有发生任何错误之下关闭。 整个连接期间发生。
+ NO_ERROR (0x00，无错误):  终端在**连 INTERNAL_ERROR (0x01，内部错误):
+  ： 终端遇到内部错误而不能继续维持连接。
+ CONNECTION_REFUSED (0x02，连接拒绝):  服务端拒绝接收新连接。
+ FLOW_CONTROL_ERROR (0x03，流量控制错误):  终端收到的数据量多于其被推荐的数据量上限，详见第4章。
+ STREAM_LIMIT_ERROR (0x04，流限制错误):  终端收到一个流标识对应帧超过了该相关类型的流被推荐的流上限。
+ STREAM_STATE_ERROR (0x05，流状态错误):  终端收到流的一个帧，但是当前所处状态不允许接收该类帧，详见第3章。
+ FINAL_SIZE_ERROR (0x06，最终大小错误):  1、终端收到包含超过先前确立的最终大小数据量数据的流帧； 2、终端收到包含一个最终大小的流帧或流重置帧，该最终大小小于该流已经收到数据的大小； 3、或终端收到包含的最终大小与已经确立的最终大小不一致的流帧或流重置帧。
+ FRAME_ENCODING_ERROR (0x07，帧编码错误):  终端收到一个错误格式的帧——例如，一个未知类型的帧，或包含过多确认范围以至于超出数据包剩余空间所能承载的ACK帧。
+ TRANSPORT_PARAMETER_ERROR (0x08，传输参数错误):  终端收到的传输参数存在格式错误、包含无效值、省略了强制要求传输的、传输了禁止传输的，或存在其他错误。
+ CONNECTION_ID_LIMIT_ERROR (0x09，连接ID限制错误):  对端提供的连接ID数量超出了active_connection_id_limit的限制。
+ PROTOCOL_VIOLATION (0x0a，协议违背):  终端检测到未被更具体的错误码覆盖的违背协议错误。
+ INVALID_TOKEN (0x0b，无效令牌):  服务端收到客户端包含无效令牌字段的初始包。
+ APPLICATION_ERROR (0x0c，应用错误):  应用程序或应用层协议导致连接关闭。</description>
+    </item>
+    
+    <item>
+      <title>20.2 应用协议错误码</title>
+      <link>/RFC9000_Chinese_Translation/Error_Codes/20.2_Application_Protocol_Error_Codes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Codes/20.2_Application_Protocol_Error_Codes/</guid>
+      <description>应用程序错误码留给应用协议管理。 应用协议错误码用于重置帧（第19.4章）、停止发送帧（第19.5章），以及0x1d类型的连接关闭帧（第19.19章）。</description>
     </item>
     
     <item>
@@ -923,12 +972,10 @@ ACK块的结构如图26所示。
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/README/</guid>
-      <description>RFC9000及相关QUIC文档翻译 本站点用来翻译RFC9000等一系列QUIC相关文档。
+      <description>RFC9000 QUIC中文翻译 QUIC传输协议中文翻译。
 搭建运行环境 本站点基于hugo。下面介绍如何运行本站开发环境：
 如何运行安装及运行hugo Linux下可以直接apt install hugo安装环境，mac下可以用brew命令安装，windows下则需要去hugo站点下载hugo.exe执行文件并添加到环境变量里， 使得在命令行下执行hugo --help不会提示说找不到执行文件。
 更多请移步Hugo文档。
-关于本人 大家好，我是文档译者秋航。QUIC是一个新兴网络传输协议，涉及网络4-7层，性能优异，影响重大。
-本人水平有限，译文尚未完成，多有疏漏，还请各位多多指教！欢迎大家积极参与翻译与勘误，多多提交合并请求，感谢感谢！
 翻译说明 在翻译的过程中，深刻体会到英语与汉语语法思维上的差别，其也体现在行文的方方面面。以下记录翻译QUIC系列文档时应该做的处理：
 1. 方括号引用参考文献 形如：
 The integration of TLS and QUIC is described in more detail in [[QUIC-TLS](#QUIC-TLS)]. [QUIC-TLS]是句子里实际提到的参考文献，这个结构本身参与语法构建，按照中文的习惯一般使用书名号《》将这种引用括起来。因此其应该翻译为：

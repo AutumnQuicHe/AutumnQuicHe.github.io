@@ -408,6 +408,26 @@
 
 
         
+            
+    <li>
+        <a href="#20_Error_Codes">20. 流量控制</a>
+
+        <ul>
+            
+                
+                    <li><a href="#20.1_Transport_Error_Codes">20.1. 传输层错误码</a></li>
+                
+            
+                
+                    <li><a href="#20.2_Application_Protocol_Error_Codes">20.2 应用协议错误码</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
     
 </ul>
 
@@ -435,6 +455,8 @@
                 
                     
                 
+                    
+                
             </ul>
             <br>
           
@@ -442,7 +464,7 @@
     </div>
 
     <div class="version">
-            generated on Nov 21, 2021
+            generated on Nov 25, 2021
     </div>
 </div>
 
@@ -2825,11 +2847,11 @@ ACK块可以重复。
         <p>终端可以使用<strong>通道挑战帧</strong>（PATH_CHALLENGE frame，类型是<code>0x1a</code>）检查到对端的可达性以及进行连接迁移过程中的通道验证。</p>
 <p><strong>通道挑战帧</strong>格式如<a href="#Figure_41_PATH_CHALLENGE_Frame_Format">图41</a>所示。</p>
 <div id=Figure_41_PATH_CHALLENGE_Frame_Format class="block ref">
-<pre><code>停用连接ID帧 {
+<pre><code>通道挑战帧 {
   类型 (i) = 0x1a,
   数据 (64),
 }
-</code></pre><p><a href="#Figure_41_PATH_CHALLENGE_Frame_Format">图40：停用连接ID帧格式</a></p>
+</code></pre><p><a href="#Figure_41_PATH_CHALLENGE_Frame_Format">图41：通道挑战帧格式</a></p>
 </div>
 <p><strong>通道挑战帧</strong>包含如下字段：</p>
 <dl>
@@ -2856,8 +2878,16 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        <p><strong>回复通道帧</strong>（PATH_RESPONSE frame，类型为<code>0x1b</code>）作为<strong>通道挑战帧</strong>的响应发送。
-其格式与<strong>通道挑战帧</strong>（详见<a href="">第19.17章</a>）相同。</p>
+        <p><strong>回复通道帧</strong>（PATH_RESPONSE frame，类型为<code>0x1b</code>）作为<strong>通道挑战帧</strong>的响应发送。</p>
+<p><strong>回复通道帧</strong>格式如<a href="#Figure_42_PATH_RESPONSE_Frame_Format">图42</a>所示。
+<strong>回复通道帧</strong>格式与<strong>通道挑战帧</strong>一致，详见<a href="">第19.17章</a>。</p>
+<div id=Figure_42_PATH_RESPONSE_Frame_Format class="block ref">
+<pre><code>回复通道帧 {
+  类型 (i) = 0x1a,
+  数据 (64),
+}
+</code></pre><p><a href="#Figure_42_PATH_RESPONSE_Frame_Format">图42：回复通道帧格式</a></p>
+</div>
 <p>如果<strong>回复通道帧</strong>的内容与先前发送的<strong>通道挑战帧</strong>内容不匹配，终端<em><strong>可以</strong></em>生成一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
 
     </div>
@@ -2875,7 +2905,50 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>终端发送<strong>连接关闭帧</strong>（CONNECTION_CLOSE frame，类型是<code>0x1c</code>或<code>0x1d</code>）通知对端连接正在关闭中。
+<code>0x1c</code>类型的<strong>连接关闭帧</strong>用于QUIC层发送错误信号，或没有错误（携带<code>NO_ERROR</code>码）。
+<code>0x1d</code>类型的<strong>连接关闭帧</strong>用于使用QUIC的应用程序发送错误信号。</p>
+<p>如果有打开的流尚未被显示关闭，当连接关闭时它们将被隐式关闭。</p>
+<p><strong>连接关闭帧</strong>格式如<a href="#Figure_43_CONNECTION_CLOSE_Frame_Format">图43</a>所示。</p>
+<div id=Figure_43_CONNECTION_CLOSE_Frame_Format class="block ref">
+<pre><code>连接关闭帧 {
+  类型 (i) = 0x1c..0x1d,
+  错误码 (i),
+  [帧类型 (i)],
+  原因语句长度 (i),
+  原因语句 (..),
+}
+</code></pre><p><a href="#Figure_43_CONNECTION_CLOSE_Frame_Format">图43：连接关闭帧格式</a></p>
+</div>
+<p><strong>连接关闭帧</strong>包含如下字段：</p>
+<dl>
+<dt>错误码：</dt>
+<dd>
+<p>一个可变长度整型值，表示关闭该连接的原因。
+<code>0x1c</code>类型<strong>连接关闭帧</strong>使用<a href="">第20.1章</a>定义的错误码；
+<code>0x1d</code>类型<strong>连接关闭帧</strong>使用<a href="">第20.2章</a>定义的错误码。</p>
+</dd>
+<dt>帧类型：</dt>
+<dd>
+<p>一个可变长度整型值，编码触发该错误的帧类型。
+值为0（相当于<strong>填充帧</strong>）用于未知帧类型。
+应用层型<strong>连接关闭帧</strong>（类型<code>0x1d</code>）不包含此字段。</p>
+</dd>
+<dt>原因语句长度（Reason Phrase Length）：</dt>
+<dd>
+<p>一个可变长度整型值，指定原因语句的字节长度。
+由于<strong>连接关闭帧</strong>不能被拆分到多个数据包，因此任何对数据包大小作出的限制也会相应得限制原因语句的可用空间。</p>
+</dd>
+<dt>原因语句（Reason Phrase）：</dt>
+<dd>
+<p>关闭相关的附加诊断信息。
+如果发送方选择不在错误码之外给出更多细节，该字段可以是零长度。
+该字段<em><strong>应该</strong></em>是UTF-8编码字符串<sup><a href="#RFC3629">RFC3629</a></sup>，即使该帧没有携带如语言标签之类的信息，这些信息有助于帮助创建文本之外的其他实体理解。</p>
+</dd>
+</dl>
+<p><strong>连接关闭帧</strong>（<code>0x1d</code>类型）的应用指定变量只可以通过0-RTT或1-RTT包发送，详见<a href="">第12.5章</a>。
+当应用层意图在握手阶段放弃一条连接时，终端可以通过初始包或握手包发送一个错误码为<code>APPLICATION_ERROR</code>的<strong>连接关闭帧</strong>（类型<code>0x1c</code>）。</p>
+
     </div>
 </section>
 
@@ -2891,7 +2964,18 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
-        
+        <p>服务端使用<strong>握手完成帧</strong>（HANDSHAKE_DONE frame，类型<code>0x1e</code>）向客户端发送确认握手的信号。</p>
+<p><strong>握手完成帧</strong>格式如<a href="#Figure_44_HANDSHAKE_DONE_Frame_Format">图44</a>所示，可见该类帧没有内容。</p>
+<div id=Figure_44_HANDSHAKE_DONE_Frame_Format class="block ref">
+<pre><code>握手完成帧 {
+  类型 (i) = 0x1e,
+}
+</code></pre><p><a href="#Figure_44_HANDSHAKE_DONE_Frame_Format">图44：握手完成帧格式</a></p>
+</div>
+<p><strong>握手完成帧</strong>只可以由服务端发送。
+服务端<em><strong>必须不</strong></em>能在完成握手前发送<strong>握手完成帧</strong>。
+服务的<em><strong>必须</strong></em>必须将收到<strong>握手完成帧</strong>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+
     </div>
 </section>
 
@@ -2907,7 +2991,155 @@ ACK块可以重复。
         </h2>
     
     <div class="content">
+        <p>QUIC帧不使用自描述编码。
+终端因而需要理解所有帧的语法才能成功处理数据包。
+这使帧的编码得以高效，但是也意味着终端不能发送一个对端不知道类型的帧。</p>
+<p>意图使用新类型帧的QUIC扩展<em><strong>必须</strong></em>事先确保对端能够理解该帧。
+终端可以使用传输参数表示其愿意接收的扩展帧类型。
+一个传输参数可以表示支持一个或多个扩展帧类型。</p>
+<p>修改或替换核心协议功能（包括帧类型）的扩展将难以与其他修改相同功能的扩展兼容，除非明确定义了组合的行为方式。
+这种扩展<em><strong>应该</strong></em>定义如何与先前定义的修改了相同协议组件的扩展进行互动。</p>
+<p>扩展帧<em><strong>必须</strong></em>是受拥塞控制的，且<em><strong>必须</strong></em>触发<strong>ACK帧</strong>发送。
+替换或补充ACK帧的扩展帧除外。
+扩展帧不包含在流量控制中，除非在扩展中有指定。</p>
+<p>IANA注册表用于管理帧类型的分配，详见<a href="">第22.2章</a>。</p>
+
+    </div>
+</section>
+
         
+    
+
+
+
+        
+                <section class="page" id="20_Error_Codes">
+    
+        <h1>
+    
+            <a href="#20_Error_Codes">20. 流量控制</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>QUIC传输层错误码和应用层错误码都是62位无符号整型。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="20.1_Transport_Error_Codes">
+    
+        <h1>
+    
+            <a href="#20.1_Transport_Error_Codes">20.1. 传输层错误码</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>本章列出可能在<code>0x1c</code>类型<strong>连接关闭帧</strong>中使用的QUIC错误码的定义。
+这些错误可能在接关闭帧**中携带该错误码以通知连接在没有发生任何错误之下关闭。
+整个连接期间发生。</p>
+<dl>
+<dt>NO_ERROR (<code>0x00</code>，无错误):</dt>
+<dd>
+<p>终端在**连
+INTERNAL_ERROR (<code>0x01</code>，内部错误):</p>
+</dd>
+</dl>
+<p>：  终端遇到内部错误而不能继续维持连接。</p>
+<dl>
+<dt>CONNECTION_REFUSED (<code>0x02</code>，连接拒绝):</dt>
+<dd>
+<p>服务端拒绝接收新连接。</p>
+</dd>
+<dt>FLOW_CONTROL_ERROR (<code>0x03</code>，流量控制错误):</dt>
+<dd>
+<p>终端收到的数据量多于其被推荐的数据量上限，详见<a href="">第4章</a>。</p>
+</dd>
+<dt>STREAM_LIMIT_ERROR (<code>0x04</code>，流限制错误):</dt>
+<dd>
+<p>终端收到一个流标识对应帧超过了该相关类型的流被推荐的流上限。</p>
+</dd>
+<dt>STREAM_STATE_ERROR (<code>0x05</code>，流状态错误):</dt>
+<dd>
+<p>终端收到流的一个帧，但是当前所处状态不允许接收该类帧，详见<a href="">第3章</a>。</p>
+</dd>
+<dt>FINAL_SIZE_ERROR (<code>0x06</code>，最终大小错误):</dt>
+<dd>
+<p>1、终端收到包含超过先前确立的最终大小数据量数据的<strong>流帧</strong>；
+2、终端收到包含一个最终大小的<strong>流帧</strong>或<strong>流重置帧</strong>，该最终大小小于该流已经收到数据的大小；
+3、或终端收到包含的最终大小与已经确立的最终大小不一致的<strong>流帧</strong>或<strong>流重置帧</strong>。</p>
+</dd>
+<dt>FRAME_ENCODING_ERROR (<code>0x07</code>，帧编码错误):</dt>
+<dd>
+<p>终端收到一个错误格式的帧——例如，一个未知类型的帧，或包含过多确认范围以至于超出数据包剩余空间所能承载的<strong>ACK帧</strong>。</p>
+</dd>
+<dt>TRANSPORT_PARAMETER_ERROR (<code>0x08</code>，传输参数错误):</dt>
+<dd>
+<p>终端收到的传输参数存在格式错误、包含无效值、省略了强制要求传输的、传输了禁止传输的，或存在其他错误。</p>
+</dd>
+<dt>CONNECTION_ID_LIMIT_ERROR (<code>0x09</code>，连接ID限制错误):</dt>
+<dd>
+<p>对端提供的连接ID数量超出了<code>active_connection_id_limit</code>的限制。</p>
+</dd>
+<dt>PROTOCOL_VIOLATION (<code>0x0a</code>，协议违背):</dt>
+<dd>
+<p>终端检测到未被更具体的错误码覆盖的违背协议错误。</p>
+</dd>
+<dt>INVALID_TOKEN (<code>0x0b</code>，无效令牌):</dt>
+<dd>
+<p>服务端收到客户端包含无效令牌字段的初始包。</p>
+</dd>
+<dt>APPLICATION_ERROR (<code>0x0c</code>，应用错误):</dt>
+<dd>
+<p>应用程序或应用层协议导致连接关闭。</p>
+</dd>
+<dt>CRYPTO_BUFFER_EXCEEDED (<code>0x0d</code>，加密缓存溢出):</dt>
+<dd>
+<p>终端在<strong>加密帧</strong>收到的数据量超出其缓存容量。</p>
+</dd>
+<dt>KEY_UPDATE_ERROR (<code>0x0e</code>，密钥更新错误):</dt>
+<dd>
+<p>终端在执行密钥更新中检测到错误，详见《<a href="">QUIC-TLS</a>》<a href="">第6章</a>。</p>
+</dd>
+<dt>AEAD_LIMIT_REACHED (<code>0x0f</code>，触及AEAD上限):</dt>
+<dd>
+<p>终端已经触及给定连接所用AEAD算法的保密性或完整性上限。</p>
+</dd>
+<dt>NO_VIABLE_PATH (<code>0x10</code>，无可行通道):</dt>
+<dd>
+<p>终端已经确认网络通道不能支持QUIC。
+终端不太可能收到携带该错误码的<strong>连接关闭帧</strong>，除非通道不支持足够大的MTU。</p>
+</dd>
+<dt>CRYPTO_ERROR (<code>0x0100</code>-<code>0x01ff</code>，加密错误):</dt>
+<dd>
+<p>加密握手失败。
+为所使用的加密握手专用的错误码保留256个值的范围。
+使用TLS进行加密握手时可能出现的错误码详见《<a href="">QUIC-TLS</a>》<a href="">第4.8章</a>。</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="20.2_Application_Protocol_Error_Codes">
+    
+        <h1>
+    
+            <a href="#20.2_Application_Protocol_Error_Codes">20.2 应用协议错误码</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>应用程序错误码留给应用协议管理。
+应用协议错误码用于<strong>重置帧</strong>（<a href="">第19.4章</a>）、<strong>停止发送帧</strong>（<a href="">第19.5章</a>），以及<code>0x1d</code>类型的<strong>连接关闭帧</strong>（<a href="">第19.19章</a>）。</p>
+
     </div>
 </section>
 
