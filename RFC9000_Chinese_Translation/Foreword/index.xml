@@ -21,7 +21,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Foreword/abstract/</guid>
-      <description>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的秘钥协商、丢包检测及众多拥塞控制算法整合。</description>
+      <description>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的密钥协商、丢包检测及众多拥塞控制算法整合。</description>
     </item>
     
     <item>

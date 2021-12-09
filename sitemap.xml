@@ -128,7 +128,23 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Security_and_Privacy_Considerations/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.1_Example_Handshake_Flows/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.2_Negotiating_Connection_IDs/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.3_Authenticating_Connection_IDs/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/Transport_Parameters/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/Transport_Parameters/7.4.1_Values_of_Transport_Parameters_for_0_RTT/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/Transport_Parameters/7.4.2_New_Transport_Parameters/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.5_Cryptographic_Message_Buffering/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/</loc>
   </url><url>
@@ -154,11 +170,11 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.2_PING_Frames/</loc>
   </url><url>
-    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.2_ECN_Counts/</loc>
-  </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.1_ACK_Ranges/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/ACK_Frames/19.3.2_ECN_Counts/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.4_RESET_STREAM_Frames/</loc>
   </url><url>

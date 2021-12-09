@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>20. 流量控制 on Autumn Navigation</title>
+    <title>20. 错误码 on Autumn Navigation</title>
     <link>/RFC9000_Chinese_Translation/Error_Codes/</link>
-    <description>Recent content in 20. 流量控制 on Autumn Navigation</description>
+    <description>Recent content in 20. 错误码 on Autumn Navigation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Error_Codes/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -12,9 +12,10 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Error_Codes/20.1_Transport_Error_Codes/</guid>
-      <description>本章列出可能在0x1c类型连接关闭帧中使用的QUIC错误码的定义。 这些错误可能在接关闭帧**中携带该错误码以通知连接在没有发生任何错误之下关闭。 整个连接期间发生。
- NO_ERROR (0x00，无错误):  终端在**连 INTERNAL_ERROR (0x01，内部错误):
-  ： 终端遇到内部错误而不能继续维持连接。
+      <description>本章列出可能在0x1c类型连接关闭帧中使用的QUIC错误码的定义。 这些错误可能在整个连接期间发生。
+ NO_ERROR (0x00，无错误):  终端在连接关闭帧中携带该错误码以通知连接在没有发生任何错误之下关闭。
+  INTERNAL_ERROR (0x01，内部错误):
+： 终端遇到内部错误而不能继续维持连接。
  CONNECTION_REFUSED (0x02，连接拒绝):  服务端拒绝接收新连接。
  FLOW_CONTROL_ERROR (0x03，流量控制错误):  终端收到的数据量多于其被推荐的数据量上限，详见第4章。
  STREAM_LIMIT_ERROR (0x04，流限制错误):  终端收到一个流标识对应帧超过了该相关类型的流被推荐的流上限。

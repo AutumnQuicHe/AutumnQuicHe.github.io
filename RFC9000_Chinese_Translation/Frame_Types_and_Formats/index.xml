@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>19. 传输参数编码 on Autumn Navigation</title>
+    <title>19. 帧类型与格式 on Autumn Navigation</title>
     <link>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/</link>
-    <description>Recent content in 19. 传输参数编码 on Autumn Navigation</description>
+    <description>Recent content in 19. 帧类型与格式 on Autumn Navigation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Frame_Types_and_Formats/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -26,7 +26,7 @@
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.2_PING_Frames/</guid>
       <description>终端可以使用Ping帧（类型为0x01）验证其对端是否仍然活跃，或检查到对端的可达性。
 Ping帧格式如图24所示，可见Ping帧无内容。
-填充帧 { 类型 (i) = 0x01, } 图24：Ping帧格式
+Ping帧 { 类型 (i) = 0x01, } 图24：Ping帧格式
  </description>
     </item>
     
@@ -55,7 +55,7 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.5_STOP_SENDING_Frames/</guid>
       <description>终端使用停止发送帧（STOP_SENDING frame，类型是0x05）告知对方收到每个应用层请求时传入的数据将被丢弃。 停止发送帧要求对端停止在某条流上传输数据。
-一个停止发送帧可以在流的“接收”和“数据量确认”状态发送，详见第3.2章。 收到一条本地由初始化但是却尚未被创建的流的停止发送帧必须视为一个STREAM_STATE_ERROR类型的连接错误。 终端收到只用于接收的流的停止发送帧{&amp;lt; req_level MUST &amp;gt;}}以STREAM_STATE_ERROR类型的错误关闭连接。
+一个停止发送帧可以在流的“接收”和“数据量确认”状态发送，详见第3.2章。 收到一条由本地初始化但是却尚未被创建的流的停止发送帧必须视为一个STREAM_STATE_ERROR类型的连接错误。 终端收到只用于接收的流的停止发送帧必须以STREAM_STATE_ERROR类型的错误关闭连接。
 停止发送帧格式如图29所示。
 停止发送帧 { 类型 (i) = 0x05, 流ID (i), 应用层协议错误码 (i), } 图29：停止发送帧格式
  停止发送帧包含如下字段：
@@ -144,7 +144,8 @@ Ping帧格式如图24所示，可见Ping帧无内容。
  最大流数据量帧包含如下字段：
  流ID：  被作用的流的流ID，以可变长度整数值编码。
  最大流数据量（Maximum Stream Data）：  一个可变长度整型值，表示可以在标识流上发送的最大数据量，单位字节。
-  当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。 收到流帧可能不会提升最大接收偏移量。 流上发送的数据必须不可以超过接收方发出的最大流数据量值的最大值。 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端必须以FLOW_CONTROL_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
+  当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。 收到流帧可能不会提升最大接收偏移量。
+流上发送的数据必须不可以超过接收方发出的最大流数据量值的最大值。 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端必须以FLOW_CONTROL_ERROR类型错误关闭连接。 这包括违背早期数据记录的限制，详见第7.4.1章。</description>
     </item>
     
     <item>
@@ -223,12 +224,11 @@ Ping帧格式如图24所示，可见Ping帧无内容。
  长度（Length）：  一个8位无符号整型值，包含连接ID的长度。 小于1或大于20的长度值均是无效的，且必须视其为一个FRAME_ENCODING_ERROR类型连接错误。
  连接ID：  一个指定长度的连接ID。
  无状态重置令牌（Stateless Reset Token）：  一个128位值，在对关联的连接ID进行无状态重置时使用，详见第10.3章。
-  如果它现在需要对端使用0长度的目标连接ID发送包，终端禁止发送这个帧。
-如果终端当前需要对端使用0长度的目标连接ID，那么其必须不能发送该帧。 将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。 终端发送0长度目标连接ID的数据包时，必须将收到新连接ID帧的情况视为一个PROTOCOL_VIOLATION类型连接错误。
+  如果终端当前需要对端使用0长度的目标连接ID，那么其必须不能发送该帧。 将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。 终端发送0长度目标连接ID的数据包时，必须将收到新连接ID帧的情况视为一个PROTOCOL_VIOLATION类型连接错误。
 传输错误、超时和重传可能导致相同的新连接ID帧被重复接收。 重复接收相同的该类帧的情况必须不能被当作连接错误处理。 接收方可以根据新连接ID帧提供的序列号处理重复收到相同新连接ID帧的情况。
 如果终端收到一个新连接ID帧重复了之前发布的连接ID，却有着不同的无状态重置令牌或不同的序列号字段值或该序列号用于其他不同的连接ID，终端可以将之视为一个PROTOCOL_VIOLATION类型连接错误。
 “停用前”字段适用于在连接设置期间创建的连接ID以及preferred_address传输参数，详见第5.1.2章。 “停用前”字段值必须小于或等于“序列号”字段值。 收到“停用前”字段值大于序列号字段值必须视为一个FRAME_ENCODING_ERROR类型连接错误。
-一旦发生方指定了一个“停用前”字段值，在后续新连接ID帧中发送的较小值就不再发挥作用了。 接收方必须忽略任何没有提高最大“停用前”值的“停用前”字段。
+一旦发送方指定了一个“停用前”字段值，在后续新连接ID帧中发送的较小值就不再发挥作用了。 接收方必须忽略任何没有提高最大“停用前”值的“停用前”字段。
 收到序列号小于已收到新连接ID帧的“停用前”字段值的新连接ID帧的终端必须发送一个相应的停用新收到连接ID的停用连接ID帧，除非其已经对该序列号发过这个帧了。</description>
     </item>
     
@@ -283,7 +283,7 @@ Ping帧格式如图24所示，可见Ping帧无内容。
       
       <guid>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/19.19_CONNECTION_CLOSE_Frames/</guid>
       <description>终端发送连接关闭帧（CONNECTION_CLOSE frame，类型是0x1c或0x1d）通知对端连接正在关闭中。 0x1c类型的连接关闭帧用于QUIC层发送错误信号，或没有错误（携带NO_ERROR码）。 0x1d类型的连接关闭帧用于使用QUIC的应用程序发送错误信号。
-如果有打开的流尚未被显示关闭，当连接关闭时它们将被隐式关闭。
+如果有打开的流尚未被显式关闭，当连接关闭时它们将被隐式关闭。
 连接关闭帧格式如图43所示。
 连接关闭帧 { 类型 (i) = 0x1c..0x1d, 错误码 (i), [帧类型 (i)], 原因语句长度 (i), 原因语句 (..), } 图43：连接关闭帧格式
  连接关闭帧包含如下字段：

@@ -276,6 +276,56 @@
         
             
     <li>
+        <a href="#7_Cryptographic_and_Transport_Handshake">7. 加密与传输握手</a>
+
+        <ul>
+            
+                
+                    <li><a href="#7.1_Example_Handshake_Flows">7.1. 握手流程示例</a></li>
+                
+            
+                
+                    <li><a href="#7.2_Negotiating_Connection_IDs">7.2. 协商连接ID</a></li>
+                
+            
+                
+                    <li><a href="#7.3_Authenticating_Connection_IDs">7.3. 验证连接ID</a></li>
+                
+            
+                
+                    
+    <li>
+        <a href="#7.4_Transport_Parameters">7.4. 加密与传输握手</a>
+
+        <ul>
+            
+                
+                    <li><a href="#7.4.1_Values_of_Transport_Parameters_for_0_RTT">7.4.1. 0-RTT传输参数</a></li>
+                
+            
+                
+                    <li><a href="#7.4.2_New_Transport_Parameters">7.4.2. 新传输参数</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+                
+            
+                
+                    <li><a href="#7.5_Cryptographic_Message_Buffering">7.5. 加密信息缓存</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
         <a href="#18_Transport_Parameter_Encoding">18. 传输参数编码</a>
 
         <ul>
@@ -296,7 +346,7 @@
         
             
     <li>
-        <a href="#19_Frame_Types_and_Formats">19. 传输参数编码</a>
+        <a href="#19_Frame_Types_and_Formats">19. 帧类型与格式</a>
 
         <ul>
             
@@ -316,11 +366,11 @@
         <ul>
             
                 
-                    <li><a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a></li>
+                    <li><a href="#19.3.1_ACK_Ranges">19.3.1 ACK块</a></li>
                 
             
                 
-                    <li><a href="#19.3.1_ACK_Ranges">19.3.1 ACK块</a></li>
+                    <li><a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a></li>
                 
             
         </ul>
@@ -410,7 +460,7 @@
         
             
     <li>
-        <a href="#20_Error_Codes">20. 流量控制</a>
+        <a href="#20_Error_Codes">20. 错误码</a>
 
         <ul>
             
@@ -457,6 +507,8 @@
                 
                     
                 
+                    
+                
             </ul>
             <br>
           
@@ -464,7 +516,7 @@
     </div>
 
     <div class="version">
-            generated on Nov 25, 2021
+            generated on Dec 10, 2021
     </div>
 </div>
 
@@ -556,7 +608,7 @@
         </h2>
     
     <div class="content">
-        <p>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的秘钥协商、丢包检测及众多拥塞控制算法整合。</p>
+        <p>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的密钥协商、丢包检测及众多拥塞控制算法整合。</p>
 
     </div>
 </section>
@@ -617,7 +669,7 @@
 <p>QUIC是一个面向连接的协议，在客户端及服务端之间建立有状态的交互。</p>
 <p>QUIC握手由密钥协商及传输参数协商组成。QUIC集成了TLS握手《<a href="">TLS 1.3</a>》，同时以自定义的帧保护数据包。更多关于TLS与QUIC集成的细节描述详见《<a href="">QUIC-TLS</a>》。握手过程被设计成支持尽早交换应用数据（0-RTT），包含一个需要通过某种形式的提前交流或配置来开启的客户端选项。</p>
 <p>终端通过QUIC交流是以交互QUIC数据包的形式实现的。大多数数据包装载着一个或多个在终端间搬运控制信息和应用数据的帧。QUIC会验证每个包的内容，并根据实际情况对每个数据包进行加密。QUIC数据包通过UDP报文<sup>《<a href="">UDP</a>》</sup>传输从而能够更好地支持现有的系统及网络环境。</p>
-<p>应用层协议通过流在QUIC连接上交换信息，每条流都是有序的字节序。流的类型分两种：双向流，支持双端发送数据；以及单向流，只支持一端发送数据。QUIC使用一种基于信用的方案来限制流的创建以及每条流可以发送的数据量。</p>
+<p>应用层协议通过流在QUIC连接上交换信息，每条流都是有序的字节序列。流的类型分两种：双向流，支持双端发送数据；以及单向流，只支持一端发送数据。QUIC使用一种基于额度的方案来限制流的创建以及每条流可以发送的数据量。</p>
 <p>QUIC以提供必要反馈的方式实现可靠传输及拥塞控制，《<a href="">QUIC恢复</a>》第6章描述了QUIC的一种数据丢失及恢复算法；QUIC通过拥塞控制避免网络拥塞，《<a href="">QUIC恢复</a>》第7章描述了QUIC的一种典型拥塞控制算法。</p>
 <p>QUIC连接不会严格限制在一条单独的网络通道上。连接迁移根据连接标识符将连接迁移到一个新的网络通道上。当前版本QUIC只支持客户端进行连接迁移。在改变网络或地址映射——如NAT重定向——后，这个设计使连接仍然能够继续下去而不会断开。</p>
 <p>有多种方式可以关闭连接。应用程序可以平滑关闭连接；双端可以协商一个超时时间段在超时后关闭连接；触发错误能够立即断开连接；一端失去状态后也能通过一种无状态机制关闭连接。</p>
@@ -652,7 +704,7 @@
 <ul>
 <li><a href="">第5章</a>描述连接相关的核心概念，</li>
 <li><a href="">第6章</a>描述版本协商</li>
-<li><a href="">第7章</a>详细描述连接连接建立的过程，</li>
+<li><a href="">第7章</a>详细描述连接建立的过程，</li>
 <li><a href="">第8章</a>描述地址验证及危险的拒绝服务迁移攻击，</li>
 <li><a href="">第9章</a>描述终端如何将一个连接迁移到新的网络通道上，</li>
 <li><a href="">第10章</a>列举关闭一个已打开连接的各个方式，以及</li>
@@ -671,7 +723,7 @@
 <p>最后，QUIC协议要素的编码细节描述在：</p>
 <ul>
 <li><a href="">第15章</a>版本，</li>
-<li><a href="">第16章</a>整形编码，</li>
+<li><a href="">第16章</a>整型编码，</li>
 <li><a href="">第17章</a>数据包头部，</li>
 <li><a href="">第18章</a>传输参数，</li>
 <li><a href="">第19章</a>帧，以及</li>
@@ -705,7 +757,7 @@
 <p>客户端：初始化QUIC连接的终端。</p>
 <p>服务端：接收QUIC连接的终端。</p>
 <p>QUIC数据包：QUIC的一个可以封装进UDP报文中的完整处理单元。单个UDP报文可以封装进一个或多个QUIC数据包。</p>
-<p>ACK触发包：一个包含除确认帧（ACK）、填充帧（PADING）及连接关闭帧（CONNECTION_CLOSE）外的帧的QUIC数据包。接收方收到这类包会发确认，详见<a href="">第13.2.1章</a>。</p>
+<p>ACK触发包：一个包含除确认帧（ACK）、填充帧（PADDING）及连接关闭帧（CONNECTION_CLOSE）外的帧的QUIC数据包。接收方收到这类包会发确认，详见<a href="">第13.2.1章</a>。</p>
 <p>帧：一个结构化的协议信息单元。帧有多种类型，不同类型的帧携带不同类型的信息。帧由QUIC数据包承载。</p>
 <p>地址：当使用不受限制，由IP版本、IP地址及UDP端口号构成的元组表示网络通道的一端。</p>
 <p>连接ID：终端用来标识一条QUIC连接的标识符。每个终端选择一个或多个连接ID，从而在对端发送给本端的QUIC包中包含这些连接ID。该值对对端是不透明的。</p>
@@ -732,12 +784,12 @@
 <p>复杂的字段被命名后，由紧随命名的一个以一对花括号括起来的字段列表描述，列表中的字段以逗号分隔。</p>
 <p>单个字段包括长度信息、带正号的定值、可选值或本字段的副本。单个字段使用下述标准规范，且所有长度都以比特为单位：</p>
 <p><code>x (A)</code>: 表示<code>x</code>是<code>A</code>比特长度</p>
-<p><code>x (i)</code>: 表示<code>x</code>是一个使用第6章描述的变量长度编码的整形值</p>
+<p><code>x (i)</code>: 表示<code>x</code>是一个使用<a href="">第16章</a>描述的变量长度编码的整型值</p>
 <p><code>x (A..B)</code>: 表示<code>x</code>的长度可以是从<code>A</code>到<code>B</code>的所有值，省略<code>A</code>表示最小零位，并且省略<code>B</code>表示没有设置上限。这种格式的值总是以字符边界结束。</p>
 <p><code>x (L) = C</code>: 表示<code>x</code>有一个定值<code>C</code>，且<code>x</code>的长度为<code>L</code>，<code>L</code>可以用上述任何长度格式</p>
 <p><code>x (L) = C..D</code>: 表示x的值介于<code>C</code>到<code>D</code>之间，包括边界值<code>C</code>和<code>D</code>，<code>L</code>表示长度，同上</p>
 <p><code>[x (L)]</code>: 表示<code>x</code>是一个可选的值，长度为<code>L</code></p>
-<p><code>x (L)...</code>: 表示<code>x</code>重复0次或以上次数，且每个实例长度为<code>L</code></p>
+<p><code>x (L) ...</code>: 表示<code>x</code>重复0次或以上次数，且每个实例长度为<code>L</code></p>
 <p>本文使用网络字节序（也就是大端）值。字段每个字节的各个比特从高位到低位排列。</p>
 <p>约定单个字段通过使用复合字段的名称引用复合字段。</p>
 
@@ -759,7 +811,7 @@
         </h1>
     
     <div class="content">
-        <p>QUIC的流给应用提供了一个轻量、有序的字节流抽象，可以单向或双向的。</p>
+        <p>QUIC的流给应用提供了一个轻量、有序的字节流抽象，可以是单向或双向的。</p>
 <p>流可以通过发送数据创建。
 其他有关流管理的过程——结束、取消及流量控制——均是以引入最小开销为前提设计的。
 例如，一个流帧（<a href="">第19.8章</a>）能够开启、承载数据以及关闭一条流。流也能长时间存在并持续连接的整个生命周期。</p>
@@ -783,7 +835,7 @@ QUIC不给不同流之间的数据提供任何形式的顺序保证。</p>
     
     <div class="content">
         <p>流可以是单向或双向的。单向流往一个方向传输数据：从流发起端向对端发送；双向流允许双端向对端发送数据。</p>
-<p>在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（<code>0</code>-<code>2<sup>62</sup>-1</code>），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整形，详见<a href="">第16章</a>。一个QUIC终端<em><strong>必须不</strong></em>能在同一个连接的不同流上重复使用同一个数值作为流ID。</p>
+<p>在连接中，流以一个数字值标识，称为流ID。一个流ID是一个62比特的整数（<code>0</code>-<code>2<sup>62</sup>-1</code>），且与同连接中其他流的流ID严格区分。流ID编码为一个可变长度整型，详见<a href="">第16章</a>。一个QUIC终端<em><strong>必须不</strong></em>能在同一个连接的不同流上重复使用同一个数值作为流ID。</p>
 <p>流ID的最小有效位（0x01）标识流的发起者。
 客户端发起的流的ID是偶数（该位被置为0），服务端发起的流的ID是奇数（该位被置为1）。</p>
 <p>流ID的次小有效位（0x02）标识流是双向流（该位被置为0）抑或单向流（该位被置为1）。</p>
@@ -818,7 +870,7 @@ QUIC不给不同流之间的数据提供任何形式的顺序保证。</p>
 <p><a href="#Table_1_Stream_ID_Types">表格1：流类型</a></p>
 </div>
 <p>每种流类型的流空间从其最小值开始（依次从0x00到0x03）；每种流的每个流ID根据创建顺序依次线性递增。
-一个流ID如果超出了次序，将导致其所在类型的所有小于该流ID的流都被开启。</p>
+如果不按顺序地使用了一个流ID，将导致相同流类型的所有具有更小的流ID的流都被开启。</p>
 
     </div>
 </section>
@@ -969,7 +1021,7 @@ QUIC实现可以选择延迟分配流ID直到其发送首个<strong>流帧</stro
 <p>在应用层表示所有应用数据及一个带FIN置位的<strong>流帧</strong>都发送完成后，流的发送部分进入“发送完成”状态。
 从这个状态开始，终端只会做必要的数据重传。
 在对端收到最终流下标前，都有可能收到<strong>最大流数据帧</strong>。
-处与此状态的终端可以忽略任何其收到的<strong>最大流数据帧</strong>，这样是安全的。</p>
+处于此状态的终端可以忽略任何其收到的<strong>最大流数据帧</strong>，这样是安全的。</p>
 <p>当所有流数据都被成功确认后，发送部分进入“接收完成”状态，这是一个最终状态。</p>
 <p>处在“就绪”、“发送”及“发送完成”状态中的任何一个状态时，应用层都可以提出取消发送流数据。
 相应地，终端也可能从其对端收到一个<strong>停止发送帧</strong>（STOP_SENDING）。
@@ -1006,10 +1058,10 @@ QUIC实现可以选择延迟分配流ID直到其发送首个<strong>流帧</stro
 </div>
 <p>由对端发起的流（客户端发起的流类型是1和3，服务端发起的是0和2）的接收部分在收到该流的第一个<strong>流帧</strong>、<strong>流阻塞帧</strong>或<strong>流重置帧</strong>时创建。
 对于由对端创建的双向流，发送部分收到<strong>最大流数据帧</strong>或<strong>停止发送帧</strong>时也会创建该流的接收部分。
-流的接收部分的初始状态是“发送”状态。</p>
+流的接收部分的初始状态是“接受”状态。</p>
 <p>由本端发起的双向流（客户端发起的流类型是0，服务端发起的是1），当其发送部分进入“就绪”状态时，其接收部分进入“接收”状态。</p>
 <p>终端在收到<strong>最大流数据帧</strong>或<strong>停止发送帧</strong>后打开一条双向流。
-接收到一条未开启的流的<strong>最大流数据帧</strong>意味着对端已经开启了该流，并开始支持流量控制信用。
+接收到一条未开启的流的<strong>最大流数据帧</strong>意味着对端已经开启了该流，并开始支持流量控制额度。
 而接收到一条未开启流的<strong>停止发送帧</strong>意味着对端不会再从该流接收数据。
 无论这两种帧的哪一种都可能先于<strong>流帧</strong>或<strong>流阻塞帧</strong>到达本端，原因是包丢失或乱序。</p>
 <p>在一条流创建前，所有数值小于该流ID的同类型流都<em><strong>必须</strong></em>被创建。
@@ -1054,9 +1106,9 @@ QUIC实现<em><strong>可以</strong></em>打断流数据的传输，丢弃任�
     
     <div class="content">
         <p>流的发送端发送的帧只有三种能同时影响发送端和接收端状态：<strong>流帧</strong>（<a href="">第19.8章</a>）、<strong>流阻塞帧</strong>（<a href="">第19.13章</a>），以及<strong>流重置帧</strong>（<a href="">第19.4章</a>）。</p>
-<p>发送端<em><strong>必须不</strong></em>在最终状态（“接收完成”或“重置接收”）发送任何这些帧。当流处在“重置发送”或任何最终状态时，发送端<em><strong>必须不</strong></em>发送<strong>流帧</strong>或<strong>流阻塞帧</strong>——也就是说，在发送完一个<strong>流重置帧</strong>后。接收端可以在任何状态接收这三种帧，原因在于被延迟的包可能携带这些帧。</p>
+<p>发送端<em><strong>必须不</strong></em>在最终状态（“接收完成”或“重置接收”）发送任何这些帧。当流处在“重置发送”或任何最终状态时——也就是说，在发送完一个<strong>流重置帧</strong>后，发送端<em><strong>必须不</strong></em>发送<strong>流帧</strong>或<strong>流阻塞帧</strong>。接收端可以在任何状态接收这三种帧，原因在于被延迟的包可能携带这些帧。</p>
 <p>流的接收端发送<strong>最大流数据帧</strong>（<a href="">第19.19章</a>）及<strong>停止发送帧</strong>（<a href="">第19.5章</a>）。</p>
-<p>接收端只可以在“接收”状态发送<strong>最大流数据帧</strong>。如果接收端尚未收到过<strong>流重置帧</strong>，其<em><strong>可以</strong></em>在任何状态发送一个<strong>停止发送帧</strong>——也就是除“重置接收”、“重置读取”之外的状态。然而，在“接收完成”状态发送<strong>停止发送帧</strong>意义不大，因为所有流数据都已经收到了。由于可能存在数据包延迟，因此发送端可以在任何状态接收这两种帧。</p>
+<p>接收端只可以在“接收”状态发送<strong>最大流数据帧</strong>。接收端<em><strong>可以</strong></em>在任何尚未收到过<strong>流重置帧</strong>的状态——也就是除“重置接收”、“重置读取”之外的状态，发送一个<strong>停止发送帧</strong>。然而，在“接收完成”状态发送<strong>停止发送帧</strong>意义不大，因为所有流数据都已经收到了。由于可能存在数据包延迟，因此发送端可以在任何状态接收这两种帧。</p>
 
     </div>
 </section>
@@ -1174,7 +1226,7 @@ QUIC的实现可以将双向流的状态表示成发送及接收流状态的组�
 发送<strong>停止发送帧</strong>的终端<em><strong>可以</strong></em>忽略任何随后被流接收到的<strong>流重置帧</strong>里的错误码。</p>
 <p><strong>停止发送帧</strong><em><strong>应该</strong></em>只能在流尚未被对端重置前发送出去。
 <strong>停止发送帧</strong>主要在流的“接收”或“数据量确认”状态使用。</p>
-<p>如果包含前一个<strong>停止发送帧</strong>的数据包丢失了，期望终端发送另外的<strong>停止发送帧</strong>。
+<p>如果包含前一个<strong>停止发送帧</strong>的数据包丢失了，终端应当发送另一个<strong>停止发送帧</strong>。
 然而，一旦流收到了所有流数据或一个<strong>流重置帧</strong>——也就是说流处在“接收”或“数据量确认”之外的状态——发送<strong>停止发送帧</strong>就不再必要了。</p>
 <p>如果双向流的一端想要将流的两个方向同时关闭，那么其可以通过发送一个<strong>流重置帧</strong>关闭一个方向，并发送一个<strong>停止发送帧</strong>促使相反方向也迅速得到关闭。</p>
 
@@ -1226,6 +1278,7 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
 <li>连接流量控制：通过限制所有流经由<strong>流帧</strong>可以发送的数据量，防止发送方超过连接接收方的缓冲区容量。</li>
 </ul>
 <p>发送方发送数据<em><strong>必须不</strong></em>能超过上述任何一个限制。</p>
+<p>接收方在握手过程中（<a href="">第7.4章</a>）通过传输参数为所有流设置初始的流接收缓存区上限。随后，接收方发送<strong>最大流数据帧</strong>（<a href="">第19.10章</a>）或<strong>最大数据帧</strong>（<a href="">第19.9章</a>）以告知对方提高流接收缓存区上限。</p>
 <p>接收方可以通过发送一个含相关流ID的<strong>最大流数据帧</strong>告知对方提高流接收缓存区上限。
 <strong>最大流数据帧</strong>表示流的最大绝对字节偏移量。
 接收方可以根据当前流消耗数据的偏移量确定后续发出的流量控制的偏移量。</p>
@@ -1263,8 +1316,8 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
 因此，确定决定接收方推荐上限需要权衡资源耗费与连接开销。</p>
 <p>接收方可以使用一个常见于TCP实现的基于往返时间及接收数据应用层消耗速率的自动调谐机制来调整推荐接收上限的频率和增量。
 作为优化，终端只有在有其他帧要发送时才可以发送流量控制相关帧，以确保流量控制不会导致额外的数据包发送。</p>
-<p>被阻塞发送方不需要发送<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>。
-也就是说，接收方<em><strong>必须不</strong></em>能在发送<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>前等待接收<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>，否则可能导致发送方在连接的其余部分被阻塞。
+<p>被阻塞发送方不一定发送<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>。
+因此，接收方<em><strong>必须不</strong></em>能在发送<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>前等待接收<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>，否则可能导致发送方在连接的其余部分被阻塞。
 即使发送方发送了这些帧，等待它们也会导致发送方至少被阻塞一个完整的往返周期。</p>
 <p>当终端在阻塞期间收到可发送数据额度时，它可能会回复大量数据，造成短暂的拥塞，详见《<a href="">QUIC快速恢复</a>》<a href="">第7.7章</a>有关终端如何避免这类拥塞的讨论。</p>
 <div class="block note">
@@ -1340,9 +1393,9 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
 这保证了双端发送方在该流上消耗的流量控制额度上达成一致。</p>
 <p>终端在流的接收部分转入“数据量确认”或“重置接收”状态（<a href="">第3章</a>）后将得知最终数据量。
 接收方<em><strong>必须</strong></em>根据流的最终数据量在其连接层流量控制上统计该流发送的字节数。</p>
-<p>终端在一条流上发送的数据<em><strong>必须不</strong></em>能大于或等于其最终数据量。</p>
+<p>终端<em><strong>必须不</strong></em>能在大于或等于最终数据量的流上发送数据。</p>
 <p>一旦流的最终数据量得到确认，就不能再更改。
-如果收到<strong>流重置神</strong>或<strong>流帧</strong>表示要修改流的最终数据量，终端<em><strong>应该</strong></em>回复一个FINAL_SIZE_ERROR类型的错误，更多细节详见<a href="">第11章</a>有关错误处理部分。
+如果收到<strong>流重置帧</strong>或<strong>流帧</strong>表示要修改流的最终数据量，终端<em><strong>应该</strong></em>回复一个FINAL_SIZE_ERROR类型的错误，更多细节详见<a href="">第11章</a>有关错误处理部分。
 接收方<em><strong>应该</strong></em>将收到达到或超过最终数据量数据的情况视为FINAL_SIZE_ERROR类型的错误，即使是在关闭后收到的。
 并不强制要求生成这些错误，因为终端若要做到这一点往往意味着终端需要给已关闭流维持一个最终数据量状态，也就意味着需要增加一个重要的状态确认。</p>
 
@@ -1363,7 +1416,7 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
     <div class="content">
         <p>终端限制对端累计可以开启的流的数量。
 只有流ID小于<code>(max_streams * 4 + first_stream_id_of_type)</code>的流可以被开启，详见<a href="#Table_1_Stream_ID_Types">表1</a>。
-初始化限制由传输参数设置，详见<a href="">第18.2章</a>。
+初始限制由传输参数设置，详见<a href="">第18.2章</a>。
 随后的限制由<strong>最大流帧</strong>推出，详见<a href="">第19.11</a>。
 针对单向及双向流由单独的限制。</p>
 <p>如果经由<code>max_streams</code>传输参数或<strong>最大流帧</strong>收到的值大于2<sup>60</sup>，这将使得最大流ID不能表示为变长整数，详见<a href="">第16章</a>。
@@ -1377,7 +1430,7 @@ QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见�
 QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端可以使用的流的数量大体对等。</p>
 <p>终端因对端设置的流数量上限而不能再开启新流时，<em><strong>应该</strong></em>发送一个<strong>流阻塞帧</strong>（<a href="">第19.14章</a>）。
 可以认为这个信号主要用于调试。
-终端<em><strong>必须不</strong></em>在对端发布额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发<strong>流阻塞帧</strong>时则等待可能会是无限期的。</p>
+终端<em><strong>必须不</strong></em>能在告知额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发<strong>流阻塞帧</strong>时则等待可能会是无限期的。</p>
 
     </div>
 </section>
@@ -1398,7 +1451,7 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
     
     <div class="content">
         <p>QUIC连接在客户端与服务端之间共享状态。</p>
-<p>QUIC连接从握手开始。在握手的过程中，双端使用加密握手协议（<a href="">QUIC TLS</a>）创建一个共享秘钥并协商应用协议。握手过程（<a href="">第7章</a>）确认双端的交流意愿（<a href="">第8.1章</a>），并确立连接的各项参数（<a href="">第7.4章</a>）。</p>
+<p>QUIC连接从握手开始。在握手的过程中，双端使用加密握手协议（<a href="">QUIC TLS</a>）创建一个共享密钥并协商应用协议。握手过程（<a href="">第7章</a>）确认双端的交流意愿（<a href="">第8.1章</a>），并确立连接的各项参数（<a href="">第7.4章</a>）。</p>
 <p>应用层协议可以在连接握手阶段使用连接，但这种使用是有所限制的。0-RTT准许客户端在收到服务端回复前发送应用数据，但是没有抵御回放攻击的措施，详见《<a href="">QUIC TLS</a>》第9.2章。服务端也可以在收到客户端的最终加密握手信息前发送应用数据，此时服务端尚未确认客户端的身份，也未确认客户端是否存活。应用层协议可以在安全性与降低延迟之间权衡，以决定是否使用这些功能。</p>
 <p>连接ID（<a href="">第5章</a>）的存在使得连接可以迁移到新的网络通道上，这不仅可以是终端的主动选择，也可以是在网络中间件发生变更后的被动选择。<a href="">第9章</a>描述了如何缓解连接迁移带来的安全和隐私问题。</p>
 <p>对于不再需要的连接，有几种方法可以让客户端和服务端将其关闭，详见<a href="">第10章</a>。</p>
@@ -1418,14 +1471,13 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         </h2>
     
     <div class="content">
-        <p>每条连接可以有连接标识符，也就是连接ID，每个连接ID都能标识这条连接。连接ID是由终端独立选择的，每个终端选择连接ID供对端使用。</p>
-<p>连接ID的主要功能是确保是为了确保</p>
+        <p>每条连接拥有一组连接标识符，也就是连接ID，每个连接ID都能标识这条连接。连接ID是由终端独立选择的，每个终端选择连接ID供对端使用。</p>
 <p>连接ID的主要功能是确保底层协议（UDP、IP及更底层的协议栈）发生地址变更时不会导致一个QUIC连接的数据包被传输到错误的QUIC终端上。终端使用特殊实现的（且可能特殊部署的）方式选择连接ID，这将使得具有该连接ID的数据包能够路由回终端，并在接收时能够正确识别。</p>
 <p>终端使用多个连接ID从而使观察者无法在没有终端协助的情况下将发送的数据包识别为同一个连接的数据包，详见<a href="">第9.5章</a>。</p>
 <p>连接ID<em><strong>必须不</strong></em>能包含任何能够被外部观察者（这里指的是不会与发信者合作的人）用于将其关联到该连接的其他连接ID的信息。举个简单的例子，这意味着同一个连接ID不能在同一个连接上被多次发送。</p>
 <p>长包头数据包包含源连接ID和目标连接ID字段，这些字段用来设置新连接的连接ID，更多细节详见<a href="">第7.2章</a>。</p>
-<p>短包头数据包（<a href="">第17.3章</a>只包含目标连接ID并省略显式长度。目标连接ID字段的长度被认为已经为对端所知。使用基于连接ID进行路由调度的负载均衡器的终端可以在连接ID的固定长度或使用编码上与负载均衡器达成一致。在一个固定的位置可以编码一个显式的长度，从而可以根据长度安置整个连接ID，使其仍可被负载均衡器使用。</p>
-<p>一个版本协商（<a href="%E7%AB�">第17.2.1</a>）包回显客户端选择的连接ID，不仅为了确保到客户端的路由是正确的，也为了证明这个数据包是对客户端发送的数据包的回应。</p>
+<p>短包头数据包（<a href="">第17.3章</a>）只包含目标连接ID并省略显式长度。目标连接ID字段的长度被认为已经为对端所知。使用基于连接ID进行路由调度的负载均衡器的终端可以在连接ID的固定长度或使用编码上与负载均衡器达成一致。在一个固定的位置可以编码一个显式的长度，从而可以根据长度安置整个连接ID，使其仍可被负载均衡器使用。</p>
+<p>一个版本协商（<a href="">第17.2.1章</a>）包回显客户端选择的连接ID，不仅为了确保到客户端的路由是正确的，也为了证明这个数据包是对客户端发送的数据包的回应。</p>
 <p>当一个连接ID不需要路由到正确的终端上时，可能使用一个零长度的连接ID。然而，多个连接复用同一个本地IP地址和端口时，如果使用零长度的连接ID，将在存在对端连接迁移、NAT重绑定及客户端端口复用的情况下导致失败，除非可以肯定没有使用这些协议特性。</p>
 <p>当一个终端使用一个非零长度连接ID，它必须确保对端有一定量的连接ID可供选择给发往本端的数据包使用。这些连接ID通过NEW_CONNECTION_ID帧提供（<a href="">第19.15章</a>）。</p>
 
@@ -1456,6 +1508,7 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
 在处理完一个<code>新连接ID帧</code>，添加及撤销一些活跃连接ID后，如果活跃连接ID数量仍然超过<code>active_connection_id_limit</code>传输参数建议的值，终端<em><strong>必须</strong></em>以<code>CONNECTION_ID_LIMIT_ERROR</code>（连接ID限制）错误关闭连接。</p>
 <p>当对端撤销一个连接ID后，终端<em><strong>应该</strong></em>提供一个新的连接ID。
 如果终端提供的连接ID数目小于对端<code>active_connection_id_limit</code>值，则其<em><strong>可以</strong></em>在收到一个包含之前撤销的连接ID的数据包时提供一个新的连接ID。
+终端<em><strong>可以</strong></em>限制为每条连接发布的连接ID总数来避免连接ID耗尽的风险，见<a href="">第10.3.2章</a>。
 终端也<em><strong>可以</strong></em>限制连接ID的发布以降低其维护的通道层面的状态量，例如通道验证状态，因为对端可能有多少连接ID就用多少通道与其交互。</p>
 <p>启动连接迁移且需要非零长度连接ID的终端<em><strong>应该</strong></em>确保其连接ID池对端可得，从而使对端能在连接迁移时用新的连接ID，因为如果连接ID池耗尽，对端将无法回复。</p>
 <p>在握手阶段选择零长度连接ID的终端不能发布新的连接ID。通过任何通道发往一个这样的终端的所有包使用零长度目标连接ID字段。</p>
@@ -1481,7 +1534,7 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
 发送一个<code>撤销连接ID帧</code>意味着将不会再次使用该连接ID，同时请求对端通过<code>新连接ID帧</code>换一个新的连接ID。</p>
 <p>如<a href="">第9.5章</a>所述，终端限制使用一个连接ID从一个单一本地地址向一个单一目标地址发送数据包。当使用连接ID的本地或目标地址不再活跃的时候，终端<em><strong>应该</strong></em>撤销这些连接ID。</p>
 <p>在特定场合，终端可能需要停止接收先前发布的连接ID。
-这种终端会导致对端通过发送带有值已增加的“撤销前”字段的<code>新连接ID帧</code>停用这些连接ID。
+这种终端会通过发送带有值已增加的“撤销前”字段的<code>新连接ID帧</code>使对端停用这些连接ID。
 终端<em><strong>应该</strong></em>继续接收先前发布的连接ID直到它们被对端撤销。如果终端不能再处理指定的连接ID，其<em><strong>可以</strong></em>关闭连接。</p>
 <p>一旦收到一个值增加的“撤销前”字段，对端<em><strong>必须</strong></em>停止使用相关连接ID，并在添加新提供的连接ID到活跃连接ID集合之前，通过<code>撤销连接ID帧</code>停用这些连接ID。
 这么安排使得终端能够替换全部活跃连接ID，而不会出现对端没有可用连接ID的情况，也不会使活跃连接ID数超过对端传输参数<code>active_connection_id_limit</code>设下的限制，详见<a href="">第18.2章</a>。
@@ -1516,7 +1569,7 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
 <p>终端尝试将数据包与现有连接关联起来。
 如果数据包有关联到一个已存在的连接的非零目标连接ID，QUIC将在相应连接上处理该数据包。
 注意一条连接可以对应不止一个连接ID，详见<a href="">第5.1章</a>。</p>
-<p>如果一个数据包的目标连接ID是零长度的，而其地址信息与终端用来标识零长度连接ID的连接匹配，则QUIC将该数据包作为该连接的一部分处理。
+<p>如果一个数据包的目标连接ID是零长度的，而且其地址信息与终端用来标识零长度连接ID的连接匹配，则QUIC将该数据包作为该连接的一部分处理。
 终端可以只使用目标IP和端口，也可以同时使用源地址和目标地址作为标识，尽管这样会使连接像<a href="">第5.1章</a>描述的那样变得脆弱。</p>
 <p>对任何不属于已存在连接的数据包，终端都可以发送一个无状态重置（<a href="">第10.3章</a>）。无状态重置使对端能更快地识别连接变得不可用的情况。</p>
 <p>初始化、重试或版本协商这种缺乏强完整性保护的无效包<em><strong>可以</strong></em>被丢弃。
@@ -1558,7 +1611,7 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         </h3>
     
     <div class="content">
-        <p>如果服务端收到一个来自不支持版本的数据包而其又足够初始化一个任何支持版本的新连接，服务端<em><strong>应该</strong></em>发送一个版本协商包，详见<a href="">第6.1章</a>。
+        <p>如果服务端收到一个来自不支持版本的数据包而其又足够初始化某个支持版本的新连接，服务端<em><strong>应该</strong></em>发送一个版本协商包，详见<a href="">第6.1章</a>。
 服务端<em><strong>可以</strong></em>限制其回复的版本协商包的数量。
 服务端<em><strong>必须</strong></em>丢弃属于不支持版本的小包。</p>
 <p>一个不支持版本的第一个包可以对任何与具体版本有关的字段使用不同语义和编码。
@@ -1745,6 +1798,169 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
 
 
         
+                <section class="page" id="7_Cryptographic_and_Transport_Handshake">
+    
+        <h1>
+    
+            <a href="#7_Cryptographic_and_Transport_Handshake">7. 加密与传输握手</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>QUIC通过将加密与传输握手组合最小化连接建立的延迟。
+QUIC使用<strong>加密帧</strong>（详见<a href="">第19.6章</a>）传递加密握手信息。
+本文所定义的QUIC版本标识为<code>0x00000001</code>，使用《<a href="">QUIC TLS</a>》描述的TLS，而不同的QUIC版本可能表面其使用了不同的加密握手协议。</p>
+<p>QUIC可靠、有序地传递加密握手数据。
+QUIC数据包保护用于尽可能多地对握手协议进行加密。
+加密握手{&lt; req_level MUST &gt;}具备如下属性：</p>
+<ul>
+<li>密钥交换是认证的，需要
+<ul>
+<li>服务端总是经过认证的，且</li>
+<li>客户端是否经过认证是可选的，且</li>
+<li>每个连接生成不同且不相关的密钥，且</li>
+<li>密钥材料对0-RTT和1-RTT数据包均可提供保护。</li>
+</ul>
+</li>
+<li>双端传输参数值的交换是认证的，且对服务端传输参数提供机密性保护。</li>
+<li>应用层协议的认证协商（为此，TLS使用的是应用层协议协商——<a href="">ALPN</a>）。</li>
+</ul>
+<p><strong>加密帧</strong>可以在不同数据包号空间发送（详见<a href="">第12.3章</a>）。
+在每个数据包号空间，<strong>加密帧</strong>用来确保加密握手数据有序传递的偏移量都是从零开始的。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="7.1_Example_Handshake_Flows">
+    
+        <h1>
+    
+            <a href="#7.1_Example_Handshake_Flows">7.1. 握手流程示例</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="7.2_Negotiating_Connection_IDs">
+    
+        <h1>
+    
+            <a href="#7.2_Negotiating_Connection_IDs">7.2. 协商连接ID</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="7.3_Authenticating_Connection_IDs">
+    
+        <h1>
+    
+            <a href="#7.3_Authenticating_Connection_IDs">7.3. 验证连接ID</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+                <section class="page" id="7.4_Transport_Parameters">
+    
+        <h2>
+    
+            <a href="#7.4_Transport_Parameters">7.4. 加密与传输握手</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>连接建立期间，双端对各自的传输参数作出验证声明。
+终端必须遵守每个参数定义的约束规范，每个参数的描述包括其处理规则。</p>
+<p>传输参数由每个终端单方面声明。
+每个终端可以独立选择传输参数的值而不依赖于对端的选择。</p>
+<p>传输参数的编码详见<a href="">第18章</a>.</p>
+<p>QUIC includes the encoded transport parameters in the cryptographic handshake. Once the handshake completes, the transport parameters declared by the peer are available. Each endpoint validates the values provided by its peer.</p>
+<p>Definitions for each of the defined transport parameters are included in Section 18.2.</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="7.4.1_Values_of_Transport_Parameters_for_0_RTT">
+    
+        <h1>
+    
+            <a href="#7.4.1_Values_of_Transport_Parameters_for_0_RTT">7.4.1. 0-RTT传输参数</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="7.4.2_New_Transport_Parameters">
+    
+        <h1>
+    
+            <a href="#7.4.2_New_Transport_Parameters">7.4.2. 新传输参数</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+    
+        
+            <section class="page" id="7.5_Cryptographic_Message_Buffering">
+    
+        <h1>
+    
+            <a href="#7.5_Cryptographic_Message_Buffering">7.5. 加密信息缓存</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+        
+    
+
+
+
+        
                 <section class="page" id="18_Transport_Parameter_Encoding">
     
         <h1>
@@ -1757,8 +1973,8 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
         <p>在《<a href="">QUIC TLS</a>》定义的<code>quic_transport_parameters</code>其<code>extension_data</code>字段包含QUIC传输参数。
 它们被编码为一个传输参数序列，如<a href="#Figure_20_Sequence_of_Transport_Parameters">图20</a>所示：</p>
 <div id=Figure_20_Sequence_of_Transport_Parameters class="block ref">
-<pre><code>Transport Parameters {
-  Transport Parameter (..) ...,
+<pre><code>传输参数序列 {
+  传输参数 (..) ...,
 }
 </code></pre><p><a href="#Figure_20_Sequence_of_Transport_Parameters">图20：传输参数序列</a></p>
 </div>
@@ -1821,14 +2037,14 @@ QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端�
 <dt>最大空闲超时时间<code>max_idle_timeout</code> (<code>0x01</code>)：</dt>
 <dd>
 <p>最大空闲超时是一个编码为整型的值，单位毫秒，详见<a href="">第10.1章</a>。
-当双端忽略空闲超时设置其值为0时，空闲超时将被禁用。</p>
+当双端均忽略此传输参数或设置其值为0时，空闲超时将被禁用。</p>
 </dd>
 <dt>无状态重置令牌<code>stateless_reset_token</code> (<code>0x02</code>)：</dt>
 <dd>
 <p>无状态重置令牌用于验证无状态重置，详见<a href="">第10.3章</a>。
 这个传输参数是一个16字节的序列。
 客户端<em><strong>必须不</strong></em>能发送这个参数，但是服务端<em><strong>可以</strong></em>发送。
-没有发送次参数的服务端不能对握手期间协商的连接ID使用无状态重置。</p>
+没有发送此参数的服务端不能对握手期间协商的连接ID使用无状态重置。</p>
 </dd>
 <dt>最大UDP载荷<code>max_udp_payload_size</code> (<code>0x03</code>)：</dt>
 <dd>
@@ -1841,7 +2057,7 @@ UDP报文的载荷如果大于这个限制将不太可能被服务端处理。</
 </dd>
 <dd>
 <p>这个限制是对报文大小的一个与通道MTU一样的附加约束，但其是终端的属性而非通道的属性，详见<a href="">第14章</a>。
-应该认为这是终端用于保存传人数据包的空间。</p>
+应该认为这是终端用于保存传入数据包的空间。</p>
 </dd>
 <dt>初始最大数据量<code>initial_max_data</code> (<code>0x04</code>)：</dt>
 <dd>
@@ -1969,59 +2185,13 @@ IP地址以网络字节序编码。</p>
     
         <h1>
     
-            <a href="#19_Frame_Types_and_Formats">19. 传输参数编码</a>
+            <a href="#19_Frame_Types_and_Formats">19. 帧类型与格式</a>
     
         </h1>
     
     <div class="content">
         <p>正如<a href="">第12.4章</a>所述，数据包包含一个或多个帧。
 本章描述QUIC帧类型的格式和语义。</p>
-<p>19.1_PADDING_Frames
-19.2_PING_Frames
-19.3_ACK_Frames
-19.3.1_ACK_Ranges
-19.3.2_ECN_Counts
-19.4_RESET_STREAM_Frames
-19.5_STOP_SENDING_Frames
-19.6_CRYPTO_Frames
-19.7_NEW_TOKEN_Frames
-19.8_STREAM_Frames
-19.9_MAX_DATA_Frames
-19.10_MAX_STREAM_DATA_Frames
-19.11_MAX_STREAMS_Frames
-19.12_DATA_BLOCKED_Frames
-19.13_STREAM_DATA_BLOCKED_Frames
-19.14_STREAMS_BLOCKED_Frames
-19.15_NEW_CONNECTION_ID_Frames
-19.16_RETIRE_CONNECTION_ID_Frames
-19.17_PATH_CHALLENGE_Frames
-19.18_PATH_RESPONSE_Frames
-19.19_CONNECTION_CLOSE_Frames
-19.20_HANDSHAKE_DONE_Frames
-19.21_Extension_Frames</p>
-<p>PADDING_Frames
-PING_Frames
-ACK_Frames
-ACK_Ranges
-ECN_Counts
-RESET_STREAM_Frames
-STOP_SENDING_Frames
-CRYPTO_Frames
-NEW_TOKEN_Frames
-STREAM_Frames
-MAX_DATA_Frames
-MAX_STREAM_DATA_Frames
-MAX_STREAMS_Frames
-DATA_BLOCKED_Frames
-STREAM_DATA_BLOCKED_Frames
-STREAMS_BLOCKED_Frames
-NEW_CONNECTION_ID_Frames
-RETIRE_CONNECTION_ID_Frames
-PATH_CHALLENGE_Frames
-PATH_RESPONSE_Frames
-CONNECTION_CLOSE_Frames
-HANDSHAKE_DONE_Frames
-Extension_Frames</p>
 
     </div>
 </section>
@@ -2068,7 +2238,7 @@ Extension_Frames</p>
         <p>终端可以使用<strong>Ping帧</strong>（类型为<code>0x01</code>）验证其对端是否仍然活跃，或检查到对端的可达性。</p>
 <p><strong>Ping帧</strong>格式如<a href="">图24</a>所示，可见<strong>Ping帧</strong>无内容。</p>
 <div id=Figure_24_PING_Frame_Format class="block ref">
-<pre><code>填充帧 {
+<pre><code>Ping帧 {
   类型 (i) = 0x01,
 }
 </code></pre><p><a href="#Figure_24_PING_Frame_Format">图24：Ping帧格式</a></p>
@@ -2140,7 +2310,7 @@ QUIC实现<em><strong>必须</strong></em>准确处理这两种类型，并且�
 </dd>
 <dt>ACK块：</dt>
 <dd>
-<p>包含额外的数据包区段，这些数据包可以是未被确认的，也可以是已被确认的，详见<a href="">第19.3.1章</a>。</p>
+<p>包含额外的数据包区段，这些数据包可以是未被确认的（空档），也可以是已被确认的（ACK块），详见<a href="">第19.3.1章</a>。</p>
 </dd>
 <dt>ECN计数：</dt>
 <dd>
@@ -2152,49 +2322,6 @@ QUIC实现<em><strong>必须</strong></em>准确处理这两种类型，并且�
 </section>
 
 
-    
-        
-            <section class="page" id="19.3.2_ECN_Counts">
-    
-        <h3>
-    
-            <a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a>
-    
-        </h3>
-    
-    <div class="content">
-        <p><strong>ACK帧</strong>使用类型值的最小有效位（也就是类型<code>0x03</code>）表示ECN反馈，并通告收到在IP头部中带有与ECT(0)、ECT(1)或ECN-CE有关的ECN码点（codepoint）的QUIC数据包。
-ECN计数只由类型为<code>0x03</code>的<strong>ACK帧</strong>携带。</p>
-<p><strong>ACK帧</strong>中ECN计数如<a href="#Figure_27_ECN_Count_Format">图27</a>所示。</p>
-<div id=Figure_27_ECN_Count_Format class="block ref">
-<pre><code>ECN计数 {
-  ECT0计数 (i),
-  ECT1计数 (i),
-  ECN-CE计数 (i),
-}
-</code></pre><p><a href="#Figure_27_ECN_Count_Format">图27：ACK帧格式</a></p>
-</div>
-<p>ECN计数各个字段分别是：</p>
-<dl>
-<dt>ECT0计数：</dt>
-<dd>
-<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(0)码点的数据包总数。</p>
-</dd>
-<dt>ECT1计数：</dt>
-<dd>
-<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(1)码点的数据包总数。</p>
-</dd>
-<dt>ECN-CE计数：</dt>
-<dd>
-<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECN-CE码点的数据包总数。</p>
-</dd>
-</dl>
-<p>每个数据包号空间单独维护各自的ECN计数。</p>
-
-    </div>
-</section>
-
-        
     
         
             <section class="page" id="19.3.1_ACK_Ranges">
@@ -2210,6 +2337,13 @@ ECN计数只由类型为<code>0x03</code>的<strong>ACK帧</strong>携带。</p>
 ACK块可以重复。
 空档和ACK块长度值的数量由ACK块计数字段决定，每个ACK块中的一个值（空档或ACK块长度）对应ACK块计数字段的每个值。</p>
 <p>ACK块的结构如<a href="">图26</a>所示。</p>
+<div id=Figure_26_ACK_Ranges class="block ref">
+<pre><code>ACK块 {
+  空档 (i),
+  ACK块长度 (i),
+}
+</code></pre><p><a href="#Figure_26_ACK_Ranges">图26：ACK块</a></p>
+</div>
 <p>构成ACK块的字段是：</p>
 <dl>
 <dt>空档（Gap）：</dt>
@@ -2235,6 +2369,49 @@ ACK块可以重复。
 <p>空档字段值使用以下公式为后续ACK块生成最大的数据包号值：</p>
 <pre><code>最大数据包号 = 先前最小数据包号 - 空档值 - 2
 </code></pre><p>如果任何有关计算得到的数据包号是负数，则终端<em><strong>必须</strong></em>产生一个<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="19.3.2_ECN_Counts">
+    
+        <h3>
+    
+            <a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a>
+    
+        </h3>
+    
+    <div class="content">
+        <p><strong>ACK帧</strong>使用类型值的最小有效位（也就是类型<code>0x03</code>）表示ECN反馈，并通告收到在IP头部中带有与ECT(0)、ECT(1)或ECN-CE有关的ECN码点（codepoint）的QUIC数据包。
+ECN计数只由类型为<code>0x03</code>的<strong>ACK帧</strong>携带。</p>
+<p><strong>ACK帧</strong>中ECN计数如<a href="#Figure_27_ECN_Count_Format">图27</a>所示。</p>
+<div id=Figure_27_ECN_Count_Format class="block ref">
+<pre><code>ECN计数 {
+  ECT0计数 (i),
+  ECT1计数 (i),
+  ECN-CE计数 (i),
+}
+</code></pre><p><a href="#Figure_27_ECN_Count_Format">图27：ECN帧格式</a></p>
+</div>
+<p>ECN计数各个字段分别是：</p>
+<dl>
+<dt>ECT0计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(0)码点的数据包总数。</p>
+</dd>
+<dt>ECT1计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECT(1)码点的数据包总数。</p>
+</dd>
+<dt>ECN-CE计数：</dt>
+<dd>
+<p>一个可变长度整型值，表示收到的<strong>ACK帧</strong>所在数据包号空间里且携带ECN-CE码点的数据包总数。</p>
+</dd>
+</dl>
+<p>每个数据包号空间单独维护各自的ECN计数。</p>
 
     </div>
 </section>
@@ -2304,8 +2481,8 @@ ACK块可以重复。
         <p>终端使用<strong>停止发送帧</strong>（STOP_SENDING frame，类型是<code>0x05</code>）告知对方收到每个应用层请求时传入的数据将被丢弃。
 <strong>停止发送帧</strong>要求对端停止在某条流上传输数据。</p>
 <p>一个<strong>停止发送帧</strong>可以在流的“接收”和“数据量确认”状态发送，详见<a href="">第3.2章</a>。
-收到一条本地由初始化但是却尚未被创建的流的<strong>停止发送帧</strong><em><strong>必须</strong></em>视为一个<code>STREAM_STATE_ERROR</code>类型的连接错误。
-终端收到只用于接收的流的<strong>停止发送帧</strong>{&lt; req_level MUST &gt;}}以<code>STREAM_STATE_ERROR</code>类型的错误关闭连接。</p>
+收到一条由本地初始化但是却尚未被创建的流的<strong>停止发送帧</strong><em><strong>必须</strong></em>视为一个<code>STREAM_STATE_ERROR</code>类型的连接错误。
+终端收到只用于接收的流的<strong>停止发送帧</strong><em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型的错误关闭连接。</p>
 <p><strong>停止发送帧</strong>格式如<a href="#Figure_29_STOP_SENDING_Frame_Format">图29</a>所示。</p>
 <div id=Figure_29_STOP_SENDING_Frame_Format class="block ref">
 <pre><code>停止发送帧 {
@@ -2566,8 +2743,8 @@ ACK块可以重复。
 </dl>
 <p>当累计数据量趋近该限制，终端统计在流上发送或接收的数据的最大接收偏移量。
 丢失或乱序可能意味着一条流的最大接收数据偏移量可能会大于该流上收到的总数据量。
-收到<strong>流帧</strong>可能不会提升最大接收偏移量。
-流上发送的数据<em><strong>必须不</strong></em>可以超过接收方发出的最大流数据量值的最大值。
+收到<strong>流帧</strong>可能不会提升最大接收偏移量。</p>
+<p>流上发送的数据<em><strong>必须不</strong></em>可以超过接收方发出的最大流数据量值的最大值。
 如果终端收到比其给相关流发出的最大流数据量的最大值更多的数据量，终端<em><strong>必须</strong></em>以<code>FLOW_CONTROL_ERROR</code>类型错误关闭连接。
 这包括违背早期数据记录的限制，详见<a href="">第7.4.1章</a>。</p>
 
@@ -2773,7 +2950,6 @@ ACK块可以重复。
 <p>一个128位值，在对关联的连接ID进行无状态重置时使用，详见<a href="">第10.3章</a>。</p>
 </dd>
 </dl>
-<p>如果它现在需要对端使用0长度的目标连接ID发送包，终端禁止发送这个帧。</p>
 <p>如果终端当前需要对端使用0长度的目标连接ID，那么其<em><strong>必须不</strong></em>能发送该帧。
 将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。
 终端发送0长度目标连接ID的数据包时，<em><strong>必须</strong></em>将收到<strong>新连接ID帧</strong>的情况视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
@@ -2784,7 +2960,7 @@ ACK块可以重复。
 <p>“停用前”字段适用于在连接设置期间创建的连接ID以及<code>preferred_address</code>传输参数，详见<a href="">第5.1.2章</a>。
 “停用前”字段值<em><strong>必须</strong></em>小于或等于“序列号”字段值。
 收到“停用前”字段值大于序列号字段值<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型连接错误。</p>
-<p>一旦发生方指定了一个“停用前”字段值，在后续<strong>新连接ID帧</strong>中发送的较小值就不再发挥作用了。
+<p>一旦发送方指定了一个“停用前”字段值，在后续<strong>新连接ID帧</strong>中发送的较小值就不再发挥作用了。
 接收方<em><strong>必须</strong></em>忽略任何没有提高最大“停用前”值的“停用前”字段。</p>
 <p>收到序列号小于已收到<strong>新连接ID帧</strong>的“停用前”字段值的<strong>新连接ID帧</strong>的终端<em><strong>必须</strong></em>发送一个相应的停用新收到连接ID的<strong>停用连接ID帧</strong>，除非其已经对该序列号发过这个帧了。</p>
 
@@ -2908,7 +3084,7 @@ ACK块可以重复。
         <p>终端发送<strong>连接关闭帧</strong>（CONNECTION_CLOSE frame，类型是<code>0x1c</code>或<code>0x1d</code>）通知对端连接正在关闭中。
 <code>0x1c</code>类型的<strong>连接关闭帧</strong>用于QUIC层发送错误信号，或没有错误（携带<code>NO_ERROR</code>码）。
 <code>0x1d</code>类型的<strong>连接关闭帧</strong>用于使用QUIC的应用程序发送错误信号。</p>
-<p>如果有打开的流尚未被显示关闭，当连接关闭时它们将被隐式关闭。</p>
+<p>如果有打开的流尚未被显式关闭，当连接关闭时它们将被隐式关闭。</p>
 <p><strong>连接关闭帧</strong>格式如<a href="#Figure_43_CONNECTION_CLOSE_Frame_Format">图43</a>所示。</p>
 <div id=Figure_43_CONNECTION_CLOSE_Frame_Format class="block ref">
 <pre><code>连接关闭帧 {
@@ -3017,7 +3193,7 @@ ACK块可以重复。
     
         <h1>
     
-            <a href="#20_Error_Codes">20. 流量控制</a>
+            <a href="#20_Error_Codes">20. 错误码</a>
     
         </h1>
     
@@ -3040,15 +3216,14 @@ ACK块可以重复。
     
     <div class="content">
         <p>本章列出可能在<code>0x1c</code>类型<strong>连接关闭帧</strong>中使用的QUIC错误码的定义。
-这些错误可能在接关闭帧**中携带该错误码以通知连接在没有发生任何错误之下关闭。
-整个连接期间发生。</p>
+这些错误可能在整个连接期间发生。</p>
 <dl>
 <dt>NO_ERROR (<code>0x00</code>，无错误):</dt>
 <dd>
-<p>终端在**连
-INTERNAL_ERROR (<code>0x01</code>，内部错误):</p>
+<p>终端在<strong>连接关闭帧</strong>中携带该错误码以通知连接在没有发生任何错误之下关闭。</p>
 </dd>
 </dl>
+<p>INTERNAL_ERROR (<code>0x01</code>，内部错误):</p>
 <p>：  终端遇到内部错误而不能继续维持连接。</p>
 <dl>
 <dt>CONNECTION_REFUSED (<code>0x02</code>，连接拒绝):</dt>
