@@ -158,6 +158,60 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/14.1_Initial_Datagram_Size/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Path_Maximum_Transmission_Unit/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Path_Maximum_Transmission_Unit/14.2.1_Handling_of_ICMP_Messages_by_PMTUD/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Datagram_Packetization_Layer_PMTU_Discovery/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Datagram_Packetization_Layer_PMTU_Discovery/14.3.1_DPLPMTUD_and_Initial_Connectivity/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Datagram_Packetization_Layer_PMTU_Discovery/14.3.2_Validating_the_Network_Path_with_DPLPMTUD/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Datagram_Packetization_Layer_PMTU_Discovery/14.3.3_Handling_of_ICMP_Messages_by_DPLPMTUD/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Sending_QUIC_PMTU_Probes/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Datagram_Size/Sending_QUIC_PMTU_Probes/14.4.1_PMTU_Probes_Containing_Source_Connection_ID/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Versions/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Variable-Length_Integer_Encoding/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/17.1_Packet_Number_Encoding_and_Decoding/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/17.2.1_Version_Negotiation_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Initial_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Initial_Packet/17.2.2.1_Abandoning_Initial_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/17.2.3_0-RTT/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/17.2.4_Handshake_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.1_Sending_a_Retry_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.2_Handling_a_Retry_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.3_Continuing_a_Handshake_after_Retry/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Short_Header_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/Short_Header_Packets/17.3.1_1-RTT_Packet/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packet_Formats/17.4_Latency_Spin_Bit/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</loc>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>17.2.5 重试数据包 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/</link>
+    <description>Recent content in 17.2.5 重试数据包 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>17.2.5.1 发送重试数据包</title>
+      <link>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.1_Sending_a_Retry_Packet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.1_Sending_a_Retry_Packet/</guid>
+      <description>服务器在填写目标连接ID时，使用客户端在初始数据包中填写的源连接ID的值。
+服务器在源连接ID字段中使用自己选择的连接ID。这个值必须不与发送自客户端的数据包的目标连接ID字段相同。如果客户端发现一个重试数据包中包含的的源连接ID字段与它发送的初始数据包中的目标连接ID字段一致，那么它必须将这个数据包丢弃。客户端必须使用来自重试数据包中源连接ID字段的值，作为目标连接ID字段来发送后续数据包。
+服务器可以发送重试数据包来回复初始数据包和0-RTT数据包。服务器可以丢弃或缓存它收到的0-RTT数据包。当服务器接收到数个初始数据包或0-RTT数据包时，它可以发送数个重试数据包。服务器必须不发送超过一个重试数据包以回应单个UDP数据报。</description>
+    </item>
+    
+    <item>
+      <title>17.2.5.2 处理重试数据包</title>
+      <link>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.2_Handling_a_Retry_Packet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.2_Handling_a_Retry_Packet/</guid>
+      <description>对于单次连接尝试，客户端必须接受和处理至多一个重试数据包。在客户端已经接收和处理来自服务器的初始数据包或重试数据包之后，它必须丢弃后续接收到的任何重试数据包。
+对于重试完整性标签无法被验证的重试数据包，客户端必须丢弃它们，详见《QUIC-TLS》的第5.8章。这会降低攻击者注入重试数据包的能力并且保护重试数据包免于意外受损。客户端必须丢弃重试令牌字段长度为零的重试数据包。
+作为重试数据包的回复，客户端使用包含了前者提供的重试令牌的初始数据包来继续连接的建立过程。
+客户端使用来自重试数据包中源连接ID字段的值，作为这个初始数据包的目标连接ID字段。更改目标连接ID字段会改变用来保护初始数据包的密钥。客户端还将令牌字段设置为重试数据包中提供的令牌。客户端必须不更改源连接ID因为服务器可能将连接ID作为了它令牌验证逻辑的一部分，详见第8.1.4章。
+重试数据包不包含数据包号且不能被客户端显式确认。</description>
+    </item>
+    
+    <item>
+      <title>17.2.5.3 重试后继续握手</title>
+      <link>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.3_Continuing_a_Handshake_after_Retry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packet_Formats/Long_Header_Packets/Retry_Packet/17.2.5.3_Continuing_a_Handshake_after_Retry/</guid>
+      <description>后续来自客户端的初始数据包包含着来自重试数据包的连接ID和令牌值。客户端从重试数据包中拷贝源连接ID字段至目标连接ID字段并且持续使用它，直到接收到一个包含着更新过的值的初始数据包，详见第7.2章。令牌字段的值被拷贝至所有后续初始数据包，详见第8.1.2章。
+除了要更新目标连接ID和令牌字段外，客户端后续发出的初始数据包与首个初始数据包受到同样的限制。客户端必须使用和首个初始数据包中相同的加密握手消息。对于包含了不同加密握手消息的数据包，服务器可以将其视作为一种连接错误，或丢弃它。注意，包含令牌字段会减少数据包中加密握手消息的可用空间，这可能导致客户端需要发送多个初始数据包。
+客户端可以在接收到重试数据包后尝试0-RTT，方法是向服务器提供的连接ID发送0-RTT数据包。
+客户端必须不在处理完重试数据包后重置任何数据包号空间中的数据包号。尤其是，0-RTT数据包包含着的机密信息很有可能在接收到重试数据包时被重新传输。由于是在回复一个重试数据包，用于保护这些新0-RTT数据包的密钥不会改变。然而，这些数据包中发送的数据可能和之前发送的不一样。用相同的数据包号发送这些新数据包可能使这些数据包的数据包保护失效，因为相同的密钥和随机数可能被用于保护不同内容。服务器如果检测到客户端重置了数据包号。它可以中止这次连接。
+在客户端和服务器间被交换的初始数据包和重试数据包中的那些连接ID会被拷贝到传输参数中并且被验证，详见第7.3章。</description>
+    </item>
+    
+  </channel>
+</rss>
