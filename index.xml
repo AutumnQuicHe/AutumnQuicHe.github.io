@@ -25,6 +25,15 @@
     </item>
     
     <item>
+      <title>前言</title>
+      <link>/RFC9001_Chinese_Translation/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Foreword/forword/</guid>
+      <description>本文是QUIC使用TLS进行加密通信的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
       <title>摘要</title>
       <link>/RFC8999_Chinese_Translation/Foreword/abstract/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -40,6 +49,15 @@
       
       <guid>/RFC9000_Chinese_Translation/Foreword/abstract/</guid>
       <description>本文定义了QUIC传输协议的核心。QUIC是能支持应用程序进行有流量控制的多流结构化通信机制，支持低延迟连接建立和网络迁移。QUIC自带机密、完整的安全措施，能广泛支持各种各样的部署。有关文档描述了QUIC如何将TLS的密钥协商、丢包检测及众多拥塞控制算法整合。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9001_Chinese_Translation/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Foreword/abstract/</guid>
+      <description>本文描述如何使用传输层安全协议（TLS）加密QUIC。</description>
     </item>
     
     <item>
@@ -65,6 +83,17 @@
     </item>
     
     <item>
+      <title>备忘状态</title>
+      <link>/RFC9001_Chinese_Translation/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9001。</description>
+    </item>
+    
+    <item>
       <title>版权声明</title>
       <link>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -80,6 +109,16 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</guid>
       <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
 本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
     </item>
@@ -600,6 +639,66 @@ QUIC在实现上应该提供某种方法使得应用层能够因此确定各条�
     </item>
     
     <item>
+      <title>8.1.1 令牌构建</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.1_Token_Construction/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.1_Token_Construction/</guid>
+      <description>构建在新令牌帧或重试数据包中发送的令牌时，必须使用一种能够令服务器识别出令牌提供给客户端的途径的方法。这些令牌被携带于相同字段中但是需要服务器进行不同的处理。</description>
+    </item>
+    
+    <item>
+      <title>8.1.2 使用重试数据包进行地址验证</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.2_Address_Validation_Using_Retry_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.2_Address_Validation_Using_Retry_Packets/</guid>
+      <description>当接收到客户端的初始数据包时，服务器可以通过发送包含令牌的重试数据包（详见第17.2.5章）来请求地址验证。接收到重试数据包之后，客户端必须在为那条连接发送的所有初始数据包中重复这个令牌。
+作为处理包含了曾在重试数据包中提供的令牌的初始数据包的回应，服务器不能再发送重试数据包；它只能拒绝那条连接或允许连接继续进行。
+只要不存在攻击者为它自己的地址生成一个有效令牌（详见第8.1.4章）的可能性，并且客户端有能力将那个令牌返回给服务器，就能证实客户端接收到了令牌。
+服务器还能使用重试数据包来推迟连接建立所需的状态数据和处理的成本。要求服务器提供一个不同的连接ID，以及在第18.2章中定义的传输参数original_destination_connection_id（原始目标连接ID），能强制服务器表明它，或和它一起工作的实体，从客户端接收到了原始的初始数据包。提供一个不同的连接ID还确保服务器对后续数据包如何路由有一定的控制能力。这可以被用来将连接指向不同的服务器实例。
+如果服务器接收到了一个除了无效的重试令牌字段外都合法的客户端初始数据包，那么它能肯定客户端不会接收另一个重试令牌。服务器可以丢弃这样的数据包，并且允许客户端以超时的形式检测到本次握手的失败，但这会对客户端施加强烈的延迟惩罚。取而代之的是，服务器应该使用错误INVALID_TOKEN（无效令牌）立即关闭（详见第10.2章）连接。注意，服务器在这个时候还没有为连接建立任何状态数据所以不会进入到关闭状态。
+图9展示的是关于重试数据包的使用的流程图。
+ TODO：图9
+  图9：使用重试的握手样例
+ </description>
+    </item>
+    
+    <item>
+      <title>8.1.3 为将来的连接进行地址验证</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.3_Address_Validation_for_Future_Connections/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.3_Address_Validation_for_Future_Connections/</guid>
+      <description>在一条连接进行期间，服务器可以向客户端提供一个可以被用于后续连接的地址验证令牌。地址验证对于0-RTT特别重要，因为服务器响应0-RTT数据时可能向客户端发送大量的数据。
+服务器使用新令牌帧（详见第19.7章）来向客户端提供一个可以被用于验证将来的连接的地址验证令牌。在将来的连接中，客户端将这个令牌包含在初始数据包中来提供地址验证。客户端必须将令牌包含在所有它发送的初始数据包中，除非有重试数据包将令牌替换为新的值。客户端必须不在将来的连接中使用重试数据包里提供的令牌。服务器可以丢弃任何没有携带期望的令牌的初始数据包。
+不像为重试数据包创建的令牌要被立即使用掉，在新令牌帧中发送的令牌即使经过了一段时间也能使用。因此，令牌应该具有一个过期时间，它既可以是一个显式的过期时间，也可以是一个可以被用来动态计算过期时间的签发时间戳。服务器可以将过期时间存储起来或将它以加密的形式包含在令牌中。
+使用新令牌帧签发的令牌必须不包含会令观测者将之关联到被签发令牌所在的连接上的信息。例如，它不能包含先前的连接ID或地址信息，除非这些值是经过加密的。除了因为先前发送的新令牌帧遭遇丢包而重新发送的那些帧外，服务器必须确保它发送的任何新令牌帧在所有客户端间都是唯一的。允许服务器区分令牌是来自重试数据包还是新令牌帧的信息还会被并非服务器的实体访问到。
+客户端的端口号在两条不同的连接间保持相同是不太可能的；因此验证端口不太可能成功。
+如果与某服务器间的连接具有权威性（例如，服务器的名称是被包含在证书中的），那么在新令牌帧中接收到的令牌应该适用于这台服务器。当客户端连接到一台服务器且它对此服务器仍保有对此服务器适用的且未使用的令牌时，它应该在初始数据包的令牌字段中使用令牌。使用令牌可以允许服务器不需要额外花费往返时间就验证客户端地址。客户端必须不在连接到服务器时使用不适用于此服务器的令牌，除非客户端知道签发令牌的服务器和它正在连接的服务器是共享令牌的管理机制的。客户端可以使用来自任何先前与那台服务器的连接的令牌。
+令牌允许服务器将令牌签发时所在的连接和任何它被使用时所在的连接间的网络活动关联起来。想要打破在某个服务器上的身份连续性的客户端可以丢弃使用新连接帧提供的令牌。相反，在重试数据包中获取的令牌必须在连接尝试期间被立即使用且不能被用于后续的连接尝试。
+客户端不应该在不同的连接尝试间重用来自新令牌帧的令牌。重用令牌使得连接会被网络路径上的实体关联起来；详见第9.5章。
+客户端可能在单条连接上接收到数个令牌。只要记得防止可关联性，任何令牌可以被用于任何连接尝试。服务器可以发送额外的令牌既可以为多次连接尝试提供地址验证，又可以取代可能会变为无效的旧令牌。对于客户端来说，这种不明确的目的意味着发送最近的未使用的令牌是最有可能有效的。尽管保存并使用更旧的令牌没有负面影响，但是客户端可以将更旧的令牌视为更不太可能会对此服务器的地址验证有效。
+当服务器接收到具有地址验证令牌的初始数据包时，它必须尝试验证令牌，除非它已经完成了地址验证。如果令牌是无效的，那么服务器应该表现得就好像客户端的地址未经验证一样，这包括在必要时发送重试数据包。使用新令牌帧和重试数据包提供的令牌能够被服务器区分（详见第8.1.1章），并且后者会被更严格地验证。如果验证通过，服务器随后应该允许握手继续进行。
+ 注意：将客户端地址视为未经验证的而不是丢弃数据包的原因是，客户端可能是在之前的连接中从新令牌帧中获得令牌的，并且如果服务器丢失过状态，它就可能无法验证令牌，此时若丢弃数据包则会导致连接失败。
+ 在无状态的设计中，服务器可以使用经过加密和认证的令牌来将信息传递给客户端，随后从中恢复信息并用它来验证客户端的地址。令牌没有被整合进加密握手，所以它们是未经认证的。这意味着，客户端将可以重用令牌。为了避免利用这一属性的攻击，服务器可以将令牌中的信息限制为仅仅验证客户端地址时所需要的那些信息。
+客户端可以将从一条连接中获取的令牌用于任何使用相同版本的连接尝试。当选择使用的令牌时，客户端不需要考虑正在尝试的连接的其他属性，包括应用协议、会话票证或其他连接属性的可能的选择。</description>
+    </item>
+    
+    <item>
+      <title>8.1.4 地址验证令牌完整性</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.4_Address_Validation_Token_Integrity/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.4_Address_Validation_Token_Integrity/</guid>
+      <description>地址验证令牌必须是难以猜测的。在令牌中包含一个有着至少128位的熵的随机值会是足够的，但是这需要服务器记录它发送给客户端的值。
+基于令牌的方案允许服务器将关于验证的状态数据带来的负载转移到客户端上。要使这种设计正常工作，令牌必须被能够抵御客户端修改或伪造的完整性保护所覆盖。要是没有完整性保护，恶意的客户端就能生成或猜测会被服务器接收的令牌值。只有服务器需要访问令牌的完整性保护密钥。
+对令牌制定单一的定义良好的格式是没有必要的，因为服务器即使生成者又是消费者。在重试数据包中发送的令牌应该包含允许服务器验证客户端数据包中的源IP地址和端口是否保持不变的信息。
+在新令牌帧中发送的令牌必须包含允许服务器验证客户端的IP地址是否和令牌签发时的值一致的信息。服务器可以使用来自新令牌帧的令牌来做出不发送重试数据包的决定，即使客户端地址已经改变。如果客户端的IP地址已经改变，那么服务器必须遵守抗放大上限；详见第8章。注意，由于NAT的存在，这项要求可能不足以保护其他共享NAT的主机免于放大攻击。
+攻击者可能在DDoS攻击中重放令牌来将服务器用作放大器。为了抵御这种攻击，服务器必须确保令牌的重放是被阻止或限制的。服务器应该确保在重试数据包中发送的令牌仅会在一段较短时间内被接受，因为它们会被客户端立即返回。在新令牌帧（详见第19.7章）中提供的令牌应该有更长的有效时间但是不应该能被多次接受。建议服务器尽可能只允许令牌被使用一次；令牌可以包含关于客户端的额外信息来进一步缩减适用范围或重用机会。</description>
+    </item>
+    
+    <item>
       <title>8.2. 非标准参考文献</title>
       <link>/RFC8999_Chinese_Translation/References/8.2_Informative_References/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -608,6 +707,577 @@ QUIC在实现上应该提供某种方法使得应用层能够因此确定各条�
       <description>[QUIC TLS] Thomson, M., Ed. and S. Turner, Ed. 《使用TLS加密QUIC（Using TLS to Secure QUIC）》, RFC 9001, DOI 10.17487/RFC9001, May 2021, https://www.rfc-editor.org/info/rfc9001.
   [QUIC传输协议] Iyengar, J., Ed. and M. Thomson, Ed. 《QUIC：一种基于UDP的多路复用安全传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）》, RFC 9000, DOI 10.17487/RFC9000, May 2021, https://www.rfc-editor.org/info/rfc9000.
   [RFC5116] McGrew, D. 《一种用于认证加密的接口及算法（An Interface and Algorithms for Authenticated Encryption）》, RFC 5116, DOI 10.17487/RFC5116, January 2008, https://www.rfc-editor.org/info/rfc5116.</description>
+    </item>
+    
+    <item>
+      <title>8.2.1 发起地址验证</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.1_Initiating_Path_Validation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.1_Initiating_Path_Validation/</guid>
+      <description>要发起路径验证，终端在要被验证的路径上发送一个包含不可预测的载荷的通道挑战帧。
+终端可以发送多个通道挑战帧以抵御数据包丢包。然而，终端不应该使用同一个数据包发送这些通道挑战帧。
+在用包含通道挑战帧的数据包探测新路径时，终端不应该发送得比初始数据包还要频繁。这确保连接迁移不会比建立新连接施加更多负载给新路径。
+终端必须在每个通道挑战帧中使用不可预测的数据以使得它能将对端的响应与对应的通道挑战帧关联起来。
+终端必须将包含通道挑战帧的数据报扩充至至少1200字节，这个在允许的最大数据报尺寸中的最小值，除非那条路径的抗放大上限不允许发送那么大的数据报。发送这个尺寸的UDP数据报确保终端与对端间的网络路径能够承载QUIC数据包；详见第14章。
+当终端因为抗放大上限而不能将数据报扩充至1200字节时，路径的MTU将不会被验证。为了确保路径的MTU足够大，终端必须通过在至少1200字节的数据报中发送通道挑战帧的方式进行第二次路径验证。这次额外的验证可以在回复通道帧被成功接收到之后再进行，也可以等到在路径上收到了足够数量的字节而使得发送一个大一点的数据包也不会超过抗放大上限的时候再进行。
+不像其他需要扩充数据报的情况，如果数据报包含了通道挑战帧或回复通道帧，那么终端必须不丢弃看起来过小的数据报。</description>
+    </item>
+    
+    <item>
+      <title>8.2.2 路径验证的响应</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.2_Path_Validation_Responses/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.2_Path_Validation_Responses/</guid>
+      <description>当接收到通道挑战帧时，终端必须响应回复通道帧，并在其中回显通道挑战帧里的数据。除非被拥塞控制限制，终端必须不推迟传输包含回复通道帧的数据包。
+回复通道帧必须在接收到通道挑战帧的网络路径上发送。这确保对端的路径验证仅当路径在两个方向上同时可用时才通过。这项要求必须不被发起路径验证的终端强制执行，因为这会使得针对迁移的攻击变为可能；详见第9.3.3章。
+终端必须将包含回复通道帧的数据报扩充至至少1200字节，这个在允许的最大数据报尺寸中的最小值。这样就能验证这条路径在两个方向上都能够承载这个尺寸的数据报。然而如果产生的数据超过了抗放大上限，那么终端必须不扩充包含回复通道帧的数据报。这种情况应只会发生在接收到的通道挑战帧没有用扩充过的数据报发送时。
+终端必须不在响应单个通道挑战帧时发送超过一个回复通道帧；详见第13.3章。对端应当根据需要发送更多通道挑战帧来唤起额外的回复通道帧。</description>
+    </item>
+    
+    <item>
+      <title>8.2.3 地址验证通过</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.3_Successful_Path_Validation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.3_Successful_Path_Validation/</guid>
+      <description>当接收到的回复通道帧包含着曾在通道挑战帧中发送的数据时，地址验证通过。在任何网络路径上接收到的回复通道帧所验证的路径都是发送通道挑战帧时使用的那条。
+如果终端在一个未扩充至至少1200字节的数据报中发送通道挑战帧，并且它的响应验证了对端地址，那么该路径就是验证通过的，但这不包括路径的MTU。于是，终端现在可以发送超过已接收数据量三倍的数据。然而，终端必须使用经扩充的数据包发起另一次路径验证，来验证这条路径支持所需的MTU。
+接收到对包含通道挑战帧的数据包的确认这一事实并不能作为合适的验证方法，因为确认可以是被恶意对端伪造出来的。</description>
+    </item>
+    
+    <item>
+      <title>8.2.4 地址验证失败</title>
+      <link>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.4_Failed_Path_Validation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.4_Failed_Path_Validation/</guid>
+      <description>仅当发起地址验证的终端放弃了验证地址的尝试时，地址验证失败。
+终端应该基于倒计时放弃地址验证。在设置倒计时时，QUIC实现要注意新路径可能有着比原来的路径更长的往返时间。推荐使用的值是当前PTO和新路径PTO（使用《QUIC恢复》中定义的kInitialRtt）中的较大值的三倍。
+这个倒计时使得在地址验证失败前可以经过数个PTO，于是一两个通道挑战帧或回复通道帧的丢包不会引起整个路径验证的失败。
+注意，终端可能在新路径上接收到包含其他类型的帧的数据包，但是要使得路径验证通过，具有正确数据的回复通道帧是必需的。
+当终端放弃地址验证时，它将这条路径认定为不可用。这不一定会暗示连接的失败——终端可以通过其他合适的路径继续发送数据包。如果没有路径可用，终端可以等待出现一条新的可用路径或关闭连接。没有通往对端的有效网络路径的终端可以用连接错误NO_VIABLE_PATH（无可行通道）来发送信号，不过这只有在有网络路径存在但是不支持所需的MTU（详见第14章）的情况下才可行。
+地址验证可能因为除了失败外的其他原因而被放弃。这主要会发生在对旧路径进行验证期间发起了前往新路径的连接迁移时。</description>
+    </item>
+    
+    <item>
+      <title>9.1 探测新路径</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/9.1_Probing_a_New_Path/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/9.1_Probing_a_New_Path/</guid>
+      <description>在将连接迁移到新的本地地址前，终端可以使用地址验证（详见第8.2章）从新的本地地址探测对端的可达性。地址验证的失败仅仅意味着新路径对此条连接来说无法使用。地址验证的失败不会引起连接被关闭，除非不存在其他可替代的有效路径。
+通道挑战帧、回复通道帧、新连接ID帧和填充帧都属于“探测帧”，而其他类型的帧都是“非探测帧”。仅仅包含探测帧的数据包是“探测数据包”，而包含了其他类型的帧的数据包就是“非探测数据包”。</description>
+    </item>
+    
+    <item>
+      <title>9.2 发起连接迁移</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/9.2_Initiating_Connection_Migration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/9.2_Initiating_Connection_Migration/</guid>
+      <description>终端可以通过从新的本地地址发送包含非探测帧的数据包的方式来迁移连接。
+每个终端都会在连接建立期间验证对端的地址。因此，正在迁移的终端可以在知道对端在其当前地址上愿意接收数据的前提下向对端发送数据。于是，终端不需要先验证对端的地址就可以迁移至新的本地地址。
+为了在新的路径上建立可达性，终端在新路径上发起路径验证（详见第8.2章）。终端可以推迟路径验证，直到对端向它的新地址发送下一个非探测帧之时。
+在迁移时，新路径可能不支持终端当前的发送速率。因此，终端如第9.4章所描述的那样重置它的拥塞控制器和RTT预估。
+新的路径可能不具有相同的ECN功能。因此，终端如第13.4章所描述的那样验证ECN功能。</description>
+    </item>
+    
+    <item>
+      <title>9.3.1 来自对端的地址伪造</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.1_Peer_Address_Spoofing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.1_Peer_Address_Spoofing/</guid>
+      <description>对端有可能伪造它的源地址来使得终端向不愿意接收的主机发送过量数据。如果终端发送的数据量比正在伪造的对端发送的要多得多，那么连接迁移可能被用来放大攻击者能够向受害者发送的数据量。
+如第9.3章中所述，终端应该验证对端的新地址以确认对端在新地址上拥有处理能力。在对端的地址被认定为有效前，终端限制它向那个地址发送的数据量，详见第8章。如果没有这个限制，终端就要承担被用于针对毫无戒备的受害者的拒绝服务攻击的风险。
+如果终端如上文一般跳过了对端地址验证，那么它就不需要限制它的发送速率。</description>
+    </item>
+    
+    <item>
+      <title>9.3.2 来自路径上设备的地址伪造</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.2_On-Path_Address_Spoofing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.2_On-Path_Address_Spoofing/</guid>
+      <description>在路径上的攻击者可以通过拷贝并转发具有伪造地址的数据包并使它比原始数据包更早到达的方式引发虚假的连接迁移。具有伪造地址的数据包将被视为来自连接迁移，而原始数据包将被视为重复并被丢弃。在一次虚假迁移之后，对源地址的验证将会失败，因为在源地址上的实体没有读取或响应发给它的通道挑战帧所需的加密密钥，哪怕它真的想这么做。
+为了保护连接免于因为这样的虚假迁移而失败，当对于新对端地址的验证失败后，终端必须回退并使用最后一个经验证的对端地址。除此之外，从合法对端地址接收到具有最大数据包号的数据包，将触发另一次连接迁移。这将使得对虚假迁移的地址的验证被放弃，其中正包括由注入单个数据包的攻击者发起的迁移。
+如果终端没有关于最后一个经验证的对端地址的状态，它必须以丢弃所有此连接的状态数据的方式静默地关闭连接。这会造成这条连接上的新数据包被以常规方式处理。例如，终端可以在响应将来的传入数据包时发送无状态重置。</description>
+    </item>
+    
+    <item>
+      <title>9.3.3 来自非路径上设备的数据包转发</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.3_Off-Path_Packet_Forwarding/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.3_Off-Path_Packet_Forwarding/</guid>
+      <description>不在路径上的但能观测数据包的攻击者可以将真实数据包的副本转发到终端上。如果数据包副本比真实数据包更早到达，这就会表现得像是NAT重绑定一样。任何真实数据包都会因为重复而被丢弃。如果攻击者有能力继续转发数据包，它就有可能使得迁移的路径经过攻击者。这会使得攻击者位于路径上，给予它观测或丢弃任何后续数据包的能力。
+这种形式的攻击要求攻击者使用一条有着和终端间的直连路径近乎相似的特征的路径。如果发送的数据包相对较少，或数据包丢包与计划的攻击同时发生，那么这种攻击的成功率就更加可靠。
+在原始路径上接收到的会增加最大的已接收到的数据包号的非探测数据包将使得终端移动回那条路径。在这条路径上引发数据包增加了攻击失败的可能性。因此，这种攻击的抵御依赖于触发数据包交换。
+在响应一个看起来很像的迁移时，终端必须使用通道挑战帧验证先前的活跃路径。这能在那条路径上引入新数据包的发送。如果那条路径不再可用，那么验证路径的尝试会超时并失败；如果路径时可用的但是不再被需要，验证就会成功但是仅仅使得那条路径上被多发送了几个探测数据包。
+在活跃路径上接收到通道挑战帧的终端应该在发送非探测数据包作为响应。如果这个非探测数据包比任何攻击者创建的副本到达得都要早，这就能使得连接被迁移回原始路径。任何后续去往另一条路径的迁移都会重启上述整个过程。
+这种防御是不完美的，但是它不被认为是一个严肃的问题。如果在尝试过数次原始路径的情况下，通过攻击者的路径还总是比原始路径更快，那么这很难说究竟是一次攻击，还是对路由的优化。
+终端还可以使用启发式的方法来提升对这种形式的攻击的检测。例如，如果最近在旧路径上接收到过数据包，那么NAT重绑定是不太可能发生的；类似地，重绑定在IPv6路径上是很少见的。终端也可以寻找有没有重复的数据包。或者换个思路，连接ID上的改变更有可能表明这是一次有意的迁移，而不是一次攻击。</description>
+    </item>
+    
+    <item>
+      <title>9.4 丢包检测和拥塞控制</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/9.4_Loss_Detection_and_Congestion_Control/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/9.4_Loss_Detection_and_Congestion_Control/</guid>
+      <description>新路径上的可用功能可能和旧路径上的不一样。在旧路径上发送的数据包必须不被计入新路径的拥塞控制或RTT预估中。
+当承认对端对它新地址的所有权时，终端必须立即将新路径的拥塞控制器和往返时间预估器重置为初始值（详见《QUIC恢复》的附录A.3和附录B.3），除非对端地址的改变仅仅是换了个端口。因为仅改变端口通常是NAT重绑定或其他中间设备活动的结果，终端在这种情况下可以沿用拥塞控制状态和往返时间预估，而不是将它们重置为初始值。在来自旧路径的拥塞控制状态被沿用至具有完全不同特征的新路径上时，发送方一开始可能传输得过于激进，直到拥塞控制器和RTT预估器适应下来为止。一般来说，建议QUIC实现在沿用旧值至新路径时要谨慎。
+在迁移期间，当终端发送数据和探测包自/至不同地址时，接收方一侧可能出现很明显的乱序，这是因为使用两条不同路径会有不同的往返时间。来自不同路径上的数据包的接收方仍然要为所有接收到的数据包发送ACK帧。
+尽管在连接迁移期间会用到多条路径，但是最少只要使用单个拥塞控制上下文和单个丢包恢复上下文（如《QUIC恢复》中所述）就足够应对了。比如，终端可以推迟切换至新的拥塞控制上下文，直到它确认不再需要旧路径（就像第9.3.3章中描述的情形一样）。
+发送方可以将探测数据包视作特例，以使得它们的丢包检测是独立的且不会使得拥塞控制器过度地抑制它的发送速率。当发送通道挑战帧时，终端可以设置一个单独的倒计时，并当相应的回复通道帧被接收到时取消倒计时。如果倒计时在回复通道帧前归零，终端可以发送一个新的通道挑战帧并且启动一个时间更长的倒计时。这个倒计时应该如《QUIC恢复》的第6.2.1章描述的那样被设置，并且必须不变得越来越严格。</description>
+    </item>
+    
+    <item>
+      <title>9.5 连接迁移对隐私的影响</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/9.5_Privacy_Implications_of_Connection_Migration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/9.5_Privacy_Implications_of_Connection_Migration/</guid>
+      <description>在不同网络路径上使用相同的连接ID将允许被动观测者从那些路径上将网络活动互相关联起来。在不同网络间移动的终端可能不希望它们的网络活动被不是对端的任何实体给关联起来，所以当从不同的本地地址发送时，会使用不同的连接ID，如第5.1章所讨论的那样。为了使这个方法有效，终端应该确保它们提供的那些连接ID不会被任何其他实体找出相关性。
+终端随时可以改变传输时所用的目标连接ID为一个从未在别的路径上使用过的值。
+当发送自不止一个本地地址时——例如在如第9.2章所描述的发起连接迁移时或在如第9.1章所描述的探测新网络路径时——终端必须不重用连接ID。
+类似地，当发送至不止一个目标地址时，终端必须不重用连接ID。由于不受对端控制的网络条件变化，终端可能从一个新的源地址接收到具有相同目标连接ID字段值的数据包，这时它可以在使用新的远程地址时继续使用当前连接ID，但是仍然从相同的本地地址发送。
+以上有关重用连接ID的要求仅适用于数据包发送，因为数据包发送时的连接ID不变但是数据包传输的路径发生意想不到的变化的情况是有可能的。例如，在网络经过一段时间的沉默后，客户端恢复发送时，NAT重绑定可能使得数据包在一条新路径上被发送。终端如第9.3章所描述的那样响应这类事件。
+为每条新网络路径上双向发送的数据包使用不同的连接ID消除了连接ID对于从不同网络路径中的相同连接间将数据包互相关联的作用。而头部保护确保了数据包号不能被用来关联网络活动。但这无法阻止数据包的其他属性，例如计时和尺寸，被用于关联网络活动。
+终端不应该在对端申请了零长度连接ID时发起迁移，因为经过新路径的流量与经过旧路径的会很容易地被关联起来。如果服务器有能力将具有零长度连接ID的数据包与正确的那条连接关联起来，那么这就意味着服务器正使用其他信息来解除数据包的多路复用。举个例子，服务器可以给每个客户端提供唯一的地址——比如通过使用HTTP替代服务（详见《ALTSVC》）。这类能允许不同网络路径上的数据包被正确路由的信息同样能允许非对端的实体关联这些路径上的网络活动。
+在沉默一段时间后，客户端在发送流量时可能希望通过切换至新连接ID、源UDP端口或IP地址（详见《RFC8981》）的方法减少网络活动的可关联性。改变用来发送数据包的地址同时会使得服务器检测到连接迁移。这确保了用于支持迁移的机制即使是对没有经历NAT重绑定或实际迁移的客户端来说也是用得上的。改变地址会使得对端重置它的拥塞控制状态（详见第9.4章），所以地址应该仅偶尔地被改变。
+耗尽可用连接ID的终端既不能探测新路径或发起迁移，也不能响应探测包或对端发起的迁移。为了确保迁移可行并且在不同路径上发送的数据包不会被关联，终端应该在对端迁移前提供新连接ID，详见第5.1.1章。如果对端可能已经耗尽了可用的连接ID，正在迁移的那个终端可以在所有在新网络路径上发送的数据包中包含一个新连接ID帧。</description>
+    </item>
+    
+    <item>
+      <title>9.6.1 传达首选地址</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.1_Communicating_a_Preferred_Address/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.1_Communicating_a_Preferred_Address/</guid>
+      <description>服务器通过在TLS握手中包含传输参数preferred_address的方式传达首选地址。
+服务器可以为每一种地址族（IPv4和IPv6）传达首选地址，以允许客户端选择一个最适合它们网络连接的地址。
+一旦握手被确认，客户端就应该选择客户端提供的两个地址中的一个并发起地址验证（详见第8.2章）。客户端从传输参数preferred_address或新连接ID帧中获取并使用任何之前没用过的活跃连接ID来构建数据包。
+只要路径验证通过，客户端就应该开始使用新连接ID向新服务器地址发送所有将来的数据包，并且不再使用旧服务器地址。如果地址验证失败，那么客户端必须将所有将来的数据包继续发到服务器的原始IP地址。</description>
+    </item>
+    
+    <item>
+      <title>9.6.2 迁移至首选地址</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.2_Migration_to_a_Preferred_Address/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.2_Migration_to_a_Preferred_Address/</guid>
+      <description>迁移至首选地址的客户端必须在迁移前验证它选择的地址，详见第21.5.3章。
+服务器可能在接受一条连接后的任何时间接收到一个发到它的首选IP地址的数据包。如果这个数据包包含了通道挑战帧，那么服务器就要像第8.2章所描述的那样发送回复通道帧。服务器必须保持从它的原始地址发送非探测数据包，直到它在首选地址上接收到了来自客户端的非探测数据包并且它对新路径完成了验证。
+服务器必须从它的首选地址探测通向客户端的路径。这有助于抵御由攻击者发起的虚假迁移。
+一旦服务器完成了路径验证并且在首选地址上收到了具有新的最大数据包号的非探测数据包，它就开始仅仅从首选IP地址向客户端发送非探测数据包。如果服务器在旧IP地址上接收到了属于这条连接的更加新的数据包，那么服务器应该丢弃它们。服务器可以继续处理在旧IP地址上接收到的被延误的数据包。
+服务器在传输参数preferred_address中提供的地址仅对提供地址时所处的连接有效。客户端必须不将它们用于其他连接，包括从当前连接恢复的连接。</description>
+    </item>
+    
+    <item>
+      <title>9.6.3 客户端迁移与首选地址的交互</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.3_Interaction_of_Client_Migration_and_Preferred_Address/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.3_Interaction_of_Client_Migration_and_Preferred_Address/</guid>
+      <description>客户端可能想要在迁移到服务器的首选地址前先进行一次连接迁移。在这种情况下，客户端应该从它的新地址同时对原始的和首选的服务器地址进行路径验证。
+如果对服务器首选地址的路径验证通过了，那么客户端必须放弃对原始地址的验证并且迁移至服务器的首选地址。如果对服务器首先地址的路径验证失败了但是对服务器原始地址的的验证成功了，那么客户端可以迁移到它的新地址，并且继续向服务器的原始地址发送数据。
+如果在服务器的首选地址接收到的数据包有着与在握手期间观测到的值不同的客户端源地址，那么服务器必须如第9.3.1章和第9.3.2章描述的那样保护自己免受潜在的攻击。除了有意的同时迁移，这种情况还会因为客户端的网络在访问服务器首选地址时使用了不同的NAT绑定而发生。
+服务器应该在接收到来自不同地址的探测数据包时向客户端的新地址发起路径验证，详见第8章。
+迁移到新地址的客户端应该使用与服务器正使用的地址族一致的首选地址。
+由传输参数preferred_address提供的连接ID不是特定于参数中提供的地址的。提供这个连接ID是为了客户端有一个可以用来迁移的连接ID，但客户端可以在任何路径上使用这个连接ID。</description>
+    </item>
+    
+    <item>
+      <title>9.7 迁移与IPv6流标签的使用</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Migration/9.7_Use_of_IPv6_Flow_Label_and_Migration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Migration/9.7_Use_of_IPv6_Flow_Label_and_Migration/</guid>
+      <description>使用IPv6发送数据的终端应该应用符合《RFC6437》要求的IPv6流标签，除非本地API不允许设置IPv6流标签。
+流标签的生成必须被设计得能够最小化被关联到之前使用过的流标签的可能性，因为固定的流标签将使得多条路径上的网络活动被关联起来，详见第9.5章。
+《RFC6437》建议用伪随机函数衍生数据的方式来生成流标签。在生成流标签时除了源地址和目标地址外还包含目标连接ID字段，可以确保流标签和其他能观测到的标识值是同步变化的。使用将这些输入和一个本地秘密值进行组合的加密哈希函数是实现这项要求的方法之一。</description>
+    </item>
+    
+    <item>
+      <title>10.1.1 存活确认</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.1_Liveness_Testing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.1_Liveness_Testing/</guid>
+      <description>在临近正在生效的超时时间时发送数据包的终端需要承担数据包被对端丢弃的风险，因为在这些数据包到达之前，对端的空闲时间可能已经逾期。
+如果对端可能距离超时所剩的时间不多了，例如不到一个PTO，那么终端可以发送一个Ping帧或其他引发确认的帧来测试连接是否存活，详见《QUIC恢复》的第6.2章。这在没有可用的应用数据以供安全地重发时尤其有用。注意，哪些数据可以安全地重发是由应用决定的。</description>
+    </item>
+    
+    <item>
+      <title>10.1.2 推迟空闲超时</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.2_Deferring_Idle_Timeout/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.2_Deferring_Idle_Timeout/</guid>
+      <description>如果终端正在等待响应数据但是没有或无法发送应用数据，那么终端可能需要发送ACK触发包以避免空闲超时。
+QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避免丢失已经和一条连接关联的状态但不希望花时间重新交换应用数据，那么就可以使用这个选项。开启这个选项时，终端可以定期发送一个Ping帧（详见第19.2章），这会使得对端重置自己的空闲超时定时器。如果这包含Ping帧的数据包是自上一次接收到数据包后发送的第一个ACK触发包，那么发送这个包还会重置当前终端的空闲超时定时器。发送Ping帧会使得对端用确认来响应，这也会重置当前终端的空闲超时定时器。
+使用QUIC的应用协议应该提供有关合适的推迟空闲超时的时机的指导。不必要地发送Ping帧可能对性能有负面影响。
+如果一条连接上在一段超过用传输参数max_idle_timeout协商的时间内，没有数据包被发送或接收，那么这条连接会超时，详见第10章。然而，网络中间设备的状态可能比那个时间更早地超时。尽管《RFC4787》中的第5条要求推荐了每2分钟的超时间隔，但是经验表明至少要每30秒发送一次数据包才能避免大多数中间设备丢失有关UDP流量的状态，详见《GATEWAY》。</description>
+    </item>
+    
+    <item>
+      <title>10.2.1 连接的关闭状态</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.1_Closing_Connection_State/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.1_Closing_Connection_State/</guid>
+      <description>终端发起立即关闭后进入关闭状态。
+在关闭状态下，终端仅保留足够用于创建包含连接关闭帧的数据包和用于区分数据包是否属于此条已关闭连接的信息。处于关闭状态的终端发送包含连接关闭帧的数据包来响应任何属于这条连接的传入数据包。
+终端应该限制它在关闭状态下创建数据包的速率。比如，终端可以在响应接收到的数据包前等待足够的数据包或时间，且等待的数据包数量或时间长短是逐渐增长的。
+终端选择的连接ID和QUIC版本是区分数据包是否属于一条关闭状态的连接的充分信息；终端可以丢弃所有其他连接状态数据。处于关闭状态的终端没有必要处理任何接收到的帧。终端可以为传入数据包保留数据包保护密钥用于读取和处理连接关闭帧。
+当进入关闭状态时，终端可以丢弃数据包保护密钥，然后在响应任何接收到的UDP数据报时都发送包含连接关闭帧的数据包。然而，丢弃了数据包保护密钥的终端没有能力区分并丢弃不合法的数据包。为了避免被用于放大攻击，这样的终端必须限制它发出的数据包尺寸总和不超过它接收到的且属于这条连接的数据包尺寸总和的三倍。为了最小化终端为关闭状态的连接所维护的状态数据，终端可以在响应任何接收到的数据包时发送完全相同的数据包。
+ 注意：允许在关闭状态下重传完全相同的数据包是“每个数据包都必须使用新的数据包号”要求的一个特例，详见第12.3章。发送新的数据包号主要是用于丢包恢复和拥塞控制，但这两者都和一个已关闭的连接关系不大。重传这最后一个数据包需要的状态数据更少。
+ 当处于关闭状态时，终端可能从新的源地址接收到数据包，这可能是连接迁移的结果；详见第9章。处于关闭状态的终端必须要么丢弃从未经验证的地址接收到的数据包，要么限制它发向未经验证的地址的数据包尺寸总和，使其小于它从那个地址接收到的数据包的尺寸总和。
+处于关闭状态的终端不应处理密钥更新（详见《QUIC-TLS》的第6章）。密钥更新可能阻止终端从关闭状态转移到排空状态，因为终端将失去处理后续接收到的数据包的能力，但这没有什么影响。</description>
+    </item>
+    
+    <item>
+      <title>10.2.2 连接的排空状态</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.2_Draining_Connection_State/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.2_Draining_Connection_State/</guid>
+      <description>一旦终端接收到连接关闭帧，他就会进入排空状态，这表明对端已处于关闭或排空状态。虽然在其他方面都和关闭状态一致，不过处于排空状态的终端必须不发送任何数据包。一旦连接处于排空状态，就没有必要再保留数据包保护密钥了。
+接收到连接关闭帧的终端可以再进入排空状态前发送一个包含连接关闭帧的数据包，并且，如若合适，使用NO_ERROR（无错误）代码。除此之外，终端必须不发送更多数据包。不这么做会导致两个终端间保持不断交换连接关闭帧的状态，直到其中一个终端退出关闭状态。
+如果终端接收到了连接关闭帧，那么它可以从关闭状态进入排空状态，这表明对端也处于关闭或排空状态。在这种情况下，排空状态会在原来关闭状态应该结束时结束。换句话说，终端使用相同的状态结束时机但是不再在这条连接上传输数据包。</description>
+    </item>
+    
+    <item>
+      <title>10.2.3 在握手期间立即关闭</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.3_Immediate_Close_during_the_Handshake/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.3_Immediate_Close_during_the_Handshake/</guid>
+      <description>发送连接关闭帧时，要确保对端会处理这个帧。通常来说，这意味着将这个帧放到具有最高级别的数据包保护的数据包中发送，以避免数据包被丢弃。在握手确认后（详见《QUIC-TLS》的第4.1.2章），终端必须在1-RTT数据包中发送任何连接关闭帧。然而，在确认握手前，更高级的数据包保护密钥有可能在对端那还不可用，所以可以使用具有较低数据包保护级别的数据包多发送一个连接关闭帧。具体来说：
+  客户端总是知道服务器有没有握手密钥（详见第17.2.2.1章），但是服务器不确定客户端有没有握手密钥。在这种条件下，服务器应该用握手数据包和初始数据包各发送一个连接关闭帧来确保它们中的至少一个是客户端可以处理的。
+  在0-RTT数据包中发送连接关闭帧的客户端不能确信服务器会同意0-RTT的使用。用初始数据包发送连接关闭帧使得服务器更有可能接收到关闭的信号，哪怕应用错误码可能不会被接收到。
+  在确认握手前，对端可能无法处理1-RTT数据包，所以终端应该用握手数据包和1-RTT数据包各发送一个连接关闭帧。服务器则应该用初始数据包发送连接关闭帧。
+  用初始数据包或握手数据包发送类型为0x1d的连接关闭帧会暴露应用状态或被用于更改应用状态。用初始数据包或握手数据包发送时，必须将类型为0x1d的连接关闭帧替换为类型为0x1c的连接关闭帧。否则，有关应用状态的信息可能被泄露。终端在转换连接关闭帧的类型到0x1c时必须清除原因语句字段的值，并且应该使用APPLICATION_ERROR（应用错误）代码。
+用不同数据包类型发送的连接关闭帧可以被合并至单个UDP数据报中；详见第12.2章。
+终端可以用初始数据包发送连接关闭帧。这时可能是在响应接收自初始数据包或握手数据包的未通过认证的信息。这样的立即关闭行为可能将合法的连接暴露在拒绝服务攻击之下。QUIC对于握手过程中来自路径上设备的攻击并不提供防御措施；详见第21.2章。然而，如果牺牲发向合法对端的关于错误的反馈，并且终端直接丢弃不合法的数据包而不是用关闭连接帧终止连接，那么部分形式的拒绝服务攻击对于攻击者来说会变得更难实施。出于这个原因，如果在缺乏认证的数据包中检测出了错误，那么终端可以丢弃数据包而不是选择立即关闭。
+尚未建立状态的终端，例如在初始数据包中检测到错误的服务器，并不会进入关闭状态。在发送连接关闭帧时，没有关于连接的状态的终端不会进入关闭或排空状态。</description>
+    </item>
+    
+    <item>
+      <title>10.3.1 检测无状态重置</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.1_Detecting_a_Stateless_Reset/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.1_Detecting_a_Stateless_Reset/</guid>
+      <description>终端使用UDP数据报末尾的16个字节检测可能的无状态重置。终端记录所有无状态重置令牌，这些令牌关联着连接ID和终端最近发送的数据报的目标远程地址。这些令牌来自新连接ID帧的无状态重置令牌字段和服务器的传输参数，但不包含那些与未使用的或已停用的连接ID关联的无状态重置令牌。终端通过比较数据报的最后16个字节和所有与发送数据报的远程地址关联的无状态重置令牌，来将接收到的数据报识别为无状态重置。
+这种比较可以为每个传入数据报进行。如果来自某个数据报的数据包被成功处理了，那么终端可以跳过这个检查。然而，如果一个传入数据报的首个数据包不能与一条连接关联上，或不能被解密，那么必须进行这种比较。
+终端必须不为任何关联到它尚未使用或已停用的连接ID上的无状态重置令牌做检查。
+在将数据报和无状态重置令牌的值比较时，终端必须在不泄露令牌的值的前提下进行比较。比如，用固定时间进行比较能保护无状态重置令牌免于利用计时侧信道的信息泄露。另一种方法是存储并比较经转换的无状态重置令牌值而不是原始的令牌值，这种转换指的是使用密钥并在密码学上安全的伪随机函数（例如数据块加密算法和散列消息认证码（HMAC，详见《RFC2104》））。终端不必保护有关数据包是否被成功解密和有效的无状态重置令牌数量的信息。
+如果数据报的最后16个字节与无状态重置令牌的值一致，那么终端必须进入排空状态，并且在此连接上不再发送数据包。</description>
+    </item>
+    
+    <item>
+      <title>10.3.2 计算无状态重置令牌</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.2_Calculating_a_Stateless_Reset_Token/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.2_Calculating_a_Stateless_Reset_Token/</guid>
+      <description>无状态重置令牌必须难以被猜测。为了创建无状态重置令牌，终端可以为每一个它创建的连接随机生成（详见《RANDOM》）一个秘密值。然而，当集群中有多个实例时它会带来协调上的问题，以及在终端丢失状态时带来存储上的问题。无状态重置是为了处理状态丢失的情况而专门设计的，因此这个方法不是最理想的。
+通过使用以固定密钥和由终端选择的连接ID（详见第5.1章）作为输入的伪随机函数来生成令牌，单个固定密钥可以被用于与同一个终端有关的所有连接。终端可以使用HMAC（详见《RFC2104》）（例如，HMAC(固定密钥, 连接ID)）或基于HMAC的密钥衍生函数（HKDF，详见《RFC5869》）（例如，使用固定密钥作为输入密钥材料，使用连接ID作为盐）。这个函数的输出被截断至16字节来作为连接的无状态重置令牌。
+丢失状态的终端可以使用相同的方法来生成有效的无状态重置令牌。连接ID来自终端接收到的那个数据包。
+这种设计要求对端总是在数据包中发送连接ID，这样终端才可以使用来自数据包的连接ID来重置连接。使用这种设计的终端必须要么为所有连接使用相同长度的连接ID，要么将连接ID长度编码进连接ID以使得它可以在没有状态的情况下恢复。除此之外，它不能提供零长度连接ID。
+泄露无状态重置令牌将允许任何实体终止连接，所以一个令牌值只能被使用一次。这种选择无状态重置令牌的方法意味着相同连接ID和固定密钥的组合必须不被用于另一个连接。如果共享同一个固定密钥的实例还使用了相同的连接ID，或者攻击者可以使数据包被路由到没有状态但是使用相同固定密钥的实例，那么就有可能发起拒绝服务攻击；详见第21.11章。如果一个连接ID所在的连接已通过使用无状态重置令牌的方法重置过，那么在共享相同固定密钥的节点上必须不将这个连接ID用于新的连接。
+同一个无状态重置令牌必须不被用于多个连接ID。终端不需要将新的令牌值与所有先前的值进行比较，但是重复的值可能被视作类型为PROTOCOL_VIOLATION（协议违反）的连接错误。
+注意，无状态重置不受到任何加密保护。</description>
+    </item>
+    
+    <item>
+      <title>10.3.3 死循环</title>
+      <link>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.3_Looping/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.3_Looping/</guid>
+      <description>无状态重置的设计使得在不知道无状态重置令牌的情况下无法将它与合法的数据包区分开来。举例来说，如果一个服务器往另一个服务器发送了无状态重置，那么作为响应它可能收到另一个无状态重置，这会导致无尽的数据包交换。
+终端必须确保每一个它发出的无状态重置都比触发它的数据包要小，除非终端维护着足以避免死循环的状态数据。在循环出现的情况下，这使得数据包最终变得过小而不能触发响应。
+终端可以记录它已发送的无状态重置数量并且一旦到达限制数量就不再创建新的无状态重置。为不同的远程地址使用单独的限制可以确保其他对端或连接已到达限制时还能够使用无状态重置来关闭连接。
+取决于对端的连接ID长度，小于41字节的无状态重置可能被观察者识别为无状态重置。反过来，对小型数据包不响应无状态重置可能导致无状态重置不能有效地检测连接损坏但是只有小型数据包被发送的情况；这样的失败可能只能被其他方法检测出来，例如计时器。</description>
+    </item>
+    
+    <item>
+      <title>11.1 连接错误</title>
+      <link>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</guid>
+      <description>如果出现的错误会导致连接变得不可用，比如违背了协议语义或损坏了可能影响整条连接的状态数据，那么必须使用连接关闭帧（详见第19.19章）来发送信号。
+与应用相关的协议的错误出现时，使用帧类型为0x1d的连接关闭帧来发送信号。与传输相关的错误，包括所有在这份文档中描述的错误，都用帧类型为0x1c的连接关闭帧来携带。
+携带连接关闭帧的数据包可能会遭遇丢包。终端应该准备好当在一条已终止的连接上收到更多数据包时，重传包含连接关闭帧的数据包。限制重传的次数和发送这个最终的数据包的时机能够限制在已终止的连接上投入的资源。
+选择不重传连接关闭帧的终端需要承担对端错失首个包含连接关闭帧的数据包的风险。在一条已终止的连接上继续接收数据的终端，其唯一可用的机制是启动无状态重置的流程（第10.3章）。
+鉴于初始数据包的AEAD不提供强力的认证，终端可以丢弃不合法的初始数据包。即使在本规范要求产生连接错误的地方，丢弃初始数据包也是允许的。只有终端不能处理某个数据包中的帧或回退所有已处理部分产生的副作用时，它才能丢弃这个数据包。丢弃不合法的初始数据包可以被用来减少拒绝服务产生的风险，详见第21.2章。</description>
+    </item>
+    
+    <item>
+      <title>11.2 流错误</title>
+      <link>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</guid>
+      <description>如果一个应用层错误仅影响了单个流且它所在的连接处于可以恢复的状态，那么终端可以发送一个使用适当的错误码的流重置帧（详见第19.4章）来仅仅终止受影响的流。
+对流进行重置而不通知应用协议会使得应用协议进入不可恢复的状态。流重置帧必须只能由使用QUIC的应用协议发起。
+在流重置帧中携带的应用错误码的语义是由应用协议定义的。只有应用协议有能力终止一条流。应用协议的本地实例直接调用API，远程实例则可以使用会自动触发流重置帧的停止发送帧。
+应用协议应该定义规则来处理被任一终端提前取消的流。</description>
+    </item>
+    
+    <item>
+      <title>12.1 受保护的数据包</title>
+      <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.1_Protected_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packets_and_Frames/12.1_Protected_Packets/</guid>
+      <description>根据数据包类型不同，QUIC数据包具有不同级别的加密保护。有关数据包保护的细节，详见《QUIC-TLS》；本节对这种保护做了概述。
+版本协商数据包没有加密保护，详见《QUIC不变量》。
+重试数据包使用AEAD函数（带有关联数据的认证加密，详见《AEAD》）来保护数据包免于意外修改。
+初始数据包也使用AEAD函数，函数的密钥是用一个在传输中对外界可见的值衍生出来的。因此初始数据包不具有有效的可信度保护。使用初始数据包保护是为了确保数据包发送方是存在于当前网络路径上的。任何接收到来自客户端的初始数据包的实体都能重建出一个密钥，这个密钥既能让它们读取数据包的内容，也可以让它们创建出能被任一终端认证成功的初始数据包。AEAD函数还保护初始数据包免于意外修改。
+其他所有数据包都受衍生自加密握手的密钥保护。加密握手确保了只有正在交流的终端才能够接收到用于握手数据包、0-RTT数据包和1-RTT数据包的相应密钥。受0-RTT和1-RTT密钥保护的数据包具有强力的可信度和完整性保护。
+某些数据包类型中出现的数据包号字段具有可替代的可信度保护，这种保护被用作头部保护的一部分，详见《QUIC-TLS》的第5.4章。在给定的数据包号空间中，受保护的数据包号会随着数据包的发送而增加，详见第12.3章。</description>
+    </item>
+    
+    <item>
+      <title>12.2 合并数据包</title>
+      <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.2_Coalescing_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packets_and_Frames/12.2_Coalescing_Packets/</guid>
+      <description>初始数据包（详见第17.2.2章）、0-RTT数据包（第17.2.3章）和握手数据包（第17.2.4章）包含可以用来判断数据包末尾位置的长度字段。这个长度既包括数据包号字段也包括载荷字段，这两个字段都被可信地保护着的，一开始它们的长度都是未知的。但只要头部保护被移除，就能知道载荷字段的长度。
+使用长度字段，发送方可以将数个QUIC数据包合并至单个UDP数据报中。这可以减少为了完成加密握手并开始发送数据所需的UDP数据报数量。这也可以被用于构造路径最大传输单元（PMTU）探测包，详见第14.4.1章。接收方必须有能力处理被合并的数据包。
+用加密级别递增（初始、0-RTT、握手、1-RTT；详见《QUIC-TLS》的第4.1.4章）的顺序合并数据包更有可能使接收方有能力一次性处理所有数据包。具有短包头的数据包并不包含长度，所以它只能作为最后一个数据包被包含进UDP数据报中。如果多个帧将以相同的加密级别发送，那么终端应该将它们包含在单个数据包中，而不是合并多个相同加密级别的数据包。
+接收方可以根据UDP数据报包含的第一个数据包的信息来做路由。发送方必须不将具有不同连接ID的QUIC数据包合并至单个UDP数据报中。如果后续的某个数据包的目标连接ID字段与数据报中第一个数据包的值不同，那么接收方应该忽略这个数据包。
+任何被合并至单个UDP数据报的QUIC数据包都是独立且完整的。被合并的QUIC数据包的接收方必须独立处理每个QUIC数据包并单独确认它们，就好像它们是作为不同UDP数据报的载荷被接收的。例如，如果对一个数据包的解密失败了（因为密钥出于某个理由而不可用），那么接收方可以要么丢弃这个数据包要么缓存它以供将来处理，并且必须尝试处理余下的数据包。
+重试数据包（详见第17.2.5章）、版本协商数据包（第17.2.1章）和具有短包头的数据包（第17.3章）并不包含长度字段，因此在同一个UDP数据报中不能有其他数据包跟在它们后面。还要注意，不存在将重试数据包和版本协商数据包与另一个数据包合并的情况。</description>
+    </item>
+    
+    <item>
+      <title>12.3 数据包号</title>
+      <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.3_Packet_Numbers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packets_and_Frames/12.3_Packet_Numbers/</guid>
+      <description>数据包号是范围在0至262-1中的整数。这个数值被用来为数据包保护决定加密随机值。每个终端为发送和接收分别维护单独的数据包号。
+数据包号被限制在这个范围内是因为它们需要在ACK帧（详见第19.3章）的最大确认数字段中被完整表示。然而在长包头或短包头中表示时，数据包号被截断并被编码至1至4字节中，详见第17.1章。
+版本协商数据包（详见第17.2.1章）和重试数据包（第17.2.5章）并不包含数据包号。
+在QUIC中，数据包号被划分到三个空间里：
+ 初始空间（Initial space）：  所有初始数据包（详见第17.2.2章）都在这个空间中。
+ 握手空间（Handshake space）：  所有握手数据包（详见第17.2.4章）都在这个空间中。
+ 应用数据空间（Application data space）：  所有0-RTT数据包（详见第17.2.3章）和1-RTT数据包（第17.3.1章）都在这个空间中。
+  如《QUIC-TLS》所述，每种数据包类型使用不同的保护密钥。
+概念上，数据包号空间是数据包被处理和确认的上下文。初始数据包只能使用初始数据包保护密钥发送，也只能在初始数据包中被确认。类似地，握手数据包使用握手加密级别发送，且只能在握手数据包中被确认。
+这样，在不同数据包号空间中发送的数据的加密得到了强制隔离。每个空间中的数据包号都从0开始。在相同数据包号空间中发送的后续数据包必须将数据包号增加至少1。
+0-RTT数据和1-RTT数据出现在相同数据包号空间，是为了使得丢包检测算法在这两种数据包类型间更好实现。
+在一条连接的同一个数据包号空间中，QUIC终端必须不重用数据包号。如果发送用的数据包号到达了262-1，发送方必须关闭连接但不发送任何连接关闭帧或更多数据包；终端可以发送一个无状态重置（详见第10.3章）以响应将来它接收到的数据包。
+除非接收方确信它没有处理过另一个具有相同数据包号空间和数据包号的数据包，否则它必须丢弃眼前刚去除保护的数据包。出于在《QUIC-TLS》的第9.5章中所述的原因，必须在移除数据包保护后进行这个去除重复的步骤。
+为了检测重复的目的而追踪一个个数据包的终端会面临状态数据不断扩容的风险。检测重复所需的数据可以通过维护一个最小的数据包号来限制，低于这个数据包号的数据包都会被立即丢弃。使用任何最小的数据包号时，都要考虑往返时间可能发生的大幅度变化，原因之一是对端可能用更大的往返时间来探测网络路径，详见第9章。
+有关数据包号在发送方的编码和在接收方的解码，详见第17.1章。</description>
+    </item>
+    
+    <item>
+      <title>12.4 帧和帧类型</title>
+      <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.4_Frames_and_Frame_Types/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packets_and_Frames/12.4_Frames_and_Frame_Types/</guid>
+      <description>如图11所示，移除数据包保护后的QUIC数据包，其载荷由一系列完整的帧组成。版本协商数据包、无状态重置数据包和重试数据包中不包含帧。
+数据包载荷 { 帧 (8..) ..., } 图11：QUIC载荷
+ 包含帧的数据包载荷必须包含至少1个帧，可以包含多个帧和多种帧类型。终端必须将接收到不包含帧的数据包的情况视作类型为PROTOCOL_VIOLATION（协议违背）的连接错误。帧总是能被放进单个QUIC数据包中且不能横跨多个数据包。
+任何帧的开头都是表明其类型的帧类型字段，后面跟着额外的与类型相关的字段：
+帧 { 帧类型 (i), 与类型相关的字段 (..), } 图12：通用的帧结构
+ 表格3罗列并概述了有关本规范中定义的各种帧类型的信息。表格后是对于这份概述的描述。
+   类型值 帧类型名称 定义 数据包类型 特殊规则     0x00 填充帧 第19.1章 IH01 NP   0x01 Ping帧 第19.2章 IH01    0x02-0x03 ACK帧 第19.3章 IH_1 NC   0x04 流重置帧 第19.4章 __01    0x05 停止发送帧 第19.5章 __01    0x06 加密帧 第19.</description>
+    </item>
+    
+    <item>
+      <title>12.5 帧和数据包号空间</title>
+      <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.5_Frames_and_Number_Spaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packets_and_Frames/12.5_Frames_and_Number_Spaces/</guid>
+      <description>有一些类型的帧在某些数据包号空间中是被禁止的。这里的规则概述了TLS的规则，即与建立连接有关的帧通常能出现在任何数据包号空间的数据包中，而与传输数据有关的帧只能出现在应用数据空间中。
+  填充帧、Ping帧和加密帧可以出现在任何数据包号空间中。
+  标志着QUIC层错误（类型为0x1c）的连接关闭帧可以出现在任何数据包号空间中。标志着应用错误（类型为0x1d）的连接关闭帧必须只能出现在应用数据空间中。
+  ACK帧可以出现在任何数据包号空间中，但是只能确认在同一个数据包号空间中的数据包。然而，如下文所述，0-RTT数据包不能包含ACK帧。
+  所有其他类型的帧必须只能出现在应用数据空间中。
+  注意，不管出于什么理由，都不能在0-RTT数据包中发送以下类型的帧：ACK帧、加密帧、握手完成帧、新令牌帧、回复通道帧和撤销连接ID帧。服务器可以将在0-RTT数据包中接收到以上帧的情况视作类型为PROTOCOL_VIOLATION的连接错误。</description>
+    </item>
+    
+    <item>
+      <title>13.1 数据包处理</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.1_Packet_Processing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.1_Packet_Processing/</guid>
+      <description>在数据包保护被成功移除且所有包含在数据包中的帧都被处理之前，必须不确认这个数据包。对于流帧，这个时机指其中的数据已经被置入队列，且准备被应用协议接收之时，但它不要求数据被分发和消费。
+一旦数据包已经被完全处理，接收方通过发送一个或多个ACK帧来确认这个数据包的接收，这些ACK帧中包含被接收到的这个数据包的数据包号。
+如果终端有能力检测出收到了一个它未发送过的数据包的确认的情况，它应该将这种情况视作一种类型为PROTOCOL_VIOLATION（协议违背）的错误。有关如何做到这件事，详见第21.4章。</description>
+    </item>
+    
+    <item>
+      <title>13.2.1 发送ACK帧</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.1_Sending_ACK_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.1_Sending_ACK_Frames/</guid>
+      <description>所有数据包都应该被确认至少一次，ACK触发包必须在终端使用传输参数max_ack_delay（最大ACK延迟）沟通的最大延迟时间内被确认至少一次，详见第18.2章。max_ack_delay 声明了一个显式的约定：终端承诺不会故意拖延ACK触发包的确认以致延迟时间超过那个约定值。如果它这么做了，那么超出量会积累到RTT预估值上，并且导致来自对端的无效的或延迟的重传。发送方使用接收方的max_ack_delay值来决定基于计时器的重传的超时时间，详见《QUIC恢复》的第6.2章。
+除了以下例外，终端必须立即确认所有引发确认的初始数据包和握手数据包，并且在它宣告的max_ack_delay之内确认所有引发确认的0-RTT数据包和1-RTT数据包。终端如果在握手确认前就收到了握手数据包、0-RTT数据包和1-RTT数据包，那么它可能还没有用来解密这些数据包的数据包保护密钥。因此它可以缓存这些数据包，等得到了必要的密钥再确认它们。
+由于仅包含ACK帧的数据包不受拥塞控制，终端在响应一个ACK触发包时，必须不发送超过一个这样的数据包。
+终端在响应非ACK触发包时，必须不发送非ACK触发包，即便在接收到的数据包前存在数据包空档。这避免了用确认响应确认的无限循环，避免连接无法进入闲置状态。非ACK触发包最终会在终端响应其他事件而发送的ACK帧中被确认。
+一味发送ACK帧的终端不会从对端收到确认，除非这些帧和ACK触发帧一起被包含在数据包中。当有新的ACK触发包要确认时，终端应该将这些ACK帧一块发送。当只有非ACK触发包要确认时，终端可以选择等接收到一个ACK触发包时再将这些ACK帧一块发送。
+只发送非ACK触发包的终端可以选择偶尔添加一个ACK触发帧到这些数据包中以确保它能收到确认，详见第13.2.4章。在那种情况下，终端必须不在所有本来不引发确认的数据包中都添加ACK触发帧，以避免用确认响应确认的无限循环。
+为了辅助发送方的丢包检测，在以下情况中若收到一个ACK触发包，终端应该立即生成并发送ACK帧：
+  当接收到的数据包的数据包号小于另一个已经被接收到的ACK触发包的时；
+  当接收到的数据包的数据包号大于已接收到的ACK触发包的数据包号最大值，且在它们之间有缺失的数据包时。
+  类似地，标记了IP头部的ECN拥塞预警（CE）码点的数据包应该被立即确认，以减少对端对拥塞事件的响应时间。
+对没有遵守以上指导的接收方，《QUIC恢复》中的算法应当是能适应的。即使如此，QUIC实现也应该在谨慎地考虑任何变更会对性能的影响之后，再违背这些要求，既要考虑对终端建立的连接的性能影响，也要考虑对网络中其他用户的性能影响。</description>
+    </item>
+    
+    <item>
+      <title>13.2.2 确认频率</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.2_Acknowledgment_Frequency/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.2_Acknowledgment_Frequency/</guid>
+      <description>作为ACK触发包的响应而发送的确认，其频率是由接收方决定的。这个决策包含了一种权衡。
+终端依靠及时的确认以检测丢包，详见《QUIC恢复》的第6章。基于窗口的拥塞控制器，例如《QUIC恢复》的第7章中描述的那个，依靠确认来管理它们的拥塞窗口。在这两种情况中，延迟确认都会对性能产生不利影响。
+另一方面，降低仅携带确认的数据包的频率能同时减少两个终端在传输和处理上的资源消耗。它能提高在极端不对称的链路上的连接吞吐量，并使用返回路径的容量来减少因确认而产生的流量，详见《RFC3449》的第3章。
+接收方在接收到至少两个ACK触发包后应该发送一个ACK帧。这一推荐做法本质上是通用的，并且和TCP终端行为（《RFC5681》）的推荐做法是一致的。有关网络条件的知识、有关对端拥塞控制器的知识或将来的研究和实验可能建议替代本做法的有着更好的性能特征的确认策略。
+接收方可以在决定是否要发送ACK帧作为响应前先处理掉几个可用的数据包。</description>
+    </item>
+    
+    <item>
+      <title>13.2.3 管理ACK块</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.3_Managing_ACK_Ranges/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.3_Managing_ACK_Ranges/</guid>
+      <description>被发送的ACK帧中包含一个或多个已确认数据包的块。包含对更早期的数据包的确认减少了因之前发送的ACK帧丢包而引起无效重传的可能性，代价是ACK帧会变得更大。
+ACK帧应该始终确认最近接收到的数据包，同时接收到的数据包越是乱序，尽快发送更新后的ACK帧就越是重要，以避免对端将某个数据包认定为丢包而对其中包含的帧进行无效的重传。一个ACK帧应当能被放进单个QUIC数据包中。如果不能，那么更早期的块（有着最小的数据包号的那些）会被省略。
+接收方限制它记录的ACK块（详见第19.3.1章）的数量和在ACK帧中发送的ACK块的数量，这既是为了限制ACK帧的尺寸也是为了避免耗尽资源。在接收到对一个ACK帧的确认后，接收方应该停止追踪那些在帧中被确认的ACK块。发送方可以期待绝大多数数据包都被确认，但是QUIC不保证接收方处理的所有数据包的确认都被对端接收到。
+因保留了许多ACK块而使得ACK帧变得过大是有可能的。接收方可以丢弃未被确认的ACK块以限制ACK帧的尺寸，代价是来自发送方的更多重传。如果一个ACK帧大到放不进一个数据包中，那么就有必要这么做。接收方还可以进一步限制ACK帧的尺寸来为其他帧腾出空间，或为了限制确认所消耗的数据包容量。
+除非接收方能确信它后续接收到的数据包号不会落在某个ACK块中，否则它必须保留那个块。使用最少的状态来做到这一点的方法之一是维护一个最小的数据包号，它会随着块被丢弃而增大。
+接收方可以丢弃所有ACK块，但是必须保留最大的已被成功处理的数据包号，因为它被用于从后续数据包中恢复数据包号，详见第17.1章。
+接收方应该在所有ACK帧中包含最大的已接收到的数据包号。这个最大确认数字段被用于在发送方一侧进行的ECN验证，使用一个比先前发送的ACK帧中的更小的值会造成ECN被不必要地禁用，详见第13.4.2章。
+第13.2.4章描述了一个如何决定在各个ACK帧中分别确认哪些数据包的示例方法。尽管这个算法的目标是为每个已处理的数据包生成一个确认，但是确认依旧有可能遭遇丢包。</description>
+    </item>
+    
+    <item>
+      <title>13.2.4 通过追踪ACK帧来限制块</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.4_Limiting_Ranges_by_Tracking_ACK_Frames/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.4_Limiting_Ranges_by_Tracking_ACK_Frames/</guid>
+      <description>当发送包含某个ACK帧的数据包时，可以记录那个帧中的最大确认数。当接收到包含某个ACK帧的数据包的确认时，如果某个数据包的数据包号小于等于为那个ACK帧记录的最大确认数，那么接收方就可以不再确认这个数据包。
+只发送非ACK触发包，例如ACK帧，的接收方可能很长一段时间都接收不到确认。这会导致接收方需要为大量ACK帧的状态维护很长一段时间，同时它发送的ACK帧会不必要地变得特别大。在这种情况下，接收方可以偶尔，比如每经过一轮往返时间就进行一次，发送一个Ping帧或其他小型的ACK触发帧，来引发来自对端的ACK帧。
+在ACK帧没有遇到丢包的情况下，这个算法在每至少1RTT内提供一次重排ACK块的机会。在ACK帧遇到丢包和乱序的情况下，这个方法并不能保证所有确认都在它们不再被包含进ACK帧前就被发送方接收到。数据包还有可能在接收时已经被打乱顺序，或者所有后续包含它们的数据包号的ACK帧都遇到丢包。在这种情况下，丢包恢复算法可能引起无效的重传，但是发送方会继续进行有效的传输。</description>
+    </item>
+    
+    <item>
+      <title>13.2.5 测量和报告主机延迟</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.5_Measuring_and_Reporting_Host_Delay/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.5_Measuring_and_Reporting_Host_Delay/</guid>
+      <description>从具有最大数据包号的数据包被接收到的那一刻起，到对于它的确认被发送时，这期间的时间会作为一个被有意引入的延迟而被终端测量。终端将这个确认延迟编码在ACK帧的ACK延迟字段，详见第19.3章。这使得这个ACK帧的接收方能够获知这些有意引入的延迟并作出调整，当确认出现延误时这一调整对更好地评估路径RTT是很重要的。
+在得到处理前，数据包可能被暂留在操作系统内核或主机的其他什么地方。在填写ACK帧的ACK延迟字段时，终端必须不在值中包括不受它控制的延迟。然而，终端应该在值中包含由缺少解密密钥造成的缓存延迟，因为这些延迟可以变得很大，而且有可能是非重复出现的。
+当测量到的确认延迟比max_ack_delay大时，终端应该报告这个测量到的延迟。这个信息在握手期间延迟可能会很大的情况下是特别有用的，详见第13.2.1章。</description>
+    </item>
+    
+    <item>
+      <title>13.2.6 ACK帧和数据包保护</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.6_ACK_Frames_and_Packet_Protection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.6_ACK_Frames_and_Packet_Protection/</guid>
+      <description>ACK帧必须被携带于一个和正在确认的数据包的数据包号空间相同的数据包中，详见第12.1章。举个例子，受1-RTT密钥保护的数据包必须在同样被1-RTT密钥保护的数据包中被确认。
+客户端发送的受0-RTT数据包保护的数据包必须被服务器在受1-RTT密钥保护的数据包中确认。这意味着如果服务器的加密握手消息被延误或丢失，则客户端有可能无法使用这些确认。注意，同样的限制还适用于服务器发送的受1-RTT密钥保护的其他数据。</description>
+    </item>
+    
+    <item>
+      <title>13.2.7 填充帧消耗拥塞窗口</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.7_PADDING_Frames_Consume_Congestion_Window/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.7_PADDING_Frames_Consume_Congestion_Window/</guid>
+      <description>包含填充帧的数据包会被纳入拥塞控制的考量，详见《QUIC恢复》。而仅仅包含填充帧的数据包虽然会消耗拥塞窗口但是不会引发确认来恢复拥塞窗口。为了避免死锁，发送方应该确保每隔一段时间会发送一次除填充帧外的其他帧，来引发来自接收方的确认。</description>
+    </item>
+    
+    <item>
+      <title>13.3 信息重传</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.3_Retransmission_of_Information/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.3_Retransmission_of_Information/</guid>
+      <description>被认定丢包的QUIC数据包不会被整个重传。被丢包的数据包中包含的帧也是这样。取而代之的是这些帧中可能携带的信息会按照需要在新的帧中被再次发送。
+携带被认定为丢失的信息时，使用新的帧和数据包。一般来说，信息会在携带它的数据包被认定为丢包时被再次发送，同时当携带那个信息的数据包被确认时发送即停止。
+  在加密帧中的数据按照《QUIC恢复》中的规则重新传输，直到所有数据都已被确认。当有关数据包号空间的密钥被弃用时，初始数据包和握手数据包的加密帧中的数据会被丢弃。
+  原本在流帧中发送的应用数据会在新的流帧被重传，除非终端已经为那条流发送了流重置帧。一旦终端发送了流重置帧，就不再需要发送流帧。
+  ACK帧携带最近的一系列确认和来自最大已确认数据包的确认延迟，如第13.2.1章所述。延误包含ACK帧的数据包的传输或重发旧的ACK帧会使得对端生成过高的RTT样本或不必要地禁用ECN。
+  流传输的中止信息只有在携带它的流重置帧被确认前且在所有流数据都被对端确认（也就是流的发送方进入“重置接收”或“接收完成”状态）前才能被发送。当再次发送时必须不改变流重置帧的内容。
+  类似地，被编码在停止发送帧帧中的取消流传输的请求，只有在流的接收方进入“接收完成”或“重置接收”状态前才能被发送，详见第3.5章。
+  当数据包丢包被检测到时，连接关闭的信号，包括那些包含连接关闭帧的数据包，不会被再次发送。有关重发这些信号，详见第10章。
+  当前连接的最大数据量是使用最大数据量帧发送的。如果包含最近发送的最大数据量帧的数据包被认定丢包或终端决定更新限制，那么更新后的值还是使用最大数据量帧发送。由于限制可以被频繁提高而造成大量不必要的最大数据量帧被发送出去，必须小心以避免过于频繁地发送这种帧，详见第4.2章。
+  当前最大流数据偏移量是使用最大流数据量帧发送的。像最大数据量帧一样，如果包含最近的最大流数据量帧的数据包遭遇丢包或限制被更新，那么就要发送更新后的值，并且小心以避免过于频繁地发送此类帧。当流的接收方进入“数据量确认”或“重置接收”状态时，终端应该不再发送最大流数据量帧。
+  对给定类型的流的限制是使用最大流帧发送的。像最大数据量帧一样，如果对于给定的流类型，包含其最近的最大流帧的数据包被认定丢包或限制被更新，那么就要发送更新后的值，并且小心以避免过于频繁地发送此类帧。
+  阻塞信号是在流阻塞帧、流数据阻塞帧和流阻塞帧中被携带的。流阻塞帧是连接层面上的，流数据阻塞帧是流层面上的，而流阻塞帧是在某种特定的流层面上的。当包含某一层面上的最近的上述帧的数据包遭遇丢包且仅当终端被阻塞于相应限制时，才发送一个新的帧。这些帧总是包含那个引起阻塞的限制在这些帧被传输时的值。
+  使用通道挑战帧的存活确认或路径验证检查每隔一段时间被发送一次，直到接收到与之匹配的回复通道帧或已经没有必要再做存活确认或路径验证检查。每次发送通道挑战帧时都使用不同的载荷。
+  响应路径验证时使用回复通道帧且仅发送一次。对端应当根据需要发送更多通道挑战帧来唤起额外的回复通道帧。
+  新的连接ID是使用新连接ID帧发送的，如果包含它们的数据包遭遇丢包，依旧用这种帧重传。这种帧重传时携带相同序列数值。类似地，撤销连接ID的信息是在撤销连接ID帧中被发送的，如果包含它们的数据包遭遇丢包，依旧用这种帧重传。
+  新令牌帧在包含它们的数据包遭遇丢包时会被重传。除了直接比较帧的内容之外，没有提供特殊的方法来检测乱序和重复的新令牌帧。
+  Ping帧和填充帧不包含信息，因此丢失的这两种帧不需要修复。
+  握手完成帧必须被重传，除非它已经被确认了。
+  终端应该使数据重传优先于新数据发送，除非应用指定的优先级表明了相反的策略，详见第2.3章。
+尽管鼓励发送方每次发送数据包时都使用最新的信息来装配帧，但是重传从丢包的数据包中拷贝来的帧数据这一行为并未被禁止。重传帧拷贝的发送方需要解决可用载荷大小上的降低，这是由数据包号长度、连接ID长度和路径MTU上的变化引起的。如果一个数据包包含了过时的帧，比如一个携带着比先前数据包中的值更小的最大数据量的最大数据量帧，那么接收方必须接收它们。
+只要数据包已经被确认，发送方就应该避免重传来自这些数据包的信息。这包含数据包在被认定为丢包后又被确认的情况，这种情况会因为网络重排序而发生。这么做需要发送方在数据包被认定为丢包后保留有关它们的信息。发送方可以在丢弃此信息前保留一段足以允许重排序的时间，例如一个PTO（详见《QUIC恢复》的第6.2章），或基于其他事件做决定，例如到达内存限制。
+在丢包检测时，发送方必须采取合适的拥塞控制措施。有关丢包检测和拥塞控制的细节，详见《QUIC恢复》。</description>
+    </item>
+    
+    <item>
+      <title>13.4.1 报告ECN计数</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/13.4.1_Reporting_ECN_Counts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/13.4.1_Reporting_ECN_Counts/</guid>
+      <description>要使用ECN，要求接收数据的终端从IP数据包读取ECN字段，但这不是在所有平台上都能做得到的。如果一个终端没有实现对ECN的支持或访问不了接收到的ECN字段，它就不会为它接收到的数据包报告ECN计数。
+即使终端不会在它发送的数据包中设置ECN字段，它也必须为它接收到ECN标记提供反馈，除非访问不了。不报告ECN计数会使得发送方为这条连接禁用ECN。
+当接收到一个具有ECT(0)、ECT(1)或ECN-CE码点的IP数据包，一个启用ECN的终端访问ECN字段并增加相应的ECT(0)、ECT(1)或ECN-CE计数。这些ECN计数会被包含在后续ACK帧中，详见第13.2章和第19.3章。
+每个数据包号空间维护单独的确认状态和单独的ECN计数。被合并的QUIC数据包（详见第12.2章）共享相同的IP头部，所以每个被合并的QUIC数据包对应的ECN计数都要增加。
+举例来说，若将QUIC的初始数据包、握手数据包和1-RTT数据包各一个合并至单个UDP数据报中，那么这三个数据包号空间的ECN计数都要分别基于同一个的IP头部的ECN字段来增加。
+ECN计数仅当来自接收到的IP数据包的QUIC数据包被处理时才增加。于是，重复的QUIC数据包不会被处理所以就不会增加ECN计数；有关安全考量，详见第21.10章。</description>
+    </item>
+    
+    <item>
+      <title>13.4.2.1 接收具有ECN计数的ACK帧</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.1_Receiving_ACK_Frames_with_ECN_Counts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.1_Receiving_ACK_Frames_with_ECN_Counts/</guid>
+      <description>被网络错误地使用的ECN-CE标记会造成连接性能低下。因此接收到具有ECN计数的ACK帧的终端在使用前要验证它们。终端用比较新接收到的计数和那些在最近成功处理了的ACK帧中的计数的方法进行这项验证。任何在ECN计数上的增加都会被验证，这项验证基于被应用到最近在ACK帧中被确认的原始数据包上的ECN标记。
+如果一个ACK帧最近确认了一个由终端发送的数据包且这个数据包被设置了ECT(0)或ECT(1)码点，同时相应的ECN计数并未在这个ACK帧中出现，那么ECN验证就会失败。这项检查能够检测出将ECN字段归零的网络元素或并不报告ECN标记的对端。
+如果ECT(0)计数和ECN-CE计数的增加量的总和小于被新确认的且发送时具有ECT(0)标记的数据包的数量，那么ECN验证也会失败。类似地，如果ECT(1)计数和ECN-CE计数的增加量的总和小于被新确认的且发送时具有ECT(1)标记的数据包的数量，那么ECN验证也会失败。这些检查可以检测网络重设ECN-CE标记的行为。
+在ACK帧有可能丢失的情况下，终端允许忽略对某个数据包的确认。因此ECT(0)、ECT(1)和ECN-CE的增加量的总和大于被一个ACK帧新确认的的数据包数量是有可能的。这就是为什么允许ECN计数大于被确认的数据包的总数。
+为经过重排序的ACK帧验证ECN计数，其结果是不准确的。终端必须不因为处理一个没有增加最大已确认数据包号的ACK帧而将ECN验证结果记为失败。
+如果接收到的ECT(0)或ECT(1)中任意一个的总计数，超过了已发送的具有的相应ECT码点的数据包总数，ECN验证就会失败。特别是，当终端接收到一个非零的ECN计数但那个相应的ECT码点从未使用过，验证就应失败。这项检查可以检测网络重设数据包的ECT(0)和ECT(1)的行为。</description>
+    </item>
+    
+    <item>
+      <title>13.4.2.2 ECN验证结果</title>
+      <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.2_ECN_Validation_Outcomes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.2_ECN_Validation_Outcomes/</guid>
+      <description>如果验证失败，那么终端必须禁用ECN。它在发送的IP数据包中不会再设置ECT码点，就当作网络路径或对端不支持ECN。
+即使验证失败，终端也可以在连接中的任意时间对相同的路径重新验证ECN。终端可以继续定期尝试验证。
+当验证成功后，终端可以继续在它发送的后续数据包中设置ECT码点，并认定这条路径是支持ECN的。网络路由和路径上的元素可能在连接中途发生变化；将来如果验证失败，则终端必须禁用ECN。</description>
     </item>
     
     <item>
@@ -801,7 +1471,7 @@ QUIC在实现上应该提供某种方法使得应用层能够因此确定各条�
  1-RTT数据包包含以下字段：
  包头形式（Header Form）：  对于短包头，字节0的最高有效位（0x80）被设置为0。
  固定比特位（Fixed Bit）：  字节0中的下一个比特位（0x40）被设置为1。此比特位为0的数据包表示它不是当前版本的合法数据包且必须被丢弃。此比特位为1允许QUIC与其他协议共存，详见《RFC7983》。
- 自旋比特位（Fixed Bit）：  字节0的第三高有效比特位（0x20）是延迟自旋比特位，按第17.4章中描述的那样去设置。
+ 自旋比特位（Spin Bit）：  字节0的第三高有效比特位（0x20）是延迟自旋比特位，按第17.4章中描述的那样去设置。
  保留比特位（Reserved Bits）：  字节0中的后两个比特位（掩码为0x18的那两个）被保留使用。这些比特位被头部保护所保护，详见《QUIC-TLS》的第5.4章。在进行保护前，这两个比特位的值必须被设置为0。若在移除数据包保护和头部保护之后发现这些位被设置为非零值，则接收到该数据包的终端必须将该情况视作一个类型为PROTOCOL_VIOLATION的连接错误。仅在移除头部保护后就丢弃这样的数据包会使终端暴露于攻击之下，详见《QUIC-TLS》的第9.5章。
  密钥阶段（Key Phase）：  字节0中的下一个比特位（0x04）表明了密钥阶段，它允许数据包的接收方辨别用于保护数据包的数据包保护密钥。有关细节见《QUIC-TLS》。这个比特位被头部保护所保护，详见《QUIC-TLS》的第5.4章。
  数据包号长度（Packet Number Length）：  在包含数据包号字段的数据包类型中，字节0最低的两个有效位（掩码为0x03的那两个）包含数据包号字段的长度。该长度被编码为一个2位无符号整型值，这个值比数据包号字段的字节长度小1。也就是说，数据包号字段的长度等于这个字段的值加1。这些比特位被头部保护所保护，详见《QUIC-TLS》的第5.4章。

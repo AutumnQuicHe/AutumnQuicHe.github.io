@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>11. 错误处理 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Error_Handling/</link>
+    <description>Recent content in 11. 错误处理 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Error_Handling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>11.1 连接错误</title>
+      <link>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</guid>
+      <description>如果出现的错误会导致连接变得不可用，比如违背了协议语义或损坏了可能影响整条连接的状态数据，那么必须使用连接关闭帧（详见第19.19章）来发送信号。
+与应用相关的协议的错误出现时，使用帧类型为0x1d的连接关闭帧来发送信号。与传输相关的错误，包括所有在这份文档中描述的错误，都用帧类型为0x1c的连接关闭帧来携带。
+携带连接关闭帧的数据包可能会遭遇丢包。终端应该准备好当在一条已终止的连接上收到更多数据包时，重传包含连接关闭帧的数据包。限制重传的次数和发送这个最终的数据包的时机能够限制在已终止的连接上投入的资源。
+选择不重传连接关闭帧的终端需要承担对端错失首个包含连接关闭帧的数据包的风险。在一条已终止的连接上继续接收数据的终端，其唯一可用的机制是启动无状态重置的流程（第10.3章）。
+鉴于初始数据包的AEAD不提供强力的认证，终端可以丢弃不合法的初始数据包。即使在本规范要求产生连接错误的地方，丢弃初始数据包也是允许的。只有终端不能处理某个数据包中的帧或回退所有已处理部分产生的副作用时，它才能丢弃这个数据包。丢弃不合法的初始数据包可以被用来减少拒绝服务产生的风险，详见第21.2章。</description>
+    </item>
+    
+    <item>
+      <title>11.2 流错误</title>
+      <link>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</guid>
+      <description>如果一个应用层错误仅影响了单个流且它所在的连接处于可以恢复的状态，那么终端可以发送一个使用适当的错误码的流重置帧（详见第19.4章）来仅仅终止受影响的流。
+对流进行重置而不通知应用协议会使得应用协议进入不可恢复的状态。流重置帧必须只能由使用QUIC的应用协议发起。
+在流重置帧中携带的应用错误码的语义是由应用协议定义的。只有应用协议有能力终止一条流。应用协议的本地实例直接调用API，远程实例则可以使用会自动触发流重置帧的停止发送帧。
+应用协议应该定义规则来处理被任一终端提前取消的流。</description>
+    </item>
+    
+  </channel>
+</rss>

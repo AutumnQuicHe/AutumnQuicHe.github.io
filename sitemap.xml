@@ -6,21 +6,31 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Foreword/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Foreword/abstract/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Foreword/status_of_this_memo/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/An_Extremely_Abstract_Description_of_QUIC/</loc>
   </url><url>
@@ -77,6 +87,8 @@
     <loc>/RFC8999_Chinese_Translation/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</loc>
   </url><url>
@@ -148,15 +160,139 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/</loc>
+  </url><url>
     <loc>/Translation_Norms/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/8.1_Normative_References/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.1_Token_Construction/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.2_Address_Validation_Using_Retry_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.3_Address_Validation_for_Future_Connections/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/8.1.4_Address_Validation_Token_Integrity/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/References/8.2_Informative_References/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.1_Initiating_Path_Validation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.2_Path_Validation_Responses/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.3_Successful_Path_Validation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.4_Failed_Path_Validation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Appendix_A_Incorrect_Assumptions/</loc>
   </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.1_Probing_a_New_Path/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.2_Initiating_Connection_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.1_Peer_Address_Spoofing/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.2_On-Path_Address_Spoofing/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.3_Off-Path_Packet_Forwarding/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.4_Loss_Detection_and_Congestion_Control/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.5_Privacy_Implications_of_Connection_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.1_Communicating_a_Preferred_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.2_Migration_to_a_Preferred_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.3_Interaction_of_Client_Migration_and_Preferred_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.7_Use_of_IPv6_Flow_Label_and_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Author_s_Address/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.1_Liveness_Testing/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.2_Deferring_Idle_Timeout/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.1_Closing_Connection_State/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.2_Draining_Connection_State/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Immediate_Close/10.2.3_Immediate_Close_during_the_Handshake/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.1_Detecting_a_Stateless_Reset/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.2_Calculating_a_Stateless_Reset_Token/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.3_Looping/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Error_Handling/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.1_Protected_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.2_Coalescing_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.3_Packet_Numbers/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.4_Frames_and_Frame_Types/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.5_Frames_and_Number_Spaces/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.1_Packet_Processing/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.1_Sending_ACK_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.2_Acknowledgment_Frequency/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.3_Managing_ACK_Ranges/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.4_Limiting_Ranges_by_Tracking_ACK_Frames/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.5_Measuring_and_Reporting_Host_Delay/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.6_ACK_Frames_and_Packet_Protection/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.7_PADDING_Frames_Consume_Congestion_Window/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.3_Retransmission_of_Information/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/13.4.1_Reporting_ECN_Counts/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.1_Receiving_ACK_Frames_with_ECN_Counts/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Explicit_Congestion_Notification/ECN_Validation/13.4.2.2_ECN_Validation_Outcomes/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Datagram_Size/</loc>
   </url><url>

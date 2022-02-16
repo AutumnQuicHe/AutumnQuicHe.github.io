@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cn" lang="cn">
+<head>
+  <meta name="generator" content="Hugo 0.93.0-DEV" />
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>RFC9001中文：QUIC TLS</title>
+  
+
+  <link rel="shortcut icon" href="https://iknow-pic.cdn.bcebos.com/c75c10385343fbf271c706c8bb7eca8064388f76"
+    type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+    
+  <link rel="stylesheet" href="/RFC9001_Chinese_Translation/css/RFC9001.css">
+    
+  <link href="/RFC9001_Chinese_Translation/index.xml" rel="alternate"
+    type="application/rss+xml" title="RFC9001中文：QUIC TLS" />
+  
+
+</head>
+<body>
+<div class="sidebar sidebar-rfc9001">
+    <div class="navigation">
+      
+        <div><a href="/">在下秋航</a></div>
+        <h1 class="site-title"><a href="/RFC9001_Chinese_Translation/">RFC9001中文：QUIC TLS</a></h1>
+      
+
+
+        <nav class="internal">
+            <ul>
+    
+        
+            
+    <li>
+        <a href="#RFC9001_QUIC">RFC9001 QUIC TLS</a>
+
+        <ul>
+            
+                
+                    <li><a href="#Forword">前言</a></li>
+                
+            
+                
+                    <li><a href="#Abstract">摘要</a></li>
+                
+            
+                
+                    <li><a href="#Status_of_This_Memo">备忘状态</a></li>
+                
+            
+                
+                    <li><a href="#Copyright_Notice">版权声明</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+    
+</ul>
+
+        </nav>
+
+        <nav class="external">
+          
+            <ul id="shortcuts">
+                
+                    
+                
+            </ul>
+            <br>
+          
+        </nav>
+    </div>
+
+    <div class="version">
+            generated on Feb 17, 2022
+    </div>
+</div>
+
+<div class="content">
+    
+        
+                <section class="page" id="RFC9001_QUIC">
+    
+        <h1>
+    
+            <a href="#RFC9001_QUIC">RFC9001 QUIC TLS</a>
+    
+        </h1>
+    
+    <div class="content">
+        <br>
+<br>
+<table border="3" frame="void" rules="none">
+  <tr>
+    <td>状态：</td>
+    <td colspan="2">建议标准</td>
+  </tr>
+  <tr>
+    <td>更多信息：</td>
+    <td colspan="2">
+      <a href="https://datatracker.ietf.org/doc/rfc9001">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9001&submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9001">信息页</a>
+    </td>
+  </tr>
+  <tr>
+    <td>组织：</td>
+    <td colspan="2">互联网工程工作组（IETF）</td>
+  </tr>
+  <tr>
+    <td>RFC编号：</td>
+    <td colspan="2">
+      <a href="https://www.rfc-editor.org/info/rfc9001">9001</a>
+    </td>
+  </tr>
+  <tr>
+    <td>分类：</td>
+    <td colspan="2">标准追踪</td>
+  </tr>
+  <tr>
+    <td>出版时间：</td>
+    <td colspan="2">2021年5月</td>
+  </tr>
+  <tr>
+    <td>国际标准期刊编号：</td>
+    <td colspan="2">2070-1721</td>
+  </tr>
+  <tr>
+    <td>作者：</td>
+    <td>M. Thomson, Ed. <br><i>Mozilla</i></td>
+    <td>S. Turner, Ed. <br><i>sn3rd</i></td>
+  </tr>
+</table>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="Forword">
+    
+        <h2>
+    
+            <a href="#Forword">前言</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本文是QUIC使用TLS进行加密通信的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Abstract">
+    
+        <h2>
+    
+            <a href="#Abstract">摘要</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本文描述如何使用传输层安全协议（TLS）加密QUIC。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Status_of_This_Memo">
+    
+        <h2>
+    
+            <a href="#Status_of_This_Memo">备忘状态</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="Copyright_Notice">
+    
+        <h2>
+    
+            <a href="#Copyright_Notice">版权声明</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+    
+</div>
+  <script>
+    
+    var pElements = document.getElementsByTagName('p');
+    
+    var i;
+    for (i = 0; i < pElements.length; i++) {
+      var content = pElements[i].innerHTML;
+      content = content.replace(/(\r)/g, "");
+      content = content.replace(/(\n)/g, "");
+      pElements[i].innerHTML = content;
+    }
+  </script>
+</body>
+</html>
+
+
