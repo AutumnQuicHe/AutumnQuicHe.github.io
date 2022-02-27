@@ -1,34 +1,97 @@
-html,
-body {
-    color: rgb(17, 0, 7);
+@charset "UTF-8";
+/* 谨以此配色“致敬”朱蛋挞（周丹泰） */
+/* content */
+/* block */
+html, body {
+  color: #110007;
+  background-color: #fffbfb;
+  letter-spacing: 0.1px;
+  font-size: 15px;
+}
+
+.sidebar.sidebar-quic {
+  background-color: #110007;
+}
+
+.content {
+  position: inherit;
+}
+
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  background: #3a0000;
+  width: 4px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: #fffbfb;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+  background: #3a0000;
+}
+
+section.page h1, section.page h2, section.page h3, section.page h4 {
+  text-shadow: 2px 4px 5px snow;
+  border-color: #110007;
+}
+section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
+  color: #3a0000;
+}
+section.page a, section.page a:hover, section.page a:visited {
+  color: #3a0000;
+}
+section.page table, section.page th, section.page td {
+  border: 1px solid #110007;
+}
+
+.content code {
+  background: #fffbfb;
+  -webkit-box-shadow: inset 0 1px 10px rgba(182, 141, 158, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.content em strong {
+  text-shadow: 1px 1px 2px #3a0000;
+  color: #110007;
+}
+.content strong {
+  text-shadow: 0 0 2px #3a0000;
+  color: #110007;
+}
+
+.block {
+  background-color: #fff2f8;
+  color: #3a0000;
+}
+.block:before {
+  color: #3a0000;
+}
+.block.ref {
+  background: #121212;
+  border-radius: 2px;
+}
+.block.tip {
+  background: #454849;
+  border-top-color: #284750;
+}
+.block.note {
+  background: #454b5e;
+  border-top-color: #070d1d;
+}
+.block.info {
+  background: #2b2520;
+  border-top-color: #271200;
+}
+.block.warn {
+  background: #533f3f;
+  border-top-color: #270000;
 }
 
 .sidebar.sidebar-rfc8999 {
-    background-color: rgb(17, 0, 7);
+  background-color: #110007;
 }
 
-section.page h1,
-section.page h2,
-section.page h3,
-section.page h4 {
-    /* 谨以此配色“致敬”朱蛋挞（周丹泰） */
-    border-color: rgb(58, 0, 0);
-}
-
-section.page a,
-section.page a:hover,
-section.page a:visited,
-section.page h1 a,
-section.page h2 a,
-section.page h3 a,
-section.page h4 a,
-section.page h1 a:hover,
-section.page h2 a:hover,
-section.page h3 a:hover,
-section.page h4 a:hover,
-section.page h1 a:visited,
-section.page h2 a:visited,
-section.page h3 a:visited,
-section.page h4 a:visited {
-    color: rgb(58, 0, 0);
-}
+/*# sourceMappingURL=RFC8999.css.map */
