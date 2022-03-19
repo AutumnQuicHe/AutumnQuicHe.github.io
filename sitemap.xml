@@ -342,6 +342,8 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Author_s_Address/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/10.1.1_Liveness_Testing/</loc>
@@ -473,6 +475,8 @@
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/</loc>
   </url><url>
