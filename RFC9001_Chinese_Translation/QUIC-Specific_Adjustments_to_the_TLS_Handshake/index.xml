@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>8. QUIC中对TLS握手的调整 on Autumn Navigation</title>
+    <link>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/</link>
+    <description>Recent content in 8. QUIC中对TLS握手的调整 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>8.1. 协议协商</title>
+      <link>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.1_Protocol_Negotiation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.1_Protocol_Negotiation/</guid>
+      <description>QUIC requires that the cryptographic handshake provide authenticated protocol negotiation. TLS uses Application-Layer Protocol Negotiation [ALPN] to select an application protocol. Unless another mechanism is used for agreeing on an application protocol, endpoints MUST use ALPN for this purpose.
+QUIC需要加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《ALPN》）来选择应用协议。终端必须使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。
+When using ALPN, endpoints MUST immediately close a connection (see Section 10.2 of [QUIC-TRANSPORT]) with a no_application_protocol TLS alert (QUIC error code 0x0178; see Section 4.8) if an application protocol is not negotiated.</description>
+    </item>
+    
+    <item>
+      <title>8.2. QUIC传输参数扩展</title>
+      <link>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.2_QUIC_Transport_Parameters_Extension/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.2_QUIC_Transport_Parameters_Extension/</guid>
+      <description>QUIC transport parameters are carried in a TLS extension. Different versions of QUIC might define a different method for negotiating transport configuration.
+QUIC传输参数是使用TLS扩展来传递的。不同的QUIC版本可能为传输配置的协商定义不同方法。
+Including transport parameters in the TLS handshake provides integrity protection for these values.
+在TLS握手中包含传输参数，就可以为这些值提供完整性保护。
+enum { quic_transport_parameters(0x39), (65535) } ExtensionType; 
+ The extension_data field of the quic_transport_parameters extension contains a value that is defined by the version of QUIC that is in use.
+quic_transport_parameters（QUIC传输参数）扩展的extension_data（扩展数据）字段中包含的是一个由正在使用的QUIC版本定义的值。
+The quic_transport_parameters extension is carried in the ClientHello and the EncryptedExtensions messages during the handshake.</description>
+    </item>
+    
+    <item>
+      <title>8.3. 移除EndOfEarlyData消息</title>
+      <link>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.3_Removing_the_EndOfEarlyData_Message/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.3_Removing_the_EndOfEarlyData_Message/</guid>
+      <description>The TLS EndOfEarlyData message is not used with QUIC. QUIC does not rely on this message to mark the end of 0-RTT data or to signal the change to Handshake keys.
+QUIC中不会使用TLS的EndOfEarlyData消息。QUIC不依赖这条消息去标记0-RTT数据的结束位置，或去发送握手密钥发生变化的信号。
+Clients MUST NOT send the EndOfEarlyData message. A server MUST treat receipt of a CRYPTO frame in a 0-RTT packet as a connection error of type PROTOCOL_VIOLATION.
+客户端必须不发送EndOfEarlyData消息。服务器必须将在0-RTT数据包中接收到加密帧的情况视作类型为PROTOCOL_VIOLATION（协议违背）的连接错误。
+As a result, EndOfEarlyData does not appear in the TLS handshake transcript.</description>
+    </item>
+    
+    <item>
+      <title>8.4. 禁止TLS的中间设备兼容模式</title>
+      <link>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.4_Prohibit_TLS_Middlebox_Compatibility_Mode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.4_Prohibit_TLS_Middlebox_Compatibility_Mode/</guid>
+      <description>Appendix D.4 of [TLS13] describes an alteration to the TLS 1.3 handshake as a workaround for bugs in some middleboxes. The TLS 1.3 middlebox compatibility mode involves setting the legacy_session_id field to a 32-byte value in the ClientHello and ServerHello, then sending a change_cipher_spec record. Both field and record carry no semantic content and are ignored.
+《TLS13》的附录D.4描述了TLS 1.3握手的一种替代方案，并将之作为某些中间设备上程序出错时的应对措施。TLS 1.3中的这种中间设备兼容模式需要将ClientHello和ServerHello（服务器问候）中的legacy_session_id（兼容会话ID）字段设置为一个32字节长的值，随后发送change_cipher_spec（更改加密设置）记录。这个字段和记录不传递任何具有语义的内容，并且会被忽略。
+This mode has no use in QUIC as it only applies to middleboxes that interfere with TLS over TCP.</description>
+    </item>
+    
+  </channel>
+</rss>

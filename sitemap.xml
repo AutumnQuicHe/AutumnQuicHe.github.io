@@ -32,6 +32,8 @@
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Introduction/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/An_Extremely_Abstract_Description_of_QUIC/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Overview/</loc>
@@ -50,9 +52,13 @@
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Fixed_Properties_of_All_QUIC_Versions/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Notational_Conventions/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Streams/</loc>
   </url><url>
     <loc>/QUIC/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Notational_Conventions/2.1_TLS_Overview/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Streams/2.1_Stream_Types_and_Identifiers/</loc>
   </url><url>
@@ -65,6 +71,8 @@
     <loc>/RFC9000_Chinese_Translation/Streams/2.3_Stream_Prioritization/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Streams/2.4._Operations_on_Streams/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Protocol_Overview/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Stream_States/</loc>
   </url><url>
@@ -80,6 +88,8 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Stream_States/3.5_Solicited_State_Transitions/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Notational_Conventions/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/</loc>
@@ -92,23 +102,67 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/4.1.1_Handshake_Complete/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/4.1.2_Handshake_Confirmed/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/4.1.3_Sending_and_Receiving_Handshake_Messages/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/4.1.4_Encryption_Level_Changes/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/Interface_to_TLS/4.1.5_TLS_Interface_Summary/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.2_TLS_Version/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.2_Increasing_Flow_Control_Limits/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.3_ClientHello_Size/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.3_Flow_Control_Performance/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.4_Handling_Stream_Cancellation/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.4_Peer_Authentication/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.5_Session_Resumption/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.5_Stream_Final_Size/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.6_Controlling_Concurrency/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.1_Enabling_0-RTT/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.2_Accepting_and_Rejecting_0-RTT/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.3_Validating_0-RTT_Configuration/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.7_HelloRetryRequest/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.8_TLS_Errors/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.9_Discarding_Unused_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.9_Discarding_Unused_Keys/4.9.1_Discarding_Initial_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.9_Discarding_Unused_Keys/4.9.2_Discarding_Handshake_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.9_Discarding_Unused_Keys/4.9.3_Discarding_0-RTT_Keys/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/QUIC_Packets/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connections/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connections/Connection_IDs/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/QUIC_Packets/5.1_Long_Header/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.1_Packet_Protection_Keys/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connections/Connection_IDs/5.1.1_Issuing_Connection_IDs/</loc>
   </url><url>
@@ -117,6 +171,8 @@
     <loc>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/QUIC_Packets/5.2_Short_Header/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.2_Initial_Secrets/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connections/Matching_Packets_to_Connections/5.2.1_Client_Packet_Handling/</loc>
   </url><url>
@@ -128,7 +184,29 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connections/5.3_Operations_on_Connections/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.3_AEAD_Usage/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/QUIC_Packets/5.4_Version/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.4_Header_Protection/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.4_Header_Protection/5.4.1_Header_Protection_Application/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.4_Header_Protection/5.4.2_Header_Protection_Sample/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.4_Header_Protection/5.4.3_AES-Based_Header_Protection/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.4_Header_Protection/5.4.4_ChaCha20-Based_Header_Protection/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.5_Receiving_Protected_Packets/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.6_Use_of_0-RTT_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.7_Receiving_Out-of-Order_Protected_Packets/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Packet_Protection/5.8_Retry_Packet_Integrity/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Version_Negotiation/</loc>
   </url><url>
@@ -136,9 +214,25 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.1_Sending_Version_Negotiation-Packets/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.1_Initiating_a_Key_Update/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.2_Handling_Version_Negotiation_Packets/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.2_Responding_to_a_Key_Update/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Version_Negotiation/6.3_Using_Reserved_Versions/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.3_Timing_of_Receive_Key_Generation/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.4_Sending_with_Updated_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.5_Receiving_with_Different_Keys/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.6_Limits_on_AEAD_Usage/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Key_Update/6.7_Key_Update_Error_Code/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_of_Initial_Messages/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/</loc>
   </url><url>
@@ -158,6 +252,8 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.5_Cryptographic_Message_Buffering/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/References/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Address_Validation/</loc>
@@ -165,6 +261,8 @@
     <loc>/Translation_Norms/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Address_Validation/Address_Validation_during_Connection_Establishment/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.1_Protocol_Negotiation/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/References/8.1_Normative_References/</loc>
   </url><url>
@@ -178,6 +276,8 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.2_QUIC_Transport_Parameters_Extension/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/References/8.2_Informative_References/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.1_Initiating_Path_Validation/</loc>
@@ -188,15 +288,27 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Address_Validation/Path_Validation/8.2.4_Failed_Path_Validation/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.3_Removing_the_EndOfEarlyData_Message/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.4_Prohibit_TLS_Middlebox_Compatibility_Mode/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Appendix_A_Incorrect_Assumptions/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.1_Probing_a_New_Path/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.1_Session_Linkability/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.2_Initiating_Connection_Migration/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.2_Replay_Attacks_with_0-RTT/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.3_Packet_Reflection_Attack_Mitigation/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/Responding_to_Connection_Migration/9.3.1_Peer_Address_Spoofing/</loc>
   </url><url>
@@ -206,9 +318,15 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.4_Loss_Detection_and_Congestion_Control/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.4_Header_Protection_Analysis/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.5_Privacy_Implications_of_Connection_Migration/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.5_Header_Protection_Timing_Side_Channels/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.6_Key_Diversity/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.1_Communicating_a_Preferred_Address/</loc>
   </url><url>
@@ -217,6 +335,8 @@
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/Servers_Preferred_Address/9.6.3_Interaction_of_Client_Migration_and_Preferred_Address/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Migration/9.7_Use_of_IPv6_Flow_Label_and_Migration/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.7_Randomness/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/</loc>
   </url><url>

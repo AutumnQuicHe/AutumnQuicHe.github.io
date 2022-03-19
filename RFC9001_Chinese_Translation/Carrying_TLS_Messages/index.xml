@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>4. 传递TLS消息 on Autumn Navigation</title>
+    <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/</link>
+    <description>Recent content in 4. 传递TLS消息 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9001_Chinese_Translation/Carrying_TLS_Messages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>4.2. TLS版本</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.2_TLS_Version/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.2_TLS_Version/</guid>
+      <description>本文档描述了如何与QUIC一起使用TLS 1.3（详见《TLS13》）。
+在实际操作时，TLS握手会协商出一个要使用的TLS版本。在两侧终端都支持的情况下，它们最终可能协商出一个比1.3还要高的TLS版本。这是可以接受的，因为QUIC使用的TLS 1.3特性都会在更高版本中得到支持。
+客户端必须不提供低于1.3的TLS版本。未恰当配置的TLS实现可能想要协商TLS 1.2或别的低版本TLS。如果协商了低于1.3的TLS版本，那么终端必须终止连接。</description>
+    </item>
+    
+    <item>
+      <title>4.3. ClientHello的尺寸</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.3_ClientHello_Size/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.3_ClientHello_Size/</guid>
+      <description>来自客户端的首个初始数据包包含着客户端首个加密握手消息的所有部分或起始部分，对TLS来说这个消息就是ClientHello（客户端问候）。服务器可能需要解析完完整的ClientHello（例如，为了访问服务器名称认证（SNI）和应用层协议协商（ALPN）等扩展）后才能决定要不要接受这个新传入的QUIC连接。如果ClientHello被拆分为多个初始数据包，那么这么做的服务器就需要缓存接收到的数据分段，这会在客户端地址尚未被验证时消耗过多资源。为了避免这一情况，服务器可以使用重试特性（详见《QUIC传输》的第8.1章）以仅缓存来自具有经验证地址的客户端的ClientHello消息。
+QUIC数据包和分帧过程会向ClientHello消息添加至少36字节的开销。如果客户端选择了长于零字节的源连接ID字段，那么这个开销还会增加。这个开销还不包含令牌字段和长于8字节的目标连接ID字段，当服务器发送重试数据包时会需要它们。
+一个典型的TLSClientHello可以被轻松地放进1200字节的数据包中。然而，除了由QUIC引入的开销之外，还有其他因素会使得ClientHello的尺寸超过这一限制。较大的会话票据、多个或较大的密钥共享值和较长的受支持的加密方法、签名算法、版本、QUIC传输参数或其他可协商参数与扩展的列表都可能使得这条消息变大。
+对服务器而言，除了连接ID和令牌外，TLS会话票据的尺寸也可能会影响客户端能否高效地进行连接。尽可能减小这些值的尺寸可以提高客户端使用它们并且仍能将整个ClientHello消息放进首个初始数据包的可能性。
+TLS实现不需要确保ClientHello的尺寸足够大来满足QUIC对于传递初始数据包的数据报的要求；详见《QUIC传输》的第14.1章。QUIC实现会使用填充帧或数据包合并的方法来确保数据报足够大。</description>
+    </item>
+    
+    <item>
+      <title>4.4. 对端验证</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.4_Peer_Authentication/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.4_Peer_Authentication/</guid>
+      <description>有关验证的要求是视正在使用的应用协议而定的。TLS提供了验证服务器的手段，并且允许服务器请求进行客户端验证。
+客户端必须验证服务器的身份。这通常包含两部分验证过程，一是验证证书中包含着服务器的身份，二是验证证书是由可信任的实体签发的（有关样例详见《RFC2818》）。
+ 注意：当服务器提供用于验证的证书时，证书链的尺寸可能消耗大量字节。控制证书链的尺寸对于QUIC的性能是十分关键的，因为服务器在验证客户端地址前可发送的字节数不能超过接收到字节数的3倍；详见《QUIC传输》的第8.1章。证书链的尺寸是可以被控制的，为此可以限制名称或扩展的数量；使用以较短的公钥表示方法，如ECDSA，表示的密钥；或使用证书压缩（详见《COMPRESS》）。
+ 服务器可以在握手期间请求进行客户端验证。如果客户端在被请求验证后不能够提供证明，那么服务器可以拒绝这条连接。对于客户端验证的要求会基于应用协议和部署方法的不同而不同。
+服务器必须不使用握手后客户端验证（详见《TLS13》的第4.6.2章），因为QUIC提供的多路复用机制使得客户端不能将证书请求与触发它的应用层事件关联起来（详见《HTTP2-TLS13》）。更准确地说，在握手完成后服务器必须不发送TLS的CertificateRequest（证书请求）消息，并且客户端必须将接收到这种消息的情况视作类型为PROTOCOL_VIOLATION的连接错误。</description>
+    </item>
+    
+    <item>
+      <title>4.5. 会话恢复</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.5_Session_Resumption/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.5_Session_Resumption/</guid>
+      <description>QUIC可以使用TLS 1.3的会话恢复特性。这可以在握手完成后通过使用加密帧传递NewSessionTicket（新会话票据）消息的方式来做到。会话恢复可以被用于提供0-RTT，无论0-RTT是否被禁用。
+使用会话恢复的终端可能需要在恢复会话时记录有关当前连接的一些信息。TLS会要求某些信息得到持续保留；详见《TLS13》的第4.6.1章。在恢复连接时，QUIC本身不依赖于任何被持续保留的状态，除非还使用了0-RTT；详见《QUIC传输》的第7.4.1章和第4.6.1章。应用协议可以依赖在被恢复的连接间持续保留的状态。
+客户端可以将任何恢复会话所需的状态与会话票据一起存储起来。服务器可以使用会话票据来协助保存状态。
+会话恢复使得服务器将原始连接上的活动与被恢复的连接关联起来，这可能涉及到客户端的隐私问题。客户端可以选择禁用恢复机制来避免建立这种关联。客户端不应该重用票据，因为这使得除服务器外的实体能够将不同连接关联起来；详见《TLS13》的附录C.4。</description>
+    </item>
+    
+    <item>
+      <title>4.7. HelloRetryRequest</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.7_HelloRetryRequest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.7_HelloRetryRequest/</guid>
+      <description>可以使用HelloRetryRequest消息（详见《TLS13》的第4.1.4章）来请求客户端提供密钥共享值等新信息，或验证客户端的一些特征。在QUIC看来，HelloRetryRequest与其他使用初始数据包传递的加密握手消息没有差别。尽管理论上可以使用这项特性来进行地址验证，但是QUIC实现应该改用重试特性来做地址验证；详见《QUIC传输》的第8.1章。</description>
+    </item>
+    
+    <item>
+      <title>4.8. TLS错误</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.8_TLS_Errors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/4.8_TLS_Errors/</guid>
+      <description>如果TLS遇到了错误，那么它会按照《TLS13》的第6章中定义的那样创建一个合适的警告。
+TLS警告会被转换为QUIC的连接错误。为了使创建出的QUIC错误码落在为CRYPTO_ERROR（加密错误）保留的范围内，警告描述的值需要与0x0100相加；详见《QUIC传输》的第20.1章。相加的结果使用QUIC的类型为0x1c的连接关闭帧来发送。
+QUIC仅仅有能力传达级别为“致命”的警告。在TLS 1.3中，“警告”级别的唯一用处是发送连接关闭的信号；详见《TLS13》的第6.1章。由于QUIC提供了关闭连接的替代机制，并且TLS连接只会在遇到错误时才被关闭，QUIC终端必须将所有来自TLS的警告都视作为“致命”级别。
+QUIC允许使用通用的错误码来代替专门的错误码；详见《QUIC传输》的第11章。对TLS警告来说，这就表示允许将任何警告都替换为通用的警告，比如handshake_failure（握手失败，在QUIC中的错误码为0x0128）。终端可以使用通用的错误码来避免暴露加密信息。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,3 +1,5 @@
 _gen/
 resources/
+*.scss
+*.css.map
 LICENSE

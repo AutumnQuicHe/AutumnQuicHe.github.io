@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>5. 数据包保护 on Autumn Navigation</title>
+    <link>/RFC9001_Chinese_Translation/Packet_Protection/</link>
+    <description>Recent content in 5. 数据包保护 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9001_Chinese_Translation/Packet_Protection/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5.1. 数据包保护密钥</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.1_Packet_Protection_Keys/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.1_Packet_Protection_Keys/</guid>
+      <description>QUIC衍生数据包保护密钥的方法与TLS衍生记录保护密钥的方法是一致的。
+每个密级在不同发送数据的方向上分别有各自的秘密值用来保护数据包。这些秘密值是由TLS衍生的（详见《TLS13》的第7.1章），并且会被QUIC用在除了初始密级外的所有其他密级上。用于初始密级的秘密值是基于客户端的初始目标连接ID计算出来的，详见第5.2章。
+用于数据包保护的密钥是通过对TLS秘密值使用TLS提供的KDF（密钥衍生函数）的方式计算出来的。对于TLS 1.3，使用的KDF是在《TLS13》的第7.1章中介绍的HKDF-Expand-Label函数，协商出的加密套件中的哈希函数也会被用到。在QUIC中所有使用HKDF-Expand-Label的地方都使用零长度的Context参数。
+注意，标签（label参数）是以ASCII（详见《ASCII》）字节的形式编码的字符串，其中不包含引号或任何末尾NUL字节。
+为了和QUIC一起使用，其他版本的TLS必须提供类似的函数。
+为了生成AEAD密钥，KDF的输入是当前密级的秘密值和值为quic key的标签；衍生初始化向量（Initialization Vector，IV）时，使用的标签值为quic iv；详见第5.3章。头部保护密钥使用的是值为quic hp的标签；详见第5.4章。使用以上标签能够区分QUIC和TLS的密钥；详见第9.6章。
+quic key和quic hp都被用来生成密钥，所以与这些标签一道交给HKDF-Expand-Label函数的Length字段的值是由AEAD或头部保护算法的密钥长度决定的。和quic iv一起使用的Length字段的值是AEAD随机数的最小长度，但不能小于8字节；详见《AEAD》。
+总是使用来自TLS 1.3的HKDF-Expand-Label函数作为用于初始秘密值的KDF；详见第5.2章。</description>
+    </item>
+    
+    <item>
+      <title>5.2. 初始秘密值</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.2_Initial_Secrets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.2_Initial_Secrets/</guid>
+      <description>数据包保护的过程适用于初始数据包，但是要使用的秘密值是从客户端首个初始数据包的目标连接ID字段衍生来的。
+这个秘密值是通过对值为0x38762cf7f55934b34d179ae6a4c80cadccbb7f0a的盐和值为目标连接ID的输入密钥材料（IKM）应用HKDF-Extract（详见《HKDF》的第2.2章）来决定的。这能生成一个起中间作用的伪随机密钥（PRK），它被用来衍生出两个分别用于发送和接收的秘密值。
+客户端用于构造初始数据包的秘密值是通过将该PRK和值为client in的标签输入至来自TLS（详见《TLS13》）的HKDF-Expand-Label函数来生成的，这会产生一个32字节长的秘密值。服务器以同样的形式并使用值为server in的标签来构造数据包。衍生初始秘密值和密钥时，HKDF使用的哈希函数是SHA-256（详见SHA）。
+该过程的伪代码如下：
+initial_salt = 0x38762cf7f55934b34d179ae6a4c80cadccbb7f0a initial_secret = HKDF-Extract(initial_salt, client_dst_connection_id) client_initial_secret = HKDF-Expand-Label(initial_secret, &amp;quot;client in&amp;quot;, &amp;quot;&amp;quot;, Hash.length) server_initial_secret = HKDF-Expand-Label(initial_secret, &amp;quot;server in&amp;quot;, &amp;quot;&amp;quot;, Hash.length) 
+ HKDF-Expand-Label使用的连接ID是客户端发送的初始数据包里的目标连接ID。它会是一个随机选择的值，除非客户端是在收到重试数据包后才创建的初始数据包，那么这时的目标连接ID是由服务器选择的。
+将来版本的QUIC应该使用一个新的盐值，从而确保每个QUIC版本的密钥互不相同。这会使得仅能识别一种QUIC版本的中间设备无法读取或修改将来版本的数据包的内容。
+对于初始数据包，必须使用在TLS 1.3中定义的HKDF-Expand-Label函数，即便可使用的TLS版本中并不包含TLS 1.3。
+当服务器发送重试数据包以使用由服务器选择的连接ID时，用于构建后续初始数据包的秘密值会发生变化。在客户端为了响应来自服务器的初始数据包而更改目标连接ID时，这些秘密值不会发生变化。
+ 注意：目标连接ID字段的长度可以是不超过20字节的任意值，包括零长度，零长度的情况会在服务器发送具有零长度的源连接ID字段的重试数据包时出现。在启动重试流程后，初始密钥就不能使得客户端确信服务器接收到了它的数据包，所以客户端必须依靠包含重试数据包的通信才能验证服务器地址；详见《QUIC传输》的第8.1章。
+ 附录A中展示了作为样例的初始数据包。</description>
+    </item>
+    
+    <item>
+      <title>5.3. AEAD的使用</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.3_AEAD_Usage/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.3_AEAD_Usage/</guid>
+      <description>QUIC数据包保护所用的带有关联数据的认证加密（AEAD）函数（详见《AEAD》）是在对TLS连接进行协商时产生的。例如，如果TLS要使用TLS_AES_128_GCM_SHA256这一组加密套件，那么就要使用AEAD_AES_128_GCM函数。
+QUIC可以使用在《TLS13》中定义的任意一组加密套件，但是TLS_AES_128_CCM_8_SHA256除外。除非QUIC为某组加密套件定义了头部保护方案，否则必须不对此套件进行协商。本文档为《TLS13》中定义的除TLS_AES_128_CCM_8_SHA256外的所有加密套件都定义了头部保护方案。这些加密套件都具有16字节的认证标签并且会生成比输入要长16字节的输出。
+对于一个提供了不受终端支持的加密套件的ClientHello（客户端问候），终端必须不拒绝它，否则将来的QUIC版本将无法部署新加密套件。此要求同样适用于TLS_AES_128_CCM_8_SHA256。
+当构建数据包时，AEAD函数会在进行头部保护前被应用；详见第5.4章。未经保护的数据包头部是关联数据（A）的一部分。在处理数据包时，终端首先移除头部保护。
+数据包的密钥和IV的计算方法如第5.1章所述。随机数，N，是通过组合数据包保护的IV和数据包号的方式来构造的。以网络字节序重建的62位QUIC数据包号会以在左侧补零的方式被扩充至IV的长度。扩充后的数据包号与IV的按位异或结果就是AEAD的随机数。
+AEAD的关联数据，A，就是QUIC头部的内容，无论短包头还是长包头都是从首个字节开始，结束于且包含未受保护的数据包号。
+AEAD的输入明文，P，就是QUIC数据包的载荷，如《QUIC传输》中所述。
+AEAD的输出密文，C，会代替P被传输至对端。
+一些AEAD函数对于在相同密钥和IV下能够加密的数据包数量有限制；详见第6.6章。这个限制值可能会低于数据包号的数量限制。在超出当前使用的AEAD所设的任何限制前，终端必须发起密钥更新（详见第6章）。</description>
+    </item>
+    
+    <item>
+      <title>5.5. 接收受保护的数据包</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.5_Receiving_Protected_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.5_Receiving_Protected_Packets/</guid>
+      <description>一旦终端成功地接收到了具有某个数据包号的数据包，那么对于相同数据包号空间中具有更高数据包号的所有数据包，如果终端无法使用相同的密钥或，如果存在密钥更新，后续的数据包保护密钥来移除它们的保护，那么它必须丢弃这些具有更高数据包号的数据包；详见第6章。类似地，看上去应该触发密钥更新却无法被成功地移除保护的数据包必须被丢弃。
+无法移除数据包保护并不意味着受到了攻击或对端处出现了违背协议的错误。因为在数据包被严重延误时，QUIC使用的截断数据包号的编码方式有可能造成数据包号被错误地解码。</description>
+    </item>
+    
+    <item>
+      <title>5.6. 0-RTT密钥的使用</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.6_Use_of_0-RTT_Keys/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.6_Use_of_0-RTT_Keys/</guid>
+      <description>如果可以使用0-RTT密钥（详见第4.6.1章），那么在缺乏针对重放攻击的保护措施的情况下就必须限制它们的使用以避免针对QUIC协议的重放攻击。
+在《QUIC传输》定义的各种帧中，流帧、重置流帧、停止发送帧和连接关闭帧在与0-RTT一起使用时可能是不安全的，因为它们携带着应用数据。在0-RTT中接收到的应用数据会使得客户端处的应用重复处理相同数据，而不是只处理一次。客户端如果重复处理了经重放的应用数据，那么有可能产生意外的副作用。因此客户端必须不将0-RTT用于应用数据，除非正在运行的应用有意要求这么做。
+使用QUIC的应用协议必须提供一份文件并在其中定义允许使用0-RTT的范围；否则，0-RTT只能被用于传递没有携带应用数据的QUIC帧。例如，HTTP对应的这份内容被描述于《HTTP-REPLAY》中，并且被使用在HTTP/3里；详见《QUIC-HTTP》的第10.9章。
+尽管重放数据包可能会引发额外的连接尝试，但是处理经重放的却未携带应用数据的帧的影响仅限于改变相关连接的状态。使用经重放的数据包无法使得TLS握手成功完成。
+在TLS握手完成前，客户端可以对它发送的数据施加额外的限制。
+否则，客户端将0-RTT密钥与1-RTT密钥等同对待，只不过它不能用0-RTT密钥发送特定类型的帧；详见《QUIC传输》的第12.5章。
+如果客户端接收到了能够表明服务器已经接受0-RTT数据的信号，那么它可以继续发送0-RTT数据，直到它接收到了服务器的所有握手消息。如果客户端接收到了能够表明0-RTT数据被拒绝的信号，那么它应该停止发送0-RTT数据。
+服务器必须不使用0-RTT密钥来保护数据包；它使用1-RTT密钥来保护对于0-RTT数据包的确认。客户端必须不尝试解密它接收到的0-RTT数据包，而是必须丢弃它们。
+一旦客户端已经建立了1-RTT密钥，那么它必须不再发送0-RTT数据包。
+ 注意： 0-RTT数据可能在被服务器接收到时就得到确认，但是包含对于0-RTT数据的确认的数据包可能无法被客户端移除数据包保护，直到TLS握手完成。移除数据包保护所必需的1-RTT密钥只有在客户端接收到服务器所有的握手消息后才能被衍生出来。
+ </description>
+    </item>
+    
+    <item>
+      <title>5.7. 接收乱序的受保护数据包</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.7_Receiving_Out-of-Order_Protected_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.7_Receiving_Out-of-Order_Protected_Packets/</guid>
+      <description>因为有乱序和丢包的情况存在，受保护的数据包可能在终端接收到最后的TLS握手消息前就被接收到了。这时客户端还无法解密来自服务器的1-RTT数据包，或服务器还无法解密来自客户端的1-RTT数据包。任一终端必须不在握手完成前解密来自对端的1-RTT数据包。
+即使服务器在接收到来自客户端的首条握手消息后就能建立1-RTT密钥，但它还不能确信此时客户端的状态：
+  客户端还未经验证，除非服务器愿意接受预共享密钥并且已经验证过了客户端的预共享密钥绑定；详见《TLS13》的第4.2.11章。
+  客户端还未表现出活动的迹象，除非服务器已经用重试数据包或其他手段验证了客户端的地址；详见《QUIC传输》的第8.1章。
+  服务器准备对之响应的任何0-RTT数据都有可能是由重放攻击制造的。
+  因此，服务器在握手完成前对1-RTT密钥的使用目的受限为数据的发送。服务器在TLS握手完成前必须不处理传入的受1-RTT密钥保护的数据包。因为发送确认就表明数据包中的所有帧都已经被处理了，所以服务器在TLS握手完成前不能发送对1-RTT数据包的确认。已接收到的受1-RTT密钥保护的数据包可以被存储起来，在将来握手完成时再解密和使用它们。
+ 注意：TLS的实现可能会在握手完成前就提供所有1-RTT秘密值。在握手完成前，QUIC的实现即使获得了1-RTT读取密钥，也不能使用这些密钥。
+ 服务器必须等待客户端的Finished（已结束）消息的这项要求意味着服务器依赖于那条消息被成功交付到服务器。客户端可以避免这种依赖暗含的队头阻塞问题，方法是将它的1-RTT数据包和一个包含着携带Finished消息的加密帧的握手数据包合并，直到其中一个握手数据包被确认。这使得服务器可以立即处理那些数据包。
+服务器可能在接收到TLS的ClientHello前就接收到受0-RTT密钥保护的数据包。服务器可以保留这些数据包，并期待能接收到ClientHello以将它们解密。
+客户端通常会在握手完成的同时得到1-RTT密钥。即使它拥有1-RTT的秘密值，客户端也必须不在TLS握手完成前处理传入的受1-RTT密钥保护的数据包。</description>
+    </item>
+    
+    <item>
+      <title>5.8. 重试数据包的完整性</title>
+      <link>/RFC9001_Chinese_Translation/Packet_Protection/5.8_Retry_Packet_Integrity/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Packet_Protection/5.8_Retry_Packet_Integrity/</guid>
+      <description>重试数据包（详见《QUIC传输》的第17.2.5章）携带着重试完整性标签，该标签具有两项属性：它使得被网络意外破坏的数据包可以被丢弃，同时只有观测到初始数据包的实体才能发送合法的重试数据包。
+重试完整性标签是一个长度为128位的字段，它是将以下参数作为AEAD_AES_128_GCM（详见《AEAD》）的输入而计算出的结果。
+  密钥，K，是一个长度为128位的固定值0xbe0c690b9f66575a1d766b54e368c84e。
+  随机数，N，是一个长度为96位的固定值0x461599d35d632bf2239825bb。
+  明文，P，为空。
+  关联数据，A，是重试伪数据包的内容，如图8所示。
+  密钥和随机数的值是通过对值为0xd9c9943e6101fd200021506bcc02814c73030f25c79d71ce876eca876e6fca8e的秘密值和值分别为quic key与quic iv的标签调用HKDF-Expand-Label而衍生出来的（详见第5.1章）。
+重试伪数据包 { 原始目标连接ID长度 (8), 原始目标连接ID (0..160), 包头形式 (1) = 1, 固定比特位 (1) = 1, 长数据包类型 (2) = 3, 未使用 (4), 版本 (32), 目标连接ID长度 (8), 目标连接ID (0..160), 源连接ID长度 (8), 源连接ID (0..160), 重试令牌 (..), } 图8：重试伪数据包
+ 重试伪数据包不会被实际发送。它是通过对被实际发送的重试数据包移除重试完整性标签，再追加以下两个字段的方式来构建出来的：
+ 原始目标连接ID长度（ODCID Length）：  原始目标连接ID长度字段中包含了跟在它后方的原始目标连接ID字段以字节为单位的长度，它被编码为一个8位无符号整型值。
+ 原始目标连接ID（Original Destination Connection ID）：  原始目标连接ID包含了这个重试数据包正在响应的初始数据包中目标连接ID字段的值。这个字段的长度在原始目标连接ID长度字段中给出。这个字段的存在确保了合法的重试数据包只能由观测到初始数据包的实体构造出来。
+  </description>
+    </item>
+    
+  </channel>
+</rss>

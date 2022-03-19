@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>4.6. 0-RTT on Autumn Navigation</title>
+    <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/</link>
+    <description>Recent content in 4.6. 0-RTT on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>4.6.1. 启用0-RTT</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.1_Enabling_0-RTT/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.1_Enabling_0-RTT/</guid>
+      <description>TLS在NewSessionTicket消息中定义的early_data（早期数据）扩展是为了（在max_early_data_size（最大早期数据尺寸）参数中）传达服务器愿意接受的TLS 0-RTT的数据量。QUIC并不使用TLS的早期数据。QUIC使用0-RTT数据包来传递早期数据。于是，max_early_data_size参数被重新定义，当它的值为0xffffffff时，意味着服务器愿意接受QUIC 0-RTT数据。想要表明服务器并不接受0-RTT数据，就要从NewSessionTicket中省略early_data扩展。客户端能够在QUIC 0-RTT中发送的数据量是由服务器提供的initial_max_data（初始最大数据量）传输参数控制的。
+若max_early_data_size字段的值并非0xffffffff，则服务器必须不发送early_data扩展。如果客户端收到的NewSessionTicket中包含early_data扩展但是max_early_data_size是其他值，那么客户端必须将此情况视作类型为PROTOCOL_VIOLATION的连接错误。
+想要发送0-RTT数据包的客户端在后续握手的ClientHello消息中使用early_data扩展；详见《TLS13》的第4.2章。然后它就能在0-RTT数据包中发送应用数据。
+如果服务器曾发送过新令牌帧，那么尝试0-RTT的客户端可能还会提供一个地址验证令牌；详见《QUIC传输》的第8.1章。</description>
+    </item>
+    
+    <item>
+      <title>4.6.2. 接受与拒绝0-RTT</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.2_Accepting_and_Rejecting_0-RTT/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.2_Accepting_and_Rejecting_0-RTT/</guid>
+      <description>服务器通过在加密扩展（EncryptedExtensions）中发送early_data扩展的方式接受0-RTT；详见《TLS13》的第4.2.10章。随后服务器处理并确认它接收到的0-RTT数据包。
+服务器通过发送不带early_data扩展的加密扩展（EncryptedExtensions）的方式拒绝0-RTT。如果服务器发送了TLS的HelloRetryRequest（问候重试请求），就意味着它拒绝了0-RTT。如果拒绝了0-RTT，那么服务器必须不处理任何0-RTT数据包，即使它有能力这么做。如果0-RTT被拒绝，那么客户端应该在有能力的情况下将收到一个对于0-RTT数据包的确认的情况视作类型为PROTOCOL_VIOLATION的连接错误。
+当0-RTT被拒绝时，客户端假设的所有关于连接的特性都可能是不正确的。这包括应用协议、传输参数和任何应用配置的选择。因此客户端必须重置所有流的状态，包括与这些流相关的应用状态。
+如果客户端接收到重试数据包或版本协商数据包，那么它可以再次尝试0-RTT。这些数据包并不标志着0-RTT被拒绝。</description>
+    </item>
+    
+    <item>
+      <title>4.6.3. 验证0-RTT配置</title>
+      <link>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.3_Validating_0-RTT_Configuration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Carrying_TLS_Messages/0-RTT/4.6.3_Validating_0-RTT_Configuration/</guid>
+      <description>当服务器接收到了具有early_data扩展的ClientHello，它就必须决定是要接受还是拒绝来自客户端的0-RTT数据。TLS栈会参与这个决定（例如，检查ClientHello中是否包含那组恢复出来的加密套件；详见《TLS13》的第4.2.10章）。即使TLS栈没有拒绝0-RTT数据的理由，QUIC栈或使用QUIC的应用协议也可以拒绝0-RTT数据，因为与被恢复的会话关联的传输或应用配置与服务器的当前配置可能不一致。
+为了关联0-RTT会话票据，QUIC需要额外的传输状态。一种常见的实现方法是使用无状态的会话票据并将这些状态存储在会话票据中。使用QUIC的应用协议可能对于关联和存储状态有着类似的要求。被关联的状态会被用于决定是否拒绝0-RTT。举例来说，HTTP/3设置（详见《QUIC-HTTP》）会决定怎样解释来自客户端的0-RTT数据。其他使用QUIC的应用协议为了决定接受还是拒绝0-RTT数据，可能有着不同的要求。</description>
+    </item>
+    
+  </channel>
+</rss>
