@@ -12,6 +12,8 @@ SASS_TASKS = (
         "DES_PATH": "content/RFC9000_Chinese_Translation/css/RFC9000.css"},
     {"SRC_PATH": "content/RFC9001_Chinese_Translation/sass/RFC9001.scss",
         "DES_PATH": "content/RFC9001_Chinese_Translation/css/RFC9001.css"},
+    {"SRC_PATH": "content/RFC9002_Chinese_Translation/sass/RFC9002.scss",
+        "DES_PATH": "content/RFC9002_Chinese_Translation/css/RFC9002.css"},
 )
 
 if __name__ == "__main__":

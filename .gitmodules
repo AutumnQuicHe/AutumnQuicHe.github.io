@@ -11,3 +11,6 @@
 [submodule "content/Translation_Norms"]
 	path = content/Translation_Norms
 	url = git@github.com:fangqiuhang/Translation_Norms.git
+[submodule "content/RFC9002_Chinese_Translation"]
+	path = content/RFC9002_Chinese_Translation
+	url = git@github.com:fangqiuhang/RFC9002_Chinese_Translation
