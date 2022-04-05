@@ -1,0 +1,92 @@
+html, body {
+    color: $body_colour;
+    background-color: $body_backgroud_colour;
+    letter-spacing: 0.1px;
+    font-size: $body_font_size;
+}
+
+.sidebar.sidebar-quic {
+    background-color: $sidebar_background_colour;
+}
+
+.content {
+    position: inherit;
+}
+
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    background: $scrollbar_colour;
+    width: 4px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: $scrollbar_thumb_colour;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    background: $scrollbar_track_colour;
+}
+
+section.page {
+    h1, h2, h3, h4 {
+        text-shadow: $header_text_shadow;
+        border-color: $header_border_colour;
+        a, a:hover, a:visited {
+            color: $header_a_colour;
+        }
+    }
+    a, a:hover, a:visited {
+        color: $header_a_colour;
+     }
+    table, th, td {
+        border: $page_table_border;
+    }
+}
+
+.content {
+    code {
+        background: $content_code_background;
+        -webkit-box-shadow: $code_webkit_box_shadow;
+        -moz-box-shadow: $code_moz_box_shadow;
+        box-shadow: $code_box_shadow;
+    }
+    em strong {
+        text-shadow: $content_em_strong_text_shadow;
+        color: $content_em_strong_colour;
+    }
+    strong {
+        text-shadow: $content_strong_text_shadow;
+        color: $content_strong_colour;
+    }
+}
+
+.block {
+    background-color: $block_backgroud_colour;
+    color: $block_colour;
+    &:before {
+        color: $block_colour;
+    }
+    &.ref {
+        background: $ref_background;
+        border-radius: 2px;
+    }
+
+    &.tip {
+        background: $tip_background;
+        border-top-color: $tip_border_top_colour;
+    }
+    &.note {
+        background: $note_background;
+        border-top-color: $note_border_top_colour;
+    }
+    &.info {
+        background: $info_background;
+        border-top-color: $info_border_top_colour;
+    }
+    &.warn {
+        background: $warn_background;
+        border-top-color: $warn_border_top_colour;
+    }
+}

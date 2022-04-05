@@ -1,0 +1,40 @@
+$main_colour: #0d0d28;
+$theme_colour: #030616;   /* 谨以此配色“致敬”二柱子 */
+
+$body_colour: #040818;
+$body_backgroud_colour: #f8f9fd;
+$body_font_size: 15px;
+$sidebar_background_colour: $theme_colour;
+$scrollbar_colour: $main_colour;
+$scrollbar_thumb_colour: $body_backgroud_colour;
+$scrollbar_track_colour: $main_colour;
+$header_text_shadow: 2px 4px 5px snow;
+$header_border_colour: $theme_colour;
+$header_a_colour: #0b0b4d;
+$page_table_border: solid $theme_colour;
+
+/* content */
+$content_code_background: #141414;
+
+$code_webkit_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+$code_moz_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+$code_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+$content_em_strong_text_shadow: 2px 4px $main_colour;
+$content_em_strong_colour: ghostwhite;
+$content_strong_text_shadow: 0 0 7px $main_colour;
+$content_strong_colour: whitesmoke;
+
+/* block */
+$block_backgroud_colour: grey;
+$block_colour: white;
+
+$ref_background: #121212;
+$tip_background: #454849;
+$tip_border_top_colour: #284750;
+$note_background: #454b5e;
+$note_border_top_colour: #070d1d;
+$info_background: #2b2520;
+$info_border_top_colour: #271200;
+$warn_background: #533f3f;
+$warn_border_top_colour: #270000;

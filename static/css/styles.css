@@ -168,8 +168,8 @@ nav {
 
 .block:before {
   position: absolute;
-  top: -32px;
-  left: 10px;
+  top: -24px;
+  left: 12px;
   color: white;
 }
 
@@ -254,19 +254,20 @@ section.page {
 }
 
 section.page h1 {
-  border-left: 4px solid;
+  border-left-width: 4px;
+  border-left-style: groove;
   padding-left: 0.5em;
   margin-bottom: 0;
 }
 
 section.page h2 {
-  border-left: 3px solid;
+  border-left: 3px outset;
   padding-left: 0.6em;
   margin-bottom: 0;
 }
 
 section.page h3 {
-  border-left: 2px solid;
+  border-left: 2px ridge;
   padding-left: 0.7em;
   margin-bottom: 0;
 }
