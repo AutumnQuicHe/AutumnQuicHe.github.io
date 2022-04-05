@@ -1,0 +1,97 @@
+/* levi */
+/* old #299c69*/
+/* content */
+/* block */
+html, body {
+  color: #111109;
+  background-color: #efe5cc;
+  letter-spacing: 0.1px;
+  font-size: 15px;
+}
+
+.sidebar.sidebar-quic {
+  background-color: #111109;
+}
+
+.content {
+  position: inherit;
+}
+
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  background: #281b0a;
+  width: 4px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: #efe5cc;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+  background: #281b0a;
+}
+
+section.page h1, section.page h2, section.page h3, section.page h4 {
+  text-shadow: 2px 4px 5px snow;
+  border-color: #0a2c1f;
+}
+section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
+  color: #281b0a;
+}
+section.page a, section.page a:hover, section.page a:visited {
+  color: #281b0a;
+}
+section.page table, section.page th, section.page td {
+  border: 1px solid #111109;
+}
+
+.content code {
+  background: #efe5cc;
+  -webkit-box-shadow: inset 0 1px 10px rgba(182, 141, 158, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.content em strong {
+  text-shadow: 1px 1px 2px #281b0a;
+  color: #111109;
+}
+.content strong {
+  text-shadow: 0 0 2px #281b0a;
+  color: #111109;
+}
+
+.block {
+  background-color: #fff2f8;
+  color: #281b0a;
+}
+.block:before {
+  color: #281b0a;
+}
+.block.ref {
+  background: #121212;
+  border-radius: 2px;
+}
+.block.tip {
+  background: #454849;
+  border-top-color: #284750;
+}
+.block.note {
+  background: #454b5e;
+  border-top-color: #070d1d;
+}
+.block.info {
+  background: #2b2520;
+  border-top-color: #271200;
+}
+.block.warn {
+  background: #533f3f;
+  border-top-color: #270000;
+}
+
+.sidebar.sidebar-rfc9002 {
+  background-color: #111109;
+}
+
+/*# sourceMappingURL=RFC9002.css.map */

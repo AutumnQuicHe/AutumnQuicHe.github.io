@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>附录A. 伪代码 on Autumn Navigation</title>
+    <link>/RFC9000_Chinese_Translation/Pseudocode/</link>
+    <description>Recent content in 附录A. 伪代码 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9000_Chinese_Translation/Pseudocode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A.1. 可变长度整型解码样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.1_Sample_Variable-Length_Integer_Decoding/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.1_Sample_Variable-Length_Integer_Decoding/</guid>
+      <description>图45中的伪代码展示了如何从字节流中读取可变长度整型值。ReadVarint函数接收单个参数——一个字节序列，它将以网络字节序被读取。
+ReadVarint(data): // 可变长度整型值的长度被编码在首个字节的前两个比特位中。 v = data.next_byte() prefix = v &amp;gt;&amp;gt; 6 length = 1 &amp;lt;&amp;lt; prefix // 一旦长度已知，就移除这些比特位，并读取剩余字节。 v = v &amp;amp; 0x3f repeat length-1 times: v = (v &amp;lt;&amp;lt; 8) + data.next_byte() return v 图45：可变长度整型解码算法样例
+ 举例来说，八字节序列0xc2197c5eff14e88c会被解码为十进制值151,288,809,941,952,652；四字节序列0x9d7f3e7d 会被解码为494,878,333；双字节序列0x7bbd 会被解码为15,293；而单字节0x25会被解码为37（和解码双字节序列0x4025的结果一致）。</description>
+    </item>
+    
+    <item>
+      <title>A.2. 数据包号编码算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.2_Sample_Packet_Number_Encoding_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.2_Sample_Packet_Number_Encoding_Algorithm/</guid>
+      <description>图46中的伪代码展示了QUIC实现怎样选择合适长度的数据包号编码。
+EncodePacketNumber函数接收两个参数：
+  full_pn是正在发送的数据包的完整数据包号。
+  largest_acked是当前数据包号空间中已被对端确认的最大数据包号，如果有的话。
+  EncodePacketNumber(full_pn, largest_acked): // 比特位的数量必须至少比连续未被确认的数据包号的数量（包括此数据包本身）的 // 以`2`为底的对数值大`1` if largest_acked is None: num_unacked = full_pn + 1 else: num_unacked = full_pn - largest_acked min_bits = log(num_unacked, 2) + 1 num_bytes = ceil(min_bits / 8) // 将整型值编码，并截断为仅剩最低`num_bytes`个字节 return encode(full_pn, num_bytes) 图46：数据包号编码算法样例
+ 举例来说，如果终端接收到了对于数据包0xabe8b3的确认，并且正在发送数据包号为0xac5c02的数据包，那么就存在着29,519（0x734f）个未确认的数据包号。为了能够至少表示这个数量的两倍大小（59,038个，或者说0xe69e个数据包），就需要16个比特位。
+在相同的状态下，发送数据包号为0xace8fe的数据包会使用长度为24比特位的编码方式，因为至少需要18个比特位才能表示缺口数量的两倍（131,222个，或者说0x020096个数据包）。</description>
+    </item>
+    
+    <item>
+      <title>A.3. 数据包号解码算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.3_Sample_Packet_Number_Decoding_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.3_Sample_Packet_Number_Decoding_Algorithm/</guid>
+      <description>图47中的伪代码包含了在移除头部保护后解码数据包号的算法样例。
+DecodePacketNumber函数接收三个参数：
+  largest_pn是当前数据包号空间中已成功处理的最大数据包号
+  truncated_pn是数据包号字段的值
+  pn_nbits是数据包号字段中比特位的数量（8、16、24或32）。
+  DecodePacketNumber(largest_pn, truncated_pn, pn_nbits): expected_pn = largest_pn + 1 pn_win = 1 &amp;lt;&amp;lt; pn_nbits pn_hwin = pn_win / 2 pn_mask = pn_win - 1 // 传入数据包号应该大于`expected_pn - pn_hwin`且小于等于 // `expected_pn + pn_hwin` // // 这意味着我们不能简单地去掉`expected_pn`中末尾的比特位再加上`truncated_pn` // 因为那样会产生一个超过窗口范围的值。 // // 接下来的代码计算了一个候选值，并确保它处于数据包号窗口范围中。 // 注意用于防止数值过大和数值过小的额外检查。 candidate_pn = (expected_pn &amp;amp; ~pn_mask) | truncated_pn if candidate_pn &amp;lt;= expected_pn - pn_hwin and candidate_pn &amp;lt; (1 &amp;lt;&amp;lt; 62) - pn_win: return candidate_pn + pn_win if candidate_pn &amp;gt; expected_pn + pn_hwin and candidate_pn &amp;gt;= pn_win: return candidate_pn - pn_win return candidate_pn 图47：数据包号解码算法样例</description>
+    </item>
+    
+    <item>
+      <title>A.4. ECN验证算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</guid>
+      <description>每次终端开始在新的网络路径上发送时，它都要判断该路径是否支持ECN；详见第13.4章。如果该路径支持ECN，那么就要将ECN利用起来。终端还可以每隔一段时间重新判断一次被认为不支持ECN的路径。
+本节描述了一种用于测试新路径的方法。本算法的意图是展示如何测试一条路径是否支持ECN。终端可以用其他方法实现。
+受测试的路径会被指定一种ECN状态，它会是“测试中”、“未知”、“失败”和“支持”中的一种。在状态为“测试中”或“支持”的路径上，终端发送的数据包会带有ECT标记——默认是ECT(0)；否则，终端发送的数据包上不带标记。
+要启动对一条路径的测试，其ECN状态会被置为“测试中”，并且当前的ECN计数被记录为基准值。
+测试期间会持续发送数个数据包，或者持续一段指定的时间，这由终端决定。此处的目标不是要限制测试的时长，而是确保发送了足够多经标记的数据包以使得接收到的ECN计数能够清晰地表明该路径会怎样对待经标记的数据包。第13.4.2章建议将此时长限制为发送10个数据包的耗时或PTO的三倍大小。
+在测试期结束时，该路径的ECN状态会转为“未知”。对ACK帧中ECN计数的成功验证会使得该路径的状态从“未知”转为“支持”，除非没有经标记的数据包得到确认。
+一旦对ECN计数的验证失败，那么相关路径的ECN状态就会转为“失败”。终端还可以在经标记的数据包全部被认定为丢包或全部被标记上ECN-CE时将ECN状态置为“失败”。
+按照本算法，能够确保在正确支持ECN的路径上ECN几乎不会被禁用。任何错误地修改了标记的路径都会使得ECN被禁用。对于那些经标记数据包被路径丢弃的罕见情况，短暂的测试期能够限制被丢弃数据包的数量。</description>
+    </item>
+    
+  </channel>
+</rss>

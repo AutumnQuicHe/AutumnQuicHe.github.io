@@ -34,6 +34,15 @@
     </item>
     
     <item>
+      <title>前言</title>
+      <link>/RFC9002_Chinese_Translation/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Foreword/forword/</guid>
+      <description>本文是关于QUIC丢包检测与恢复的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
       <title>摘要</title>
       <link>/RFC8999_Chinese_Translation/Foreword/abstract/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -58,6 +67,15 @@
       
       <guid>/RFC9001_Chinese_Translation/Foreword/abstract/</guid>
       <description>本文描述如何使用传输层安全协议（TLS）加密QUIC。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9002_Chinese_Translation/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Foreword/abstract/</guid>
+      <description>本文涉及QUIC丢包检测与传输恢复的设计。</description>
     </item>
     
     <item>
@@ -94,6 +112,17 @@
     </item>
     
     <item>
+      <title>备忘状态</title>
+      <link>/RFC9002_Chinese_Translation/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9002。</description>
+    </item>
+    
+    <item>
       <title>版权声明</title>
       <link>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -119,6 +148,16 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9002_Chinese_Translation/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Foreword/copyright_notice/</guid>
       <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
 本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
     </item>
@@ -310,10 +349,8 @@ QUIC在实现上应该提供某种方法使得应用层能够因此确定各条�
 在一条流创建前，所有数值小于该流ID的同类型流都必须被创建。 这样能确保双端流的创建次序保持一致。
 在“接收”状态，终端接收流帧和流阻塞帧。 传入数据将被缓存，并可以按照正确顺序重组以便递给应用层。 随着应用层不断消耗数据，缓冲区重新空出来，终端发送最大流数据帧告知对端可以发送更多数据。
 当收到一个带FIN置位的流帧时，数据的最终大小确定下来，详见第4.5章。 流的接收部分随后转到“数据量确认”状态。 在此状态，终端不再需要发送最大流数据帧，只需要接收重传数据即可。
-一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。 这可能发生在收到导致转入“数据量确认”状态的同一个流帧后。 在所有数据都收完后，可以丢弃该流的任何流帧或流阻塞帧。
-秋航注：意思是说，在收到流帧后，接收方可能转入“接收量确认”状态；紧接着，状态再次流转到“接收完成”状态。 中间这句原译为：
- 在接收到导致状态转换到“接收量确认”的流帧后，可能同时导致转入“接收完成”状态。
-  “接收完成”状态会一直持续直到数据全部传递到应用层。 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。
+一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。 【TODO further transmition】 在接收到导致状态转换到“接收量确认”的流帧后，可能同时导致转入“接收完成”状态。 在所有数据都收完后，可以丢弃该流的任何流帧或流阻塞帧。
+“接收完成”状态会一直持续直到数据全部传递到应用层。 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。
 如果在“接收”或“数据量确认”状态收到一个流重置帧，将导致流转到“重置接收”状态。 这可能打断流数据传递到应用层。
 流重置帧也有可能在所有流数据都收完后才收到（即在“接收完成”阶段）。 同样地，也可能在收完流重置帧后收到了剩下的流数据（即在“重置接收”状态）。 在QUIC的具体实现上，可以自由选择如何处理这两种情况。
 发送流重置帧意味着终端不能保证流数据的传输。 然而，并没有要求在收到流重置帧后不传输流数据。 QUIC实现可以打断流数据的传输，丢弃任何没有被消耗的数据，并通知对端收到了流重置帧。 如果流数据完成了接收并被缓存起来以供应用层读取，此时收到流重置帧信号，则该信号可能被抑制或扣留。 如果流重置帧被抑制，流的接收部分仍然维持在“接收完成”状态。
@@ -1098,10 +1135,7 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.1_Example_Handshake_Flows/</guid>
-      <description>关于TLS如何与QUIC整合的更多细节详见《QUIC TLS》，但在此举出一些范例。 用以支持客户端地址验证的这种交换的一个扩展详见第8.1.2章。
-一旦完成任何地址验证交换，加密握手将用于协商密钥。 加密握手由初始包（第17.2.2章）和握手包（第17.2.4章）携带。
-图5展示了1-RTT握手过程的概况。 每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。 例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的加密帧。
-多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见第12.2章。 因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。 例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</description>
+      <description></description>
     </item>
     
     <item>
@@ -1155,9 +1189,9 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.1_Protocol_Negotiation/</guid>
-      <description>QUIC requires that the cryptographic handshake provide authenticated protocol negotiation. TLS uses Application-Layer Protocol Negotiation [ALPN] to select an application protocol. Unless another mechanism is used for agreeing on an application protocol, endpoints MUST use ALPN for this purpose.
-QUIC需要加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《ALPN》）来选择应用协议。终端必须使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。
-When using ALPN, endpoints MUST immediately close a connection (see Section 10.2 of [QUIC-TRANSPORT]) with a no_application_protocol TLS alert (QUIC error code 0x0178; see Section 4.8) if an application protocol is not negotiated.</description>
+      <description>QUIC要求加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《ALPN》）来选择应用协议。终端必须使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。
+在使用ALPN时，如果没有协商出应用协议，那么终端必须立即使用值为no_application_protocol（无应用协议）的TLS警告（QUIC的错误码为0x0178；详见第4.8章）来关闭连接（详见《QUIC传输》的第10.2章）。尽管《ALPN》中只规定了服务器要使用此警告，但是QUIC客户端在ALPN协商失败时必须使用类型为0x0178的错误来终止连接。
+应用协议可以限制它所操作的QUIC版本。服务器必须选择一个与客户端所选QUIC版本兼容的应用协议。服务器必须将无法选出兼容的应用协议的情况视作类型为0x0178（相当于no_application_protocol）的连接错误。类似地，客户端必须将服务器选择了不兼容的应用协议的情况视作类型为0x0178的连接错误。</description>
     </item>
     
     <item>
@@ -1236,14 +1270,14 @@ When using ALPN, endpoints MUST immediately close a connection (see Section 10.2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.2_QUIC_Transport_Parameters_Extension/</guid>
-      <description>QUIC transport parameters are carried in a TLS extension. Different versions of QUIC might define a different method for negotiating transport configuration.
-QUIC传输参数是使用TLS扩展来传递的。不同的QUIC版本可能为传输配置的协商定义不同方法。
-Including transport parameters in the TLS handshake provides integrity protection for these values.
+      <description>QUIC传输参数是使用TLS扩展来传递的。不同的QUIC版本可能为传输配置的协商定义不同方法。
 在TLS握手中包含传输参数，就可以为这些值提供完整性保护。
 enum { quic_transport_parameters(0x39), (65535) } ExtensionType; 
- The extension_data field of the quic_transport_parameters extension contains a value that is defined by the version of QUIC that is in use.
-quic_transport_parameters（QUIC传输参数）扩展的extension_data（扩展数据）字段中包含的是一个由正在使用的QUIC版本定义的值。
-The quic_transport_parameters extension is carried in the ClientHello and the EncryptedExtensions messages during the handshake.</description>
+ quic_transport_parameters（QUIC传输参数）扩展的extension_data（扩展数据）字段中包含的是一个由正在使用的QUIC版本定义的值。
+quic_transport_parameters扩展是在握手期间使用ClientHello（客户端问候）和EncryptedExtensions（加密扩展）消息来传递的。终端必须发送quic_transport_parameters扩展；接收到不带quic_transport_parameters扩展的ClientHello消息或EncryptedExtensions消息的终端必须使用类型为0x016d（相当于TLS中致命级别的missing_extension警告，详见第4.8章）的错误来关闭连接。
+传输参数在握手完成前就会变为可用。服务器可以在握手完成前就使用这些值。不过，直到握手完成，传输参数的值都是未经认证的，所以即使提前使用这些参数也不要依赖于它们的真实性。任何对于传输参数的篡改最终都会使得握手失败。
+终端必须不在并未使用QUIC的TLS连接中（例如在《TLS13》中定义的基于TCP的TLS连接）发送此扩展。如果在非QUIC的传输中接收到了这个扩展，那么支持此扩展的终端必须发送致命级别的unsupported_extension警告。
+协商quic_transport_parameters扩展会使得EndOfEarlyData（早期数据结束）被移除；详见第8.3章。</description>
     </item>
     
     <item>
@@ -1315,11 +1349,9 @@ The quic_transport_parameters extension is carried in the ClientHello and the En
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.3_Removing_the_EndOfEarlyData_Message/</guid>
-      <description>The TLS EndOfEarlyData message is not used with QUIC. QUIC does not rely on this message to mark the end of 0-RTT data or to signal the change to Handshake keys.
-QUIC中不会使用TLS的EndOfEarlyData消息。QUIC不依赖这条消息去标记0-RTT数据的结束位置，或去发送握手密钥发生变化的信号。
-Clients MUST NOT send the EndOfEarlyData message. A server MUST treat receipt of a CRYPTO frame in a 0-RTT packet as a connection error of type PROTOCOL_VIOLATION.
+      <description>QUIC中不会使用TLS的EndOfEarlyData消息。QUIC并不使用这条消息去标记0-RTT数据的结束位置，或去发送握手密钥发生变化的信号。
 客户端必须不发送EndOfEarlyData消息。服务器必须将在0-RTT数据包中接收到加密帧的情况视作类型为PROTOCOL_VIOLATION（协议违背）的连接错误。
-As a result, EndOfEarlyData does not appear in the TLS handshake transcript.</description>
+于是，EndOfEarlyData不会出现在TLS握手的记录单（transcript）中。</description>
     </item>
     
     <item>
@@ -1328,9 +1360,8 @@ As a result, EndOfEarlyData does not appear in the TLS handshake transcript.</de
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/QUIC-Specific_Adjustments_to_the_TLS_Handshake/8.4_Prohibit_TLS_Middlebox_Compatibility_Mode/</guid>
-      <description>Appendix D.4 of [TLS13] describes an alteration to the TLS 1.3 handshake as a workaround for bugs in some middleboxes. The TLS 1.3 middlebox compatibility mode involves setting the legacy_session_id field to a 32-byte value in the ClientHello and ServerHello, then sending a change_cipher_spec record. Both field and record carry no semantic content and are ignored.
-《TLS13》的附录D.4描述了TLS 1.3握手的一种替代方案，并将之作为某些中间设备上程序出错时的应对措施。TLS 1.3中的这种中间设备兼容模式需要将ClientHello和ServerHello（服务器问候）中的legacy_session_id（兼容会话ID）字段设置为一个32字节长的值，随后发送change_cipher_spec（更改加密设置）记录。这个字段和记录不传递任何具有语义的内容，并且会被忽略。
-This mode has no use in QUIC as it only applies to middleboxes that interfere with TLS over TCP.</description>
+      <description>《TLS13》的附录D.4描述了TLS 1.3握手的一种替代方案，并将之作为某些中间设备上程序出错时的应对措施。TLS 1.3中的这种中间设备兼容模式需要将ClientHello和ServerHello（服务器问候）中的legacy_session_id（兼容会话ID）字段设置为一个32字节长的值，随后发送change_cipher_spec（更改加密设置）记录。这个字段和记录不传递任何具有语义的内容，并且会被忽略。
+这个模式在QUIC中没有用处，因为它只适用于会干预基于TCP的TLS的中间设备。同时QUIC也没有提供任何传递change_cipher_spec记录的方法。客户端必须不请求使用TLS 1.3的兼容模式。服务器应该将接收到legacy_session_id字段非空的TLSClientHello的情况视作类型为PROTOCOL_VIOLATION的连接错误。</description>
     </item>
     
     <item>
@@ -1349,8 +1380,7 @@ This mode has no use in QUIC as it only applies to middleboxes that interfere wi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.1_Session_Linkability/</guid>
-      <description>Use of TLS session tickets allows servers and possibly other entities to correlate connections made by the same client; see Section 4.5 for details.
-TLS会话票据的使用使得服务器或其他实体能够将同一客户端创建的连接相互关联起来；有关细节详见第4.5章。</description>
+      <description>TLS会话票据的使用使得服务器或其他实体能够将同一客户端创建的连接相互关联起来；有关细节详见第4.5章。</description>
     </item>
     
     <item>
@@ -1372,11 +1402,14 @@ TLS会话票据的使用使得服务器或其他实体能够将同一客户端�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.2_Replay_Attacks_with_0-RTT/</guid>
-      <description>As described in Section 8 of [TLS13], use of TLS early data comes with an exposure to replay attack. The use of 0-RTT in QUIC is similarly vulnerable to replay attack.
-正如《TLS13》的第8章所述，使用了TLS早期数据就会被暴露于重放攻击之下。QUIC的0-RTT有着类似的风险。
-Endpoints MUST implement and use the replay protections described in [TLS13], however it is recognized that these protections are imperfect. Therefore, additional consideration of the risk of replay is needed.
+      <description>正如《TLS13》的第8章所述，只要使用了TLS早期数据就会被暴露于重放攻击之下。QUIC的0-RTT有着类似的风险。
 终端必须实现并使用《TLS13》中描述的重放保护，然而这些保护并不被认为是完美的。因此，对于重放攻击的风险还需要更多考量。
-QUIC is not vulnerable to replay attack, except via the application protocol information it might carry.</description>
+QUIC并不易受到重放攻击，除非是利用QUIC传递的应用协议信息的攻击。基于在《QUIC传输》中定义的帧类型的QUIC协议状态管理机制不易受到重放攻击。QUIC帧的处理是幂等的，在帧被重放、乱序或遭遇丢包时不会引发连接状态异常。QUIC连接期间产生的副作用在连接的生命周期结束后就会失效，除非是那些由QUIC承载的应用协议产生的副作用。
+TLS会话票据和地址验证令牌被用于在不同的连接间传递QUIC配置信息，尤其是，它使得服务器能够在连接建立和地址验证时高效地恢复状态数据。必须不使用它们在终端间传递应用语义；客户端必须将它们视作为内容不透明的值。如果这些令牌有可能被重用，那么它们就需要更强的针对重放攻击的保护。
+在某条连接上接受0-RTT的服务器比不接受0-RTT的服务器要消耗更多的计算资源。服务器在接受0-RTT时需要考虑到重放的可能性以及其他相关资源的消耗。
+管理与0-RTT相关的重放攻击的风险，其最终的责任在于应用协议。使用QUIC的应用协议必须描述该协议会怎样使用0-RTT以及用于抵御重放攻击的手段。对于重放风险的分析需要考虑所有会传递应用语义的QUIC协议特性。
+要抵御重放攻击，完全禁用0-RTT是最有效的。
+QUIC扩展必须描述重放攻击会如何影响扩展的行为，或禁止与0-RTT一起被使用。应用协议必须禁止使用会在0-RTT中传递应用语义的扩展，或提供抵御重放攻击的策略。</description>
     </item>
     
     <item>
@@ -1385,9 +1418,8 @@ QUIC is not vulnerable to replay attack, except via the application protocol inf
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.3_Packet_Reflection_Attack_Mitigation/</guid>
-      <description>A small ClientHello that results in a large block of handshake messages from a server can be used in packet reflection attacks to amplify the traffic generated by an attacker.
-如果一条较小的ClientHello（客户端问候）能使得服务器响应巨大的握手消息，它就能被用于数据包放大攻击，放大攻击者生成的流量。
-QUIC includes three defenses against this attack. First, the packet containing a ClientHello MUST be padded to a minimum size. Second, if responding to an unverified source address, the server is forbidden to send more than three times as many bytes as the number of bytes it has received (see Section 8.</description>
+      <description>如果一条较小的ClientHello（客户端问候）能使得服务器响应巨大的握手消息，它就能被用于数据包放大攻击，放大攻击者生成的流量。
+QUIC针对此类攻击，拥有三种防御手段。首先，包含ClientHello的数据包必须被扩充至一个下限值。其次，在向未经验证的源地址响应时，服务器发送的字节数禁止超过它接收到的字节数的三倍（详见《QUIC传输》的第8.1章）。最后，因为对于握手数据包的确认是经认证的，所有对此一无所知的攻击者无法伪造它们。综合起来，这些防御手段限制了放大攻击的放大量级。</description>
     </item>
     
     <item>
@@ -1446,10 +1478,12 @@ QUIC includes three defenses against this attack. First, the packet containing a
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.4_Header_Protection_Analysis/</guid>
-      <description>[NAN] analyzes authenticated encryption algorithms that provide nonce privacy, referred to as &amp;ldquo;Hide Nonce&amp;rdquo; (HN) transforms. The general header protection construction in this document is one of those algorithms (HN1). Header protection is applied after the packet protection AEAD, sampling a set of bytes (sample) from the AEAD output and encrypting the header field using a pseudorandom function (PRF) as follows:
-《NAN》分析了许多能保护随机数的认证加密算法，它们被称为“随机数隐藏”（HN）转换。本文档中的头部保护构建方法大体上可以算作是这些算法中的其中一种（HN1）。头部保护会在数据包保护AEAD之后被应用，它从AEAD的输出中采样一组字节样本（表达式中的sample），并以此方法使用伪随机函数（表达式中的PRF）来加密头部字段：
+      <description>《NAN》分析了许多能保护随机数的认证加密算法，它们被称为“随机数隐藏”（HN）转换。本文档中的头部保护构建方法大体上可以算作是这些算法中的其中一种（HN1）。头部保护会在数据包保护AEAD之后被应用，它从AEAD的输出中采样一组字节样本（表达式中的sample），并以此方法使用伪随机函数（表达式中的PRF）来加密头部字段：
 protected_field = field XOR PRF(hp_key, sample) 
- The header protection variants in this document use a pseudorandom permutation (PRP) in place of a generic PRF.</description>
+ 本文档中的头部保护的不同之处在于使用伪随机排列（PRP）来代替常规的PRF。然而，由于所有PRP都算作PRF（详见《IMC》），所以这种修改并不违背HN1的构建原则。
+由于hp_key与数据包保护密钥不同，因此头部保护能够达到《NAN》中描述的AE2安全级别，从而保护数据包头部中的字段。将来的基于相同构建方式的头部保护变体必须使用PRF来确保获得一致的安全保障。
+多次使用相同的密钥和密文样本会有使头部保护失效的风险。使用相同的密钥和密文样本来保护两份不同的包头会泄露受保护字段的异或结果。假设以AEAD作为PRF，如果采样了L个比特位，那么两份密文样本一致的概率约为2-L/2，也就是所谓的生日攻击。对于在本文档中描述的算法，这个概率为264分之一。
+为了防止被攻击者修改，数据包头部会受到数据包保护的认证；整个数据包头部都是受认证的额外数据的一部分。受保护的字段有没有被篡改只能在移除数据包保护后才被检测出来。</description>
     </item>
     
     <item>
@@ -1475,7 +1509,10 @@ protected_field = field XOR PRF(hp_key, sample)
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.5_Header_Protection_Timing_Side_Channels/</guid>
-      <description>An attacker could guess values for packet numbers or Key Phase and have an endpoint confirm guesses through timing side channels. Similarly, guesses for the packet number length can be tried and exposed. If the recipient of a packet discards packets with duplicate packet numbers without attempting to remove packet protection, they could reveal through timing side channels that the packet number matches a received packet. For authentication to be free from side channels, the entire process of header protection removal, packet number recovery, and packet protection removal MUST be applied together without timing and other side channels.</description>
+      <description>攻击者可以猜测数据包号或密钥阶段的值，并通过计时侧信道观察终端会不会接受这个值。类似地，对于数据包号长度也可以进行猜测和破解。如果数据包的接收方直接将数据包号重复的数据包丢弃，而没有尝试移除数据包保护，那么它们就会通过计时侧信道暴露此数据包号与一个已接收到的数据包匹配的事实。为了使认证过程不会对侧信道产生影响，必须完整地先移除头部保护、然后恢复数据包号，接着移除数据包保护，从而避免从计时或其他方面的侧信道泄露信息。
+在数据包的发送方面，数据包载荷与数据包号的构建和保护过程必须不会从侧信道泄露数据包号或它的编码后长度。
+在密钥更新期间，创建新密钥所花费的时间可能通过计时侧信道透露出有没有发生密钥更新。除此之外，当攻击者注入数据包时，该侧信道会泄露被注入的数据包里密钥阶段的值。在接收到密钥更新后，终端应该如第6.3章所述的那样，建立并储存下一组接受用的数据包保护密钥。通过在接收到密钥更新前就建立新密钥，数据包的接收就不会创建出会泄露密钥阶段的值的计时上的信号。
+这项要求依赖于不在数据包处理期间建立新密钥，同时它可能需要终端维护三组接收用的数据包保护密钥：上一密钥阶段的、当前密钥阶段的和下一密钥阶段的。作为替代方案，终端可以选择延迟建立下一密钥阶段的数据包保护密钥，直到它弃用旧密钥为止，这使得它在同一时间只需要维护两组接收密钥。</description>
     </item>
     
     <item>
@@ -1484,7 +1521,10 @@ protected_field = field XOR PRF(hp_key, sample)
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.6_Key_Diversity/</guid>
-      <description>In using TLS, the central key schedule of TLS is used. As a result of the TLS handshake messages being integrated into the calculation of secrets, the inclusion of the QUIC transport parameters extension ensures that the handshake and 1-RTT keys are not the same as those that might be produced by a server running TLS over TCP. To avoid the possibility of cross-protocol key synchronization, additional measures are provided to improve key separation.</description>
+      <description>在使用TLS时，会用到其核心的密钥衍生计划表。由于TLS握手消息被集成进了秘密值计算，QUIC传输参数扩展的使用能够确保握手密钥和1-RTT密钥与运行基于TCP的TLS的服务器所生成出来的密钥不一致。为了降低不同协议间出现密钥碰撞情况的可能性，有额外的措施来提高密钥的隔离性。
+QUIC的数据包保护密钥和IV是使用与TLS中不同的标签来衍生的。
+为了维持这种隔离性，新版本的QUIC应该为计算数据包保护密钥和IV的密钥，以及头部保护密钥，的衍生过程定义新的标签值。本版本的QUIC使用了字符串quic。其他版本可以使用与版本相关的标签来替换该字符串。
+初始秘密值使用的是由协商出的QUIC版本指定的密钥。新的QUIC版本应该为秘密值的计算定义新的盐值。</description>
     </item>
     
     <item>
@@ -1543,8 +1583,7 @@ protected_field = field XOR PRF(hp_key, sample)
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9001_Chinese_Translation/Security_Considerations/9.7_Randomness/</guid>
-      <description>QUIC depends on endpoints being able to generate secure random numbers, both directly for protocol values such as the connection ID, and transitively via TLS. See [RFC4086] for guidance on secure random number generation.
-QUIC依赖于终端生成安全的随机数的能力，这项能力既会被直接用在协议里的一些值上，如连接ID，也会经由TLS被使用到。有关安全的随机数生成的指导，详见《RFC4086》。</description>
+      <description>QUIC依赖于终端生成安全的随机数的能力，这项能力既会被直接用在协议里的一些值上，如连接ID，也会经由TLS被使用到。有关安全的随机数生成的指导，详见《RFC4086》。</description>
     </item>
     
     <item>
@@ -1666,6 +1705,18 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
     </item>
     
     <item>
+      <title>11.1. 规范性参考文献</title>
+      <link>/RFC9001_Chinese_Translation/References/11.1_Normative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/References/11.1_Normative_References/</guid>
+      <description>[AEAD]：  McGrew, D., &amp;ldquo;An Interface and Algorithms for Authenticated Encryption&amp;rdquo;, RFC 5116, DOI 10.17487/RFC5116, January 2008, https://www.rfc-editor.org/info/rfc5116.
+ [AES]：  &amp;ldquo;Advanced encryption standard (AES)&amp;rdquo;, National Institute of Standards and Technology report, DOI 10.6028/nist.fips.197, November 2001, https://doi.org/10.6028/nist.fips.197.
+ [ALPN]：  Friedl, S., Popov, A., Langley, A., and E. Stephan, &amp;ldquo;Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension&amp;rdquo;, RFC 7301, DOI 10.17487/RFC7301, July 2014, https://www.rfc-editor.org/info/rfc7301.
+ [CHACHA]：  Nir, Y. and A.</description>
+    </item>
+    
+    <item>
       <title>11.2 流错误</title>
       <link>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1675,6 +1726,18 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
 对流进行重置而不通知应用协议会使得应用协议进入不可恢复的状态。流重置帧必须只能由使用QUIC的应用协议发起。
 在流重置帧中携带的应用错误码的语义是由应用协议定义的。只有应用协议有能力终止一条流。应用协议的本地实例直接调用API，远程实例则可以使用会自动触发流重置帧的停止发送帧。
 应用协议应该定义规则来处理被任一终端提前取消的流。</description>
+    </item>
+    
+    <item>
+      <title>11.2. 资料性参考文献</title>
+      <link>/RFC9001_Chinese_Translation/References/11.2_Informative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/References/11.2_Informative_References/</guid>
+      <description>[AEBounds]：  Luykx, A. and K. Paterson, &amp;ldquo;Limits on Authenticated Encryption Use in TLS&amp;rdquo;, 28 August 2017, https://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf.
+ [ASCII]：  Cerf, V., &amp;ldquo;ASCII format for network interchange&amp;rdquo;, STD 80, RFC 20, DOI 10.17487/RFC0020, October 1969, https://www.rfc-editor.org/info/rfc20.
+ [CCM-ANALYSIS]：  Jonsson, J., &amp;ldquo;On the Security of CTR + CBC-MAC&amp;rdquo;, Selected Areas in Cryptography, SAC 2002, Lecture Notes in Computer Science, vol 2595, pp. 76-93, DOI 10.1007/3-540-36492-7_7, 2003, https://doi.org/10.1007/3-540-36492-7_7.
+ [COMPRESS]：  Ghedini, A.</description>
     </item>
     
     <item>
@@ -1692,6 +1755,26 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
     </item>
     
     <item>
+      <title>A.1. 密钥</title>
+      <link>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.1_Keys/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.1_Keys/</guid>
+      <description>在HKDF-Expand-Label函数的执行期间生成的标签（也就是HkdfLabel.label），以及传给HKDF-Expand函数的参数为：
+client in: 00200f746c73313320636c69656e7420696e00
+server in: 00200f746c7331332073657276657220696e00
+quic key: 00100e746c7331332071756963206b657900
+quic iv: 000c0d746c733133207175696320697600
+quic hp: 00100d746c733133207175696320687000
+初始秘密值是通用的：
+initial_secret = HKDF-Extract(initial_salt, cid) = 7db5df06e7a69e432496adedb0085192 3595221596ae2ae9fb8115c1e9ed0a44 
+ 用于保护客户端数据包的秘密值为：
+client_initial_secret = HKDF-Expand-Label(initial_secret, &amp;quot;client in&amp;quot;, &amp;quot;&amp;quot;, 32) = c00cf151ca5be075ed0ebfb5c80323c4 2d6b7db67881289af4008f1f6c357aea key = HKDF-Expand-Label(client_initial_secret, &amp;quot;quic key&amp;quot;, &amp;quot;&amp;quot;, 16) = 1f369613dd76d5467730efcbe3b1a22d iv = HKDF-Expand-Label(client_initial_secret, &amp;quot;quic iv&amp;quot;, &amp;quot;&amp;quot;, 12) = fa044b2f42a3fd3b46fb255c hp = HKDF-Expand-Label(client_initial_secret, &amp;quot;quic hp&amp;quot;, &amp;quot;&amp;quot;, 16) = 9f50449e04a0e810283a1e9933adedd2 
+ 用于保护服务器数据包的秘密值为：
+server_initial_secret = HKDF-Expand-Label(initial_secret, &amp;quot;server in&amp;quot;, &amp;quot;&amp;quot;, 32) = 3c199828fd139efd216c155ad844cc81 fb82fa8d7446fa7d78be803acdda951b key = HKDF-Expand-Label(server_initial_secret, &amp;quot;quic key&amp;quot;, &amp;quot;&amp;quot;, 16) = cf3a5331653c364c88f0f379b6067e37 iv = HKDF-Expand-Label(server_initial_secret, &amp;quot;quic iv&amp;quot;, &amp;quot;&amp;quot;, 12) = 0ac1493ca1905853b0bba03e hp = HKDF-Expand-Label(server_initial_secret, &amp;quot;quic hp&amp;quot;, &amp;quot;&amp;quot;, 16) = c206b8d9b9f0f37644430b490eeaa314</description>
+    </item>
+    
+    <item>
       <title>12.2 合并数据包</title>
       <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.2_Coalescing_Packets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1703,6 +1786,22 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
 接收方可以根据UDP数据报包含的第一个数据包的信息来做路由。发送方必须不将具有不同连接ID的QUIC数据包合并至单个UDP数据报中。如果后续的某个数据包的目标连接ID字段与数据报中第一个数据包的值不同，那么接收方应该忽略这个数据包。
 任何被合并至单个UDP数据报的QUIC数据包都是独立且完整的。被合并的QUIC数据包的接收方必须独立处理每个QUIC数据包并单独确认它们，就好像它们是作为不同UDP数据报的载荷被接收的。例如，如果对一个数据包的解密失败了（因为密钥出于某个理由而不可用），那么接收方可以要么丢弃这个数据包要么缓存它以供将来处理，并且必须尝试处理余下的数据包。
 重试数据包（详见第17.2.5章）、版本协商数据包（第17.2.1章）和具有短包头的数据包（第17.3章）并不包含长度字段，因此在同一个UDP数据报中不能有其他数据包跟在它们后面。还要注意，不存在将重试数据包和版本协商数据包与另一个数据包合并的情况。</description>
+    </item>
+    
+    <item>
+      <title>A.2. 客户端初始数据包</title>
+      <link>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.2_Client_Initial/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.2_Client_Initial/</guid>
+      <description>客户端会发送初始数据包。该数据包未经保护的载荷中包含着加密帧，以及足够多的填充帧以使得载荷长度达到1162字节：
+060040f1010000ed0303ebf8fa56f129 39b9584a3896472ec40bb863cfd3e868 04fe3a47f06a2b69484c000004130113 02010000c000000010000e00000b6578 616d706c652e636f6dff01000100000a 00080006001d00170018001000070005 04616c706e0005000501000000000033 00260024001d00209370b2c9caa47fba baf4559fedba753de171fa71f50f1ce1 5d43e994ec74d748002b000302030400 0d0010000e0403050306030203080408 050806002d00020101001c0002400100 3900320408ffffffffffffffff050480 00ffff07048000ffff08011001048000 75300901100f088394c8f03e51570806 048000ffff 
+ 在未经保护的头部中，长度字段的值表示着后方数据的总长度，即1182字节：4字节长的数据包号，1162字节长的帧，还有16字节长的认证标签。头部中还包含了连接ID和值为2的数据包号：
+c300000001088394c8f03e5157080000449e00000002 
+ 对载荷进行保护后，其输出密文会被头部保护采样。因为头部中的数据包号被编码为四字节，所以受保护载荷的前16个字节被作为样本（sample），应用在头部保护中：
+sample = d1b1c98dd7689fb8ec11d242b123dc9b mask = AES-ECB(hp, sample)[0..4] = 437b9aec36 header[0] ^= mask[0] &amp;amp; 0x0f = c0 header[18..21] ^= mask[1..4] = 7b9aec34 header = c000000001088394c8f03e5157080000449e7b9aec34 
+ 最后，经保护的数据包的内容为：
+c000000001088394c8f03e5157080000 449e7b9aec34d1b1c98dd7689fb8ec11 d242b123dc9bd8bab936b47d92ec356c 0bab7df5976d27cd449f63300099f399 1c260ec4c60d17b31f8429157bb35a12 82a643a8d2262cad67500cadb8e7378c 8eb7539ec4d4905fed1bee1fc8aafba1 7c750e2c7ace01e6005f80fcb7df6212 30c83711b39343fa028cea7f7fb5ff89 eac2308249a02252155e2347b63d58c5 457afd84d05dfffdb20392844ae81215 4682e9cf012f9021a6f0be17ddd0c208 4dce25ff9b06cde535d0f920a2db1bf3 62c23e596d11a4f5a6cf3948838a3aec 4e15daf8500a6ef69ec4e3feb6b1d98e 610ac8b7ec3faf6ad760b7bad1db4ba3 485e8a94dc250ae3fdb41ed15fb6a8e5 eba0fc3dd60bc8e30c5c4287e53805db 059ae0648db2f64264ed5e39be2e20d8 2df566da8dd5998ccabdae053060ae6c 7b4378e846d29f37ed7b4ea9ec5d82e7 961b7f25a9323851f681d582363aa5f8 9937f5a67258bf63ad6f1a0b1d96dbd4 faddfcefc5266ba6611722395c906556 be52afe3f565636ad1b17d508b73d874 3eeb524be22b3dcbc2c7468d54119c74 68449a13d8e3b95811a198f3491de3e7 fe942b330407abf82a4ed7c1b311663a c69890f4157015853d91e923037c227a 33cdd5ec281ca3f79c44546b9d90ca00 f064c99e3dd97911d39fe9c5d0b23a22 9a234cb36186c4819e8b9c5927726632 291d6a418211cc2962e20fe47feb3edf 330f2c603a9d48c0fcb5699dbfe58964 25c5bac4aee82e57a85aaf4e2513e4f0 5796b07ba2ee47d80506f8d2c25e50fd 14de71e6c418559302f939b0e1abd576 f279c4b2e0feb85c1f28ff18f58891ff ef132eef2fa09346aee33c28eb130ff2 8f5b766953334113211996d20011a198 e3fc433f9f2541010ae17c1bf202580f 6047472fb36857fe843b19f5984009dd c324044e847a4f4a0ab34f719595de37 252d6235365e9b84392b061085349d73 203a4a13e96f5432ec0fd4a1ee65accd d5e3904df54c1da510b0ff20dcc0c77f cb2c0e0eb605cb0504db87632cf3d8b4 dae6e705769d1de354270123cb11450e fc60ac47683d7b8d0f811365565fd98c 4c8eb936bcab8d069fc33bd801b03ade a2e1fbc5aa463d08ca19896d2bf59a07 1b851e6c239052172f296bfb5e724047 90a2181014f3b94a4e97d117b4381303 68cc39dbb2d198065ae3986547926cd2 162f40a29f0c3c8745c0f50fba3852e5 66d44575c29d39a03f0cda721984b6f4 40591f355e12d439ff150aab7613499d bd49adabc8676eef023b15b65bfc5ca0 6948109f23f350db82123535eb8a7433 bdabcb909271a6ecbcb58b936a88cd4e 8f2e6ff5800175f113253d8fa9ca8885 c2f552e657dc603f252e1a8e308f76f0 be79e2fb8f5d5fbbe2e30ecadd220723 c8c0aea8078cdfcb3868263ff8f09400 54da48781893a7e49ad5aff4af300cd8 04a6b6279ab3ff3afb64491c85194aab 760d58a606654f9f4400e8b38591356f bf6425aca26dc85244259ff2b19c41b9 f96f3ca9ec1dde434da7d2d392b905dd f3d1f9af93d1af5950bd493f5aa731b4 056df31bd267b6b90a079831aaf579be 0a39013137aac6d404f518cfd4684064 7e78bfe706ca4cf5e9c5453e9f7cfd2b 8b4c8d169a44e55c88d4a9a7f9474241 e221af44860018ab0856972e194cd934</description>
     </item>
     
     <item>
@@ -1729,6 +1828,23 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
     </item>
     
     <item>
+      <title>A.3. 服务器初始数据包</title>
+      <link>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.3_Server_Initial/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.3_Server_Initial/</guid>
+      <description>作为回应，服务器会发送以下载荷，其中包含一个ACK帧和一个加密帧，并且不包含填充帧：
+02000000000600405a020000560303ee fce7f7b37ba1d1632e96677825ddf739 88cfc79825df566dc5430b9a045a1200 130100002e00330024001d00209d3c94 0d89690b84d08a60993c144eca684d10 81287c834d5311bcf32bb9da1a002b00 020304 
+ 来自服务器的头部包含着一个新的连接ID和一个值为1且被编码至双字节中数据包号：
+c1000000010008f067a5502a4262b50040750001 
+ 对载荷进行保护后，从第三个密文字节起的一段数据被取作头部保护的样本。
+sample = 2cd0991cd25b0aac406a5816b6394100 mask = 2ec0d8356a header = cf000000010008f067a5502a4262b5004075c0d9 
+ 最后，经保护的数据包的内容为：
+cf000000010008f067a5502a4262b500 4075c0d95a482cd0991cd25b0aac406a 5816b6394100f37a1c69797554780bb3 8cc5a99f5ede4cf73c3ec2493a1839b3 dbcba3f6ea46c5b7684df3548e7ddeb9 c3bf9c73cc3f3bded74b562bfb19fb84 022f8ef4cdd93795d77d06edbb7aaf2f 58891850abbdca3d20398c276456cbc4 2158407dd074ee 
+ </description>
+    </item>
+    
+    <item>
       <title>12.4 帧和帧类型</title>
       <link>/RFC9000_Chinese_Translation/Packets_and_Frames/12.4_Frames_and_Frame_Types/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1741,6 +1857,17 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
 帧 { 帧类型 (i), 与类型相关的字段 (..), } 图12：通用的帧结构
  表格3罗列并概述了有关本规范中定义的各种帧类型的信息。表格后是对于这份概述的描述。
    类型值 帧类型名称 定义 数据包类型 特殊规则     0x00 填充帧 第19.1章 IH01 NP   0x01 Ping帧 第19.2章 IH01    0x02-0x03 ACK帧 第19.3章 IH_1 NC   0x04 流重置帧 第19.4章 __01    0x05 停止发送帧 第19.5章 __01    0x06 加密帧 第19.</description>
+    </item>
+    
+    <item>
+      <title>A.4. 重试数据包</title>
+      <link>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.4_Retry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.4_Retry/</guid>
+      <description>这里展示了一个可以被用于响应附录A.2中的初始数据包的重试数据包。完整性检查中使用了了由客户端选择的值为0x8394c8f03e515708的连接ID，但是这个值不会被包含在最终的重试数据包的明文中：
+ff000000010008f067a5502a4262b574 6f6b656e04a265ba2eff4d829058fb3f 0f2496ba 
+ </description>
     </item>
     
     <item>
@@ -1758,6 +1885,20 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
     </item>
     
     <item>
+      <title>A.5. 使用ChaCha20-Poly1305的短包头数据包</title>
+      <link>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.5_ChaCha20-Poly1305_Short_Header_Packet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.5_ChaCha20-Poly1305_Short_Header_Packet/</guid>
+      <description>本例展示了保护短包头数据包时所需的一些步骤。本例使用了AEAD_CHACHA20_POLY1305。
+在本例中，TLS生成了一个应用写入秘密值（secret），服务器使用HKDF-Expand-Label从这个秘密值生成四个值：一个密钥（key）、一个IV（iv）、一个头部保护密钥（hp），和一个将被在密钥被更新后使用到的秘密值（ku，但它在本例中没有被使用到）。
+secret = 9ac312a7f877468ebe69422748ad00a1 5443f18203a07d6060f688f30f21632b key = HKDF-Expand-Label(secret, &amp;quot;quic key&amp;quot;, &amp;quot;&amp;quot;, 32) = c6d98ff3441c3fe1b2182094f69caa2e d4b716b65488960a7a984979fb23e1c8 iv = HKDF-Expand-Label(secret, &amp;quot;quic iv&amp;quot;, &amp;quot;&amp;quot;, 12) = e0459b3474bdd0e44a41c144 hp = HKDF-Expand-Label(secret, &amp;quot;quic hp&amp;quot;, &amp;quot;&amp;quot;, 32) = 25a282b9e82f06f21f488917a4fc8f1b 73573685608597d0efcb076b0ab7a7a4 ku = HKDF-Expand-Label(secret, &amp;quot;quic ku&amp;quot;, &amp;quot;&amp;quot;, 32) = 1223504755036d556342ee9361d25342 1a826c9ecdf3c7148684b36b714881f9 
+ 下面展示了保护一个目标连接ID为空的最小数据包时所需的一些步骤。这个数据包仅包含了一个Ping帧（也就是说，载荷是0x01），并且其数据包号为654360564。在本例中，使用长度为3的数据包号编码方式（也就是编码为49140）避免了扩充数据包载荷的需要；如果数据包号被编码至更少的字节中，那么就需要填充帧。
+pn = 654360564 # 十进制 nonce = e0459b3474bdd0e46d417eb0 unprotected header = 4200bff4 payload plaintext = 01 payload ciphertext = 655e5cd55c41f69080575d7999c25a5bfb 
+ 其结果密文的长度是在可能的范围中最小的。在为头部保护采样时，会跳过一个字节。</description>
+    </item>
+    
+    <item>
       <title>13.1 数据包处理</title>
       <link>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.1_Packet_Processing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1766,6 +1907,54 @@ QUIC实现可以向应用提供选项来推迟空闲超时。当应用希望避�
       <description>在数据包保护被成功移除且所有包含在数据包中的帧都被处理之前，必须不确认这个数据包。对于流帧，这个时机指其中的数据已经被置入队列，且准备被应用协议接收之时，但它不要求数据被分发和消费。
 一旦数据包已经被完全处理，接收方通过发送一个或多个ACK帧来确认这个数据包的接收，这些ACK帧中包含被接收到的这个数据包的数据包号。
 如果终端有能力检测出收到了一个它未发送过的数据包的确认的情况，它应该将这种情况视作一种类型为PROTOCOL_VIOLATION（协议违背）的错误。有关如何做到这件事，详见第21.4章。</description>
+    </item>
+    
+    <item>
+      <title>B.1.1. 可信度上限</title>
+      <link>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.1_Confidentiality_Limit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.1_Confidentiality_Limit/</guid>
+      <description>在可信度方面，《GCM-MU》中的定理4.3指出，对于一个不会重复随机数的用户，计算攻击者随机选择的AEAD算法相比实际使用的真实AEAD算法的优势程度的表达式为：
+2 * (q * l)^2 / 2^n 
+ 当目标优势度为2-57时，会得到这样的关系：
+q &amp;lt;= 2^35 / l 
+ 因此，发送不超过211字节的数据包的终端无法在单条连接中保护228个以上的数据包却不让攻击者获得超过2-57优势度。对于允许数据包尺寸达到216字节的终端，则该限制为223个数据包。</description>
+    </item>
+    
+    <item>
+      <title>B.1.2. 完整性上限</title>
+      <link>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.2_Integrity_Limit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.2_Integrity_Limit/</guid>
+      <description>在完整性方面，《GCM-MU》中的定理4.3指出，攻击者在伪造数据包时次数不需要超过此值就能获得明显优势：
+(1 / 2^(8 * n)) + ((2 * v) / 2^(2 * n)) + ((2 * o * v) / 2^(k + n)) + (n * (v + (v * l)) / 2^k) 
+ 我们的目标是将此优势限制到2-57以下。对于AEAD_AES_128_GCM，不等式中的第四项占据主导地位，所以其余项可以被移除而不会对结果产生重要影响。这会产生以下近似结果：
+v &amp;lt;= 2^64 / l 
+ 不会尝试对超过211字节的数据包移除保护的终端最多可以尝试为257个数据包移除保护。并不限制所处理的数据包尺寸的终端最多可以尝试为252个数据包移除保护。
+对于AEAD_AES_256_GCM，占据主导地位的是同一项，但是较大的k值会产生以下近似结果：
+v &amp;lt;= 2^192 / l 
+ 这比对AEAD_AES_128_GCM的限制要大得多。但是，本文档建议对两个函数施加同样的限制，因为任一限制都是可接受且足够大的。</description>
+    </item>
+    
+    <item>
+      <title>B.2. 对于AEAD_AES_128_CCM用量上限的分析</title>
+      <link>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits/</guid>
+      <description>TLS（详见《TLS13》）和《AEBounds》都没有为AEAD_AES_128_CCM的用量设定上限。然而，任何与QUIC一起使用的AEAD都需要在用量上设定上限以确保可信度和完整性都能得到维持。本节记述了关于此上限的分析。
+《CCM-ANALYSIS》被用作本分析的基础。该文献中的分析结果被用于计算用量上限。
+在可信度方面，《CCM-ANALYSIS》中的定理2指出，攻击者相比理想的伪随机排列（PRP）获得的优势不会超过此值：
+(2l * q)^2 / 2^n 
+ 在相同消息数量的情况下，《CCM-ANALYSIS》中的定理1中的完整性上限给予了攻击者更多优势。由于可信度方面优势与完整性方面优势的目标值是相同的，所以只需要考虑定理1。
+定理1指出，攻击者相比理想的PRP获得的优势不会超过此值：
+v / 2^t + (2l * (v + q))^2 / 2^n 
+ 由于t和n都是128，第一项相比第二项变得微不足道，因此第一项可以被移除而不会对结果产生重要影响。
+这产生了一种关系，它将加密尝试次数和解密尝试次数关联到了相同的上限值上，这个上限值是定理为可信度生成的。当目标优势度为2-57时，这会产生以下结果：
+v + q &amp;lt;= 2^34.5 / l 
+ 通过设置q = v，可信度上限和完整性上限的值就都能被推导出来。因此限制数据包尺寸不超过211字节的终端使用226.5个数据包的可信度上限和完整性上限。不限制数据包尺寸的终端则使用值为221.5的上限。</description>
     </item>
     
     <item>
@@ -2553,6 +2742,542 @@ IANA注册表用于管理帧类型的分配，详见第22.2章。</description>
       
       <guid>/RFC9000_Chinese_Translation/Error_Codes/20.2_Application_Protocol_Error_Codes/</guid>
       <description>应用程序错误码留给应用协议管理。 应用协议错误码用于重置帧（第19.4章）、停止发送帧（第19.5章），以及0x1d类型的连接关闭帧（第19.19章）。</description>
+    </item>
+    
+    <item>
+      <title>21.1.1.1. 抗放大</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.1_Anti-Amplification/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.1_Anti-Amplification/</guid>
+      <description>地址验证（详见第8章）被用于验证声称位于某个地址的实体是否有在那个地址接收数据包的能力。对于一些地址，攻击者能够观测到发向这些地址的数据包，而地址验证能限制针对这些地址的放大攻击。
+在完成地址验证前，终端在能够发送的数据量上会受到限制。终端向未经验证的地址发送的数据量不能超过从那个地址接收到的数据量的三倍。
+ 注意：抗放大限制仅适用于终端对接收自未经验证地址的数据包进行响应的情况。抗放大限制不适用于客户端建立新连接或发起连接迁移的情况。
+ </description>
+    </item>
+    
+    <item>
+      <title>21.1.1.2. 针对服务器的拒绝服务</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.2_Server-Side_DoS/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.2_Server-Side_DoS/</guid>
+      <description>服务器为完整的握手过程计算首轮数据可能需要耗费大量资源，其中需要涉及签名和密钥交换的计算。为了抵御针对计算资源的拒绝服务攻击，重试数据包提供了一种低成本的令牌交换机制，使得服务器能够以单轮数据包往返的代价，在进行大量计算前先验证客户端的IP地址。在成功完成握手后，服务器可以向客户端签发新令牌，这使得下次建立连接时不需要引入上述代价。</description>
+    </item>
+    
+    <item>
+      <title>21.1.1.3. 在路径上的握手终止</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.3_On-Path_Handshake_Termination/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.3_On-Path_Handshake_Termination/</guid>
+      <description>在路径上的或不在路径上的攻击者都可以通过替换或竞速初始数据包的方式强制握手失败。一旦合法的初始数据包完成交换，后续的握手数据包就会受到握手密钥的保护，于是在路径上的攻击者就不能再强制握手失败，除非它丢弃掉数据包从而使得终端放弃尝试连接。
+在路径上的攻击者还可以替换任意一侧的数据包中的地址，从而使得客户端或服务器得知虚假的远程地址。这样的攻击无法与NAT进行的转换相区分。</description>
+    </item>
+    
+    <item>
+      <title>21.1.1.4. 参数协商</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.4_Parameter_Negotiation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.4_Parameter_Negotiation/</guid>
+      <description>整个握手都受到加密保护，其中初始数据包被由QUIC版本指定的密钥加密，握手数据包和后续数据包被衍生自TLS密钥交换的密钥加密。此外，参数协商会被包含在TLS的记录单（transcript）中，因此它与普通的TLS协商提供相同的完整性保证。攻击者可以观测客户端的传输参数（只要它知道那个由QUIC版本指定的盐），但是却不能观测到服务器的传输参数，因此无法影响到参数协商。
+连接ID不会被加密，但是会在所有数据包中受到完整性保护。
+本QUIC版本中不包含版本协商机制；互不兼容的版本的实现之间无法建立连接。</description>
+    </item>
+    
+    <item>
+      <title>21.1.2. 受保护的数据包</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/21.1.2_Protected_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/21.1.2_Protected_Packets/</guid>
+      <description>数据包保护（详见第12.1章）将认证加密应用到除版本协商数据包外的所有数据包上，不过出于使用了由QUIC版本指定的密钥材料的缘故，初始数据包和重试数据包仅受到有限的保护；有关细节详见《QUIC-TLS》。本节考量了针对受保护数据包的被动与主动攻击。
+在路径上和不在路径上的攻击者都能发起被动攻击，在这种攻击中，攻击者将观测到的数据包保存起来，将之用于将来的针对数据包保护的离线攻击；这对任何网络中任何数据包的任何观测者都是成立的。
+没有观测连接中数据包的能力就注入数据包的攻击者不太可能会成功，因为数据包保护确保了合法的数据包只能由拥有在握手期间建立的密钥材料的终端才能创建出来；详见第7章和第21.1.1章。类似地，任何观测数据包并尝试往这些数据包中插入新数据或修改原有数据的主动攻击者应该都无法创建出能被接收方认定为合法的数据包，除非它操作的是初始数据包。
+伪造攻击，也就是由主动攻击者改写由它转发或被它注入的数据包中未经保护的部分，例如源地址或目标地址，只有在攻击者能够将数据包转发到原始终端上时才会生效。数据包保护确保了数据包载荷只能被完成了握手的终端所处理，并且非法的数据包会被终端忽略。
+攻击者还能修改数据包与UDP数据报间的边界，使得多个数据包被合并至单个数据报中，或将经合并的数据包拆分至多个数据报中。除了需要扩充的包含初始数据包的数据报外，对数据包在数据报中的排列方式的修改对于连接没有实际效果，不过它可以改变一些性能上的特征。</description>
+    </item>
+    
+    <item>
+      <title>21.1.3.1. 在路径上的主动攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.1_On-Path_Active_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.1_On-Path_Active_Attacks/</guid>
+      <description>能够令观测到的数据包抵达不了它原本目的地的攻击者被认为是在路径上的攻击者。当客户端和服务器间存在攻击者时，终端为了在给定路径上建立连接，发送的数据包不得不经过此攻击者。
+在路径上的攻击者可以做到：
+  检视数据包
+  修改IP数据包和UDP数据包头部
+  注入新数据包
+  使数据包延误
+  对数据包重新排序
+  丢弃数据包
+  拆分与合并数据报和数据包
+  在路径上的攻击者不能做到：
+ 既修改数据包中经认证的部分又使得接收方接收该数据包。  在路径上的攻击者有修改它观测到的数据包的机会；然而，对于数据包中经认证部分的任何修改都会使得它被接收方认定为非法而遭到丢弃，因为数据包载荷是经过认证与加密的。
+QUIC旨在将在路径上的攻击者的能力限制至：
+  在路径上的攻击者可以阻止将一条路径用于建立连接，如果终端找不到一条不包含攻击者的路径，连接就会失败。这可以通过丢弃所有数据包、修改数据包以使得它们无法通过解密或其他方式来做到。
+  在路径上的攻击者可以通过使新路径上的地址验证失败的方式，阻止连接迁移到一条依旧包含攻击者的路径上。
+  在路径上的攻击者不能阻止客户端迁移到一条不包含攻击者的路径上。
+  在路径上的攻击者可以通过使数据包延误或丢弃数据包的方式，降低连接的吞吐量。
+  在路径上的攻击者不能令终端接受一个被它修改过经认证部分的数据包。
+  </description>
+    </item>
+    
+    <item>
+      <title>21.1.3.2. 不在路径上的主动攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.2_Off-Path_Active_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.2_Off-Path_Active_Attacks/</guid>
+      <description>不在路径上的攻击者并不直接位于客户端与服务器间的路径上，但是拥有获得客户端与服务器间发送的部分或全部数据包的能力。它还能够将那些数据包的副本发送给任一终端。
+不在路径上的攻击者可以做到：
+  检视数据包
+  注入新数据包
+  对注入的数据包重新排序
+  不在路径上的攻击者不能做到：
+  修改由终端发送的数据包
+  使数据包延误
+  丢弃数据包
+  对原始数据包重新排序
+  不在路径上的攻击者可以为它观测到的数据包创建修改过的副本，并将这些副本注入网络中，副本的源地址和目标地址可以是伪造的。
+在本讨论中，我们假定不在路径上的攻击者具有将修改后的数据包副本注入到网络中的能力，并且这个数据包会比它观测的那个原始数据包更早抵达目标终端。换句话说，攻击者具有持续“赢下”与原始数据包间的竞速的能力，并使得原始数据包被接收方忽略。
+我们还假设了攻击者具有影响NAT状态所需的资源。尤其是，攻击者有能力使某终端丢失它的NAT绑定，然后取代它，使用与终端先前所使用的相同的端口来吞吐流量。
+QUIC旨在将不在路径上的攻击者的能力限制至：
+  不在路径上的攻击者可以竞速数据包并尝试成为在“受限”路径上的攻击者。
+  不在路径上的攻击者可以通过转发数据包并将源地址改为自己的地址的方式，使自己的地址通过验证，前提是它可以在客户端和服务器间提供更优秀的连接质量。
+  不在路径上的攻击者不能在握手完成后引发连接关闭。
+  不在路径上的攻击者不能在无法观测新路径的条件下使得连接迁移到这条路径上。
+  不在路径上的攻击者可以在迁移到新路径的期间成为一个在受限路径上的攻击者，而它在新路径上仍是一个不在路径上的攻击者。
+  不在路径上的攻击者可以通过影响与客户端共享的NAT状态的方式成为一个在受限路径上的攻击者，以便从客户端曾使用过的IP地址和端口向服务器发送数据包。
+  </description>
+    </item>
+    
+    <item>
+      <title>21.1.3.3. 在受限路径上的主动攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.3_Limited_On-Path_Active_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.3_Limited_On-Path_Active_Attacks/</guid>
+      <description>在受限路径上的攻击者指的是一个通过在服务器和客户端间复制并转发原始数据包的方式提供更优秀路由质量的不在路径上的攻击者，这会使得那些数据包比原始数据包要更早抵达，从而令原始数据包被目标终端丢弃。
+在受限路径上的攻击者与在路径上的攻击者的不同之处在于它并不在终端间的原始路径上，因此由终端发送的原始数据包仍然在前往它们目的地的途中。这意味着只要没有将数据包副本更快地路由到目的地，就无法阻止原始数据包抵达目的地。
+在受限路径上的攻击者可以做到：
+  检视数据包
+  注入新数据包
+  修改未经加密的数据包头部
+  对数据包重新排序
+  在受限路径上的攻击者不能做到：
+  使数据包延误，从而令它们比在原始路径上发送的数据包更晚抵达
+  丢弃数据包
+  修改数据包中经认证和加密的部分，并使得接收方接受该数据包
+  在受限路径上的攻击者只能够使数据包副本延误至原始数据包抵达为止，这意味着它不能提供比原始路径的延迟表现要差的路由质量。就算在受限路径上的攻击者将数据包副本丢弃，原始数据包仍然会抵达目标终端。
+QUIC旨在将在受限路径上的攻击者的能力限制至：
+  在受限路径上的攻击者不能在握手完成后引发连接关闭。
+  在受限路径上的攻击者不能在客户端首先恢复活动的条件下引发空闲连接的关闭。
+  在受限路径上的攻击者可以在服务器首先恢复活动的条件下使得空闲连接被认定为丢失。
+  注意，出于完全相同的原因，这些保证与任何NAT所提供的保证是一致的。</description>
+    </item>
+    
+    <item>
+      <title>21.2. 针对握手的拒绝服务攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.2_Handshake_Denial_of_Service/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.2_Handshake_Denial_of_Service/</guid>
+      <description>作为一种经加密和认证的传输层协议，QUIC针对拒绝服务提供了诸多保护措施。一旦加密握手完成，QUIC终端就会丢弃绝大多数未经认证的数据包，极大地限制了攻击者介入已建立的连接的能力。
+在连接被建立后，QUIC终端可以接受一些未经认证的ICMP数据包（详见第14.2.1章），但是对这些数据包的使用是极度受限的。终端可以接受的另一种数据包是无状态重置（详见第10.3章），它依赖于在令牌被使用前保持令牌的机密性。
+在创建连接期间，QUIC提供的保护仅针对不在路径上的攻击。所有的QUIC数据包都包含着能表明终端接收到了来自对端的前序数据包的依据。
+在握手期间无法更改地址，所以终端可以丢弃另一条网络路径上接收到的数据包。
+在握手期间，源连接ID字段和目标连接ID字段是抵御不在路径上的攻击的主要手段；详见第8.1章。这些字段必须与对端填写的对应字段匹配。除了初始数据包和无状态重置外，终端只接受包含着与终端之前选择的值匹配的目标连接ID字段的数据包。这是为版本协商数据包提供的唯一保护。
+初始数据包中的目标连接ID字段是由客户端选择的不可预测的值，它起着额外的作用。传递加密握手消息的数据包会受到密钥的保护，该密钥衍生自此连接ID和由QUIC版本指定的盐。这使得终端在加密握手完成后始终使用一致的计算过程来认证接收到的数据包。未能通过认证的数据包会被丢弃。以这种方式保护数据包能提供一种强有力的保证，保证数据包的发送方接收到了初始数据包并且能够理解它。
+这些保护在面对有能力在连接建立前就接收到QUIC数据包的攻击者时并不一定有效。这样的攻击者可能发送出会被QUIC终端接受的数据包。本QUIC版本尝试检测出此类攻击，但是终端应该令连接的建立过程直接失败，而不是试图从中恢复。在握手期间检测出篡改行为的责任主要在于加密握手协议（详见《QUIC-TLS》）。
+允许终端使用其他手段来检测出握手被介入的情况并尝试从中恢复。非法数据包可以被其他手段识别出来并被丢弃，不过在本文档中没有推荐什么特别的方法。</description>
+    </item>
+    
+    <item>
+      <title>21.3. 放大攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.3_Amplification_Attack/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.3_Amplification_Attack/</guid>
+      <description>攻击者也许有能力在从服务器接收到地址验证令牌（详见第8章）后释放掉它用于接收令牌的IP地址。一段时间后，攻击者可以伪造出相同的地址，并向服务器发起0-RTT连接，但这时该地址指向的会是另一个（受害者）终端。攻击者于是有机会令服务器向受害者发送多达一整个初始拥塞窗口的数据。
+服务器应该通过限制地址验证令牌的使用范围与有效期限的方式抵御此类攻击；详见第8.1.3章。</description>
+    </item>
+    
+    <item>
+      <title>21.4. 针对乐观ACK的攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.4_Optimistic_ACK_Attack/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.4_Optimistic_ACK_Attack/</guid>
+      <description>会对尚未接收到的数据包进行确认的终端可能使得拥塞控制器允许以超过网络所支持的速率进行发送。要检测此行为，终端可以在发送数据包时跳过某些数据包号。终端在检测到对端的此类行为后可以立即用类型为PROTOCOL_VIOLATION（协议违背）的连接错误来关闭连接；详见第10.2章。</description>
+    </item>
+    
+    <item>
+      <title>21.5.1. 控制终端的途径</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.1_Control_Options_for_Endpoints/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.1_Control_Options_for_Endpoints/</guid>
+      <description>QUIC给了攻击者一些影响或操纵其对端的UDP数据报发送目标的机会：
+  初始的连接建立（详见第7章），此时服务器拥有操纵客户端的数据包发送目标的能力——例如，通过填写DNS记录的方式；
+  首选地址（详见第9.6章），此时服务器拥有操纵客户端的数据包发送目标的能力；
+  虚假的连接迁移（详见第9.3.1章），此时客户端具有使用伪造的源地址来操纵服务器后续数据报的发送目标的能力；以及
+  伪造的数据包，这能令服务器发送版本协商数据包（详见第21.5.5章）。
+  在任一情况下，攻击者都能令其对端向某个受害者发送数据报，无论受害者能不能理解QUIC。也就是说，这些数据包会在对端进行地址验证前就被发送出去；详见第8章。
+在数据包经加密的部分之外，QUIC给予了终端一些可选项，用于控制其对端发送的UDP数据报的内容。目标连接ID字段提供了针对对端发送的数据包中位置靠前的字节的直接控制；详见第5.1章。初始数据包中的令牌字段提供了针对初始数据包中其他字节的控制；详见第17.2.2章。
+在本QUIC版本中没有任何方法来阻止针对数据包中经加密的部分的间接控制。假定终端能够控制对端所发送的帧内容是很有必要的，尤其是那些传递应用数据的帧，例如流帧。尽管它在一定程度上依赖于应用协议的细节部分，但是在多数协议的使用场景中都有可能出现某种程度的控制能力。只要攻击者能访问到数据包保护密钥，它们就有能力预测对端会如何加密后续数据包。于是，要成功控制数据报内容，只需要攻击者有能力预测数据包号和数据包中的帧大概会出现的位置。
+本节假定了我们无法限制攻击者对数据报内容的控制。在后续章节中，抵御手段的重点在于限制数据报会在进行地址验证前就被发送出去的情况，以防止它们被用于进行请求伪造。</description>
+    </item>
+    
+    <item>
+      <title>21.5.2. 使用客户端初始数据包的请求伪造</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.2_Request_Forgery_with_Client_Initial_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.2_Request_Forgery_with_Client_Initial_Packets/</guid>
+      <description>假扮成服务器的攻击者可以自由宣称自己所在的IP地址和端口，所以发送自客户端的初始数据包被假定为可以用于此类攻击。在握手中隐含着的地址验证确保了——在建立新连接时——客户端不会向一个不理解QUIC或不愿意接受QUIC连接的目标发送其他类型的数据包。
+初始数据包保护（详见《QUIC-TLS》的第5.2章）使得服务器难以操纵由客户端发送的初始数据包内容。客户端会选择一个不可预测的目标连接ID，确保了服务器无法操纵客户端初始数据包中任何经加密的部分。
+然而，令牌字段是开放给服务器去控制的，并且它确实允许服务器利用客户端来进行请求伪造攻击。使用由新令牌帧（详见第8.1.3章）提供的令牌成为了在连接建立期间进行请求伪造的唯一途径。
+不过，客户端并没有一定要使用新令牌帧的义务。只需要客户端在服务器的地址与发送新令牌帧时的不同的情况下发送空的令牌字段，依赖于令牌字段的请求伪造攻击就可以被避免。
+客户端可以在服务器地址变化时避免使用新令牌帧。然而，不使用令牌字段会对性能产生不利影响。服务器可能依赖于新令牌帧以在发送数据时超过三倍限制；详见第8.1章。尤其是，这会影响客户端使用0-RTT来从服务器请求数据的情况。
+重试数据包为服务器提供了改变令牌字段的一种途径。在发送了重试数据包后，服务器还可以控制客户端后续初始数据包中的目标连接ID字段。这还有可能实现对初始数据包中经加密的内容的间接控制。然而，有关重试数据包的通信验证了服务器的地址，于是阻止了将后续初始数据包用于请求伪造。</description>
+    </item>
+    
+    <item>
+      <title>21.5.3. 使用首选地址的请求伪造</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.3_Request_Forgery_with_Preferred_Addresses/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.3_Request_Forgery_with_Preferred_Addresses/</guid>
+      <description>服务器可以指定首选地址，客户端在确认完握手之后就会发起迁移；详见第9.6章。客户端发向首选地址的数据包中的目标连接ID字段可以被用于请求伪造。
+客户端必须不在验证某首选地址前就向它发送非探测帧；详见第8章。这极大地减少了服务器能够操纵数据报中经加密的部分的途径数量。
+本文档没有提供额外的与使用首选地址有关的和能够由终端实现的对抗措施。在第21.5.6章中描述的通用措施可以被用作更进一步的抵御手段。</description>
+    </item>
+    
+    <item>
+      <title>21.5.4. 使用虚假迁移的请求伪造</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.4_Request_Forgery_with_Spoofed_Migration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.4_Request_Forgery_with_Spoofed_Migration/</guid>
+      <description>客户端能够在连接迁移中使用伪造的源地址，使得服务器向该地址发送数据报。
+服务器后续向这个假地址发送的任何数据包中的目标连接ID字段都能被用于请求伪造。客户端可能还有影响密文的能力。
+在进行地址验证前只会向该地址发送探测数据包（详见第9.1章）的服务器让攻击者对数据报中经加密的部分仅持有有限的控制。然而，尤其是对NAT重绑定来说，这会对性能产生不利影响。如果服务器发送了携带着应用数据的帧，那么攻击者就可能控制数据报中的绝大多数内容。
+除了在第21.5.6章中描述的通用措施外，本文档没有提供终端能够实现的专门的对抗措施。然而，在网络层面的针对地址伪造的对抗措施——尤其是传入流量过滤（详见BCP38）——对于使用伪造地址且源自外部网络的攻击是极其有效的。</description>
+    </item>
+    
+    <item>
+      <title>21.5.5. 使用版本协商的请求伪造</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.5_Request_Forgery_with_Version_Negotiation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.5_Request_Forgery_with_Version_Negotiation/</guid>
+      <description>有能力在数据包中使用虚假源地址的客户端能够令服务器向该地址发送版本协商数据包（详见第17.2.1章）。
+在未知版本的数据包中对于连接ID字段长度限制的缺失提高了客户端能够在产生的数据报中控制的数据量。该数据包的首个字节不在客户端控制之下，并且后四个字节均为零，但是客户端可以控制从第五个字节开始的至多512个字节。
+针对此类攻击，没有提供专门的对抗措施，不过通用的保护手段（详见第21.5.6章）是适用的。在这种情况下，传入流量过滤（详见《BCP38》）也是有效的。</description>
+    </item>
+    
+    <item>
+      <title>21.5.6. 针对请求伪造的通用对抗措施</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.6_Generic_Request_Forgery_Countermeasures/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.6_Generic_Request_Forgery_Countermeasures/</guid>
+      <description>针对请求伪造攻击的最有效防御方法就是修改易受攻击的服务，让它使用强有力的鉴权认证。然而，这一点并不总是在QUIC部署的控制之下。本节概述了QUIC终端可以单方面采取的一些其他措施。这些额外措施都应该酌情使用，因为根据情况的不同，它们可能干涉或阻止QUIC的正常工作。
+通过回环接口提供的服务通常缺乏恰当的鉴权认证。终端可以阻止指向回环地址的连接尝试或迁移。当指向的服务曾在另一个接口上开放过，或者指向的回环地址是由位于非回环地址的服务提供的，那么终端不应该批准指向这个回环地址的连接或迁移。依赖于这些能力的终端可以提供一个可以禁用这些保护的选项。
+类似地，终端可以将从全球唯一地址、唯一本地地址（详见《RFC4193》）或非私有地址变更到链路本地地址（详见《RFC4291》）或处于私有使用范围的地址（详见《RFC1918》）的情况视作潜在的对请求伪造的企图。终端可以完全拒绝使用以上地址，但是要承担干涉QUIC合法用途的巨大风险。终端不应该拒绝使用某个地址，除非它对于网络的先验知识告诉它向某范围内的未经验证的地址发送数据报是不安全的。
+终端可以选择以不使用来自初始数据包中新令牌帧的值的方式或只有在完成地址验证后才在数据包中发送探测帧的方式来减少请求伪造的风险。注意，这不能阻止攻击者将目标连接ID用于攻击中。
+终端不需要专门持有容易成为请求伪造攻击目标的服务器的位置信息。然而，经过一段时间后，识别出某些常常成为攻击目标的UDP端口或被用于进行攻击的数据报中的特定模式是有可能的。终端可以选择避免向那些端口发送数据报或不在验证目标地址前发送符合这种模式的数据包。终端可以撤销符合已知可能产生问题的模式的连接ID而不使用它们。
+注意： 修改终端来应用以上保护措施比起部署基于网络的保护措施要更高效，因为终端在向经验证的地址发送数据时不需要进行额外的处理。</description>
+    </item>
+    
+    <item>
+      <title>21.6. 慢速连接攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.6_Slowloris_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.6_Slowloris_Attacks/</guid>
+      <description>通常被称为慢速连接攻击（详见《SLOWLORIS》）的攻击方式会尝试打开许多与目标终端的连接并且尽可能长地维持它们。这类攻击可以通过进行最低限度的活动以避免连接因无活动而被关闭的方式攻击某个QUIC终端。其中可能还包含发送少量数据，逐渐打开流量控制窗口从而控制发送者的速率，以及制造能模拟高丢包率的ACK帧。
+QUIC部署应该针对慢速连接攻击提供抵御手段，例如扩大服务器允许的最大客户端数量、限制单个IP地址能够创建的连接数量、向连接所允许的最低传输速率施加限制，以及限制终端能够保持连接的时长。</description>
+    </item>
+    
+    <item>
+      <title>21.7. 流分段与重组攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.7_Stream_Fragmentation_and_Reassembly_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.7_Stream_Fragmentation_and_Reassembly_Attacks/</guid>
+      <description>恶意的攻击者可能有意不发送一部分流数据，使得接收者为那些未发送的数据预留资源。这会造成接收方出现极高的缓存占用并且/或者创建出巨大且低效的数据结构。
+恶意的接收者可能有意不确认包含流数据的数据包，为的是强制发送方持续存储未确认的流数据以便重传。
+当流量控制窗口与可用内存相关时，针对接收方的攻击就能被抵御。然而，一些接收方会过度占用内存，并且在合计的时候宣告会超过实际可用内存的流量控制偏移值。这种透支策略在终端运行状态良好时能够提高性能，但是会在遭受流分段攻击时使得终端变得脆弱。
+QUIC实现应该针对流分段攻击提供抵御手段。其中可以包含避免透支内存、限制持续维护的数据结构的尺寸、延迟组装流帧、实现基于数据重组缺口时长的启发式方法，以及以上措施的各种组合。</description>
+    </item>
+    
+    <item>
+      <title>21.8. 流占用攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.8_Stream_Commitment_Attack/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.8_Stream_Commitment_Attack/</guid>
+      <description>恶意的终端可以打开大量的流并耗尽终端的状态。恶意的终端可以在大量连接上重复此过程，就像TCP中的SYN泛洪攻击那样。
+通常情况下，客户端会按顺序打开流，就像第2.1章中解释的那样。然而，当短时间内发起多个流时，丢包或乱序会使得打开流的流帧被乱序地接收到。在接收到较高编号的流ID时，接收者需要打开同类型的所有低编号流；详见第3.2章。因此，在一条新连接上，打开了编号为4000000的流就会打开一百万零一条由客户端发起的双向流。
+活跃流的数量是由传输参数initial_max_streams_bidi（初始最大双向流数量）和initial_max_streams_uni（初始最大单向流数量）限制的，并会随着接收到的最大流帧而被更新，如第4.6章所述。只要审慎地选择，这些限制就能抵御流占用攻击会产生的效果。然而，将限制设置得过低则会在应用希望打开大量流时影响性能。</description>
+    </item>
+    
+    <item>
+      <title>21.9. 来自对端的拒绝服务攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.9_Peer_Denial_of_Service/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.9_Peer_Denial_of_Service/</guid>
+      <description>QUIC和TLS中的一些帧和消息在某些情况下具有合理用途，但也可以被滥用，使得终端花费大量计算资源却对连接的状态产生不了肉眼可见的影响。
+消息还能被用于以简短快捷的方式更改和回退状态数据，例如向流量控制的限制值发送较小的增量更改。
+如果计算上的代价比起带宽上的消耗或对状态的影响要大得多，那么这可能使得恶意的对端能够耗尽终端计算资源。
+尽管所有消息都有其合理用途，但是QUIC实现应该监视处理过程中在计算上的消耗并且将任何投入巨大却产出低下的数据包处理过程视作潜在的攻击。终端可以用连接错误或数据包的丢弃来响应这种情况。</description>
+    </item>
+    
+    <item>
+      <title>21.10. 显式拥塞通知攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.10_Explicit_Congestion_Notification_Attacks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.10_Explicit_Congestion_Notification_Attacks/</guid>
+      <description>在路径上的攻击者可以操纵IP头部中ECN字段的值来影响发送方的速率。在《RFC3168》中更详细地讨论了操纵方式及其效果。
+在受限路径上的攻击者可以拷贝并发送修改过ECN字段的数据包，从而影响发送方的速率。如果重复的数据包会被接收方丢弃，那么攻击者就要使数据包副本与原始数据包竞速，才能使攻击成功。因此，除非IP数据包中至少有一个QUIC数据包被成功处理，否则QUIC终端会忽略IP数据包中的ECN字段；详见第13.4章。</description>
+    </item>
+    
+    <item>
+      <title>21.11. 无状态重置泄密</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.11_Stateless_Reset_Oracle/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.11_Stateless_Reset_Oracle/</guid>
+      <description>无状态重置会创建一种潜在的拒绝服务攻击，它与TCP重置注入很相似。这种攻击的成功需要攻击者对于连接ID为特定值的连接，具有触发其无状态重置令牌的生成的能力。能够触发终端生成该令牌的攻击者就能重置具有该连接ID的活跃连接。
+如果数据包会被路由至共享同一静态密钥的其他实例上——例如，通过改变IP地址或端口——那么攻击者就能令服务器发送无状态重置。要抵御这种形式的拒绝服务攻击，共享用于无状态重置的同一密钥的终端（详见第10.3.2章）必须被妥善安排，从而使具有给定连接ID的数据包总是抵达具有连接状态的那个实例，除非该连接不再处于活跃状态。
+更一般地，如果具有相同连接ID的连接在使用相同静态密钥的其他终端上可能处于活跃状态，那么服务器就必须不创建无状态重置。
+在服务器集群使用动态负载均衡的情况中，可能出现对负载均衡器配置进行了更改而活跃的实例仍维护着连接状态的现象。即使某个实例维护着连接状态，路由和作为结果的无状态重置的变化会使得连接被终止。如果数据包没有机会被路由到正确的实例上，那么比起等待连接超时，最好发送无状态重置。然而，该做法只有在攻击者无法影响到路由的情况下才能被使用。</description>
+    </item>
+    
+    <item>
+      <title>21.12. 版本降级</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.12_Version_Downgrade/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.12_Version_Downgrade/</guid>
+      <description>本文档定义了QUIC的版本协商包（详见第6章），它能被用于协商在两个终端间使用的QUIC版本。然而，本文档没有规定在本版本与后续版本之间如何进行协商。尤其是，版本协商数据包中并不包含任何能阻止版本降级攻击的机制。将来的使用版本协商数据包的QUIC版本必须定义一种针对版本降级攻击的健壮的防御机制。</description>
+    </item>
+    
+    <item>
+      <title>21.13. 通过路由的定向攻击</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.13_Targeted_Attacks_by_Routing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.13_Targeted_Attacks_by_Routing/</guid>
+      <description>QUIC部署应该限制攻击者将新连接定向至特定服务器实例的能力。理想情况下，路由决策应该与客户端的相关值无关，包括地址。一旦选定了某个实例，就能决定连接ID，以便将来的数据包都被路由至同一实例。</description>
+    </item>
+    
+    <item>
+      <title>21.14. 流量分析</title>
+      <link>/RFC9000_Chinese_Translation/Security_Considerations/21.14_Traffic_Analysis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Security_Considerations/21.14_Traffic_Analysis/</guid>
+      <description>QUIC数据包的长度会透露出有关这些数据包内容长度的信息。填充帧给予了终端混淆数据包内容长度的能力；详见第19.1章。
+对流量分析的防御是充满挑战的，并且是很多积极研究的主题。长度不是唯一会泄露信息的途径。终端还可能通过其他侧信道泄露敏感信息，例如数据包的计时侧信道。</description>
+    </item>
+    
+    <item>
+      <title>22.1.1. 临时注册项</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.1_Provisional_Registrations/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.1_Provisional_Registrations/</guid>
+      <description>码点的临时注册项是为了支持私有用途和QUIC的实验性扩展。临时注册项中只需要包含码点值和联系方式。然而，临时注册项可以被释放或重新指定为另一用途。
+临时注册项需要经过专家评审（Expert Review），就像《RFC8126》的第4.5章中定义的那样。建议被指派的专家或专家组仅对那些在不在剩余码点空间中的申请，或者对可用码点空间中首个未分配值的申请（详见第22.1.2章）做出拒绝。
+临时注册项中将包含日期字段，它表明了该注册项的最后更新时间。对任何临时注册项的日期进行更新的申请不需要经过专家（组）的评审。
+为了支持临时注册项，所有QUIC注册表都包含以下字段：
+ 值：  分配的码点。
+ 状态：  “永久”或“临时”。
+ 规范：  指向一份公开可用的针对此值的规范的引用。
+ 日期：  最后一次更新此注册项的日期。
+ 更改责任人：  对此注册项的定义负责的实体。
+ 联系方式：  注册者的联系方式。
+ 备注：  关于此注册项的补充性备注。
+  临时注册项中可以省略规范和备注字段，以及任何对永久注册项来说必需的额外字段。日期字段在申请注册时不是必需的，因为它会在创建或更新注册项时被设置上去。</description>
+    </item>
+    
+    <item>
+      <title>22.1.2. 挑选码点</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.2_Selecting_Codepoints/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.2_Selecting_Codepoints/</guid>
+      <description>对来自QUIC注册表中的码点的申请应该使用一个随机选择的码点，并且避开已分配的码点和选定空间中的首个未分配码点。可以使用一个连续的范围来申请复数码点。这使得不同实现将相差过大的语义赋给同一码点的风险能够降至最低。
+首个未分配码点是保留码点，对它的分配遵循着标准行为（Standards Action）流程；详见《RFC8126》的第4.9章。早期码点分配过程（详见《EARLY-ASSIGN》）适用于这些值。
+对于以可变长度整型编码（详见第16章）的码点，例如帧类型，应该使用被编码至四字节或八字节（也就是大于等于214的值）的码点，除非它对编码结果的长度有特殊要求。
+在QUIC注册表中注册码点的应用可以申请一个码点并作为注册的一部分。如果这个码点未被分配并且符合注册流程的各项要求，那么IANA必须分配所选码点。</description>
+    </item>
+    
+    <item>
+      <title>22.1.3. 释放临时码点</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.3_Reclaiming_Provisional_Codepoints/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.3_Reclaiming_Provisional_Codepoints/</guid>
+      <description>可以申请从注册表中移除一条未使用的临时注册项从而腾出注册表中的空间，也可以申请移除注册表的一块区域（例如从64至16383的范围，它们是使用了可变长度整型编码的码点）。该申请应该只从具有最早记录日期的码点开始进行，并且一年内曾被更新过的注册项不应该被释放。
+对于移除码点的申请必须得到所指派的专家组的评审。专家组必须尝试判断该码点是否仍在使用中。专家组应该联系注册项中列出的联系方式，和尽可能多的协议实现方，从而判断该码点是否仍有使用场景。专家组还应该拥有至少四周的时间用于做出答复。
+如果上文中查找使用场景的结果是认定该码点仍在使用，或出现了更新此注册项的申请，那么必须不释放该码点。取而代之的是，注册表项的日期会被更新。可以为此注册项新增一条备注，记录在此过程中了解到的相关信息。
+如果没有找到该码点的使用场景，并且没有出现更新此注册项的申请，那么该码点可以被移除出注册表。
+这种评审与商讨的过程还适用于将临时注册项变更为永久注册项的申请，只不过目标不是判断有没有该码点的使用场景，而是判断此注册项是否准确地表达了它在某一部署场景中的用途。</description>
+    </item>
+    
+    <item>
+      <title>22.1.4. 永久注册项</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.4_Permanent_Registrations/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.4_Permanent_Registrations/</guid>
+      <description>QUIC注册表中的永久注册项遵循的是强制规范（Specification Required）流程（详见《RFC8126》的第4.6章），除非有特别规定。被指派的专家或专家组验证规范文件是否存在并且具备可访问性。鼓励专家组倾向于批准注册申请，除非申请自身带有辱骂、轻蔑或者其他有害性质（不仅仅是在美学上令人不快或在结构上令人怀疑）。在创建注册项时可以对永久注册项指定额外限制。
+注册项的创建可以指定一定范围的码点，使它们受到另一种注册流程的管理。例如，注册表“QUIC帧类型”（详见第22.4章）中从0至63的码点受到更严格流程的控制。
+对永久注册项的任何更严格的要求都不会影响相关码点上的临时注册项。例如，可以为帧类型61申请临时注册项。
+所有由标准化出版物创建的注册项必须是永久的。
+本文档中的所有注册项均被指定为永久状态，更改责任人为IETF，联系方式为QUIC工作组（quic@ietf.org）。</description>
+    </item>
+    
+    <item>
+      <title>22.2. QUIC版本注册表</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/22.2_QUIC_Versions_Registry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/22.2_QUIC_Versions_Registry/</guid>
+      <description>IANA在“QUIC”条目下新增了“QUIC版本”注册表。
+“QUIC版本”注册表管理着一段32位长的空间；详见第15章。该注册表遵循着来自第22.1章的注册流程。该注册表中的永久注册项被指定为使用强制规范流程（详见《RFC8126》的第4.6章）。
+QUIC协议的码点0x00000001被指定为本文档中定义的协议，并具有永久状态。码点0x00000000的使用被永久保留；该码点的备注表明了此版本被预留为版本协商。
+遵循模式0x?a?a?a?a的所有码点的使用都被保留，它们必须不被IANA指定，并且必须不被列出在已指定的值中。</description>
+    </item>
+    
+    <item>
+      <title>22.3. QUIC传输参数注册表</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/22.3_QUIC_Transport_Parameters_Registry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/22.3_QUIC_Transport_Parameters_Registry/</guid>
+      <description>IANA在“QUIC”条目下新增了“QUIC传输参数”注册表。
+“QUIC传输参数”注册表管理着一段62位长的空间。该注册表遵循着来自第22.1章的注册流程。该注册表中的永久注册项被指定为使用强制规范流程（详见《RFC8126》的第4.6章），但是从0x00至0x3f间（十六进制，包含两端）的值除外，这些值会以标准行为或IESG批准的方式指定，有关定义详见《RFC8126》的第4.9章和第4.10章。
+除了在第22.1.1章中列出的字段外，该注册表中的永久注册项还必须包含以下字段：
+ 参数名称：  该参数简短的帮助记忆的名称。
+  该注册表的初始内容如表6所示。
+   值 参数名称 规范     0x00 original_destination_connection_id 第18.2章   0x01 max_idle_timeout 第18.2章   0x02 stateless_reset_token 第18.2章   0x03 max_udp_payload_size 第18.2章   0x04 initial_max_data 第18.2章   0x05 initial_max_stream_data_bidi_local 第18.2章   0x06 initial_max_stream_data_bidi_remote 第18.2章   0x07 initial_max_stream_data_uni 第18.2章   0x08 initial_max_streams_bidi 第18.2章   0x09 initial_max_streams_uni 第18.2章   0x0a ack_delay_exponent 第18.</description>
+    </item>
+    
+    <item>
+      <title>22.4. QUIC帧类型注册表</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/22.4_QUIC_Frame_Types_Registry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/22.4_QUIC_Frame_Types_Registry/</guid>
+      <description>IANA在“QUIC”条目下新增了“QUIC帧类型”注册表。
+“QUIC帧类型”注册表管理着一段62位长的空间。该注册表遵循着来自第22.1章的注册流程。该注册表中的永久注册项被指定为使用强制规范流程（详见《RFC8126》的第4.6章），但是从0x00至0x3f间（十六进制，包含两端）的值除外，这些值会以标准行为或IESG批准的方式指定，有关定义详见《RFC8126》的第4.9章和第4.10章。
+除了在第22.1.1章中列出的字段外，该注册表中的永久注册项还必须包含以下字段：
+ 帧类型名称：  该参数简短的帮助记忆的名称。
+  除了在第22.1章中给出的建议外，新的永久注册项的规范应该提供一份描述，描述终端可以用于判断是否能够发送该类型的帧的方法。对绝大多数注册项来说，还应该同时注册相关的传输参数；详见第22.3章。永久注册项的规范还需要描述该类型的帧中所有字段的格式及其语义。
+该注册表的初始内容被罗列在表3中。注意，实际的注册表中并不包含表3中的“数据包类型”一栏和“特殊规则”一栏。</description>
+    </item>
+    
+    <item>
+      <title>22.5. QUIC传输层错误码注册表</title>
+      <link>/RFC9000_Chinese_Translation/IANA_Considerations/22.5_QUIC_Transport_Error_Codes_Registry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/IANA_Considerations/22.5_QUIC_Transport_Error_Codes_Registry/</guid>
+      <description>IANA在“QUIC”条目下新增了“QUIC传输层错误码”注册表。
+“QUIC传输层错误码”注册表管理着一段62位长的空间。该空间被拆分为三段由不同注册流程管理的空间。该注册表遵循着来自第22.1章的注册流程。该注册表中的永久注册项被指定为使用强制规范流程（详见《RFC8126》的第4.6章），但是从0x00至0x3f间（十六进制，包含两端）的值除外，这些值会以标准行为或IESG批准的方式指定，有关定义详见《RFC8126》的第4.9章和第4.10章。
+除了在第22.1.1章中列出的字段外，该注册表中的永久注册项还必须包含以下字段：
+ 代码：  该参数简短的帮助记忆的名称。
+ 描述：  对该错误码语义的简要描述，当提供了指向规范文件的引用时，此内容可以是一份概述。
+  该注册表的初始内容如表7所示。
+   值 代码 描述 规范     0x00 NO_ERROR 无错误 第20章   0x01 INTERNAL_ERROR 实现中的错误 第20章   0x02 CONNECTION_REFUSED 服务器拒绝了连接 第20章   0x03 FLOW_CONTROL_ERROR 流量控制错误 第20章   0x04 STREAM_LIMIT_ERROR 打开了过多流 第20章   0x05 STREAM_STATE_ERROR 接收到了在当前流状态下非法的帧 第20章   0x06 FINAL_SIZE_ERROR 最终尺寸发生了变化 第20章   0x07 FRAME_ENCODING_ERROR 帧编码错误 第20章   0x08 TRANSPORT_PARAMETER_ERROR 传输参数中出现错误 第20章   0x09 CONNECTION_ID_LIMIT_ERROR 接收到了过多的连接ID 第20章   0x0a PROTOCOL_VIOLATION 通用的协议违背错误 第20章   0x0b INVALID_TOKEN 接收到了非法的令牌 第20章   0x0c APPLICATION_ERROR 应用错误 第20章   0x0d CRYPTO_BUFFER_EXCEEDED 加密数据缓存溢出 第20章   0x0e KEY_UPDATE_ERROR 对数据包保护密钥的非法更新 第20章   0x0f AEAD_LIMIT_REACHED 对数据包保护密钥的超量使用 第20章   0x10 NO_VIABLE_PATH 无可用网络路径 第20章   0x0100-0x01ff CRYPTO_ERROR TLS警告码 第20章    表6：QUIC传输参数注册表的初始项</description>
+    </item>
+    
+    <item>
+      <title>23.1. 规范性参考文献</title>
+      <link>/RFC9000_Chinese_Translation/References/23.1_Normative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/References/23.1_Normative_References/</guid>
+      <description>[BCP38]：  Ferguson, P. and D. Senie, &amp;ldquo;Network Ingress Filtering: Defeating Denial of Service Attacks which employ IP Source Address Spoofing&amp;rdquo;, BCP 38, RFC 2827, May 2000, https://www.rfc-editor.org/info/bcp38
+ [DPLPMTUD]：  Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, &amp;ldquo;Packetization Layer Path MTU Discovery for Datagram Transports&amp;rdquo;, RFC 8899, DOI 10.17487/RFC8899, September 2020, https://www.rfc-editor.org/info/rfc8899.
+ [EARLY-ASSIGN]：  Cotton, M., &amp;ldquo;Early IANA Allocation of Standards Track Code Points&amp;rdquo;, BCP 100, RFC 7120, DOI 10.</description>
+    </item>
+    
+    <item>
+      <title>A.1. 可变长度整型解码样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.1_Sample_Variable-Length_Integer_Decoding/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.1_Sample_Variable-Length_Integer_Decoding/</guid>
+      <description>图45中的伪代码展示了如何从字节流中读取可变长度整型值。ReadVarint函数接收单个参数——一个字节序列，它将以网络字节序被读取。
+ReadVarint(data): // 可变长度整型值的长度被编码在首个字节的前两个比特位中。 v = data.next_byte() prefix = v &amp;gt;&amp;gt; 6 length = 1 &amp;lt;&amp;lt; prefix // 一旦长度已知，就移除这些比特位，并读取剩余字节。 v = v &amp;amp; 0x3f repeat length-1 times: v = (v &amp;lt;&amp;lt; 8) + data.next_byte() return v 图45：可变长度整型解码算法样例
+ 举例来说，八字节序列0xc2197c5eff14e88c会被解码为十进制值151,288,809,941,952,652；四字节序列0x9d7f3e7d 会被解码为494,878,333；双字节序列0x7bbd 会被解码为15,293；而单字节0x25会被解码为37（和解码双字节序列0x4025的结果一致）。</description>
+    </item>
+    
+    <item>
+      <title>23.2. 资料性参考文献</title>
+      <link>/RFC9000_Chinese_Translation/References/23.2_Informative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/References/23.2_Informative_References/</guid>
+      <description>[AEAD]：  McGrew, D., &amp;ldquo;An Interface and Algorithms for Authenticated Encryption&amp;rdquo;, RFC 5116, DOI 10.17487/RFC5116, January 2008, https://www.rfc-editor.org/info/rfc5116.
+ [ALPN]：  Friedl, S., Popov, A., Langley, A., and E. Stephan, &amp;ldquo;Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension&amp;rdquo;, RFC 7301, DOI 10.17487/RFC7301, July 2014, https://www.rfc-editor.org/info/rfc7301.
+ [ALTSVC]：  Nottingham, M., McManus, P., and J. Reschke, &amp;ldquo;HTTP Alternative Services&amp;rdquo;, RFC 7838, DOI 10.17487/RFC7838, April 2016, https://www.rfc-editor.org/info/rfc7838.
+ [COOKIE]：  Barth, A.</description>
+    </item>
+    
+    <item>
+      <title>A.2. 数据包号编码算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.2_Sample_Packet_Number_Encoding_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.2_Sample_Packet_Number_Encoding_Algorithm/</guid>
+      <description>图46中的伪代码展示了QUIC实现怎样选择合适长度的数据包号编码。
+EncodePacketNumber函数接收两个参数：
+  full_pn是正在发送的数据包的完整数据包号。
+  largest_acked是当前数据包号空间中已被对端确认的最大数据包号，如果有的话。
+  EncodePacketNumber(full_pn, largest_acked): // 比特位的数量必须至少比连续未被确认的数据包号的数量（包括此数据包本身）的 // 以`2`为底的对数值大`1` if largest_acked is None: num_unacked = full_pn + 1 else: num_unacked = full_pn - largest_acked min_bits = log(num_unacked, 2) + 1 num_bytes = ceil(min_bits / 8) // 将整型值编码，并截断为仅剩最低`num_bytes`个字节 return encode(full_pn, num_bytes) 图46：数据包号编码算法样例
+ 举例来说，如果终端接收到了对于数据包0xabe8b3的确认，并且正在发送数据包号为0xac5c02的数据包，那么就存在着29,519（0x734f）个未确认的数据包号。为了能够至少表示这个数量的两倍大小（59,038个，或者说0xe69e个数据包），就需要16个比特位。
+在相同的状态下，发送数据包号为0xace8fe的数据包会使用长度为24比特位的编码方式，因为至少需要18个比特位才能表示缺口数量的两倍（131,222个，或者说0x020096个数据包）。</description>
+    </item>
+    
+    <item>
+      <title>A.3. 数据包号解码算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.3_Sample_Packet_Number_Decoding_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.3_Sample_Packet_Number_Decoding_Algorithm/</guid>
+      <description>图47中的伪代码包含了在移除头部保护后解码数据包号的算法样例。
+DecodePacketNumber函数接收三个参数：
+  largest_pn是当前数据包号空间中已成功处理的最大数据包号
+  truncated_pn是数据包号字段的值
+  pn_nbits是数据包号字段中比特位的数量（8、16、24或32）。
+  DecodePacketNumber(largest_pn, truncated_pn, pn_nbits): expected_pn = largest_pn + 1 pn_win = 1 &amp;lt;&amp;lt; pn_nbits pn_hwin = pn_win / 2 pn_mask = pn_win - 1 // 传入数据包号应该大于`expected_pn - pn_hwin`且小于等于 // `expected_pn + pn_hwin` // // 这意味着我们不能简单地去掉`expected_pn`中末尾的比特位再加上`truncated_pn` // 因为那样会产生一个超过窗口范围的值。 // // 接下来的代码计算了一个候选值，并确保它处于数据包号窗口范围中。 // 注意用于防止数值过大和数值过小的额外检查。 candidate_pn = (expected_pn &amp;amp; ~pn_mask) | truncated_pn if candidate_pn &amp;lt;= expected_pn - pn_hwin and candidate_pn &amp;lt; (1 &amp;lt;&amp;lt; 62) - pn_win: return candidate_pn + pn_win if candidate_pn &amp;gt; expected_pn + pn_hwin and candidate_pn &amp;gt;= pn_win: return candidate_pn - pn_win return candidate_pn 图47：数据包号解码算法样例</description>
+    </item>
+    
+    <item>
+      <title>A.4. ECN验证算法样例</title>
+      <link>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</guid>
+      <description>每次终端开始在新的网络路径上发送时，它都要判断该路径是否支持ECN；详见第13.4章。如果该路径支持ECN，那么就要将ECN利用起来。终端还可以每隔一段时间重新判断一次被认为不支持ECN的路径。
+本节描述了一种用于测试新路径的方法。本算法的意图是展示如何测试一条路径是否支持ECN。终端可以用其他方法实现。
+受测试的路径会被指定一种ECN状态，它会是“测试中”、“未知”、“失败”和“支持”中的一种。在状态为“测试中”或“支持”的路径上，终端发送的数据包会带有ECT标记——默认是ECT(0)；否则，终端发送的数据包上不带标记。
+要启动对一条路径的测试，其ECN状态会被置为“测试中”，并且当前的ECN计数被记录为基准值。
+测试期间会持续发送数个数据包，或者持续一段指定的时间，这由终端决定。此处的目标不是要限制测试的时长，而是确保发送了足够多经标记的数据包以使得接收到的ECN计数能够清晰地表明该路径会怎样对待经标记的数据包。第13.4.2章建议将此时长限制为发送10个数据包的耗时或PTO的三倍大小。
+在测试期结束时，该路径的ECN状态会转为“未知”。对ACK帧中ECN计数的成功验证会使得该路径的状态从“未知”转为“支持”，除非没有经标记的数据包得到确认。
+一旦对ECN计数的验证失败，那么相关路径的ECN状态就会转为“失败”。终端还可以在经标记的数据包全部被认定为丢包或全部被标记上ECN-CE时将ECN状态置为“失败”。
+按照本算法，能够确保在正确支持ECN的路径上ECN几乎不会被禁用。任何错误地修改了标记的路径都会使得ECN被禁用。对于那些经标记数据包被路径丢弃的罕见情况，短暂的测试期能够限制被丢弃数据包的数量。</description>
     </item>
     
     <item>

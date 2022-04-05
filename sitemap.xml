@@ -8,11 +8,15 @@
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/</loc>
   </url><url>
+    <loc>/RFC9002_Chinese_Translation/Foreword/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9002_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
@@ -20,17 +24,23 @@
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
+    <loc>/RFC9002_Chinese_Translation/Foreword/abstract/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
+    <loc>/RFC9002_Chinese_Translation/Foreword/status_of_this_memo/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9002_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Introduction/</loc>
   </url><url>
@@ -99,6 +109,8 @@
     <loc>/RFC9000_Chinese_Translation/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/</loc>
+  </url><url>
+    <loc>/RFC9002_Chinese_Translation/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</loc>
   </url><url>
@@ -338,11 +350,11 @@
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Security_Considerations/9.7_Randomness/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/IANA_Considerations/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Author_s_Address/</loc>
-  </url><url>
-    <loc>/RFC9001_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/Idle_Timeout/</loc>
   </url><url>
@@ -366,29 +378,57 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Connection_Termination/Stateless_Reset/10.3.3_Looping/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/References/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Error_Handling/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Error_Handling/11.1_Connection_Errors/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/References/11.1_Normative_References/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Error_Handling/11.2_Stream_Errors/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/References/11.2_Informative_References/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.1_Protected_Packets/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.1_Keys/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.2_Coalescing_Packets/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.2_Client_Initial/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.3_Packet_Numbers/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.3_Server_Initial/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.4_Frames_and_Frame_Types/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.4_Retry/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Packets_and_Frames/12.5_Frames_and_Number_Spaces/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Sample_Packet_Protection/A.5_ChaCha20-Poly1305_Short_Header_Packet/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/13.1_Packet_Processing/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.1_Confidentiality_Limit/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits/B.1.2_Integrity_Limit/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/AEAD_Algorithm_Analysis/B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Packetization_and_Reliability/Generating_Acknowledgments/13.2.1_Sending_ACK_Frames/</loc>
   </url><url>
@@ -418,6 +458,8 @@
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Datagram_Size/</loc>
   </url><url>
+    <loc>/RFC9001_Chinese_Translation/Contributors/</loc>
+  </url><url>
     <loc>/RFC9000_Chinese_Translation/Datagram_Size/14.1_Initial_Datagram_Size/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Datagram_Size/Path_Maximum_Transmission_Unit/</loc>
@@ -437,6 +479,8 @@
     <loc>/RFC9000_Chinese_Translation/Datagram_Size/Sending_QUIC_PMTU_Probes/14.4.1_PMTU_Probes_Containing_Source_Connection_ID/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Versions/</loc>
+  </url><url>
+    <loc>/RFC9001_Chinese_Translation/Authors_Addresses/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Variable-Length_Integer_Encoding/</loc>
   </url><url>
@@ -475,8 +519,6 @@
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.1_Reserved_Transport_Parameters/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Transport_Parameter_Encoding/18.2_Transport_Parameter_Definitions/</loc>
-  </url><url>
-    <loc>/RFC9000_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Frame_Types_and_Formats/</loc>
   </url><url>
@@ -531,6 +573,108 @@
     <loc>/RFC9000_Chinese_Translation/Error_Codes/20.1_Transport_Error_Codes/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Error_Codes/20.2_Application_Protocol_Error_Codes/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.1_Anti-Amplification/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.2_Server-Side_DoS/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.3_On-Path_Handshake_Termination/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Handshake/21.1.1.4_Parameter_Negotiation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/21.1.2_Protected_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.1_On-Path_Active_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.2_Off-Path_Active_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Overview_of_Security_Properties/Connection_Migration/21.1.3.3_Limited_On-Path_Active_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.2_Handshake_Denial_of_Service/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.3_Amplification_Attack/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.4_Optimistic_ACK_Attack/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.1_Control_Options_for_Endpoints/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.2_Request_Forgery_with_Client_Initial_Packets/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.3_Request_Forgery_with_Preferred_Addresses/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.4_Request_Forgery_with_Spoofed_Migration/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.5_Request_Forgery_with_Version_Negotiation/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/Request_Forgery_Attacks/21.5.6_Generic_Request_Forgery_Countermeasures/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.6_Slowloris_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.7_Stream_Fragmentation_and_Reassembly_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.8_Stream_Commitment_Attack/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.9_Peer_Denial_of_Service/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.10_Explicit_Congestion_Notification_Attacks/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.11_Stateless_Reset_Oracle/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.12_Version_Downgrade/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.13_Targeted_Attacks_by_Routing/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Security_Considerations/21.14_Traffic_Analysis/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.1_Provisional_Registrations/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.2_Selecting_Codepoints/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.3_Reclaiming_Provisional_Codepoints/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/Registration_Policies_for_QUIC_Registries/22.1.4_Permanent_Registrations/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/22.2_QUIC_Versions_Registry/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/22.3_QUIC_Transport_Parameters_Registry/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/22.4_QUIC_Frame_Types_Registry/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/IANA_Considerations/22.5_QUIC_Transport_Error_Codes_Registry/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/References/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Pseudocode/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/References/23.1_Normative_References/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Pseudocode/A.1_Sample_Variable-Length_Integer_Decoding/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/References/23.2_Informative_References/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Pseudocode/A.2_Sample_Packet_Number_Encoding_Algorithm/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Pseudocode/A.3_Sample_Packet_Number_Decoding_Algorithm/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Contributors/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Authors_Addresses/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/README/</loc>
   </url><url>

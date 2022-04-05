@@ -411,7 +411,113 @@
         
             
     <li>
-        <a href="#Author_s_Address">作者地址</a>
+        <a href="#10_IANA_Considerations">10. 关于IANA的考量</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#11_References">11. 参考文献</a>
+
+        <ul>
+            
+                
+                    <li><a href="#11.1_Normative_References">11.1. 规范性参考文献</a></li>
+                
+            
+                
+                    <li><a href="#11.2_Informative_References">11.2. 资料性参考文献</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Appendix_A_Sample_Packet_Protection">附录A. 数据包保护样例</a>
+
+        <ul>
+            
+                
+                    <li><a href="#A.1_Keys">A.1. 密钥</a></li>
+                
+            
+                
+                    <li><a href="#A.2_Client_Initial">A.2. 客户端初始数据包</a></li>
+                
+            
+                
+                    <li><a href="#A.3_Server_Initial">A.3. 服务器初始数据包</a></li>
+                
+            
+                
+                    <li><a href="#A.4_Retry">A.4. 重试数据包</a></li>
+                
+            
+                
+                    <li><a href="#A.5_ChaCha20-Poly1305_Short_Header_Packet">A.5. 使用ChaCha20-Poly1305的短包头数据包</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Appendix_B_AEAD_Algorithm_Analysis">附录B. AEAD算法分析</a>
+
+        <ul>
+            
+                
+                    
+    <li>
+        <a href="#B.1_Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits">B.1. 对于AEAD_AES_128_GCM和AEAD_AES_256_GCM用量上限的分析</a>
+
+        <ul>
+            
+                
+                    <li><a href="#B.1.1_Confidentiality_Limit">B.1.1. 可信度上限</a></li>
+                
+            
+                
+                    <li><a href="#B.1.2_Integrity_Limit">B.1.2. 完整性上限</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+                
+            
+                
+                    <li><a href="#B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits">B.2. 对于AEAD_AES_128_CCM用量上限的分析</a></li>
+                
+            
+        </ul>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Contributors">贡献者</a>
+
+    </li>
+
+
+        
+            
+    <li>
+        <a href="#Authors_Addresses">联系作者</a>
 
     </li>
 
@@ -448,6 +554,16 @@
                 
                     
                 
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
             </ul>
             <br>
           
@@ -455,7 +571,7 @@
     </div>
 
     <div class="version">
-            generated on Mar 19, 2022
+            generated on Apr 5, 2022
     </div>
 </div>
 
@@ -1954,12 +2070,9 @@ if packet_type == Initial:
         </h1>
     
     <div class="content">
-        <p>Initial packets are not protected with a secret key, so they are subject to potential tampering by an attacker. QUIC provides protection against attackers that cannot read packets but does not attempt to provide additional protection against attacks where the attacker can observe and inject packets. Some forms of tampering &ndash; such as modifying the TLS messages themselves &ndash; are detectable, but some &ndash; such as modifying ACKs &ndash; are not.</p>
-<p>初始数据包并不受密钥的保护，因此它们可能会被攻击者篡改。QUIC提供了针对无法读取数据包的攻击者的保护，但此保护并不足以抵御来自有能力观测和注入数据包的攻击者的攻击。部分形式的篡改——例如TLS消息的修改——是能被检测出来的，但是另一些——例如<strong>ACK帧</strong>的修改——则不能。</p>
-<p>For example, an attacker could inject a packet containing an ACK frame to make it appear that a packet had not been received or to create a false impression of the state of the connection (e.g., by modifying the ACK Delay). Note that such a packet could cause a legitimate packet to be dropped as a duplicate. Implementations SHOULD use caution in relying on any data that is contained in Initial packets that is not otherwise authenticated.</p>
-<p>举例来说，攻击者可以注入一个包含<strong>ACK帧</strong>的数据包，以使得某个数据包看上去还未被接收到，或建立有关连接状态的错误印象（例如，通过修改ACK延迟）。注意，这样的数据包会使得本应合法的数据包被认为是重复而丢弃。对于初始数据包中包含的未经其他途径验证的数据，QUIC实现<em><strong>应该</strong></em>谨慎地使用它们。</p>
-<p>It is also possible for the attacker to tamper with data that is carried in Handshake packets, but because that sort of tampering requires modifying TLS handshake messages, any such tampering will cause the TLS handshake to fail.</p>
-<p>攻击者还有可能篡改使用握手数据包传递的数据，但由于这类篡改依赖于修改TLS握手消息，所以它们会使得TLS握手失败。</p>
+        <p>初始数据包并不受密钥的保护，因此它们可能会被攻击者篡改。QUIC提供的保护可以阻挡无法读取数据包的攻击者，但此保护并不足以抵御来自有能力观测和注入数据包的攻击者的攻击。部分形式的篡改——例如对TLS消息的修改——能被检测出来，但是另一些——例如对<strong>ACK帧</strong>的修改——则不能。</p>
+<p>举例来说，攻击者可以注入一个包含虚假<strong>ACK帧</strong>的数据包，以使得某个数据包貌似还没被接收到，或者使得终端对连接的状态建立起错误印象（可以通过修改ACK延迟的方法）。注意，这样的数据包会使得本应合法的数据包被终端认定为重复而丢弃它们。对于初始数据包中包含的未经其他途径验证的数据，QUIC实现<em><strong>应该</strong></em>谨慎地使用它们。</p>
+<p>攻击者还有可能篡改使用握手数据包传递的数据，但由于这类篡改依赖于对TLS握手消息的修改，所以它们会使得TLS握手失败。</p>
 
     </div>
 </section>
@@ -1977,10 +2090,8 @@ if packet_type == Initial:
         </h1>
     
     <div class="content">
-        <p>Certain aspects of the TLS handshake are different when used with QUIC.</p>
-<p>与QUIC一起使用时，TLS某些方面的行为会发生变化。</p>
-<p>QUIC also requires additional features from TLS. In addition to negotiation of cryptographic parameters, the TLS handshake carries and authenticates values for QUIC transport parameters.</p>
-<p>QUIC还需要TLS提供额外功能。除了协商加密参数外，TLS握手还要传递和认证QUIC的传输参数。</p>
+        <p>与QUIC一起使用时，TLS某些方面的行为会发生变化。</p>
+<p>QUIC还要求TLS提供额外功能。除了协商加密参数外，TLS握手还要传递和认证QUIC的传输参数。</p>
 
     </div>
 </section>
@@ -1997,11 +2108,8 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>QUIC requires that the cryptographic handshake provide authenticated protocol negotiation. TLS uses Application-Layer Protocol Negotiation [ALPN] to select an application protocol. Unless another mechanism is used for agreeing on an application protocol, endpoints MUST use ALPN for this purpose.</p>
-<p>QUIC需要加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《<a href="">ALPN</a>》）来选择应用协议。终端<em><strong>必须</strong></em>使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。</p>
-<p>When using ALPN, endpoints MUST immediately close a connection (see Section 10.2 of [QUIC-TRANSPORT]) with a no_application_protocol TLS alert (QUIC error code 0x0178; see Section 4.8) if an application protocol is not negotiated. While [ALPN] only specifies that servers use this alert, QUIC clients MUST use error 0x0178 to terminate a connection when ALPN negotiation fails.</p>
-<p>在使用ALPN时，如果没有协商出应用协议，那么终端<em><strong>必须</strong></em>立即使用值为<code>no_application_protocol</code>（无应用协议）的TLS警告（QUIC的错误码为<code>0x0178</code>；详见<a href="">第4.8章</a>）来关闭连接（详见《<a href="">QUIC传输</a>》的<a href="">第10.2章</a>）。</p>
-<p>An application protocol MAY restrict the QUIC versions that it can operate over. Servers MUST select an application protocol compatible with the QUIC version that the client has selected. The server MUST treat the inability to select a compatible application protocol as a connection error of type 0x0178 (no_application_protocol). Similarly, a client MUST treat the selection of an incompatible application protocol by a server as a connection error of type 0x0178.</p>
+        <p>QUIC要求加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《<a href="">ALPN</a>》）来选择应用协议。终端<em><strong>必须</strong></em>使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。</p>
+<p>在使用ALPN时，如果没有协商出应用协议，那么终端<em><strong>必须</strong></em>立即使用值为<code>no_application_protocol</code>（无应用协议）的TLS警告（QUIC的错误码为<code>0x0178</code>；详见<a href="">第4.8章</a>）来关闭连接（详见《<a href="">QUIC传输</a>》的<a href="">第10.2章</a>）。尽管《<a href="">ALPN</a>》中只规定了服务器要使用此警告，但是QUIC客户端在ALPN协商失败时<em><strong>必须</strong></em>使用类型为<code>0x0178</code>的错误来终止连接。</p>
 <p>应用协议<em><strong>可以</strong></em>限制它所操作的QUIC版本。服务器<em><strong>必须</strong></em>选择一个与客户端所选QUIC版本兼容的应用协议。服务器<em><strong>必须</strong></em>将无法选出兼容的应用协议的情况视作类型为<code>0x0178</code>（相当于<code>no_application_protocol</code>）的连接错误。类似地，客户端<em><strong>必须</strong></em>将服务器选择了不兼容的应用协议的情况视作类型为<code>0x0178</code>的连接错误。</p>
 
     </div>
@@ -2019,9 +2127,7 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>QUIC transport parameters are carried in a TLS extension. Different versions of QUIC might define a different method for negotiating transport configuration.</p>
-<p>QUIC传输参数是使用TLS扩展来传递的。不同的QUIC版本可能为传输配置的协商定义不同方法。</p>
-<p>Including transport parameters in the TLS handshake provides integrity protection for these values.</p>
+        <p>QUIC传输参数是使用TLS扩展来传递的。不同的QUIC版本可能为传输配置的协商定义不同方法。</p>
 <p>在TLS握手中包含传输参数，就可以为这些值提供完整性保护。</p>
 <div id=Pseudocode_8_2_1 class="block ref">
 <pre tabindex="0"><code>enum {
@@ -2029,15 +2135,10 @@ if packet_type == Initial:
 } ExtensionType;
 </code></pre><p><a href="#Pseudocode_8_2_1"></a></p>
 </div>
-<p>The extension_data field of the quic_transport_parameters extension contains a value that is defined by the version of QUIC that is in use.</p>
 <p><code>quic_transport_parameters</code>（QUIC传输参数）扩展的<code>extension_data</code>（扩展数据）字段中包含的是一个由正在使用的QUIC版本定义的值。</p>
-<p>The quic_transport_parameters extension is carried in the ClientHello and the EncryptedExtensions messages during the handshake. Endpoints MUST send the quic_transport_parameters extension; endpoints that receive ClientHello or EncryptedExtensions messages without the quic_transport_parameters extension MUST close the connection with an error of type 0x016d (equivalent to a fatal TLS missing_extension alert, see Section 4.8).</p>
 <p><code>quic_transport_parameters</code>扩展是在握手期间使用<code>ClientHello</code>（客户端问候）和<code>EncryptedExtensions</code>（加密扩展）消息来传递的。终端<em><strong>必须</strong></em>发送<code>quic_transport_parameters</code>扩展；接收到不带<code>quic_transport_parameters</code>扩展的<code>ClientHello</code>消息或<code>EncryptedExtensions</code>消息的终端<em><strong>必须</strong></em>使用类型为<code>0x016d</code>（相当于TLS中致命级别的<code>missing_extension</code>警告，详见<a href="">第4.8章</a>）的错误来关闭连接。</p>
-<p>Transport parameters become available prior to the completion of the handshake. A server might use these values earlier than handshake completion. However, the value of transport parameters is not authenticated until the handshake completes, so any use of these parameters cannot depend on their authenticity. Any tampering with transport parameters will cause the handshake to fail.</p>
-<p>传输参数在握手完成前就会变为可用。服务器可以在握手完成前就使用这些值。不过，直到握手完成，传输参数的值都是未经认证的，所以即使提前使用这些参数也不要依赖于它们的真实性。任何对于传输参数的篡改都会使得握手最终失败。</p>
-<p>Endpoints MUST NOT send this extension in a TLS connection that does not use QUIC (such as the use of TLS with TCP defined in [TLS13]). A fatal unsupported_extension alert MUST be sent by an implementation that supports this extension if the extension is received when the transport is not QUIC.</p>
+<p>传输参数在握手完成前就会变为可用。服务器可以在握手完成前就使用这些值。不过，直到握手完成，传输参数的值都是未经认证的，所以即使提前使用这些参数也不要依赖于它们的真实性。任何对于传输参数的篡改最终都会使得握手失败。</p>
 <p>终端<em><strong>必须不</strong></em>在并未使用QUIC的TLS连接中（例如在《<a href="">TLS13</a>》中定义的基于TCP的TLS连接）发送此扩展。如果在非QUIC的传输中接收到了这个扩展，那么支持此扩展的终端<em><strong>必须</strong></em>发送致命级别的<code>unsupported_extension</code>警告。</p>
-<p>Negotiating the quic_transport_parameters extension causes the EndOfEarlyData to be removed; see Section 8.3.</p>
 <p>协商<code>quic_transport_parameters</code>扩展会使得<code>EndOfEarlyData</code>（早期数据结束）被移除；详见<a href="">第8.3章</a>。</p>
 
     </div>
@@ -2055,11 +2156,8 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>The TLS EndOfEarlyData message is not used with QUIC. QUIC does not rely on this message to mark the end of 0-RTT data or to signal the change to Handshake keys.</p>
-<p>QUIC中不会使用TLS的<code>EndOfEarlyData</code>消息。QUIC不依赖这条消息去标记0-RTT数据的结束位置，或去发送握手密钥发生变化的信号。</p>
-<p>Clients MUST NOT send the EndOfEarlyData message. A server MUST treat receipt of a CRYPTO frame in a 0-RTT packet as a connection error of type PROTOCOL_VIOLATION.</p>
+        <p>QUIC中不会使用TLS的<code>EndOfEarlyData</code>消息。QUIC并不使用这条消息去标记0-RTT数据的结束位置，或去发送握手密钥发生变化的信号。</p>
 <p>客户端<em><strong>必须不</strong></em>发送<code>EndOfEarlyData</code>消息。服务器<em><strong>必须</strong></em>将在0-RTT数据包中接收到<strong>加密帧</strong>的情况视作类型为<code>PROTOCOL_VIOLATION</code>（协议违背）的连接错误。</p>
-<p>As a result, EndOfEarlyData does not appear in the TLS handshake transcript.</p>
 <p>于是，<code>EndOfEarlyData</code>不会出现在TLS握手的记录单（<code>transcript</code>）中。</p>
 
     </div>
@@ -2077,9 +2175,7 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>Appendix D.4 of [TLS13] describes an alteration to the TLS 1.3 handshake as a workaround for bugs in some middleboxes. The TLS 1.3 middlebox compatibility mode involves setting the legacy_session_id field to a 32-byte value in the ClientHello and ServerHello, then sending a change_cipher_spec record. Both field and record carry no semantic content and are ignored.</p>
-<p>《<a href="">TLS13</a>》的<a href="">附录D.4</a>描述了TLS 1.3握手的一种替代方案，并将之作为某些中间设备上程序出错时的应对措施。TLS 1.3中的这种中间设备兼容模式需要将<code>ClientHello</code>和<code>ServerHello</code>（服务器问候）中的<code>legacy_session_id</code>（兼容会话ID）字段设置为一个32字节长的值，随后发送<code>change_cipher_spec</code>（更改加密设置）记录。这个字段和记录不传递任何具有语义的内容，并且会被忽略。</p>
-<p>This mode has no use in QUIC as it only applies to middleboxes that interfere with TLS over TCP. QUIC also provides no means to carry a change_cipher_spec record. A client MUST NOT request the use of the TLS 1.3 compatibility mode. A server SHOULD treat the receipt of a TLS ClientHello with a non-empty legacy_session_id field as a connection error of type PROTOCOL_VIOLATION.</p>
+        <p>《<a href="">TLS13</a>》的<a href="">附录D.4</a>描述了TLS 1.3握手的一种替代方案，并将之作为某些中间设备上程序出错时的应对措施。TLS 1.3中的这种中间设备兼容模式需要将<code>ClientHello</code>和<code>ServerHello</code>（服务器问候）中的<code>legacy_session_id</code>（兼容会话ID）字段设置为一个32字节长的值，随后发送<code>change_cipher_spec</code>（更改加密设置）记录。这个字段和记录不传递任何具有语义的内容，并且会被忽略。</p>
 <p>这个模式在QUIC中没有用处，因为它只适用于会干预基于TCP的TLS的中间设备。同时QUIC也没有提供任何传递<code>change_cipher_spec</code>记录的方法。客户端<em><strong>必须不</strong></em>请求使用TLS 1.3的兼容模式。服务器<em><strong>应该</strong></em>将接收到<code>legacy_session_id</code>字段非空的TLS<code>ClientHello</code>的情况视作类型为<code>PROTOCOL_VIOLATION</code>的连接错误。</p>
 
     </div>
@@ -2100,9 +2196,7 @@ if packet_type == Initial:
         </h1>
     
     <div class="content">
-        <p>All of the security considerations that apply to TLS also apply to the use of TLS in QUIC. Reading all of [TLS13] and its appendices is the best way to gain an understanding of the security properties of QUIC.</p>
-<p>所有适用于TLS的关于安全性的考量同样适用于QUIC中的TLS。通读《<a href="">TLS13</a>》及其附录是理解QUIC的安全属性的最佳方式。</p>
-<p>This section summarizes some of the more important security aspects specific to the TLS integration, though there are many security-relevant details in the remainder of the document.</p>
+        <p>所有适用于TLS的关于安全性的考量同样适用于QUIC中的TLS。通读《<a href="">TLS13</a>》及其附录是理解QUIC的安全属性的最佳方式。</p>
 <p>本章概述了特定于TLS集成在其他协议中时的一些重要的关于安全性的考量，不过本文档中的其余部分中还有许多与安全性相关的细节。</p>
 
     </div>
@@ -2120,8 +2214,7 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>Use of TLS session tickets allows servers and possibly other entities to correlate connections made by the same client; see Section 4.5 for details.</p>
-<p>TLS会话票据的使用使得服务器或其他实体能够将同一客户端创建的连接相互关联起来；有关细节详见<a href="">第4.5章</a>。</p>
+        <p>TLS会话票据的使用使得服务器或其他实体能够将同一客户端创建的连接相互关联起来；有关细节详见<a href="">第4.5章</a>。</p>
 
     </div>
 </section>
@@ -2138,21 +2231,13 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>As described in Section 8 of [TLS13], use of TLS early data comes with an exposure to replay attack. The use of 0-RTT in QUIC is similarly vulnerable to replay attack.</p>
-<p>正如《<a href="">TLS13</a>》的<a href="">第8章</a>所述，使用了TLS早期数据就会被暴露于重放攻击之下。QUIC的0-RTT有着类似的风险。</p>
-<p>Endpoints MUST implement and use the replay protections described in [TLS13], however it is recognized that these protections are imperfect. Therefore, additional consideration of the risk of replay is needed.</p>
+        <p>正如《<a href="">TLS13</a>》的<a href="">第8章</a>所述，只要使用了TLS早期数据就会被暴露于重放攻击之下。QUIC的0-RTT有着类似的风险。</p>
 <p>终端<em><strong>必须</strong></em>实现并使用《<a href="">TLS13</a>》中描述的重放保护，然而这些保护并不被认为是完美的。因此，对于重放攻击的风险还需要更多考量。</p>
-<p>QUIC is not vulnerable to replay attack, except via the application protocol information it might carry. The management of QUIC protocol state based on the frame types defined in [QUIC-TRANSPORT] is not vulnerable to replay. Processing of QUIC frames is idempotent and cannot result in invalid connection states if frames are replayed, reordered, or lost. QUIC connections do not produce effects that last beyond the lifetime of the connection, except for those produced by the application protocol that QUIC serves.</p>
-<p>QUIC并不易受到重放攻击，除非经由QUIC传递的应用协议信息来攻击。基于在《<a href="">QUIC传输</a>》中定义的帧类型的QUIC协议状态管理机制不易受到重放攻击。QUIC帧的处理是幂等的，在帧被重放、乱序或遭遇丢包时不会引发连接状态异常。QUIC连接期间产生的副作用在连接的生命周期结束后就会失效，除非是那些由QUIC承载的应用协议产生的副作用。</p>
-<p>TLS session tickets and address validation tokens are used to carry QUIC configuration information between connections, specifically, to enable a server to efficiently recover state that is used in connection establishment and address validation. These MUST NOT be used to communicate application semantics between endpoints; clients MUST treat them as opaque values. The potential for reuse of these tokens means that they require stronger protections against replay.</p>
-<p>TLS会话票据和地址验证令牌被用于在不同的连接间传递QUIC配置信息，尤其是，它使得服务器能够在连接建立和地址验证时高效地恢复状态数据。<em><strong>必须不</strong></em>使用它们在终端间传递应用语义；客户端<em><strong>必须</strong></em>将它们视作为不透明的值。如果这些令牌有可能被重用，那么它们就需要更强的针对重放攻击的保护。</p>
-<p>A server that accepts 0-RTT on a connection incurs a higher cost than accepting a connection without 0-RTT. This includes higher processing and computation costs. Servers need to consider the probability of replay and all associated costs when accepting 0-RTT.</p>
+<p>QUIC并不易受到重放攻击，除非是利用QUIC传递的应用协议信息的攻击。基于在《<a href="">QUIC传输</a>》中定义的帧类型的QUIC协议状态管理机制不易受到重放攻击。QUIC帧的处理是幂等的，在帧被重放、乱序或遭遇丢包时不会引发连接状态异常。QUIC连接期间产生的副作用在连接的生命周期结束后就会失效，除非是那些由QUIC承载的应用协议产生的副作用。</p>
+<p>TLS会话票据和地址验证令牌被用于在不同的连接间传递QUIC配置信息，尤其是，它使得服务器能够在连接建立和地址验证时高效地恢复状态数据。<em><strong>必须不</strong></em>使用它们在终端间传递应用语义；客户端<em><strong>必须</strong></em>将它们视作为内容不透明的值。如果这些令牌有可能被重用，那么它们就需要更强的针对重放攻击的保护。</p>
 <p>在某条连接上接受0-RTT的服务器比不接受0-RTT的服务器要消耗更多的计算资源。服务器在接受0-RTT时需要考虑到重放的可能性以及其他相关资源的消耗。</p>
-<p>Ultimately, the responsibility for managing the risks of replay attacks with 0-RTT lies with an application protocol. An application protocol that uses QUIC MUST describe how the protocol uses 0-RTT and the measures that are employed to protect against replay attack. An analysis of replay risk needs to consider all QUIC protocol features that carry application semantics.</p>
 <p>管理与0-RTT相关的重放攻击的风险，其最终的责任在于应用协议。使用QUIC的应用协议<em><strong>必须</strong></em>描述该协议会怎样使用0-RTT以及用于抵御重放攻击的手段。对于重放风险的分析需要考虑所有会传递应用语义的QUIC协议特性。</p>
-<p>Disabling 0-RTT entirely is the most effective defense against replay attack.</p>
 <p>要抵御重放攻击，完全禁用0-RTT是最有效的。</p>
-<p>QUIC extensions MUST either describe how replay attacks affect their operation or prohibit the use of the extension in 0-RTT. Application protocols MUST either prohibit the use of extensions that carry application semantics in 0-RTT or provide replay mitigation strategies.</p>
 <p>QUIC扩展<em><strong>必须</strong></em>描述重放攻击会如何影响扩展的行为，或禁止与0-RTT一起被使用。应用协议<em><strong>必须</strong></em>禁止使用会在0-RTT中传递应用语义的扩展，或提供抵御重放攻击的策略。</p>
 
     </div>
@@ -2170,9 +2255,7 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>A small ClientHello that results in a large block of handshake messages from a server can be used in packet reflection attacks to amplify the traffic generated by an attacker.</p>
-<p>如果一条较小的<code>ClientHello</code>（客户端问候）能使得服务器响应巨大的握手消息，它就能被用于数据包放大攻击，放大攻击者生成的流量。</p>
-<p>QUIC includes three defenses against this attack. First, the packet containing a ClientHello MUST be padded to a minimum size. Second, if responding to an unverified source address, the server is forbidden to send more than three times as many bytes as the number of bytes it has received (see Section 8.1 of [QUIC-TRANSPORT]). Finally, because acknowledgments of Handshake packets are authenticated, a blind attacker cannot forge them. Put together, these defenses limit the level of amplification.</p>
+        <p>如果一条较小的<code>ClientHello</code>（客户端问候）能使得服务器响应巨大的握手消息，它就能被用于数据包放大攻击，放大攻击者生成的流量。</p>
 <p>QUIC针对此类攻击，拥有三种防御手段。首先，包含<code>ClientHello</code>的数据包<em><strong>必须</strong></em>被扩充至一个下限值。其次，在向未经验证的源地址响应时，服务器发送的字节数禁止超过它接收到的字节数的三倍（详见《<a href="">QUIC传输</a>》的<a href="">第8.1章</a>）。最后，因为对于握手数据包的确认是经认证的，所有对此一无所知的攻击者无法伪造它们。综合起来，这些防御手段限制了放大攻击的放大量级。</p>
 
     </div>
@@ -2190,19 +2273,14 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>[NAN] analyzes authenticated encryption algorithms that provide nonce privacy, referred to as &ldquo;Hide Nonce&rdquo; (HN) transforms. The general header protection construction in this document is one of those algorithms (HN1). Header protection is applied after the packet protection AEAD, sampling a set of bytes (sample) from the AEAD output and encrypting the header field using a pseudorandom function (PRF) as follows:</p>
-<p>《<a href="">NAN</a>》分析了许多能保护随机数的认证加密算法，它们被称为“随机数隐藏”（HN）转换。本文档中的头部保护构建方法大体上可以算作是这些算法中的其中一种（HN1）。头部保护会在数据包保护AEAD之后被应用，它从AEAD的输出中采样一组字节样本（表达式中的<code>sample</code>），并以此方法使用伪随机函数（表达式中的<code>PRF</code>）来加密头部字段：</p>
+        <p>《<a href="">NAN</a>》分析了许多能保护随机数的认证加密算法，它们被称为“随机数隐藏”（HN）转换。本文档中的头部保护构建方法大体上可以算作是这些算法中的其中一种（HN1）。头部保护会在数据包保护AEAD之后被应用，它从AEAD的输出中采样一组字节样本（表达式中的<code>sample</code>），并以此方法使用伪随机函数（表达式中的<code>PRF</code>）来加密头部字段：</p>
 <div id=Pseudocode_9_4_1 class="block ref">
 <pre tabindex="0"><code>protected_field = field XOR PRF(hp_key, sample)
 </code></pre><p><a href="#Pseudocode_9_4_1"></a></p>
 </div>
-<p>The header protection variants in this document use a pseudorandom permutation (PRP) in place of a generic PRF. However, since all PRPs are also PRFs [IMC], these variants do not deviate from the HN1 construction.</p>
-<p>本文档中的头部保护的不同之处在于使用伪随机排列（PRP）来代替常规的PRF。然而，由于所有PRP都算作PRF（详见《<a href="">IMC</a>》），这种修改并不违背HN1的构建原则。</p>
-<p>As hp_key is distinct from the packet protection key, it follows that header protection achieves AE2 security as defined in [NAN] and therefore guarantees privacy of field, the protected packet header. Future header protection variants based on this construction MUST use a PRF to ensure equivalent security guarantees.</p>
+<p>本文档中的头部保护的不同之处在于使用伪随机排列（PRP）来代替常规的PRF。然而，由于所有PRP都算作PRF（详见《<a href="">IMC</a>》），所以这种修改并不违背HN1的构建原则。</p>
 <p>由于<code>hp_key</code>与数据包保护密钥不同，因此头部保护能够达到《<a href="">NAN</a>》中描述的AE2安全级别，从而保护数据包头部中的字段。将来的基于相同构建方式的头部保护变体<em><strong>必须</strong></em>使用PRF来确保获得一致的安全保障。</p>
-<p>Use of the same key and ciphertext sample more than once risks compromising header protection. Protecting two different headers with the same key and ciphertext sample reveals the exclusive OR of the protected fields. Assuming that the AEAD acts as a PRF, if L bits are sampled, the odds of two ciphertext samples being identical approach 2-L/2, that is, the birthday bound. For the algorithms described in this document, that probability is one in 264.</p>
-<p>多次使用相同的密钥和密文样本会有使头部保护失效的风险。使用相同的密钥和密文样本来保护两份不同的包头会泄露受保护字段的异或结果。假设以AEAD作为PRF，如果采样了<code>L</code>个比特位，那么两份密文样本一致的概率约为<code>2<sup>-L/2</sup></code>，也就是，出现生日限制。对于在本文档中描述的算法，这个概率为<code>2<sup>64</sup></code>分之一。</p>
-<p>To prevent an attacker from modifying packet headers, the header is transitively authenticated using packet protection; the entire packet header is part of the authenticated additional data. Protected fields that are falsified or modified can only be detected once the packet protection is removed.</p>
+<p>多次使用相同的密钥和密文样本会有使头部保护失效的风险。使用相同的密钥和密文样本来保护两份不同的包头会泄露受保护字段的异或结果。假设以AEAD作为PRF，如果采样了<code>L</code>个比特位，那么两份密文样本一致的概率约为<code>2<sup>-L/2</sup></code>，也就是所谓的生日攻击。对于在本文档中描述的算法，这个概率为<code>2<sup>64</sup></code>分之一。</p>
 <p>为了防止被攻击者修改，数据包头部会受到数据包保护的认证；整个数据包头部都是受认证的额外数据的一部分。受保护的字段有没有被篡改只能在移除数据包保护后才被检测出来。</p>
 
     </div>
@@ -2220,13 +2298,9 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>An attacker could guess values for packet numbers or Key Phase and have an endpoint confirm guesses through timing side channels. Similarly, guesses for the packet number length can be tried and exposed. If the recipient of a packet discards packets with duplicate packet numbers without attempting to remove packet protection, they could reveal through timing side channels that the packet number matches a received packet. For authentication to be free from side channels, the entire process of header protection removal, packet number recovery, and packet protection removal MUST be applied together without timing and other side channels.</p>
-<p>攻击者可以猜测数据包号或密钥阶段的值，并通过计时侧信道观察终端会不会接受这个值。类似地，对于数据包号长度也可以进行猜测和破解。如果数据包的接收方直接将数据包号重复的数据包丢弃，而没有尝试移除数据包保护，那么它们就会通过计时侧信道暴露此数据包号与一个已接收到的数据包匹配的事实。为了使认证与侧信道无关，<em><strong>必须</strong></em>完整进行移除头部保护、恢复数据包号和移除数据包保护的全部过程，并且避免从计时或其他方面的侧信道泄露信息。</p>
-<p>For the sending of packets, construction and protection of packet payloads and packet numbers MUST be free from side channels that would reveal the packet number or its encoded size.</p>
+        <p>攻击者可以猜测数据包号或密钥阶段的值，并通过计时侧信道观察终端会不会接受这个值。类似地，对于数据包号长度也可以进行猜测和破解。如果数据包的接收方直接将数据包号重复的数据包丢弃，而没有尝试移除数据包保护，那么它们就会通过计时侧信道暴露此数据包号与一个已接收到的数据包匹配的事实。为了使认证过程不会对侧信道产生影响，<em><strong>必须</strong></em>完整地先移除头部保护、然后恢复数据包号，接着移除数据包保护，从而避免从计时或其他方面的侧信道泄露信息。</p>
 <p>在数据包的发送方面，数据包载荷与数据包号的构建和保护过程<em><strong>必须</strong></em>不会从侧信道泄露数据包号或它的编码后长度。</p>
-<p>During a key update, the time taken to generate new keys could reveal through timing side channels that a key update has occurred. Alternatively, where an attacker injects packets, this side channel could reveal the value of the Key Phase on injected packets. After receiving a key update, an endpoint SHOULD generate and save the next set of receive packet protection keys, as described in Section 6.3. By generating new keys before a key update is received, receipt of packets will not create timing signals that leak the value of the Key Phase.</p>
-<p>在密钥更新期间，创建新密钥所花费的时间可能通过计时侧信道泄露密钥更新的发生。除此之外，当攻击者注入数据包时，该侧信道会泄露被注入数据包里密钥阶段的值。在接收到密钥更新后，终端<em><strong>应该</strong></em>如<a href="">第6.3章</a>所述的那样，建立并储存下一组接受用的数据包保护密钥。通过在接收到密钥更新前就建立新密钥，数据包的接收不会创建会泄露密钥阶段的值的计时上的信号。</p>
-<p>This depends on not doing this key generation during packet processing, and it can require that endpoints maintain three sets of packet protection keys for receiving: for the previous key phase, for the current key phase, and for the next key phase. Endpoints can instead choose to defer generation of the next receive packet protection keys until they discard old keys so that only two sets of receive keys need to be retained at any point in time.</p>
+<p>在密钥更新期间，创建新密钥所花费的时间可能通过计时侧信道透露出有没有发生密钥更新。除此之外，当攻击者注入数据包时，该侧信道会泄露被注入的数据包里密钥阶段的值。在接收到密钥更新后，终端<em><strong>应该</strong></em>如<a href="">第6.3章</a>所述的那样，建立并储存下一组接受用的数据包保护密钥。通过在接收到密钥更新前就建立新密钥，数据包的接收就不会创建出会泄露密钥阶段的值的计时上的信号。</p>
 <p>这项要求依赖于不在数据包处理期间建立新密钥，同时它可能需要终端维护三组接收用的数据包保护密钥：上一密钥阶段的、当前密钥阶段的和下一密钥阶段的。作为替代方案，终端可以选择延迟建立下一密钥阶段的数据包保护密钥，直到它弃用旧密钥为止，这使得它在同一时间只需要维护两组接收密钥。</p>
 
     </div>
@@ -2244,13 +2318,9 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>In using TLS, the central key schedule of TLS is used. As a result of the TLS handshake messages being integrated into the calculation of secrets, the inclusion of the QUIC transport parameters extension ensures that the handshake and 1-RTT keys are not the same as those that might be produced by a server running TLS over TCP. To avoid the possibility of cross-protocol key synchronization, additional measures are provided to improve key separation.</p>
-<p>在使用TLS时，会用到其核心的密钥衍生计划表。由于TLS握手消息被集成进了秘密值计算，QUIC传输参数扩展的使用能够确保握手密钥和1-RTT密钥与运行基于TCP的TLS服务器所生成出来的密钥不一致。为了降低不同协议间出现密钥一致的情况的可能性，有额外的措施来提高密钥的隔离性。</p>
-<p>The QUIC packet protection keys and IVs are derived using a different label than the equivalent keys in TLS.</p>
+        <p>在使用TLS时，会用到其核心的密钥衍生计划表。由于TLS握手消息被集成进了秘密值计算，QUIC传输参数扩展的使用能够确保握手密钥和1-RTT密钥与运行基于TCP的TLS的服务器所生成出来的密钥不一致。为了降低不同协议间出现密钥碰撞情况的可能性，有额外的措施来提高密钥的隔离性。</p>
 <p>QUIC的数据包保护密钥和IV是使用与TLS中不同的标签来衍生的。</p>
-<p>To preserve this separation, a new version of QUIC SHOULD define new labels for key derivation for packet protection key and IV, plus the header protection keys. This version of QUIC uses the string &ldquo;quic&rdquo;. Other versions can use a version-specific label in place of that string.</p>
-<p>为了维持这种隔离，新版本的QUIC<em><strong>应该</strong></em>为计算数据包保护密钥和IV的密钥，以及头部保护密钥，的衍生过程定义新的标签值。本版本的QUIC使用了字符串<code>quic</code>。其他版本可以使用与版本相关的标签来替换该字符串。</p>
-<p>The initial secrets use a key that is specific to the negotiated QUIC version. New QUIC versions SHOULD define a new salt value used in calculating initial secrets.</p>
+<p>为了维持这种隔离性，新版本的QUIC<em><strong>应该</strong></em>为计算数据包保护密钥和IV的密钥，以及头部保护密钥，的衍生过程定义新的标签值。本版本的QUIC使用了字符串<code>quic</code>。其他版本可以使用与版本相关的标签来替换该字符串。</p>
 <p>初始秘密值使用的是由协商出的QUIC版本指定的密钥。新的QUIC版本<em><strong>应该</strong></em>为秘密值的计算定义新的盐值。</p>
 
     </div>
@@ -2268,8 +2338,7 @@ if packet_type == Initial:
         </h2>
     
     <div class="content">
-        <p>QUIC depends on endpoints being able to generate secure random numbers, both directly for protocol values such as the connection ID, and transitively via TLS. See [RFC4086] for guidance on secure random number generation.</p>
-<p>QUIC依赖于终端生成安全的随机数的能力，这项能力既会被直接用在协议里的一些值上，如连接ID，也会经由TLS被使用到。有关安全的随机数生成的指导，详见《<a href="">RFC4086</a>》。</p>
+        <p>QUIC依赖于终端生成安全的随机数的能力，这项能力既会被直接用在协议里的一些值上，如连接ID，也会经由TLS被使用到。有关安全的随机数生成的指导，详见《<a href="">RFC4086</a>》。</p>
 
     </div>
 </section>
@@ -2280,26 +2349,797 @@ if packet_type == Initial:
 
 
         
-                <section class="page" id="Author_s_Address">
+                <section class="page" id="10_IANA_Considerations">
     
         <h1>
     
-            <a href="#Author_s_Address">作者地址</a>
+            <a href="#10_IANA_Considerations">10. 关于IANA的考量</a>
     
         </h1>
     
     <div class="content">
-        <p>Jana Iyengar</p>
-<p>Fastly</p>
-<p>Email: <a href="mailto:jri.ietf@gmail.com">jri.ietf@gmail.com</a></p>
+        <p>IANA已经在“TLS扩展类型值”注册表（详见《<a href="">TLS-REGISTRIES</a>》）中为<code>quic_transport_parameters</code>（QUIC传输参数）扩展（有关定义详见<a href="">第8.2章</a>）注册了值为<code>57</code>（也就是<code>0x39</code>）的码点。</p>
+<p>该扩展的受推荐一栏被标记为“是”。TLS 1.3一栏中包含CH（<code>ClientHello</code>，客户端问候）和EE（<code>EncryptedExtensions</code>，加密扩展）。</p>
+<div id=Table_2_TLS_ExtensionType_Values_Registry_Entry class="block ref">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">值</th>
+<th style="text-align:left">扩展名称</th>
+<th style="text-align:left">TLS 1.3</th>
+<th style="text-align:left">受推荐</th>
+<th style="text-align:left">参考文献</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">57</td>
+<td style="text-align:left">quic_transport_parameters</td>
+<td style="text-align:left">CH, EE</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">本文档</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_2_TLS_ExtensionType_Values_Registry_Entry">表2：TLS扩展类型值注册项</a></p>
+</div>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="11_References">
+    
+        <h1>
+    
+            <a href="#11_References">11. 参考文献</a>
+    
+        </h1>
+    
+    <div class="content">
+        
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="11.1_Normative_References">
+    
+        <h2>
+    
+            <a href="#11.1_Normative_References">11.1. 规范性参考文献</a>
+    
+        </h2>
+    
+    <div class="content">
+        <dl>
+<dt>[AEAD]：</dt>
+<dd>
+<p>McGrew, D., &ldquo;An Interface and Algorithms for Authenticated Encryption&rdquo;, RFC 5116, DOI 10.17487/RFC5116, January 2008, <a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>.</p>
+</dd>
+<dt>[AES]：</dt>
+<dd>
+<p>&ldquo;Advanced encryption standard (AES)&rdquo;, National Institute of Standards and Technology report, DOI 10.6028/nist.fips.197, November 2001, <a href="https://doi.org/10.6028/nist.fips.197">https://doi.org/10.6028/nist.fips.197</a>.</p>
+</dd>
+<dt>[ALPN]：</dt>
+<dd>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, &ldquo;Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension&rdquo;, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</dd>
+<dt>[CHACHA]：</dt>
+<dd>
+<p>Nir, Y. and A. Langley, &ldquo;ChaCha20 and Poly1305 for IETF Protocols&rdquo;, RFC 8439, DOI 10.17487/RFC8439, June 2018, <a href="https://www.rfc-editor.org/info/rfc8439">https://www.rfc-editor.org/info/rfc8439</a>.</p>
+</dd>
+<dt>[HKDF]：</dt>
+<dd>
+<p>Krawczyk, H. and P. Eronen, &ldquo;HMAC-based Extract-and-Expand Key Derivation Function (HKDF)&rdquo;, RFC 5869, DOI 10.17487/RFC5869, May 2010, <a href="https://www.rfc-editor.org/info/rfc5869">https://www.rfc-editor.org/info/rfc5869</a>.</p>
+</dd>
+<dt>[QUIC-RECOVERY]：</dt>
+<dd>
+<p>Iyengar, J., Ed. and I. Swett, Ed., &ldquo;QUIC Loss Detection and Congestion Control&rdquo;, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</dd>
+<dt>[QUIC-TRANSPORT]：</dt>
+<dd>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., &ldquo;QUIC: A UDP-Based Multiplexed and Secure Transport&rdquo;, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</dd>
+<dt>[RFC2119]：</dt>
+<dd>
+<p>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels&rdquo;, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</dd>
+<dt>[RFC4086]：</dt>
+<dd>
+<p>Eastlake 3rd, D., Schiller, J., and S. Crocker, &ldquo;Randomness Requirements for Security&rdquo;, BCP 106, RFC 4086, DOI 10.17487/RFC4086, June 2005, <a href="https://www.rfc-editor.org/info/rfc4086">https://www.rfc-editor.org/info/rfc4086</a>.</p>
+</dd>
+<dt>[RFC8174]：</dt>
+<dd>
+<p>Leiba, B., &ldquo;Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words&rdquo;, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</dd>
+<dt>[SHA]：</dt>
+<dd>
+<p>Dang, Q., &ldquo;Secure Hash Standard&rdquo;, National Institute of Standards and Technology report, DOI 10.6028/nist.fips.180-4, July 2015, <a href="https://doi.org/10.6028/nist.fips.180-4">https://doi.org/10.6028/nist.fips.180-4</a>.</p>
+</dd>
+<dt>[TLS-REGISTRIES]：</dt>
+<dd>
+<p>Salowey, J. and S. Turner, &ldquo;IANA Registry Updates for TLS and DTLS&rdquo;, RFC 8447, DOI 10.17487/RFC8447, August 2018, <a href="https://www.rfc-editor.org/info/rfc8447">https://www.rfc-editor.org/info/rfc8447</a>.</p>
+</dd>
+<dt>[TLS13]：</dt>
+<dd>
+<p>Rescorla, E., &ldquo;The Transport Layer Security (TLS) Protocol Version 1.3&rdquo;, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="11.2_Informative_References">
+    
+        <h2>
+    
+            <a href="#11.2_Informative_References">11.2. 资料性参考文献</a>
+    
+        </h2>
+    
+    <div class="content">
+        <dl>
+<dt>[AEBounds]：</dt>
+<dd>
+<p>Luykx, A. and K. Paterson, &ldquo;Limits on Authenticated Encryption Use in TLS&rdquo;, 28 August 2017, <a href="https://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf">https://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf</a>.</p>
+</dd>
+<dt>[ASCII]：</dt>
+<dd>
+<p>Cerf, V., &ldquo;ASCII format for network interchange&rdquo;, STD 80, RFC 20, DOI 10.17487/RFC0020, October 1969, <a href="https://www.rfc-editor.org/info/rfc20">https://www.rfc-editor.org/info/rfc20</a>.</p>
+</dd>
+<dt>[CCM-ANALYSIS]：</dt>
+<dd>
+<p>Jonsson, J., &ldquo;On the Security of CTR + CBC-MAC&rdquo;, Selected Areas in Cryptography, SAC 2002, Lecture Notes in Computer Science, vol 2595, pp. 76-93, DOI 10.1007/3-540-36492-7_7, 2003, <a href="https://doi.org/10.1007/3-540-36492-7_7">https://doi.org/10.1007/3-540-36492-7_7</a>.</p>
+</dd>
+<dt>[COMPRESS]：</dt>
+<dd>
+<p>Ghedini, A. and V. Vasiliev, &ldquo;TLS Certificate Compression&rdquo;, RFC 8879, DOI 10.17487/RFC8879, December 2020, <a href="https://www.rfc-editor.org/info/rfc8879">https://www.rfc-editor.org/info/rfc8879</a>.</p>
+</dd>
+<dt>[GCM-MU]：</dt>
+<dd>
+<p>Hoang, V., Tessaro, S., and A. Thiruvengadam, &ldquo;The Multi-user Security of GCM, Revisited: Tight Bounds for Nonce Randomization&rdquo;, CCS &lsquo;18: Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security, pp. 1429-1440, DOI 10.1145/3243734.3243816, 2018, <a href="https://doi.org/10.1145/3243734.3243816">https://doi.org/10.1145/3243734.3243816</a>.</p>
+</dd>
+<dt>[HTTP-REPLAY]：</dt>
+<dd>
+<p>Thomson, M., Nottingham, M., and W. Tarreau, &ldquo;Using Early Data in HTTP&rdquo;, RFC 8470, DOI 10.17487/RFC8470, September 2018, <a href="https://www.rfc-editor.org/info/rfc8470">https://www.rfc-editor.org/info/rfc8470</a>.</p>
+</dd>
+<dt>[HTTP2-TLS13]：</dt>
+<dd>
+<p>Benjamin, D., &ldquo;Using TLS 1.3 with HTTP/2&rdquo;, RFC 8740, DOI 10.17487/RFC8740, February 2020, <a href="https://www.rfc-editor.org/info/rfc8740">https://www.rfc-editor.org/info/rfc8740</a>.</p>
+</dd>
+<dt>[IMC]：</dt>
+<dd>
+<p>Katz, J. and Y. Lindell, &ldquo;Introduction to Modern Cryptography, Second Edition&rdquo;, ISBN 978-1466570269, 6 November 2014.</p>
+</dd>
+<dt>[NAN]：</dt>
+<dd>
+<p>Bellare, M., Ng, R., and B. Tackmann, &ldquo;Nonces Are Noticed: AEAD Revisited&rdquo;, Advances in Cryptology - CRYPTO 2019, Lecture Notes in Computer Science, vol 11692, pp. 235-265, DOI 10.1007/978-3-030-26948-7_9, 2019, <a href="https://doi.org/10.1007/978-3-030-26948-7_9">https://doi.org/10.1007/978-3-030-26948-7_9</a>.</p>
+</dd>
+<dt>[QUIC-HTTP]：</dt>
+<dd>
+<p>Bishop, M., Ed., &ldquo;Hypertext Transfer Protocol Version 3 (HTTP/3)&rdquo;, Work in Progress, Internet-Draft, draft-ietf-quic-http-34, 2 February 2021, <a href="https://tools.ietf.org/html/draft-ietf-quic-http-34">https://tools.ietf.org/html/draft-ietf-quic-http-34</a>.</p>
+</dd>
+<dt>[RFC2818]：</dt>
+<dd>
+<p>Rescorla, E., &ldquo;HTTP Over TLS&rdquo;, RFC 2818, DOI 10.17487/RFC2818, May 2000, <a href="https://www.rfc-editor.org/info/rfc2818">https://www.rfc-editor.org/info/rfc2818</a>.</p>
+</dd>
+<dt>[RFC5280]：</dt>
+<dd>
+<p>Cooper, D., Santesson, S., Farrell, S., Boeyen, S., Housley, R., and W. Polk, &ldquo;Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile&rdquo;, RFC 5280, DOI 10.17487/RFC5280, May 2008, <a href="https://www.rfc-editor.org/info/rfc5280">https://www.rfc-editor.org/info/rfc5280</a>.</p>
+</dd>
+<dt>[ROBUST]：</dt>
+<dd>
+<p>Fischlin, M., Günther, F., and C. Janson, &ldquo;Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS 1.3&rdquo;, 16 May 2020, <a href="https://eprint.iacr.org/2020/718">https://eprint.iacr.org/2020/718</a>.</p>
+</dd>
+</dl>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="Appendix_A_Sample_Packet_Protection">
+    
+        <h1>
+    
+            <a href="#Appendix_A_Sample_Packet_Protection">附录A. 数据包保护样例</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>本章展示了数据包保护的一些例子，以便于QUIC的实现可以逐步验证自己的计算结果。这里为客户端和服务器分别定义了初始数据包的样例，以及一个重试数据包。这些数据包使用了一个由客户端选择的8字节长的目标连接ID，其值为<code>0x8394c8f03e515708</code>。样例中还包含了计算过程的一些中间值。所有值都是以十六进制表示的。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="A.1_Keys">
+    
+        <h2>
+    
+            <a href="#A.1_Keys">A.1. 密钥</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>在<code>HKDF-Expand-Label</code>函数的执行期间生成的标签（也就是<code>HkdfLabel.label</code>），以及传给<code>HKDF-Expand</code>函数的参数为：</p>
+<p><code>client in</code>: <code>00200f746c73313320636c69656e7420696e00</code></p>
+<p><code>server in</code>: <code>00200f746c7331332073657276657220696e00</code></p>
+<p><code>quic key</code>: <code>00100e746c7331332071756963206b657900</code></p>
+<p><code>quic iv</code>: <code>000c0d746c733133207175696320697600</code></p>
+<p><code>quic hp</code>: <code>00100d746c733133207175696320687000</code></p>
+<p>初始秘密值是通用的：</p>
+<div id=Pseudocode_A_1_1 class="block ref">
+<pre tabindex="0"><code>initial_secret = HKDF-Extract(initial_salt, cid)
+    = 7db5df06e7a69e432496adedb0085192
+      3595221596ae2ae9fb8115c1e9ed0a44
+</code></pre><p><a href="#Pseudocode_A_1_1"></a></p>
+</div>
+<p>用于保护客户端数据包的秘密值为：</p>
+<div id=Pseudocode_A_1_2 class="block ref">
+<pre tabindex="0"><code>client_initial_secret
+    = HKDF-Expand-Label(initial_secret, &quot;client in&quot;, &quot;&quot;, 32)
+    = c00cf151ca5be075ed0ebfb5c80323c4
+      2d6b7db67881289af4008f1f6c357aea
+
+key = HKDF-Expand-Label(client_initial_secret, &quot;quic key&quot;, &quot;&quot;, 16)
+    = 1f369613dd76d5467730efcbe3b1a22d
+
+iv  = HKDF-Expand-Label(client_initial_secret, &quot;quic iv&quot;, &quot;&quot;, 12)
+    = fa044b2f42a3fd3b46fb255c
+
+hp  = HKDF-Expand-Label(client_initial_secret, &quot;quic hp&quot;, &quot;&quot;, 16)
+    = 9f50449e04a0e810283a1e9933adedd2
+</code></pre><p><a href="#Pseudocode_A_1_2"></a></p>
+</div>
+<p>用于保护服务器数据包的秘密值为：</p>
+<div id=Pseudocode_A_1_3 class="block ref">
+<pre tabindex="0"><code>server_initial_secret
+    = HKDF-Expand-Label(initial_secret, &quot;server in&quot;, &quot;&quot;, 32)
+    = 3c199828fd139efd216c155ad844cc81
+      fb82fa8d7446fa7d78be803acdda951b
+
+key = HKDF-Expand-Label(server_initial_secret, &quot;quic key&quot;, &quot;&quot;, 16)
+    = cf3a5331653c364c88f0f379b6067e37
+
+iv  = HKDF-Expand-Label(server_initial_secret, &quot;quic iv&quot;, &quot;&quot;, 12)
+    = 0ac1493ca1905853b0bba03e
+
+hp  = HKDF-Expand-Label(server_initial_secret, &quot;quic hp&quot;, &quot;&quot;, 16)
+    = c206b8d9b9f0f37644430b490eeaa314
+</code></pre><p><a href="#Pseudocode_A_1_3"></a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="A.2_Client_Initial">
+    
+        <h2>
+    
+            <a href="#A.2_Client_Initial">A.2. 客户端初始数据包</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>客户端会发送初始数据包。该数据包未经保护的载荷中包含着<strong>加密帧</strong>，以及足够多的<strong>填充帧</strong>以使得载荷长度达到1162字节：</p>
+<div id=Pseudocode_A_2_1 class="block ref">
+<pre tabindex="0"><code>060040f1010000ed0303ebf8fa56f129 39b9584a3896472ec40bb863cfd3e868
+04fe3a47f06a2b69484c000004130113 02010000c000000010000e00000b6578
+616d706c652e636f6dff01000100000a 00080006001d00170018001000070005
+04616c706e0005000501000000000033 00260024001d00209370b2c9caa47fba
+baf4559fedba753de171fa71f50f1ce1 5d43e994ec74d748002b000302030400
+0d0010000e0403050306030203080408 050806002d00020101001c0002400100
+3900320408ffffffffffffffff050480 00ffff07048000ffff08011001048000
+75300901100f088394c8f03e51570806 048000ffff
+</code></pre><p><a href="#Pseudocode_A_2_1"></a></p>
+</div>
+<p>在未经保护的头部中，长度字段的值表示着后方数据的总长度，即1182字节：4字节长的数据包号，1162字节长的帧，还有16字节长的认证标签。头部中还包含了连接ID和值为<code>2</code>的数据包号：</p>
+<div id=Pseudocode_A_2_2 class="block ref">
+<pre tabindex="0"><code>c300000001088394c8f03e5157080000449e00000002
+</code></pre><p><a href="#Pseudocode_A_2_2"></a></p>
+</div>
+<p>对载荷进行保护后，其输出密文会被头部保护采样。因为头部中的数据包号被编码为四字节，所以受保护载荷的前16个字节被作为样本（<code>sample</code>），应用在头部保护中：</p>
+<div id=Pseudocode_A_2_3 class="block ref">
+<pre tabindex="0"><code>sample = d1b1c98dd7689fb8ec11d242b123dc9b
+
+mask = AES-ECB(hp, sample)[0..4]
+     = 437b9aec36
+
+header[0] ^= mask[0] &amp; 0x0f
+    = c0
+header[18..21] ^= mask[1..4]
+    = 7b9aec34
+header = c000000001088394c8f03e5157080000449e7b9aec34
+</code></pre><p><a href="#Pseudocode_A_2_3"></a></p>
+</div>
+<p>最后，经保护的数据包的内容为：</p>
+<div id=Pseudocode_A_2_4 class="block ref">
+<pre tabindex="0"><code>c000000001088394c8f03e5157080000 449e7b9aec34d1b1c98dd7689fb8ec11
+d242b123dc9bd8bab936b47d92ec356c 0bab7df5976d27cd449f63300099f399
+1c260ec4c60d17b31f8429157bb35a12 82a643a8d2262cad67500cadb8e7378c
+8eb7539ec4d4905fed1bee1fc8aafba1 7c750e2c7ace01e6005f80fcb7df6212
+30c83711b39343fa028cea7f7fb5ff89 eac2308249a02252155e2347b63d58c5
+457afd84d05dfffdb20392844ae81215 4682e9cf012f9021a6f0be17ddd0c208
+4dce25ff9b06cde535d0f920a2db1bf3 62c23e596d11a4f5a6cf3948838a3aec
+4e15daf8500a6ef69ec4e3feb6b1d98e 610ac8b7ec3faf6ad760b7bad1db4ba3
+485e8a94dc250ae3fdb41ed15fb6a8e5 eba0fc3dd60bc8e30c5c4287e53805db
+059ae0648db2f64264ed5e39be2e20d8 2df566da8dd5998ccabdae053060ae6c
+7b4378e846d29f37ed7b4ea9ec5d82e7 961b7f25a9323851f681d582363aa5f8
+9937f5a67258bf63ad6f1a0b1d96dbd4 faddfcefc5266ba6611722395c906556
+be52afe3f565636ad1b17d508b73d874 3eeb524be22b3dcbc2c7468d54119c74
+68449a13d8e3b95811a198f3491de3e7 fe942b330407abf82a4ed7c1b311663a
+c69890f4157015853d91e923037c227a 33cdd5ec281ca3f79c44546b9d90ca00
+f064c99e3dd97911d39fe9c5d0b23a22 9a234cb36186c4819e8b9c5927726632
+291d6a418211cc2962e20fe47feb3edf 330f2c603a9d48c0fcb5699dbfe58964
+25c5bac4aee82e57a85aaf4e2513e4f0 5796b07ba2ee47d80506f8d2c25e50fd
+14de71e6c418559302f939b0e1abd576 f279c4b2e0feb85c1f28ff18f58891ff
+ef132eef2fa09346aee33c28eb130ff2 8f5b766953334113211996d20011a198
+e3fc433f9f2541010ae17c1bf202580f 6047472fb36857fe843b19f5984009dd
+c324044e847a4f4a0ab34f719595de37 252d6235365e9b84392b061085349d73
+203a4a13e96f5432ec0fd4a1ee65accd d5e3904df54c1da510b0ff20dcc0c77f
+cb2c0e0eb605cb0504db87632cf3d8b4 dae6e705769d1de354270123cb11450e
+fc60ac47683d7b8d0f811365565fd98c 4c8eb936bcab8d069fc33bd801b03ade
+a2e1fbc5aa463d08ca19896d2bf59a07 1b851e6c239052172f296bfb5e724047
+90a2181014f3b94a4e97d117b4381303 68cc39dbb2d198065ae3986547926cd2
+162f40a29f0c3c8745c0f50fba3852e5 66d44575c29d39a03f0cda721984b6f4
+40591f355e12d439ff150aab7613499d bd49adabc8676eef023b15b65bfc5ca0
+6948109f23f350db82123535eb8a7433 bdabcb909271a6ecbcb58b936a88cd4e
+8f2e6ff5800175f113253d8fa9ca8885 c2f552e657dc603f252e1a8e308f76f0
+be79e2fb8f5d5fbbe2e30ecadd220723 c8c0aea8078cdfcb3868263ff8f09400
+54da48781893a7e49ad5aff4af300cd8 04a6b6279ab3ff3afb64491c85194aab
+760d58a606654f9f4400e8b38591356f bf6425aca26dc85244259ff2b19c41b9
+f96f3ca9ec1dde434da7d2d392b905dd f3d1f9af93d1af5950bd493f5aa731b4
+056df31bd267b6b90a079831aaf579be 0a39013137aac6d404f518cfd4684064
+7e78bfe706ca4cf5e9c5453e9f7cfd2b 8b4c8d169a44e55c88d4a9a7f9474241
+e221af44860018ab0856972e194cd934
+</code></pre><p><a href="#Pseudocode_A_2_4"></a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="A.3_Server_Initial">
+    
+        <h2>
+    
+            <a href="#A.3_Server_Initial">A.3. 服务器初始数据包</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>作为回应，服务器会发送以下载荷，其中包含一个<strong>ACK帧</strong>和一个<strong>加密帧</strong>，并且不包含<strong>填充帧</strong>：</p>
+<div id=Pseudocode_A_3_1 class="block ref">
+<pre tabindex="0"><code>02000000000600405a020000560303ee fce7f7b37ba1d1632e96677825ddf739
+88cfc79825df566dc5430b9a045a1200 130100002e00330024001d00209d3c94
+0d89690b84d08a60993c144eca684d10 81287c834d5311bcf32bb9da1a002b00
+020304
+</code></pre><p><a href="#Pseudocode_A_3_1"></a></p>
+</div>
+<p>来自服务器的头部包含着一个新的连接ID和一个值为<code>1</code>且被编码至双字节中数据包号：</p>
+<div id=Pseudocode_A_3_2 class="block ref">
+<pre tabindex="0"><code>c1000000010008f067a5502a4262b50040750001
+</code></pre><p><a href="#Pseudocode_A_3_2"></a></p>
+</div>
+<p>对载荷进行保护后，从第三个密文字节起的一段数据被取作头部保护的样本。</p>
+<div id=Pseudocode_A_3_3 class="block ref">
+<pre tabindex="0"><code>sample = 2cd0991cd25b0aac406a5816b6394100
+mask   = 2ec0d8356a
+header = cf000000010008f067a5502a4262b5004075c0d9
+</code></pre><p><a href="#Pseudocode_A_3_3"></a></p>
+</div>
+<p>最后，经保护的数据包的内容为：</p>
+<div id=Pseudocode_A_3_4 class="block ref">
+<pre tabindex="0"><code>cf000000010008f067a5502a4262b500 4075c0d95a482cd0991cd25b0aac406a
+5816b6394100f37a1c69797554780bb3 8cc5a99f5ede4cf73c3ec2493a1839b3
+dbcba3f6ea46c5b7684df3548e7ddeb9 c3bf9c73cc3f3bded74b562bfb19fb84
+022f8ef4cdd93795d77d06edbb7aaf2f 58891850abbdca3d20398c276456cbc4
+2158407dd074ee
+</code></pre><p><a href="#Pseudocode_A_3_4"></a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="A.4_Retry">
+    
+        <h2>
+    
+            <a href="#A.4_Retry">A.4. 重试数据包</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>这里展示了一个可以被用于响应<a href="">附录A.2</a>中的初始数据包的重试数据包。完整性检查中使用了了由客户端选择的值为<code>0x8394c8f03e515708</code>的连接ID，但是这个值不会被包含在最终的重试数据包的明文中：</p>
+<div id=Pseudocode_A_4_1 class="block ref">
+<pre tabindex="0"><code>ff000000010008f067a5502a4262b574 6f6b656e04a265ba2eff4d829058fb3f
+0f2496ba
+</code></pre><p><a href="#Pseudocode_A_4_1"></a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="A.5_ChaCha20-Poly1305_Short_Header_Packet">
+    
+        <h2>
+    
+            <a href="#A.5_ChaCha20-Poly1305_Short_Header_Packet">A.5. 使用ChaCha20-Poly1305的短包头数据包</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>本例展示了保护短包头数据包时所需的一些步骤。本例使用了<code>AEAD_CHACHA20_POLY1305</code>。</p>
+<p>在本例中，TLS生成了一个应用写入秘密值（<code>secret</code>），服务器使用<code>HKDF-Expand-Label</code>从这个秘密值生成四个值：一个密钥（<code>key</code>）、一个IV（<code>iv</code>）、一个头部保护密钥（<code>hp</code>），和一个将被在密钥被更新后使用到的秘密值（<code>ku</code>，但它在本例中没有被使用到）。</p>
+<div id=Pseudocode_A_5_1 class="block ref">
+<pre tabindex="0"><code>secret
+    = 9ac312a7f877468ebe69422748ad00a1
+      5443f18203a07d6060f688f30f21632b
+
+key = HKDF-Expand-Label(secret, &quot;quic key&quot;, &quot;&quot;, 32)
+    = c6d98ff3441c3fe1b2182094f69caa2e
+      d4b716b65488960a7a984979fb23e1c8
+
+iv  = HKDF-Expand-Label(secret, &quot;quic iv&quot;, &quot;&quot;, 12)
+    = e0459b3474bdd0e44a41c144
+
+hp  = HKDF-Expand-Label(secret, &quot;quic hp&quot;, &quot;&quot;, 32)
+    = 25a282b9e82f06f21f488917a4fc8f1b
+      73573685608597d0efcb076b0ab7a7a4
+
+ku  = HKDF-Expand-Label(secret, &quot;quic ku&quot;, &quot;&quot;, 32)
+    = 1223504755036d556342ee9361d25342
+      1a826c9ecdf3c7148684b36b714881f9
+</code></pre><p><a href="#Pseudocode_A_5_1"></a></p>
+</div>
+<p>下面展示了保护一个目标连接ID为空的最小数据包时所需的一些步骤。这个数据包仅包含了一个<strong>Ping帧</strong>（也就是说，载荷是<code>0x01</code>），并且其数据包号为<code>654360564</code>。在本例中，使用长度为<code>3</code>的数据包号编码方式（也就是编码为<code>49140</code>）避免了扩充数据包载荷的需要；如果数据包号被编码至更少的字节中，那么就需要<strong>填充帧</strong>。</p>
+<div id=Pseudocode_A_5_2 class="block ref">
+<pre tabindex="0"><code>pn                 = 654360564 # 十进制
+nonce              = e0459b3474bdd0e46d417eb0
+unprotected header = 4200bff4
+payload plaintext  = 01
+payload ciphertext = 655e5cd55c41f69080575d7999c25a5bfb
+</code></pre><p><a href="#Pseudocode_A_5_2"></a></p>
+</div>
+<p>其结果密文的长度是在可能的范围中最小的。在为头部保护采样时，会跳过一个字节。</p>
+<div id=Pseudocode_A_5_3 class="block ref">
+<pre tabindex="0"><code>sample = 5e5cd55c41f69080575d7999c25a5bfb
+mask   = aefefe7d03
+header = 4cfe4189
+</code></pre><p><a href="#Pseudocode_A_5_3"></a></p>
+</div>
+<p>经保护的数据包，其21字节的长度是在可能的范围中最小的。</p>
+<div id=Pseudocode_A_5_4 class="block ref">
+<pre tabindex="0"><code>packet = 4cfe4189655e5cd55c41f69080575d7999c25a5bfb
+</code></pre><p><a href="#Pseudocode_A_5_4"></a></p>
+</div>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="Appendix_B_AEAD_Algorithm_Analysis">
+    
+        <h1>
+    
+            <a href="#Appendix_B_AEAD_Algorithm_Analysis">附录B. AEAD算法分析</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>本章记述了在为<code>AEAD_AES_128_GCM</code>、<code>AEAD_AES_128_CCM</code>和<code>AEAD_AES_256_GCM</code>计算AEAD算法的用量上限时使用的分析方法。在下文的分析中，使用了乘法运算符号（<code>*</code>）、除法运算符号（<code>/</code>）和幂运算符号（<code>^</code>），并使用括号来指定优先级。除此之外，还使用了以下符号：</p>
+<dl>
+<dt><code>t</code>：</dt>
+<dd>
+<p>认证标签以比特为单位的长度。对于以上加密算法，<code>t</code>的值为<code>128</code>。</p>
+</dd>
+<dt><code>n</code>：</dt>
+<dd>
+<p>块函数以比特位单位的长度。对于以上算法，<code>n</code>的值为<code>128</code>。</p>
+</dd>
+<dt><code>k</code>：</dt>
+<dd>
+<p>密钥以比特为单位的长度。对于<code>AEAD_AES_128_GCM</code>和<code>AEAD_AES_128_CCM</code>，<code>n</code>的值为<code>128</code>；<code>AEAD_AES_256_GCM</code>则为256。</p>
+</dd>
+<dt><code>l</code>：</dt>
+<dd>
+<p>每个数据包中块的数量（见下文）。</p>
+</dd>
+<dt><code>q</code>：</dt>
+<dd>
+<p>终端创建和保护的真实数据包的数量。这个值的上限为终端在更新密钥前能够保护的数据包数量。</p>
+</dd>
+<dt><code>v</code>：</dt>
+<dd>
+<p>终端接受的伪造数据包的数量。这个值的上限为终端在更新密钥前能够拒绝的伪造数据包的数量。</p>
+</dd>
+<dt><code>o</code>：</dt>
+<dd>
+<p>攻击者离线进行的理想加密查询次数。</p>
+</dd>
+</dl>
+<p>下文的分析依赖于在创建各条消息时对块操作进行计数。该分析是对尺寸不超过<code>2<sup>11</sup></code>（<code>l</code>为<code>2<sup>27</sup></code>）或<code>2<sup>16</sup></code>（<code>l</code>为<code>2<sup>12</sup></code>）的数据包进行的。<code>2<sup>11</sup></code>这个尺寸应该是一个与常见部署模式匹配的上限值，而<code>2<sup>16</sup></code>是单个QUIC数据包的所有可能的尺寸中的最大值。只有严格限制数据包尺寸的终端才能使用通过较小的数据包尺寸计算出的较大的那组可信度和完整性上限。</p>
+<p>对于<code>AEAD_AES_128_GCM</code>和<code>AEAD_AES_256_GCM</code>，消息长度（<code>l</code>）是块中关联数据的长度与块中明文的长度之和。</p>
+<p>对于<code>AEAD_AES_128_CCM</code>，块加密操作的总数为以下项目的总和：关联数据以块为单位的长度、密文以块为单位的长度和明文以块为单位的长度，最后再加上1。在本分析中，这个值被简化为数据包以块为单位的长度的两倍（也就是说，对于尺寸上限为<code>2<sup>11</sup></code>的数据包，<code>2l</code>为<code>2<sup>8</sup></code>，否则<code>2l</code>为<code>2<sup>13</sup></code>）。这种简化是基于包含全部关联数据和密文的数据包的。它会造成对于每个数据包中的操作数量会多计算一至三个块。</p>
+
+    </div>
+</section>
+
+
+    
+        
+                <section class="page" id="B.1_Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits">
+    
+        <h2>
+    
+            <a href="#B.1_Analysis_of_AEAD_AES_128_GCM_and_AEAD_AES_256_GCM_Usage_Limits">B.1. 对于AEAD_AES_128_GCM和AEAD_AES_256_GCM用量上限的分析</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>《<a href="">GCM-MU</a>》具体说明了<code>AEAD_AES_128_GCM</code>和<code>AEAD_AES_256_GCM</code>被用在TLS 1.3和QUIC中时准确的用量上限。本节使用了一些经简化的假设来概述这份分析：</p>
+<ul>
+<li>
+<p>攻击者在尝试伪造时使用的密文块数量上限为<code>v * l</code>，即尝试伪造的次数乘以每个数据包（以块为单位）的大小。</p>
+</li>
+<li>
+<p>攻击者在线下完成的工作量在本分析的各项因素中并不占据主导地位。</p>
+</li>
+</ul>
+<p>《<a href="">GCM-MU</a>》中设定的上限比《<a href="">AEBounds</a>》中使用的那些要更严格且更完备，这使得QUIC实现能够使用比《<a href="">TLS13</a>》中所描述的更大的限制。</p>
+
+    </div>
+</section>
+
+
+    
+        
+            <section class="page" id="B.1.1_Confidentiality_Limit">
+    
+        <h3>
+    
+            <a href="#B.1.1_Confidentiality_Limit">B.1.1. 可信度上限</a>
+    
+        </h3>
+    
+    <div class="content">
+        <p>在可信度方面，《<a href="">GCM-MU</a>》中的定理4.3指出，对于一个不会重复随机数的用户，计算攻击者随机选择的AEAD算法相比实际使用的真实AEAD算法的优势程度的表达式为：</p>
+<div id=Pseudocode_B_1_1_1 class="block ref">
+<pre tabindex="0"><code>2 * (q * l)^2 / 2^n
+</code></pre><p><a href="#Pseudocode_B_1_1_1"></a></p>
+</div>
+<p>当目标优势度为<code>2<sup>-57</sup></code>时，会得到这样的关系：</p>
+<div id=Pseudocode_B_1_1_2 class="block ref">
+<pre tabindex="0"><code>q &lt;= 2^35 / l
+</code></pre><p><a href="#Pseudocode_B_1_1_2"></a></p>
+</div>
+<p>因此，发送不超过<code>2<sup>11</sup></code>字节的数据包的终端无法在单条连接中保护<code>2<sup>28</sup></code>个以上的数据包却不让攻击者获得超过<code>2<sup>-57</sup></code>优势度。对于允许数据包尺寸达到<code>2<sup>16</sup></code>字节的终端，则该限制为<code>2<sup>23</sup></code>个数据包。</p>
+
+    </div>
+</section>
+
+        
+    
+        
+            <section class="page" id="B.1.2_Integrity_Limit">
+    
+        <h3>
+    
+            <a href="#B.1.2_Integrity_Limit">B.1.2. 完整性上限</a>
+    
+        </h3>
+    
+    <div class="content">
+        <p>在完整性方面，《<a href="">GCM-MU</a>》中的定理4.3指出，攻击者在伪造数据包时次数不需要超过此值就能获得明显优势：</p>
+<div id=Pseudocode_B_1_2_1 class="block ref">
+<pre tabindex="0"><code>(1 / 2^(8 * n)) + ((2 * v) / 2^(2 * n))
+        + ((2 * o * v) / 2^(k + n)) + (n * (v + (v * l)) / 2^k)
+</code></pre><p><a href="#Pseudocode_B_1_2_1"></a></p>
+</div>
+<p>我们的目标是将此优势限制到<code>2<sup>-57</sup></code>以下。对于<code>AEAD_AES_128_GCM</code>，不等式中的第四项占据主导地位，所以其余项可以被移除而不会对结果产生重要影响。这会产生以下近似结果：</p>
+<div id=Pseudocode_B_1_2_2 class="block ref">
+<pre tabindex="0"><code>v &lt;= 2^64 / l
+</code></pre><p><a href="#Pseudocode_B_1_2_2"></a></p>
+</div>
+<p>不会尝试对超过<code>2<sup>11</sup></code>字节的数据包移除保护的终端最多可以尝试为<code>2<sup>57</sup></code>个数据包移除保护。并不限制所处理的数据包尺寸的终端最多可以尝试为<code>2<sup>52</sup></code>个数据包移除保护。</p>
+<p>对于<code>AEAD_AES_256_GCM</code>，占据主导地位的是同一项，但是较大的<code>k</code>值会产生以下近似结果：</p>
+<div id=Pseudocode_B_1_2_3 class="block ref">
+<pre tabindex="0"><code>v &lt;= 2^192 / l
+</code></pre><p><a href="#Pseudocode_B_1_2_3"></a></p>
+</div>
+<p>这比对<code>AEAD_AES_128_GCM</code>的限制要大得多。但是，本文档建议对两个函数施加同样的限制，因为任一限制都是可接受且足够大的。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+    
+        
+            <section class="page" id="B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits">
+    
+        <h2>
+    
+            <a href="#B.2_Analysis_of_AEAD_AES_128_CCM_Usage_Limits">B.2. 对于AEAD_AES_128_CCM用量上限的分析</a>
+    
+        </h2>
+    
+    <div class="content">
+        <p>TLS（详见《<a href="">TLS13</a>》）和《<a href="">AEBounds</a>》都没有为<code>AEAD_AES_128_CCM</code>的用量设定上限。然而，任何与QUIC一起使用的AEAD都需要在用量上设定上限以确保可信度和完整性都能得到维持。本节记述了关于此上限的分析。</p>
+<p>《<a href="">CCM-ANALYSIS</a>》被用作本分析的基础。该文献中的分析结果被用于计算用量上限。</p>
+<p>在可信度方面，《<a href="">CCM-ANALYSIS</a>》中的定理2指出，攻击者相比理想的伪随机排列（PRP）获得的优势不会超过此值：</p>
+<div id=Pseudocode_B_2_1 class="block ref">
+<pre tabindex="0"><code>(2l * q)^2 / 2^n
+</code></pre><p><a href="#Pseudocode_B_2_1"></a></p>
+</div>
+<p>在相同消息数量的情况下，《<a href="">CCM-ANALYSIS</a>》中的定理1中的完整性上限给予了攻击者更多优势。由于可信度方面优势与完整性方面优势的目标值是相同的，所以只需要考虑定理1。</p>
+<p>定理1指出，攻击者相比理想的PRP获得的优势不会超过此值：</p>
+<div id=Pseudocode_B_2_2 class="block ref">
+<pre tabindex="0"><code>v / 2^t + (2l * (v + q))^2 / 2^n
+</code></pre><p><a href="#Pseudocode_B_2_2"></a></p>
+</div>
+<p>由于<code>t</code>和<code>n</code>都是<code>128</code>，第一项相比第二项变得微不足道，因此第一项可以被移除而不会对结果产生重要影响。</p>
+<p>这产生了一种关系，它将加密尝试次数和解密尝试次数关联到了相同的上限值上，这个上限值是定理为可信度生成的。当目标优势度为<code>2<sup>-57</sup></code>时，这会产生以下结果：</p>
+<div id=Pseudocode_B_2_3 class="block ref">
+<pre tabindex="0"><code>v + q &lt;= 2^34.5 / l
+</code></pre><p><a href="#Pseudocode_B_2_3"></a></p>
+</div>
+<p>通过设置<code>q = v</code>，可信度上限和完整性上限的值就都能被推导出来。因此限制数据包尺寸不超过<code>2<sup>11</sup></code>字节的终端使用<code>2<sup>26.5</sup></code>个数据包的可信度上限和完整性上限。不限制数据包尺寸的终端则使用值为<code>2<sup>21.5</sup></code>的上限。</p>
+
+    </div>
+</section>
+
+        
+    
+
+
+
+        
+                <section class="page" id="Contributors">
+    
+        <h1>
+    
+            <a href="#Contributors">贡献者</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>IETF QUIC工作组接收到了来自许多人员的大量支持。以下人员对本文档做出了重要贡献：</p>
+<ul>
+<li>
+<p>Adam Langley</p>
+</li>
+<li>
+<p>Alessandro Ghedini</p>
+</li>
+<li>
+<p>Christian Huitema</p>
+</li>
+<li>
+<p>Christopher Wood</p>
+</li>
+<li>
+<p>David Schinazi</p>
+</li>
+<li>
+<p>Dragana Damjanovic</p>
+</li>
+<li>
+<p>Eric Rescorla</p>
+</li>
+<li>
+<p>Felix Günther</p>
+</li>
+<li>
 <p>Ian Swett</p>
-<p>Google</p>
-<p>Email: <a href="mailto:ianswett@google.com">ianswett@google.com</a></p>
+</li>
+<li>
+<p>Jana Iyengar</p>
+</li>
+<li>
+<p>奥 一穂 (Kazuho Oku)</p>
+</li>
+<li>
+<p>Marten Seemann</p>
+</li>
+<li>
+<p>Martin Duke</p>
+</li>
+<li>
+<p>Mike Bishop</p>
+</li>
+<li>
+<p>Mikkel Fahnøe Jørgensen</p>
+</li>
+<li>
+<p>Nick Banks</p>
+</li>
+<li>
+<p>Nick Harper</p>
+</li>
+<li>
+<p>Roberto Peon</p>
+</li>
+<li>
+<p>Rui Paulo</p>
+</li>
+<li>
+<p>Ryan Hamilton</p>
+</li>
+<li>
+<p>Victor Vasiliev</p>
+</li>
+</ul>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="Authors_Addresses">
+    
+        <h1>
+    
+            <a href="#Authors_Addresses">联系作者</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p><strong>Martin Thomson (编辑)</strong></p>
+<p>Mozilla</p>
+<p>Email: <a href="mainto:mt@lowentropy.net">mt@lowentropy.net</a></p>
+<p><strong>Sean Turner (编辑)</strong></p>
+<p>sn3rd</p>
+<p>Email: <a href="mailto:sean@sn3rd.com">sean@sn3rd.com</a></p>
 <h2 id="译">译</h2>
 <ul>
-<li><a href="https://github.com/YunzheZJU">YunzheZJU</a>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
 <ul>
 <li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
 </ul>
 </li>
 </ul>
