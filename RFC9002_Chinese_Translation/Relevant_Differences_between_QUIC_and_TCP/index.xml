@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>4. QUIC和TCP间的相关差异 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/</link>
+    <description>Recent content in 4. QUIC和TCP间的相关差异 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>4.1. 单独的数据包号空间</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.1_Separate_Packet_Number_Spaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.1_Separate_Packet_Number_Spaces/</guid>
+      <description>除了0-RTT密钥会和所有的1-RTT密钥共享数据包号空间外，QUIC为每个密级使用单独的数据包号空间。单独的数据包号空间确保了以某个密级发送的数据包确认不会引发以另一密级发送的数据包被无效地重传。拥塞控制和往返时间（RTT）测量在不同数据包号空间之间是通用的。</description>
+    </item>
+    
+    <item>
+      <title>4.2. 单调递增的数据包号</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.2_Monotonically_Increasing_Packet_Numbers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.2_Monotonically_Increasing_Packet_Numbers/</guid>
+      <description>TCP强制接收方的接收顺序与发送方的发送顺序一致，这会引发重传歧义问题（详见《RETRANSMISSION》）。QUIC将发送顺序与接收顺序分离：数据包号表明了发送顺序，而接收顺序是由流帧中的流偏移决定的。
+QUIC的数据包号在同一个数据包号空间中是严格递增的，并且其中直接编码了传输顺序。较大的数据包号表明该数据包是在较晚的时候被发送的，而较小的数据包号表明该数据包是在较早的时候被发送的。当包含ACK触发帧的数据包被认定为丢包时，QUIC会在具有新数据包号的新数据包中发送所有必要的帧，并在接收到确认时弄清楚实际送达了哪些数据包。此外，还可以基于数据包号更精确地进行RTT测量、更简单地检测无效重传、更通用地使用快速重传等机制。
+这一设计极大地简化了QUIC的丢包检测机制。大多数TCP机制都隐式地试图基于TCP序列号推断发送顺序——这是一项困难的工作，尤其是当TCP时间戳不可用时。</description>
+    </item>
+    
+    <item>
+      <title>4.3. 更准确的丢包计时器</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.3_Clearer_Loss_Epoch/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.3_Clearer_Loss_Epoch/</guid>
+      <description>QUIC会在数据包丢包时启动一个丢包计时器。该丢包计时器会在其启动后被发送的任一数据包得到确认时停止计时。而在TCP中的行为是等到序列号空间的空档被填上为止，因此当某数据段连续遭遇丢包时，丢包计时器哪怕经过数轮往返时间也不会停止。因为两者都应该在每次计时期间仅缩小一次拥塞窗口，所以QUIC能够在每轮遭遇丢包的往返时间内缩小一次窗口，而TCP可能要经过数段往返时间才缩小一次。</description>
+    </item>
+    
+    <item>
+      <title>4.4. 禁止食言</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.4_No_Reneging/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.4_No_Reneging/</guid>
+      <description>QUIC的ACK帧包含着的信息与TCP的可选确认（SACK）（详见《RFC2018》）中的类似。然而在QUIC中，禁止更改对某个数据包的确认，这极大地简化了两侧终端的实现并降低了发送方的内存压力。</description>
+    </item>
+    
+    <item>
+      <title>4.5. 更多ACK块</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.5_More_ACK_Ranges/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.5_More_ACK_Ranges/</guid>
+      <description>与TCP的三个SACK块不同，QUIC支持多个ACK块。在高丢包率的环境下，这能加速恢复，减少无效重传，并且确保有效发送而不需要依赖超时机制。</description>
+    </item>
+    
+    <item>
+      <title>4.6. 显式纠正确认延迟</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.6_Explicit_Correction_for_Delayed_Acknowledgments/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.6_Explicit_Correction_for_Delayed_Acknowledgments/</guid>
+      <description>QUIC终端会测量在接收到数据包时和在发送相应的确认时之间的延迟，使得对端能够维护更准确的RTT预估；详见《QUIC传输》的第13.2章。</description>
+    </item>
+    
+    <item>
+      <title>4.7. 探测包超时取代了RTO和TLP</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.7_Probe_Timeout_Replaces_RTO_and_TLP/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.7_Probe_Timeout_Replaces_RTO_and_TLP/</guid>
+      <description>QUIC使用了探测包超时（PTO，详见第6.2章）和一个基于TCP的重传超时（RTO）计算法的计时器；详见《RFC6298》。QUIC的PTO中包含着对端的最大预估确认延迟，而没有使用固定的最小超时时间。
+与TCP的RACK-TLP丢包检测算法（详见《RFC8985》）类似，QUIC不会在PTO超时时缩小拥塞窗口，因为单个队尾数据包遭遇丢包并不能表明持续的拥塞。取而代之的是，QUIC会在持续拥塞出现时再次缩小拥塞窗口；详见第7.6章。在此过程中，QUIC会避免不必要的拥塞窗口缩减，从而避免需要前向RTO恢复（F-RTO，详见《RFC5682》）等纠正机制。由于QUIC不会在PTO超时时缩小拥塞窗口，所以QUIC发送方在仍有剩余拥塞窗口时，即使是在PTO超时后也不会在发送更多在途数据包时受限。这种情况会在发送方受到应用限制并且PTO计时器超时时发生。当受到应用限制时，这种做法会比TCP的RTO机制更激进，但是当不受到应用限制时，它是很理想的。
+无论计时器何时超时，QUIC都允许在发送探测数据包时临时超过拥塞窗口。</description>
+    </item>
+    
+    <item>
+      <title>4.8. 最小拥塞窗口为两个数据包</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.8_The_Minimum_Congestion_Window_Is_Two_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.8_The_Minimum_Congestion_Window_Is_Two_Packets/</guid>
+      <description>TCP使用的最小拥塞窗口为一个数据包。然而，如果该单个数据包遭遇丢包，那么发送方就需要等待一个PTO时间才能恢复（详见第6.2章），这可能远大于单个RTT时间。当接收方有意延迟确认时，仅发送单个ACK触发包还增加了引入额外延迟的可能性。
+因此QUIC推荐最小拥塞窗口为两个数据包。尽管这会增加网络负载，但是因为发送方仍然会在遇到持续拥塞时以指数形式降低自身的发送速率，因此这种做法被认为是安全的。</description>
+    </item>
+    
+    <item>
+      <title>4.9. 握手数据包并不特殊</title>
+      <link>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.9_Handshake_Packets_Are_Not_Special/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Relevant_Differences_between_QUIC_and_TCP/4.9_Handshake_Packets_Are_Not_Special/</guid>
+      <description>TCP将SYN数据包或SYN-ACK数据包遭遇丢包的情况视作为持续拥塞并且缩小拥塞窗口至一个数据包；详见《RFC5681》。QUIC将包含握手数据的数据包遭遇丢包的情况与其他丢包的情况一视同仁。</description>
+    </item>
+    
+  </channel>
+</rss>

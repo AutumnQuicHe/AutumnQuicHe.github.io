@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>5. 预估往返时间 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/</link>
+    <description>Recent content in 5. 预估往返时间 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5.1. 创建RTT样本</title>
+      <link>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.1_Generating_RTT_Samples/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.1_Generating_RTT_Samples/</guid>
+      <description>终端在接收到一个符合以下两项条件的ACK帧时，会创建一份RTT样本：
+  最大已确认数据包号是此次新确认的，并且
+  此次新确认的数据包中至少有一个是ACK触发包。
+  随着时间流逝，最新的RTT样本latest_rtt会因为最大已确认数据包的不断更新而不断创建：
+latest_rtt = 确认时间 - 最大已确认数据包的发送时间 
+ 创建RTT样本时只会使用到接收到的那个ACK帧中的最大已确认数据包号。这是因为对端只会为ACK帧中的最大已确认数据包报告确认延迟。尽管报告的那个确认延迟不会在测量RTT样本时被用到，但是它会在后续计算smoothed_rtt和rttvar时（详见第5.3章）被用于调整RTT样本。
+为了避免为同一数据包创建多份RTT样本，如果ACK帧中的最大已确认数据包号不是此次新确认的，那么它不应该被用于更新RTT预估。
+当接收到的ACK帧没有新确认任何ACK触发包时，必须不创建RTT样本。在仅接收到非ACK触发包时，对端通常不会发送ACK帧。因此，仅包含对非ACK触发包的确认的ACK帧中可能有着极高的ACK延迟值。忽略这样的ACK帧避免了后续计算smoothed_rtt和rttvar时的复杂度。
+当在一个RTT内接收到多个ACK帧时，发送方可能会在一个RTT内创建多个RTT样本。正如《RFC6298》中建议的那样，这么做可能会造成smoothed_rtt和rttvar中出现冗余的历史记录。确保RTT预估保持适量的历史记录是一个开放的待研究问题。</description>
+    </item>
+    
+    <item>
+      <title>5.2. 预估min_rtt</title>
+      <link>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.2_Estimating_min_rtt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.2_Estimating_min_rtt/</guid>
+      <description>min_rtt是发送方对于一段时间内在给定网络路径上观测到的最小RTT的预估。在本文中，min_rtt会被丢包检测用于去除那些过小的RTT样本。
+在首份RTT样本上，min_rtt必须被设置为latest_rtt。在其余样本上，min_rtt必须被设置为min_rtt和latest_rtt（详见第5.1章）中的较小值。
+终端在计算min_rtt时仅使用本地观测到的时间，不会因对端报告的确认延迟而做出调整。这么做使得终端能够为完全基于其观测结果的smoothed_rtt设置较低的下限，并且减少潜在的因为对端误报的延迟而产生的过低估计。
+一条网络路径的RTT可能会随时间变化。如果一条路径的实际RTT降低了，那么min_rtt就会立即在首个低值样本上作出响应。然而，如果一条路径的实际RTT升高了，那么min_rtt不会作出响应，从而允许将来的比此新RTT要小的RTT样本能被包含在smoothed_rtt中。
+终端应该在检测到持续拥塞后将min_rtt设置为最新的RTT样本。这避免了当RTT升高时反复报告持续拥塞。这还使得连接能够在一次网络中断事件后重置它的min_rtt和smoothed_rtt；详见第5.3章。
+中断可以在其他时间点重建连接的min_rtt，例如当流量较低时和当接收到具有较低的确认延迟的确认时。QUIC实现不应该过于频繁地重置min_rtt，因为一条路径真正的最小RTT不会经常被观测到。</description>
+    </item>
+    
+    <item>
+      <title>5.3. 预估smoothed_rtt和rttvar</title>
+      <link>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.3_Estimating_smoothed_rtt_and_rttvar/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Estimating_the_Round-Trip_Time/5.3_Estimating_smoothed_rtt_and_rttvar/</guid>
+      <description>smoothed_rtt是终端RTT样本的以指数形式加权的滑动平均值，而rttvar用平均差的方式预估了RTT样本间的偏差。
+smoothed_rtt的计算需要用到经过确认延迟调整的RTT样本。这些延迟是按照《QUIC传输》的第19.3章中所描述的那样，从ACK帧的ACK延迟字段中解码出来的。
+对端报告的确认延迟可能会比它在握手期间宣称的max_ack_delay（最大ACK延迟，详见《QUIC传输》的第13.2.1章）还大。为了解决这个问题，终端在握手确认前应该按照《QUIC-TLS》的第4.1.2章中描述的那样，忽略max_ack_delay。当这种情况发生时，这些巨大的确认延迟很有可能不会反复出现，并且仅限于在握手期间出现。因此终端可以使用它们而不受限于max_ack_delay，避免RTT预估不必要地膨胀。
+注意，如果在对端报告确认延迟或预估min_rtt的过程中出现错误，那么巨大的确认延迟会导致smoothed_rtt的显著膨胀。因此，在握手确认前，如果使用确认延迟调整后的RTT样本低于min_rtt，那么终端可以忽略这样的RTT样本。
+在握手确认后，对端报告的任何大于其max_ack_delay的确认延迟都可以被认为是无意中重复计量的延迟，例如对端的调度器延迟或因之前的确认遭遇丢包而产生的延迟。不遵守协议的接收方也有可能引入额外的延迟。因此，这些额外的延迟被认为是路径延迟的有效部分，并被计入RTT预估。
+因此，当使用由对端报告的确认延迟来调整RTT样本时：
+  可以忽略对初始数据包的确认延迟，因为这些确认不是被对端延误的（详见《QUIC传输》的第13.2.1章）；
+  在握手确认前，应该忽略对端的max_ack_delay；
+  在握手确认后，必须使用确认延迟和对端的max_ack_delay中的较小值；并且
+  当产生的结果小于min_rtt时，必须不从RTT样本中减去确认延迟。这减少了因为对端错误地报告而对于smoothed_rtt作出过低估计的情况。
+  除此之外，终端可能在相应的解密密钥尚未可用时推迟确认的处理。例如，客户端可能接收到一个对于0-RTT数据包的确认但它却无法解密，因为1-RTT数据包保护密钥尚未可用。在这种情况下，终端应该在握手确认前从它的RTT样本中减去这些由本机产生的延迟。
+与《RFC6298》类似，smoothed_rtt和rttvar的计算过程如下所述。
+终端在连接建立期间初始化RTT预估器，以及在连接迁移期间重置预估器时也会将它初始化；详见《QUIC传输》的第9.4章。在任何新路径的RTT样本可用前，或在预估器被重置后，预估器都会使用初始RTT来初始化；详见第6.2.2章。
+smoothed_rtt和rttvar会以这种方式初始化，其中kInitialRtt为初始RTT值：
+smoothed_rtt = kInitialRtt rttvar = kInitialRtt / 2 
+ 网络路径的RTT样本被记录在latest_rtt中；详见第5.1章。在初始化后得到首份RTT样本时，使用该样本来重置预估器。这确保了预估器中不留有过去样本的历史记录。在其他路径上发送的数据包并不会为当前路径的RTT样本做出贡献，如《QUIC传输》的第9.4章所述。
+在初始化后得到首份RTT样本时，以这种方式设置smoothed_rtt和rttvar：
+smoothed_rtt = latest_rtt rttvar = latest_rtt / 2 
+ 在得到后续RTT样本时，以这种方式更新smoothed_rtt和rttvar：
+ack_delay = 从ACK帧中解码的确认延迟 if (握手已确认): ack_delay = min(ack_delay, max_ack_delay) adjusted_rtt = latest_rtt if (latest_rtt &amp;gt;= min_rtt + ack_delay): adjusted_rtt = latest_rtt - ack_delay smoothed_rtt = 7/8 * smoothed_rtt + 1/8 * adjusted_rtt rttvar_sample = abs(smoothed_rtt - adjusted_rtt) rttvar = 3/4 * rttvar + 1/4 * rttvar_sample</description>
+    </item>
+    
+  </channel>
+</rss>

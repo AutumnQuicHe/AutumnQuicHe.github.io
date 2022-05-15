@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>8. 关于安全性的考量 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Security_Considerations/</link>
+    <description>Recent content in 8. 关于安全性的考量 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Security_Considerations/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>8.1. 丢包与拥塞的信号</title>
+      <link>/RFC9002_Chinese_Translation/Security_Considerations/8.1_Loss_and_Congestion_Signals/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Security_Considerations/8.1_Loss_and_Congestion_Signals/</guid>
+      <description>丢包检测与拥塞控制实际上会使用到来自未经认证的实体的信号，例如延误、丢包，以及ECN标记。攻击者能够通过控制这些信号的方式使得终端降低发送速率：它可以丢弃数据包、有意改变路径上的数据包延迟表现，或修改ECN码点。</description>
+    </item>
+    
+    <item>
+      <title>8.2. 流量分析</title>
+      <link>/RFC9002_Chinese_Translation/Security_Considerations/8.2_Traffic_Analysis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Security_Considerations/8.2_Traffic_Analysis/</guid>
+      <description>可以通过观测数据包尺寸的方法启发式地识别出仅携带ACK帧的数据包。与确认有关的一些行为模式可能暴露关于链路特征或应用行为的信息。要减少遭泄露的信息，终端可以将确认与其他帧打包到一起，或者在承担潜在的性能影响的基础上使用填充帧。</description>
+    </item>
+    
+    <item>
+      <title>8.3. 误报ECN标记</title>
+      <link>/RFC9002_Chinese_Translation/Security_Considerations/8.3_Misreporting_ECN_Markings/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Security_Considerations/8.3_Misreporting_ECN_Markings/</guid>
+      <description>接收方可以通过误报ECN标记的方法改变发送方对于拥塞的响应行为。抑制ECN-CE标记的报告可以使得发送方提高其发送速率。这种提高可能导致拥塞与丢包。
+发送方可以对发送的数据包偶尔添加ECN-CE标记的方式检测出抑制行为。如果某个带着ECN-CE标记的数据包在被确认时没有被报告为带有CE标记，那么发送方就可以通过不再在该路径上的后续数据包上设置ECN传输能力（ECT）码点的方式对该路径禁用ECN。
+额外报告ECN-CE标记会使得发送方降低其发送速率，这与在连接上宣称降低流量控制限制的效果相似而且相比起来没有额外的优势。
+终端可以选择其使用的拥塞控制器。拥塞控制器送过降低其速率的方式对ECN-CE报告作出响应，但是响应的行为可能各不一样。对待这些标记时可以将它们等价于丢包事件（详见《RFC3168》），不过也可以指定其他的响应行为，例如《RFC8511》或《RFC8311》中的那些。</description>
+    </item>
+    
+  </channel>
+</rss>

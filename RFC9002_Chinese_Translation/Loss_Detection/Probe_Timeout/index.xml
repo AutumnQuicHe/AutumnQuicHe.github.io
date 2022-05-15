@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6.2. 探测包超时 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/</link>
+    <description>Recent content in 6.2. 探测包超时 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>6.2.1. 计算PTO</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.1_Computing_PTO/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.1_Computing_PTO/</guid>
+      <description>当发送ACK触发包时，发送方会启动一个PTO计时器，它的计算方式如下：
+PTO = smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay 
+ PTO就是发送方为某数据包的确认应该等待的时间量。该时间量包含了预估的网络RTT（smoothed_rtt）、预估的偏差量（4*rttvar）和max_ack_delay，包含max_ack_delay能将接收方可以在发送确认前延迟的最长时间考虑进来。
+当在初始数据包号空间或握手数据包号空间中使用PTO时，其计算式中的max_ack_delay要设为0，因为对端不应该有意推迟发送这些数据包；详见《QUIC传输》的第13.2.1章。
+PTO的值必须不小于kGranularity，以避免计时器立即超时。
+当多个数据包号空间中的ACK触发包均在途时，计时器必须被设置为在初始数据包号空间和握手数据包号空间中较早超时的那个值。
+终端在握手确认前必须不为应用数据数据包号空间设置其PTO计时器。这么做避免了终端在对端还没有用于处理的密钥或终端还没有用于处理确认的密钥时就重传信息。举例来说，这种情况可能在客户端向服务器发送0-RTT数据包时出现；它无需了解服务器是否会有能力解密就会发送它们。类似地，这种情况还可能在服务器未等到确认客户端已验证完服务器证书从而读取1-RTT数据包就发送这些数据包时出现。
+发送方应该在每次发送或确认ACK触发包时，或当启用初始密钥或握手密钥时（详见《QUIC-TLS》的第4.9章），重启自己的PTO计时器。这确保了计算出来的PTO总是基于最新的RTT预估的，并且针对的总是不同数据包号空间中的那个正确的数据包。
+当PTO计时器超时时，必须增加PTO补偿，使得PTO被设置为当前量的两倍。除非是下文所述的情况，否则PTO补偿因子会在接收到确认时被重置。服务器可能在握手期间花费比其他时候更长的时间来响应数据包。为了保护这样的服务器免于重复的客户端探测包，尚未确定服务器是否已验证完自身地址的客户端处的PTO补偿不会被重置。也就是说，客户端不会在接收到来自初始数据包中的确认的时候重置PTO补偿因子。
+发送方速率的指数级降低非常重要，因为严重的拥塞引发的数据包或确认的丢包可能连续导致PTO超时。即使多个数据包号空间中均有在途数据包，所有空间中PTO的指数级增加也能避免对网络施加额外的负载。举个例子，初始数据包号空间中的超时会使得握手数据包号空间中的超时时间翻倍。
+连续PTO超时的总时长会受到空闲超时时间的限制。
+如果已经为基于发送时间阈值的丢包检测设置了计时器，那么必须不设置PTO计时器。为基于发送时间阈值的丢包检测设置的计时器在大多数情况下都会比PTO计时器更早超时，并且更不太可能会无效地重传数据。</description>
+    </item>
+    
+    <item>
+      <title>6.2.3. 加速握手完成</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.3_Speeding_up_Handshake_Completion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.3_Speeding_up_Handshake_Completion/</guid>
+      <description>当服务器接收到了一个包含重复的加密帧数据的初始数据包时，它可以假定客户端没有接收到服务器用初始数据包发送的任何数据，或客户端的预估RTT过小。当客户端在取得握手密钥前就接收到了握手数据包或1-RTT数据包，那么它可以假定服务器的部分甚至全部初始数据包都遭遇了丢包。
+为了在这些条件下加速握手完成，终端可以，但在每条连接上仅尝试数次，在PTO超时前发送一个包含未经确认的加密帧数据的数据包，不过这仍受到《QUIC传输》的第8.1章中的地址验证限制。在每条连接上至多一次这么做，非常适合快速地从单个数据包丢包的状态中恢复。总是用重传数据包来响应接收到了但无法处理的数据包的终端要承担无限交换数据包的风险。
+终端还可以使用合并数据包（详见《QUIC传输》的第12.2章）的方法来确保每份数据报都能触发至少一次确认。例如，客户端可以将包含Ping帧和填充帧的初始数据包与0-RTT数据包合并，服务器可以将包含Ping帧的初始数据包与一个或多个其他数据包合并到首次发送的数据报中。</description>
+    </item>
+    
+    <item>
+      <title>6.2.4. 加速握手完成</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.4_Sending_Probe_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/6.2.4_Sending_Probe_Packets/</guid>
+      <description>当PTO计时器超时时，发送方必须发送一个在该数据包号空间中的ACK触发包来作为探测包。终端可以发送至多两个完整尺寸的包含ACK触发包的数据报来避免因为单个数据报遭遇丢包引发的代价高昂的连续PTO超时，或是为了在多个数据包号空间中发送数据。所有在PTO超时时发送的探测数据包都必须是能触发ACK的。
+除了在超时的计时器所在的数据包号空间中发送数据外，发送方应该在其他具有在途数据的数据包号空间中发送ACK触发包，并且尽可能合并数据包。这在服务器同时具有在途的初始数据或握手数据时或在客户端同时具有在途的握手数据和应用数据时是非常有用的，因为对端可能只持有两个数据包号空间的接收密钥中的一个。
+如果发送方想要在PTO超时时更快地引发确认，它可以跳过数据包号来消除确认延迟。
+终端应该在因为PTO超时而发送的数据包中包含新数据。如果没有新数据可供发送，那么可以发送先前发送过的数据。QUIC实现可以使用其他策略来决定探测数据包的内容，比如基于应用所指定的优先级来发送新的数据或重传数据。
+发送方有可能没有新数据也没有先前的数据用于发送。考虑这样一个例子：新的应用数据被发送于流帧中，被认定为丢包，随后在新的数据包中被重传，接着先前的数据包实际上得到了确认。当没有新数据可以发送时，发送方应该在数据包中发送Ping帧或其他ACK触发帧，来重新启动PTO计时器。
+作为发送ACK触发包的替代，发送方可以将仍在途的数据包标记为丢包。这么做避免了发送额外的数据包，但是增大了过于激进地将数据包认定为丢包的风险，导致拥塞控制器不必要地降低发送速率。
+连续的PTO超时会使得PTO的值以指数形式上升，随着数据包在网络中被持续丢弃，连接恢复所需的时间会以指数形式增长。在PTO超时时发送两个数据包提高了对数据包丢包的容忍度，因而降低了连续出现PTO超时事件的可能性。
+当PTO计时器多次超时，没有新数据可以发送时，QUIC实现必须选择要么每次发送相同的载荷，要么发送不同的载荷。发送相同的载荷可能会更简单，并且确保了能首先送达最高优先级的帧。每次发送不同的载荷则减少了出现无效重传的机会。</description>
+    </item>
+    
+  </channel>
+</rss>

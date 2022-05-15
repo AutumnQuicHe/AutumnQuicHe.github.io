@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6.2.2. 握手与新路径 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/Handshakes_and_New_Paths/</link>
+    <description>Recent content in 6.2.2. 握手与新路径 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/Handshakes_and_New_Paths/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>6.2.2.1. 在地址验证之前</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/Handshakes_and_New_Paths/6.2.2.1_Before_Address_Validation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Probe_Timeout/Handshakes_and_New_Paths/6.2.2.1_Before_Address_Validation/</guid>
+      <description>如《QUIC传输》的第8.1章所规定的那样，在服务器验证完客户端在路径上的地址前，它能发送的数据量被限制于它所接收到数据量的三倍。如果不能发送更多数据，那么服务器必须不启动PTO计时器，除非接收到了来自客户端的数据报，因为在PTO超时时发送的数据包会被计入抗放大上限。
+当服务器接收到了来自客户端的数据报时，抗放大上限会被提升，服务器会重置PTO计时器。如果这时PTO计时器被设置为了一个已过去的时间，那么它会立即超时。这么做能避免在发送对完成握手至关重要的数据包前发送新的1-RTT数据包。这种情况尤其会在服务器接受了0-RTT但是没有成功验证客户端地址时发生。
+由于服务器在接收到来自客户端的更多数据报前处于禁言状态，发送数据包来解禁服务器就成了客户端的责任，除非它能确定服务器已经完成了对它的地址验证（详见《QUIC传输》的第8章）。也就是说，如果客户端没有接收到任何对于它的握手数据包的确认，并且握手尚未确认（详见《QUIC-TLS》的第4.1.2章），那么它必须设置PTO计时器，哪怕没有在途数据包。当此PTO超时时，如果客户端持有握手密钥，那么它必须发送一个握手数据包，否则它必须用一个载荷至少长1200字节的UD数据报P来发送一个初始数据包。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>7.3. 拥塞控制的各种状态 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/</link>
+    <description>Recent content in 7.3. 拥塞控制的各种状态 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>7.3.1. 慢启动</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.1_Slow_Start/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.1_Slow_Start/</guid>
+      <description>只要拥塞窗口低于慢启动阈值，使用NewReno的发送方就会进入慢启动状态。发送方一开始会处于慢启动状态，是因为慢启动阈值的初始值为无穷大。
+当发送方处于慢启动状态时，拥塞窗口就会在每次处理到确认时按照已确认的字节数逐渐扩大。这会使得拥塞窗口以指数形式扩大。
+当数据包遭遇丢包或当由对端报告的ECN-CE计数增加时，发送方必须退出慢启动状态并进入恢复期。
+任何时候，只要拥塞窗口低于慢启动阈值，发送方就会重新进入慢启动状态，这种情况只会在检测到持续拥塞时才会出现。</description>
+    </item>
+    
+    <item>
+      <title>7.3.2. 恢复</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.2_Recovery/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.2_Recovery/</guid>
+      <description>当检测到丢包或当由对端报告的ECN-CE计数增加时，使用NewReno的发送方就会进入恢复期。已经处于恢复期的发送方不会重新进入恢复期。
+在进入恢复期时，发送方必须将慢启动阈值设置为检测到丢包时的拥塞窗口大小的一半。必须在退出恢复期前完成此减半操作。
+QUIC实现可以在进入恢复期时立即缩小拥塞窗口，或使用其他机制，例如比例降速法（详见《PRP》），来逐渐缩小拥塞窗口。如果选择立即缩小拥塞窗口，那么可以在缩小前先发送一个数据包。如《RFC6675》的第5章所述，如果遭遇丢包的数据包中的数据得到重传，那么这种做法能加速丢包恢复，并且与TCP中的行为一致。
+恢复期的目的是将缩小拥塞窗口的频率控制在每一轮往返时间内不超过一次。因此，在恢复期中，拥塞窗口不会对新的丢包事件或ECN-CN计数的增加作出响应。
+一旦在恢复期中发送的数据包得到确认，恢复期就会结束，发送方会进入拥塞回避状态。这与TCP中对恢复的定义稍微有点区别，在后者中，恢复期是在引发恢复的那个被丢失的数据段得到确认时结束的。</description>
+    </item>
+    
+    <item>
+      <title>7.3.3. 拥塞回避</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.3_Congestion_Avoidance/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/Congestion_Control_States/7.3.3_Congestion_Avoidance/</guid>
+      <description>任何时候，只要拥塞窗口超过或等于慢启动阈值并且当前并不处于恢复期，使用NewReno的发送方就会进入拥塞回避状态。
+处于拥塞回避状态的发送方使用加法递增乘法递减（AIMD）的策略，且必须将在每次得到数据包确认时对拥塞窗口的扩大量限制至不超过最大数据报尺寸的一倍。
+当数据包遭遇丢包或由对端报告的ECN-CE计数增加时，发送方就会退出拥塞回避状态并进入恢复期。</description>
+    </item>
+    
+  </channel>
+</rss>

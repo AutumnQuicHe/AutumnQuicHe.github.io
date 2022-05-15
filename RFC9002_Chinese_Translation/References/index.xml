@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>9. 参考文献 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/References/</link>
+    <description>Recent content in 9. 参考文献 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/References/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>9.1. 规范性参考文献</title>
+      <link>/RFC9002_Chinese_Translation/References/9.1_Normative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/References/9.1_Normative_References/</guid>
+      <description>[QUIC-TLS]：  Thomson, M., Ed. and S. Turner, Ed., &amp;ldquo;Using TLS to Secure QUIC&amp;rdquo;, RFC 9001, DOI 10.17487/RFC9001, May 2021, https://www.rfc-editor.org/info/rfc9001.
+ [QUIC-TRANSPORT]：  Iyengar, J., Ed. and M. Thomson, Ed., &amp;ldquo;QUIC: A UDP-Based Multiplexed and Secure Transport&amp;rdquo;, RFC 9000, DOI 10.17487/RFC9000, May 2021, https://www.rfc-editor.org/info/rfc9000.
+ [RFC2119]：  Bradner, S., &amp;ldquo;Key words for use in RFCs to Indicate Requirement Levels&amp;rdquo;, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, https://www.rfc-editor.org/info/rfc2119.</description>
+    </item>
+    
+    <item>
+      <title>9.2. 资料性参考文献</title>
+      <link>/RFC9002_Chinese_Translation/References/9.2_Informative_References/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/References/9.2_Informative_References/</guid>
+      <description>[FACK]：  Mathis, M. and J. Mahdavi, &amp;ldquo;Forward acknowledgement: Refining TCP Congestion Control&amp;rdquo;, ACM SIGCOMM Computer Communication Review, DOI 10.1145/248157.248181, August 1996, https://doi.org/10.1145/248157.248181.
+ [PRR]：  Mathis, M., Dukkipati, N., and Y. Cheng, &amp;ldquo;Proportional Rate Reduction for TCP&amp;rdquo;, RFC 6937, DOI 10.17487/RFC6937, May 2013, https://www.rfc-editor.org/info/rfc6937.
+ [RETRANSMISSION]：  Karn, P. and C. Partridge, &amp;ldquo;Improving Round-Trip Time Estimates in Reliable Transport Protocols&amp;rdquo;, ACM Transactions on Computer Systems, DOI 10.1145/118544.118549, November 1991, https://doi.</description>
+    </item>
+    
+  </channel>
+</rss>

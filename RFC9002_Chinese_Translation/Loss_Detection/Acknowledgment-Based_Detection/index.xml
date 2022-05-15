@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6.1. 基于确认的检测 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/</link>
+    <description>Recent content in 6.1. 基于确认的检测 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>6.1.1. 数据包数量阈值</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/6.1.1_Packet_Threshold/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/6.1.1_Packet_Threshold/</guid>
+      <description>基于TCP丢包检测的最佳实践（详见《RFC5681》和《RFC6675》）推荐将针对乱序的数据包数量阈值（kPacketThreshold）初始值设置为3。为了和TCP保持相似，QUIC实现不应该使用低于3的数据包数量阈值；详见《RFC5681》。
+一些网络可能表现出高度的数据包乱序特征，使得发送方错误地检测到数据包丢包的情况。除此之外，数据包乱序在QUIC中可能比在TCP中更常见，因为有能力观测TCP数据包并重建顺序的网络设备不能为QUIC做同样的处理，还因为QUIC数据包的数据包号是经过加密的。在错误地检测到丢包后提升乱序阈值的算法，例如RACK（详见《RFC8985》），被证明在TCP中是有用的，它们在QUIC中应该至少有同样的效果。</description>
+    </item>
+    
+    <item>
+      <title>6.1.2. 数据包发送时间阈值</title>
+      <link>/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/6.1.2_Time_Threshold/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Loss_Detection/Acknowledgment-Based_Detection/6.1.2_Time_Threshold/</guid>
+      <description>一旦相同数据包号空间内的后续数据包得到确认，终端就应该将比它更早发送的且已经超过一定时间的数据包认定为丢包。为了避免过早地将数据包认定为丢包，该时间阈值必须至少被设置为本机计时器的粒度；后者用常量kGranularity来表示。时间阈值可以表示为：
+max(kTimeThreshold * max(smoothed_rtt, latest_rtt), kGranularity) 
+ 如果某个比最大已确认数据包更早发送的数据包尚未被认定为丢包，那么应该以其残余时间设置一个计时器。
+使用max(smoothed_rtt, latest_rtt)可以避免以下两种情况：
+  最新的RTT样本低于经平滑的RTT，这可能是因为包含着确认的数据包走了一条更短路径而产生了乱序；
+  最新的RTT样本高于经平滑的RTT，这可能是因为真实RTT升高了，但是经平滑的RTT还没有追上此变化。
+  推荐将时间阈值（kTimeThreshold），也就是RTT倍率，设置为9/8。推荐将计时器粒度（kGranularity）设置为1毫秒。
+ 注意：出于类似的目的，TCP的RACK（详见《RFC8985》）指定了一个稍微大一些的阈值，该值相当于5/4。在QUIC中实践表明9/8表现得更好一些。
+ QUIC实现可以尝试使用绝对阈值、来自先前连接的阈值、自适应阈值或引入RTT偏差。较小的阈值会降低对乱序的容忍度并增加无效重传，较大的阈值会增大丢包检测的响应时间。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>7. 拥塞控制 on Autumn Navigation</title>
+    <link>/RFC9002_Chinese_Translation/Congestion_Control/</link>
+    <description>Recent content in 7. 拥塞控制 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9002_Chinese_Translation/Congestion_Control/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>7.1. 显式拥塞通知</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.1_Explicit_Congestion_Notification/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.1_Explicit_Congestion_Notification/</guid>
+      <description>如果一条路径被验证为支持显式拥塞通知（ECN，详见《RFC3168》和《RFC8311》），那么QUIC会将IP头部中的拥塞预警（CE）码点识别为一次拥塞的信号。本文档规定了终端在由对端报告的ECN-CE计数增加时应该如何作出响应；详见《QUIC传输》的第13.4.2章。</description>
+    </item>
+    
+    <item>
+      <title>7.2. 初始拥塞窗口及其最小值</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.2_Initial_and_Minimum_Congestion_Window/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.2_Initial_and_Minimum_Congestion_Window/</guid>
+      <description>QUIC以慢启动的方式启动每条连接，并将拥塞窗口设置为初始值。终端应该将初始拥塞窗口设置为最大数据报尺寸（max_datagram_size）的十倍大小，并且限制窗口不小于14720字节与最大数据报尺寸的两倍大小中的较大值。这种做法遵循的是《RFC6928》中的分析与推荐，并且提高了字节数限制来适应UDP中较小的8字节头部，而不是TCP中的20字节头部。
+如果在连接过程中最大数据报尺寸发生了变化，那么初始拥塞窗口应该用新的尺寸值来计算。如果为了完成握手而降低了最大数据报尺寸，那么应该将拥塞窗口设置为新的值。
+如《QUIC传输》的第8.1章所述，在验证完客户端的地址前，服务器会被抗放大上限所限制。尽管抗放大上限会阻止拥塞窗口被完全利用，因而减缓拥塞窗口的尺寸增长，但是它并不会直接影响到拥塞窗口。
+最小拥塞窗口是拥塞窗口在应对丢包、由对端报告的ECN-CE计数增加或持续拥塞时能达到的最小值。推荐将该值设置为2 * max_datagram_size。</description>
+    </item>
+    
+    <item>
+      <title>7.4. 忽略无法解密数据包的丢包事件</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.4_Ignoring_Loss_of_Undecryptable_Packets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.4_Ignoring_Loss_of_Undecryptable_Packets/</guid>
+      <description>在握手期间，一些数据包保护密钥可能在某数据包抵达时尚未可用，并且接收方可以选择丢弃这样的数据包。特别是，握手和0-RTT数据包在初始数据包抵达前无法得到处理，并且1-RTT数据包在握手完成前也无法得到处理。如果握手数据包、0-RTT数据包和1-RTT数据包有可能先于用于处理它们的数据包保护密钥变为可用就抵达了，那么终端可以忽略这些数据包的丢包事件。如果在给定数据包号空间中，晚于首个得到确认的数据包发送的数据包遭遇了丢包，那么终端必须不忽略它们。</description>
+    </item>
+    
+    <item>
+      <title>7.5. 探测包超时</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.5_Probe_Timeout/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.5_Probe_Timeout/</guid>
+      <description>拥塞控制器必须不阻拦探测数据包。然而发送方必须将这些数据包额外计入在途字节中，因为这些数据包增加了网络负载。注意，发送探测数据包可能使得发送方的在途字节数超过拥塞窗口，直到接收到了那个能够确定该数据包是遭遇了丢包还是已被送达的确认。</description>
+    </item>
+    
+    <item>
+      <title>7.7. 限速</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.7_Pacing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.7_Pacing/</guid>
+      <description>发送方应该基于来自拥塞控制器的输入来限制发送在途数据包的速率。
+不带间隔地向网络中发送多个数据包的行为将构成一次数据包暴发，这可能引发短暂的拥塞与丢包。发送方必需要么使用限速器要么限制这样的暴发。发送方应该将一次暴发的数量限制至不超过初始拥塞窗口的尺寸，详见第7.2章。如果发送方能够了解到通向接收方的网络路径可以吸收较大的暴发，那么它可以使用更高的上限值。
+QUIC实现应该小心地设计其拥塞控制器的架构以使之与限速器协作良好。比如，限速器可以包装拥塞控制器并且控制拥塞窗口的可用性，或者限速器可以限制由拥塞控制器传出的数据包的发送速率。
+按时送达ACK帧对于高效的丢包检测是非常重要的。因此，为了避免延误，仅包含ACK帧的数据包应该不受限速器影响。
+终端可以自由实现限速器。完美地进行限速的发送方能将数据包等间隔地发送出去。对于基于窗口的拥塞控制器，例如本文档中描述的这种，该发送速率可以用将拥塞窗口平摊到RTT上的方法来计算。其表示方法如下，其中速率（rate）和拥塞窗口（congestion_window）都用字节来度量：
+rate = N * congestion_window / smoothed_rtt 
+ 或用每两个数据包间的时间间隔（interval）的方式来表示（packet_size表示数据包尺寸）：
+interval = ( smoothed_rtt * packet_size / congestion_window ) / N 
+ 使用较小的但至少为1的N值（例如1.25）确保了RTT间的偏差不会导致拥塞窗口的不完全利用。
+在实践时要考量的方面，例如分包、调度延迟和计算效率，可能使得发送方在远小于RTT的时间间隔内偏离该速率。
+限速器的一种可能实现策略是使用漏桶算法，其中“桶”的容量被限制为最大暴发量，填充“桶”的速率由上文中的函数决定。</description>
+    </item>
+    
+    <item>
+      <title>7.8. 不完全利用的拥塞窗口</title>
+      <link>/RFC9002_Chinese_Translation/Congestion_Control/7.8_Underutilizing_the_Congestion_Window/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9002_Chinese_Translation/Congestion_Control/7.8_Underutilizing_the_Congestion_Window/</guid>
+      <description>当在途字节数小于拥塞窗口且发送数据包未受到限速时，拥塞窗口将处于不完全利用的状态。这种情况可能因为应用数据不充足或流量控制限制而发生。当该情况发生且处于慢启动或拥塞回避状态时，拥塞窗口不应该被扩大。
+对数据包进行限速（详见第7.7章）的发送方可能推迟发送数据包，从而使得拥塞窗口没有被完全利用。如果发送方在不受到限速延迟的影响下其实能够完全利用拥塞窗口，那么它不应该认为自己受到的是应用的限制。。
+发送方可以实现替代机制以在不完全利用的时期过去之后更新其拥塞窗口，例如那些在《RFC7661》中为TCP提出的方案。</description>
+    </item>
+    
+  </channel>
+</rss>
