@@ -6,6 +6,7 @@ html, body {
 }
 
 .sidebar.sidebar-quic {
+    color: $sidebar_colour;
     background-color: $sidebar_background_colour;
 }
 
@@ -29,6 +30,18 @@ body::-webkit-scrollbar-track,
     background: $scrollbar_track_colour;
 }
 
+/* Sidebar */
+.sidebar {
+    a, a:hover, a:visited {
+        text-decoration: none;
+        color: $sidebar_colour;
+    }
+    a:hover {
+        text-decoration: none;
+        color: $sidebar_a_hover_colour;
+    }
+}
+
 section.page {
     h1, h2, h3, h4 {
         text-shadow: $header_text_shadow;
@@ -39,7 +52,7 @@ section.page {
     }
     a, a:hover, a:visited {
         color: $header_a_colour;
-     }
+    }
     table, th, td {
         border: $page_table_border;
     }
@@ -70,7 +83,16 @@ section.page {
     }
     &.ref {
         background: $ref_background;
+        color: $ref_colour;
         border-radius: 2px;
+        code {
+            background: $ref_background;
+            color: $ref_code_colour;
+            -webkit-box-shadow: $ref_code_webkit_box_shadow;
+        }
+        a, a:hover, a:visited {
+            color: $ref_colour;
+        }
     }
 
     &.tip {
