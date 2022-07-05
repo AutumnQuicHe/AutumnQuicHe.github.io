@@ -10,6 +10,7 @@ html, body {
 }
 
 .sidebar.sidebar-quic {
+  color: #efe5cc;
   background-color: #111109;
 }
 
@@ -31,6 +32,16 @@ body::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
   background: #281b0a;
+}
+
+/* Sidebar */
+.sidebar a, .sidebar a:hover, .sidebar a:visited {
+  text-decoration: none;
+  color: #efe5cc;
+}
+.sidebar a:hover {
+  text-decoration: none;
+  color: gray;
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
@@ -70,8 +81,17 @@ section.page table, section.page th, section.page td {
   color: #281b0a;
 }
 .block.ref {
-  background: #121212;
+  background: #111109;
+  color: snow;
   border-radius: 2px;
+}
+.block.ref code {
+  background: #111109;
+  color: snow;
+  -webkit-box-shadow: inset 0 1px 10px rgba(224, 220, 220, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.block.ref a, .block.ref a:hover, .block.ref a:visited {
+  color: snow;
 }
 .block.tip {
   background: #454849;
@@ -91,6 +111,7 @@ section.page table, section.page th, section.page td {
 }
 
 .sidebar.sidebar-rfc9002 {
+  color: #efe5cc;
   background-color: #111109;
 }
 

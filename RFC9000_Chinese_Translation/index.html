@@ -1367,6 +1367,14 @@
         
             
     <li>
+        <a href="#Author_s_Address">作者地址</a>
+
+    </li>
+
+
+        
+            
+    <li>
         <a href="#Authors_Addresses">联系作者</a>
 
     </li>
@@ -1436,6 +1444,8 @@
                 
                     
                 
+                    
+                
             </ul>
             <br>
           
@@ -1443,7 +1453,7 @@
     </div>
 
     <div class="version">
-            generated on May 15, 2022
+            generated on Jul 5, 2022
     </div>
 </div>
 
@@ -2000,9 +2010,15 @@ QUIC实现可以选择延迟分配流ID直到其发送首个<strong>流帧</stro
 流的接收部分随后转到“数据量确认”状态。
 在此状态，终端不再需要发送<strong>最大流数据帧</strong>，只需要接收重传数据即可。</p>
 <p>一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。
-【TODO further transmition】
-在接收到导致状态转换到“接收量确认”的<strong>流帧</strong>后，可能同时导致转入“接收完成”状态。
+这可能发生在收到导致转入“数据量确认”状态的同一个<strong>流帧</strong>后。
 在所有数据都收完后，可以丢弃该流的任何<strong>流帧</strong>或<strong>流阻塞帧</strong>。</p>
+<div class="block note">
+<p><strong>秋航注</strong>：意思是说，在收到<strong>流帧</strong>后，接收方可能转入“接收量确认”状态；紧接着，状态再次流转到“接收完成”状态。
+中间这句原译为：</p>
+<blockquote>
+<p>在接收到导致状态转换到“接收量确认”的<strong>流帧</strong>后，可能同时导致转入“接收完成”状态。</p>
+</blockquote>
+</div>
 <p>“接收完成”状态会一直持续直到数据全部传递到应用层。
 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。</p>
 <p>如果在“接收”或“数据量确认”状态收到一个<strong>流重置帧</strong>，将导致流转到“重置接收”状态。
@@ -2753,7 +2769,56 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
 <li>应用层协议的认证协商（为此，TLS使用的是应用层协议协商——<a href="">ALPN</a>）。</li>
 </ul>
 <p><strong>加密帧</strong>可以在不同数据包号空间发送（详见<a href="">第12.3章</a>）。
-在每个数据包号空间，<strong>加密帧</strong>用来确保加密握手数据有序传递的偏移量都是从零开始的。</p>
+在每个数据包号空间，<strong>加密帧</strong>用来确保加密握手数据有序传递的偏移量都是从0开始的。</p>
+<p><a href="#Figure_4_Simplified_QUIC_Handshake">图4</a>展示了一个简化的握手及用于推动握手进程的数据包与帧的交换。
+如果可以的话，尽量在握手期间交换应用层数据，并用星号（&quot;*&quot;）表示。
+一旦完成握手，终端就能自由交换应用层数据。</p>
+<div id=Figure_4_Simplified_QUIC_Handshake class="block ref">
+<table>
+<tbody>
+<tr>
+<td style="text-align:left">
+客户端<br>
+<br>
+初始包（加密帧）<br>
+0-RTT包（*）<br>
+<br><br><br>
+握手包（加密帧）<br>
+1-RTT包（*）<br>
+<br><br>
+1-RTT
+</td>
+<td style="text-align:left">
+<p><br><br><br>
+<code>&mdash;&mdash;&mdash;-&gt;</code><br>
+<br><br>
+<code>&lt;&mdash;&mdash;&mdash;-</code><br>
+<br>
+<code>&mdash;&mdash;&mdash;-&gt;</code><br>
+<code>&lt;&mdash;&mdash;&mdash;-</code><br>
+<br>
+<code>&lt;=========&gt;</code></p>
+</td>
+<td style="text-align:right">
+服务端<br>
+<br><br><br>
+初始包（加密帧）<br>
+握手包（加密帧）<br>
+1-RTT（*）<br>
+<br>
+1-RTT（握手完成帧）<br>
+<br><br>
+1-RTT
+</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Figure_4_Simplified_QUIC_Handshake">图4：简版QUIC握手</a></p>
+</div>
+<p>终端可以使用握手期间发送的数据包来测试是否支持显式拥塞通知（ECN），详见<a href="">第13.4章</a>。
+终端通过观察用于确认其发送的首个数据包的<strong>ACK帧</strong>是否携带ECN计数，验证是否支持ECN，更多细节详见<a href="">第13.4.2章</a>。</p>
+<p>终端<em><strong>必须</strong></em>明确地协商应用层协议。
+这避免了对使用中的协议还存在分歧的情况。</p>
 
     </div>
 </section>
@@ -2770,7 +2835,21 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h2>
     
     <div class="content">
-        
+        <p>关于TLS如何与QUIC整合的更多细节详见《<a href="">QUIC TLS</a>》，但在此举出一些范例。
+用以支持客户端地址验证的这种交换的一个扩展详见<a href="">第8.1.2章</a>。</p>
+<p>一旦完成任何地址验证交换，加密握手将用于协商密钥。
+加密握手由初始包（<a href="">第17.2.2章</a>）和握手包（<a href="">第17.2.4章</a>）携带。</p>
+<p><a href="">图5</a>展示了1-RTT握手过程的概况。
+每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。
+例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的<strong>加密帧</strong>。</p>
+<p>多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见<a href="">第12.2章</a>。
+因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。
+例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</p>
+<p>TODO：图5</p>
+<p><a href="">图6</a>是一个0-RTT握手连接的示例，并且其中一个数据包携带0-RTT数据。
+注意，如<a href="">12.3章</a>所述，服务端在1-RTT包中对0-RTT数据进行确认，并且客户端发送的1-RTT包处于同一个包号空间。</p>
+<p>TODO：图6</p>
+
     </div>
 </section>
 
@@ -2786,7 +2865,29 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h2>
     
     <div class="content">
-        
+        <p>连接ID用于确保数据包稳定路由，详见<a href="">第5.1章</a>。
+长包头包含两个连接ID：目标连接ID由接收方指定并用于提供稳定路由；源连接ID供对端设置为目标连接ID。</p>
+<p>在握手期间，带有长包头（详见<a href="">第17.2章</a>）的数据包用于设置双端所使用的连接ID。
+每端的源连接ID会作为发往该端的数据包的目标连接ID。
+在处理完首个初始数据包后，每端将后续发送数据包的目标连接ID字段值设置为其接收的源连接ID字段值。</p>
+<p>当客户端发送初始包之前未从服务端收到过初始数据包或重试数据包，则生成不可预测值填充发送的初始包的目标连接ID字段。
+目标连接ID的长度<em><strong>必须</strong></em>至少8字节。
+客户端在一条连接上<em><strong>必须</strong></em>使用同一个目标连接ID，直到收到服务端发来的数据包为止。</p>
+<p>客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。
+这些密钥在收到重试数据包后变更，详见<a href="">QUIC TLS</a><a href="">第5.2章</a>。</p>
+<p>客户端选择一个值填充源连接ID字段，并设置源连接ID长度字段以标识其长度。</p>
+<p>客户端发送的首个0-RTT数据包使用其发送的首个初始数据包一致的源连接ID和目标连接ID。</p>
+<p>在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务的提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。
+这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次：
+一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。
+一旦客户端收到一个从服务端发来的有效的初始数据包，则其<em><strong>必须</strong></em>丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。</p>
+<p>客户端<em><strong>必须</strong></em>在收到首个初始数据包或首个重试数据包后，更改其后续发送数据包时的目标连接ID值。
+服务端<em><strong>必须</strong></em>基于收到的首个初始数据包设置发送数据包的目标连接ID。
+任何针对目标连接ID的后续改动，只允许通过<strong>新连接ID帧</strong>携带的值进行；
+如果后续的初始数据包包含不同的源连接ID，则<em><strong>必须</strong></em>将该包丢弃。
+这避免了对多个具有不同源连接ID的初始数据包进行无状态处理可能导致的不可预测的结果。</p>
+<p>终端发出的目标连接ID可以在一条连接的生命周期内变更，尤其是在响应连接迁移（<a href="">第9章</a>），详见<a href="">第5.1.1章</a>。</p>
+
     </div>
 </section>
 
@@ -2802,7 +2903,35 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h2>
     
     <div class="content">
-        
+        <p>终端在握手期间的连接ID做出的选择，通过包括传输参数的所有的值验证，详见<a href="">第7.4章</a>。
+这确保所有用于握手的连接ID也同时通过加密握手得到认证了。</p>
+<p>终端将其发出的首个初始数据包的源连接ID字段值包含在<code>initial_source_connection_id</code>传输参数中，详见<a href="">第18.2章</a>。
+服务端将其接收到的首个初始数据包中的目标连接ID值包含在<code>original_destination_connection_id</code>传输参数中；如果服务端发送了一个重试数据包，则其对应的是发送该包之前收到的首个初始数据包。
+如果发送重试数据包，服务端也会将重试数据包的源连接ID字段包含在<code>retry_source_connection_id</code>传输参数中。</p>
+<p>来自对端的传输参数中的值<em><strong>必须</strong></em>与终端
+在其发送的（对于服务端，则同时包括其接收到的）初始数据包的目标连接ID和源连接ID字段所使用的值保持一致。
+终端<em><strong>必须</strong></em>验证其接收到的传输参数匹配接收到的连接ID值。
+将连接ID值包含在传输参数中并认证，从而确保攻击者不能在握手期间通过插入携带有攻击者选择的连接ID的数据包影响连接ID的选择。</p>
+<p>终端<em><strong>必须</strong></em>将
+任意终端缺失<code>initial_source_connection_id</code>传输参数以及服务端缺失<code>original_destination_connection_id</code>传输参数视为<code>TRANSPORT_PARAMETER_ERROR</code>类型的连接错误。</p>
+<p>终端<em><strong>必须</strong></em>将下述情况视为<code>TRANSPORT_PARAMETER_ERROR</code>或<code>PROTOCOL_VIOLATION</code>类型的连接错误：</p>
+<ul>
+<li>服务端在接收到一个重试数据包后，缺失<code>retry_source_connection_id</code>传输参数，</li>
+<li>未接收到重试数据包，但是却存在<code>retry_source_connection_id</code>传输参数，或</li>
+<li>从对端接收到的传输参数中的值与发送的初始数据包中相应目标连接ID或源连接ID字段不一致。</li>
+</ul>
+<p>如果选择了一个零长度连接ID，则相应的传输参数包含一个零长度值。</p>
+<p><a href="">图7</a>展示了一个完整握手过程中连接ID的使用（其中DCID表示目标连接ID，SCID表示源连接ID）。
+图中展示了初始数据包如何交换，以及随后1-RTT数据包的交换，其中包括握手期间创建的连接ID。</p>
+<p>TODO：图7，握手期间连接ID的使用</p>
+<p><a href="">图8</a>展示了包含重试数据包的握手过程。</p>
+<p>TODO：图8，使用重试数据包的握手中连接ID的使用</p>
+<p>在上述两种情况（<a href="">图7</a>和<a href="">图8</a>）下，客户端设置其<code>initial_source_connection_id</code>传输参数值为<code>C1</code>。</p>
+<p>当握手过程没有出现重试数据包（<a href="">图7</a>），服务端设置<code>original_destination_connection_id</code>为<code>S1</code>（注意该值是客户端选择的），设置<code>initial_source_connection_id</code>为<code>S3</code>。
+在这种情况下，服务端不包含<code>retry_source_connection_id</code>传输参数。</p>
+<p>When the handshake includes a Retry (Figure 8), the server sets original_destination_connection_id to S1, retry_source_connection_id to S2, and initial_source_connection_id to S3.</p>
+<p>当握手过程出现了重试数据包（<a href="">图8</a>），服务端设置<code>original_destination_connection_id</code>为<code>S1</code>，设置<code>retry_source_connection_id</code>为<code>S2</code>，设置<code>initial_source_connection_id</code>为<code>S3</code>。</p>
+
     </div>
 </section>
 
@@ -2823,8 +2952,18 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
 <p>传输参数由每个终端单方面声明。
 每个终端可以独立选择传输参数的值而不依赖于对端的选择。</p>
 <p>传输参数的编码详见<a href="">第18章</a>.</p>
-<p>QUIC includes the encoded transport parameters in the cryptographic handshake. Once the handshake completes, the transport parameters declared by the peer are available. Each endpoint validates the values provided by its peer.</p>
-<p>Definitions for each of the defined transport parameters are included in Section 18.2.</p>
+<p>QUIC在加密握手阶段包含编码的传输参数。
+一旦握手完成，由对端声明的传输参数就生效了。
+每个终端都需要验证对端提供的参数值。</p>
+<p>每个传输参数的具体定义详见<a href="">第18.2章</a>。</p>
+<p>终端<em><strong>必须</strong></em>将收到无效的传输参数值的情况视为一个<code>TRANSPORT_PARAMETER_ERROR</code>类型连接错误。</p>
+<p>终端<em><strong>必须不</strong></em>能在一个特定的传输参数扩展中传输同一个参数超过1次。
+终端<em><strong>应该</strong></em>将收到重复的传输参数的情况视为一个<code>TRANSPORT_PARAMETER_ERROR</code>类型连接错误。</p>
+<p>终端使用传输参数认证握手期间的连接ID协商，详见<a href="">第7.3章</a>。</p>
+<p>ALPN（详见<a href="">ALPN</a>）允许客户端在连接建立期间提供多个应用协议。
+客户端包含的传输参数对客户端提供的所有应用协议生效。
+应用协议可以指定传输参数值，例如初始流控上限。
+然而，应用协议对传输参数值设置限制，可能导致因为限制冲突使得客户端不能提供多种应用协议支持。</p>
 
     </div>
 </section>
@@ -2841,7 +2980,47 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h3>
     
     <div class="content">
-        
+        <p>是否使用0-RTT取决于客户端和服务端使用的传输参数是否由同一个旧连接协商的。
+为了开启0-RTT，终端需要保存服务端传输参数的值及在连接上收到的任何会话票据（session ticket）。
+终端也需要保存其他任何应用协议或加密握手所需要的信息，详见[QUIC TLS]的<a href="">第4.6章</a>。
+保存的传输参数的值在使用会话票据尝试进行0-RTT建连时使用。</p>
+<p>保存的传输参数适用于新连接，直到握手完成，客户端开始发送1-RTT数据包为止。
+一旦握手完成，客户端就启用握手过程中创建的传输参数。
+不是所有的传输参数都需要保存，因为部分参数不会在后续连接中生效，或是在0-RTT建连期间不起作用。</p>
+<p>定义新的传输参数（详见<a href="">第7.4.2章</a>）时，<em><strong>必须</strong></em>明确说明其作为0-RTT参数进行保存是否是强制性的、可选的，或必须禁止的。
+客户端不需要保存一个其不能处理的传输参数。</p>
+<p>客户端<em><strong>必须不</strong></em>使用下述参数的保存值：<code>ack_delay_exponent</code>、<code>max_ack_delay</code>、<code>initial_source_connection_id</code>、<code>original_destination_connection_id</code>、<code>preferred_address</code>、<code>retry_source_connection_id</code>，以及<code>stateless_reset_token</code>。
+客户端<em><strong>必须</strong></em>使用握手期间服务端给出的新值。
+如果服务端没有提供新的值，就使用默认值。</p>
+<p>试图发送0-RTT数据的客户端<em><strong>必须</strong></em>保存所有其他服务端需要使用且可以处理的传输参数。
+服务端可以保存这些传输参数，或在会话票据中保存这些参数值的一份具备完整性保护的备份，并在收到0-RTT数据后恢复其具体信息。</p>
+<p>如果服务端收到了0-RTT数据，服务端<em><strong>必须不</strong></em>能放宽任何限制，或采用任何其他可能与客户端发来的0-RTT数据产生冲突的值。
+尤其需要注意的是，服务端在接收0-RTT数据后，<em><strong>必须不</strong></em>
+可为下述参数（详见<a href="">18.2</a>）设置一个低于保存值的值：</p>
+<ul>
+<li><code>active_connection_id_limit</code></li>
+<li><code>initial_max_data</code></li>
+<li><code>initial_max_stream_data_bidi_local</code></li>
+<li><code>initial_max_stream_data_bidi_remote</code></li>
+<li><code>initial_max_stream_data_uni</code></li>
+<li><code>initial_max_streams_bidi</code></li>
+<li><code>initial_max_streams_uni</code></li>
+</ul>
+<p>删除特定传输参数，或为之设置一个零值，可能导致启用0-RTT数据但却不可用。
+允许发送应用数据的传输参数的适当子集<em><strong>应该</strong></em>被设置为非零值，以支持0-RTT。
+这包括：<code>initial_max_data</code>和（1）<code>initial_max_streams_bidi</code>及<code>initial_max_stream_data_bidi_remote</code>，或（2）<code>initial_max_streams_uni</code>及<code>initial_max_stream_data_uni</code>。</p>
+<p>服务端可能给流设置的初始流控上限大于保存的0-RTT数据包中由客户端设置的值。
+一旦握手完成，客户端必须根据更新后的<code>initial_max_stream_data_bidi_remote</code>及<code>initial_max_stream_data_uni</code>的值更新所有发送流的流控上限。</p>
+<p>服务端<em><strong>可以</strong></em>保存并恢复先前发送的<code>max_idle_timeout</code>、<code>max_udp_payload_size</code>及<code>disable_active_migration</code>参数的值，以及在选择更小值后拒绝0-RTT。
+当接收0-RTT数据可能同时降低连接性能时，调低这些参数的值。
+特别是调低<code>max_udp_payload_size</code>可能导致丢包，导致性能与直接拒绝0-RTT数据相比变得更差。</p>
+<p>当服务端不支持恢复后的值时，其<em><strong>必须</strong></em>拒绝0-RTT数据。</p>
+<p>当在0-RTT数据包中发送帧时，客户端<em><strong>必须</strong></em>只使用保存的传输参数；更重要的是，它<em><strong>必须不</strong></em>能使用
+服务端更新后的传输参数，或使用从1-RTT数据包接收到的帧。
+在握手过程中传输参数更新的值只适用于1-RTT数据包。
+例如，保存的传输参数中的流控上限值适用于所有的0-RTT数据包，即使这些值通过握手或通过1-RTT数据包发送的帧调大了。
+服务端<em><strong>可以</strong></em>将在0-RTT数据中使用更新后的传输参数视为一个<code>PROTOCOL_VIOLATION</code>类型的连接错误。</p>
+
     </div>
 </section>
 
@@ -2857,7 +3036,16 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h3>
     
     <div class="content">
-        
+        <p>新传输参数可以用于协商新的协议行为。
+终端<em><strong>必须</strong></em>忽略其不支持的传输参数。
+缺失某个传输参数会因此禁用掉任何可选的、通过该参数协商的协议特性。
+正如<a href="">第18.1章</a>所述，保留某些标识符是为了满足这个需求。</p>
+<p>对于一个传输参数，如果客户端不能识别，则客户端可以将其丢弃，并尝试在随后的连接中尝试0-RTT。
+然而，如果客户端对一个丢弃的传输参数添加了支持，那么其在尝试0-RTT时就有可能与传输参数设置的限制出现冲突。
+新传输参数可以通过设置一个最保守的默认值避免该问题。
+客户端可以通过保存所有参数避免该问题，即使其中一些参数目前尚不支持。</p>
+<p>新传输参数根据<a href="">第22.3章</a>描述的规则进行注册。</p>
+
     </div>
 </section>
 
@@ -2878,7 +3066,19 @@ QUIC数据包保护用于尽可能多地对握手协议进行加密。
         </h2>
     
     <div class="content">
-        
+        <p>QUIC实现需要维护一个用于保存乱序接收到的加密数据的缓存区。
+由于<strong>加密帧</strong>没有流量控制，终端有可能强制对端缓存无限量的数据。</p>
+<p>QUIC实现<em><strong>必须</strong></em>支持缓存至少4096字节从乱序<strong>加密帧</strong>收到的数据。
+终端<em><strong>可以</strong></em>选择允许在握手期间缓存更多的数据。
+更大的缓存上限意味着可以交换更大的密钥或证书。
+终端的缓存区大小不必在整个连接生命周期内保持不变。</p>
+<p>握手期间无法缓存<strong>加密帧</strong>可能导致连接失败。
+如果终端的缓存区在握手期间溢出，则其可以通过暂时扩大缓存空间确保握手完成。
+如果终端不扩大其缓存，则其<em><strong>必须</strong></em>以错误码<code>CRYPTO_BUFFER_EXCEEDED</code>关闭连接。</p>
+<p>Once the handshake completes, if an endpoint is unable to buffer all data in a CRYPTO frame, it MAY discard that CRYPTO frame and all CRYPTO frames received in the future, or it MAY close the connection with a CRYPTO_BUFFER_EXCEEDED error code. Packets containing discarded CRYPTO frames MUST be acknowledged because the packet has been received and processed by the transport even though the CRYPTO frame was discarded.</p>
+<p>一旦握手完成，如果终端不能缓存<strong>加密帧</strong>中的全部数据，那么其<em><strong>可以</strong></em>丢弃该帧及其随后收到的所有<strong>加密帧</strong>，也<em><strong>可以</strong></em>以错误码<code>CRYPTO_BUFFER_EXCEEDED</code>关闭连接。
+<em><strong>必须</strong></em>确认包含被丢弃的<strong>加密帧</strong>的数据包，因为该数据包已经被接收且被传输层处理了，即使是以丢弃<strong>加密帧</strong>的方式处理的。</p>
+
     </div>
 </section>
 
@@ -8678,6 +8878,44 @@ ECN计数只由类型为<code>0x03</code>的<strong>ACK帧</strong>携带。</p>
 </li>
 <li>
 <p>Victor Vasiliev</p>
+</li>
+</ul>
+
+    </div>
+</section>
+
+
+
+
+        
+                <section class="page" id="Author_s_Address">
+    
+        <h1>
+    
+            <a href="#Author_s_Address">作者地址</a>
+    
+        </h1>
+    
+    <div class="content">
+        <p>Jana Iyengar (editor)</p>
+<p>Fastly</p>
+<p>Email: <a href="mailto:jri.ietf@gmail.com">jri.ietf@gmail.com</a></p>
+<p>Martin Thomson (editor)</p>
+<p>Mozilla</p>
+<p>Email: <a href="mailto:mt@lowentropy.net">mt@lowentropy.net</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
 </li>
 </ul>
 

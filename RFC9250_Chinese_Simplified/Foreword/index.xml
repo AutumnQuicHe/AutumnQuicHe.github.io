@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RFC9250 DNS专用QUIC连接 on Autumn Navigation</title>
+    <link>/RFC9250_Chinese_Simplified/Foreword/</link>
+    <description>Recent content in RFC9250 DNS专用QUIC连接 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9250_Chinese_Simplified/Foreword/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前言</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/forword/</guid>
+      <description>本文是关于DNS如何使用QUIC的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/abstract/</guid>
+      <description>This document describes the use of QUIC to provide transport confidentiality for DNS. The encryption provided by QUIC has similar properties to those provided by TLS, while QUIC transport eliminates the head-of-line blocking issues inherent with TCP and provides more efficient packet-loss recovery than UDP. DNS over QUIC (DoQ) has privacy properties similar to DNS over TLS (DoT) specified in RFC 7858, and latency characteristics similar to classic DNS over UDP.</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9250。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+  </channel>
+</rss>

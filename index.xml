@@ -43,6 +43,42 @@
     </item>
     
     <item>
+      <title>前言</title>
+      <link>/RFC9114_Chinese_Simplified/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9114_Chinese_Simplified/Foreword/forword/</guid>
+      <description>本文是关于HTTP/3的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
+      <title>前言</title>
+      <link>/RFC9204_Chinese_Simplified/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9204_Chinese_Simplified/Foreword/forword/</guid>
+      <description>本文是关于QPACK的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
+      <title>前言</title>
+      <link>/RFC9221_Chinese_Simplified/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9221_Chinese_Simplified/Foreword/forword/</guid>
+      <description>本文是关于QUIC进行不可靠数据报文传输的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
+      <title>前言</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/forword/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/forword/</guid>
+      <description>本文是关于DNS如何使用QUIC的网络规范文档译文，尚未完成翻译，欢迎指正。</description>
+    </item>
+    
+    <item>
       <title>摘要</title>
       <link>/RFC8999_Chinese_Translation/Foreword/abstract/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -76,6 +112,42 @@
       
       <guid>/RFC9002_Chinese_Translation/Foreword/abstract/</guid>
       <description>本文描述了QUIC丢包检测与拥塞控制机制的设计。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9114_Chinese_Simplified/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9114_Chinese_Simplified/Foreword/abstract/</guid>
+      <description>QUIC传输协议有着诸多HTTP的传输层所渴求的特性，例如流的多路复用、每条流独立的流量控制以及低延迟连接建立。 本文描述一种HTTP语义在QUIC上的映射。 本文也会指出包含在QUIC中的HTTP/2特性，并描述如何将HTTP/2扩展移植到HTTP/3。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9204_Chinese_Simplified/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9204_Chinese_Simplified/Foreword/abstract/</guid>
+      <description>本规范定义了QPACK：一种高效表示用于HTTP/3的HTTP字段的压缩格式。 这是一个HPACK的变种，旨在降低队头阻塞。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9221_Chinese_Simplified/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9221_Chinese_Simplified/Foreword/abstract/</guid>
+      <description>本文定义了QUIC传输协议的一个扩展，用以支持在一条QUIC连接上发送和接收不可靠数据报文。</description>
+    </item>
+    
+    <item>
+      <title>摘要</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/abstract/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/abstract/</guid>
+      <description>This document describes the use of QUIC to provide transport confidentiality for DNS. The encryption provided by QUIC has similar properties to those provided by TLS, while QUIC transport eliminates the head-of-line blocking issues inherent with TCP and provides more efficient packet-loss recovery than UDP. DNS over QUIC (DoQ) has privacy properties similar to DNS over TLS (DoT) specified in RFC 7858, and latency characteristics similar to classic DNS over UDP.</description>
     </item>
     
     <item>
@@ -123,6 +195,50 @@
     </item>
     
     <item>
+      <title>备忘状态</title>
+      <link>/RFC9114_Chinese_Simplified/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9114_Chinese_Simplified/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9114。</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC9204_Chinese_Simplified/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9204_Chinese_Simplified/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9204。</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC9221_Chinese_Simplified/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9221_Chinese_Simplified/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9221。</description>
+    </item>
+    
+    <item>
+      <title>备忘状态</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/status_of_this_memo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/status_of_this_memo/</guid>
+      <description>本文是互联网标准追踪文档。
+本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见RFC 7841第2章。
+关于本文当前状态、勘误及反馈方式等相关信息请移步https://www.rfc-editor.org/info/rfc9250。</description>
+    </item>
+    
+    <item>
       <title>版权声明</title>
       <link>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -159,6 +275,46 @@
       
       <guid>/RFC9002_Chinese_Translation/Foreword/copyright_notice/</guid>
       <description>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9114_Chinese_Simplified/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9114_Chinese_Simplified/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9204_Chinese_Simplified/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9204_Chinese_Simplified/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9221_Chinese_Simplified/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9221_Chinese_Simplified/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。
+本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
+    </item>
+    
+    <item>
+      <title>版权声明</title>
+      <link>/RFC9250_Chinese_Simplified/Foreword/copyright_notice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/RFC9250_Chinese_Simplified/Foreword/copyright_notice/</guid>
+      <description>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。
 本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（https://trustee.ietf.org/license-info）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</description>
     </item>
     
@@ -349,8 +505,10 @@ QUIC在实现上应该提供某种方法使得应用层能够因此确定各条�
 在一条流创建前，所有数值小于该流ID的同类型流都必须被创建。 这样能确保双端流的创建次序保持一致。
 在“接收”状态，终端接收流帧和流阻塞帧。 传入数据将被缓存，并可以按照正确顺序重组以便递给应用层。 随着应用层不断消耗数据，缓冲区重新空出来，终端发送最大流数据帧告知对端可以发送更多数据。
 当收到一个带FIN置位的流帧时，数据的最终大小确定下来，详见第4.5章。 流的接收部分随后转到“数据量确认”状态。 在此状态，终端不再需要发送最大流数据帧，只需要接收重传数据即可。
-一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。 【TODO further transmition】 在接收到导致状态转换到“接收量确认”的流帧后，可能同时导致转入“接收完成”状态。 在所有数据都收完后，可以丢弃该流的任何流帧或流阻塞帧。
-“接收完成”状态会一直持续直到数据全部传递到应用层。 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。
+一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。 这可能发生在收到导致转入“数据量确认”状态的同一个流帧后。 在所有数据都收完后，可以丢弃该流的任何流帧或流阻塞帧。
+秋航注：意思是说，在收到流帧后，接收方可能转入“接收量确认”状态；紧接着，状态再次流转到“接收完成”状态。 中间这句原译为：
+ 在接收到导致状态转换到“接收量确认”的流帧后，可能同时导致转入“接收完成”状态。
+  “接收完成”状态会一直持续直到数据全部传递到应用层。 一旦流数据传递完成，即转到“读取完成”状态，这是一个最终状态。
 如果在“接收”或“数据量确认”状态收到一个流重置帧，将导致流转到“重置接收”状态。 这可能打断流数据传递到应用层。
 流重置帧也有可能在所有流数据都收完后才收到（即在“接收完成”阶段）。 同样地，也可能在收完流重置帧后收到了剩下的流数据（即在“重置接收”状态）。 在QUIC的具体实现上，可以自由选择如何处理这两种情况。
 发送流重置帧意味着终端不能保证流数据的传输。 然而，并没有要求在收到流重置帧后不传输流数据。 QUIC实现可以打断流数据的传输，丢弃任何没有被消耗的数据，并通知对端收到了流重置帧。 如果流数据完成了接收并被缓存起来以供应用层读取，此时收到流重置帧信号，则该信号可能被抑制或扣留。 如果流重置帧被抑制，流的接收部分仍然维持在“接收完成”状态。
@@ -1135,7 +1293,13 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.1_Example_Handshake_Flows/</guid>
-      <description></description>
+      <description>关于TLS如何与QUIC整合的更多细节详见《QUIC TLS》，但在此举出一些范例。 用以支持客户端地址验证的这种交换的一个扩展详见第8.1.2章。
+一旦完成任何地址验证交换，加密握手将用于协商密钥。 加密握手由初始包（第17.2.2章）和握手包（第17.2.4章）携带。
+图5展示了1-RTT握手过程的概况。 每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。 例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的加密帧。
+多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见第12.2章。 因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。 例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。
+TODO：图5
+图6是一个0-RTT握手连接的示例，并且其中一个数据包携带0-RTT数据。 注意，如12.3章所述，服务端在1-RTT包中对0-RTT数据进行确认，并且客户端发送的1-RTT包处于同一个包号空间。
+TODO：图6</description>
     </item>
     
     <item>
@@ -1144,7 +1308,15 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.2_Negotiating_Connection_IDs/</guid>
-      <description></description>
+      <description>连接ID用于确保数据包稳定路由，详见第5.1章。 长包头包含两个连接ID：目标连接ID由接收方指定并用于提供稳定路由；源连接ID供对端设置为目标连接ID。
+在握手期间，带有长包头（详见第17.2章）的数据包用于设置双端所使用的连接ID。 每端的源连接ID会作为发往该端的数据包的目标连接ID。 在处理完首个初始数据包后，每端将后续发送数据包的目标连接ID字段值设置为其接收的源连接ID字段值。
+当客户端发送初始包之前未从服务端收到过初始数据包或重试数据包，则生成不可预测值填充发送的初始包的目标连接ID字段。 目标连接ID的长度必须至少8字节。 客户端在一条连接上必须使用同一个目标连接ID，直到收到服务端发来的数据包为止。
+客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。 这些密钥在收到重试数据包后变更，详见QUIC TLS第5.2章。
+客户端选择一个值填充源连接ID字段，并设置源连接ID长度字段以标识其长度。
+客户端发送的首个0-RTT数据包使用其发送的首个初始数据包一致的源连接ID和目标连接ID。
+在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务的提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。 这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次： 一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。 一旦客户端收到一个从服务端发来的有效的初始数据包，则其必须丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。
+客户端必须在收到首个初始数据包或首个重试数据包后，更改其后续发送数据包时的目标连接ID值。 服务端必须基于收到的首个初始数据包设置发送数据包的目标连接ID。 任何针对目标连接ID的后续改动，只允许通过新连接ID帧携带的值进行； 如果后续的初始数据包包含不同的源连接ID，则必须将该包丢弃。 这避免了对多个具有不同源连接ID的初始数据包进行无状态处理可能导致的不可预测的结果。
+终端发出的目标连接ID可以在一条连接的生命周期内变更，尤其是在响应连接迁移（第9章），详见第5.1.1章。</description>
     </item>
     
     <item>
@@ -1153,7 +1325,20 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.3_Authenticating_Connection_IDs/</guid>
-      <description></description>
+      <description>终端在握手期间的连接ID做出的选择，通过包括传输参数的所有的值验证，详见第7.4章。 这确保所有用于握手的连接ID也同时通过加密握手得到认证了。
+终端将其发出的首个初始数据包的源连接ID字段值包含在initial_source_connection_id传输参数中，详见第18.2章。 服务端将其接收到的首个初始数据包中的目标连接ID值包含在original_destination_connection_id传输参数中；如果服务端发送了一个重试数据包，则其对应的是发送该包之前收到的首个初始数据包。 如果发送重试数据包，服务端也会将重试数据包的源连接ID字段包含在retry_source_connection_id传输参数中。
+来自对端的传输参数中的值必须与终端 在其发送的（对于服务端，则同时包括其接收到的）初始数据包的目标连接ID和源连接ID字段所使用的值保持一致。 终端必须验证其接收到的传输参数匹配接收到的连接ID值。 将连接ID值包含在传输参数中并认证，从而确保攻击者不能在握手期间通过插入携带有攻击者选择的连接ID的数据包影响连接ID的选择。
+终端必须将 任意终端缺失initial_source_connection_id传输参数以及服务端缺失original_destination_connection_id传输参数视为TRANSPORT_PARAMETER_ERROR类型的连接错误。
+终端必须将下述情况视为TRANSPORT_PARAMETER_ERROR或PROTOCOL_VIOLATION类型的连接错误：
+ 服务端在接收到一个重试数据包后，缺失retry_source_connection_id传输参数， 未接收到重试数据包，但是却存在retry_source_connection_id传输参数，或 从对端接收到的传输参数中的值与发送的初始数据包中相应目标连接ID或源连接ID字段不一致。  如果选择了一个零长度连接ID，则相应的传输参数包含一个零长度值。
+图7展示了一个完整握手过程中连接ID的使用（其中DCID表示目标连接ID，SCID表示源连接ID）。 图中展示了初始数据包如何交换，以及随后1-RTT数据包的交换，其中包括握手期间创建的连接ID。
+TODO：图7，握手期间连接ID的使用
+图8展示了包含重试数据包的握手过程。
+TODO：图8，使用重试数据包的握手中连接ID的使用
+在上述两种情况（图7和图8）下，客户端设置其initial_source_connection_id传输参数值为C1。
+当握手过程没有出现重试数据包（图7），服务端设置original_destination_connection_id为S1（注意该值是客户端选择的），设置initial_source_connection_id为S3。 在这种情况下，服务端不包含retry_source_connection_id传输参数。
+When the handshake includes a Retry (Figure 8), the server sets original_destination_connection_id to S1, retry_source_connection_id to S2, and initial_source_connection_id to S3.
+当握手过程出现了重试数据包（图8），服务端设置original_destination_connection_id为S1，设置retry_source_connection_id为S2，设置initial_source_connection_id为S3。</description>
     </item>
     
     <item>
@@ -1162,7 +1347,17 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/Transport_Parameters/7.4.1_Values_of_Transport_Parameters_for_0_RTT/</guid>
-      <description></description>
+      <description>是否使用0-RTT取决于客户端和服务端使用的传输参数是否由同一个旧连接协商的。 为了开启0-RTT，终端需要保存服务端传输参数的值及在连接上收到的任何会话票据（session ticket）。 终端也需要保存其他任何应用协议或加密握手所需要的信息，详见[QUIC TLS]的第4.6章。 保存的传输参数的值在使用会话票据尝试进行0-RTT建连时使用。
+保存的传输参数适用于新连接，直到握手完成，客户端开始发送1-RTT数据包为止。 一旦握手完成，客户端就启用握手过程中创建的传输参数。 不是所有的传输参数都需要保存，因为部分参数不会在后续连接中生效，或是在0-RTT建连期间不起作用。
+定义新的传输参数（详见第7.4.2章）时，必须明确说明其作为0-RTT参数进行保存是否是强制性的、可选的，或必须禁止的。 客户端不需要保存一个其不能处理的传输参数。
+客户端必须不使用下述参数的保存值：ack_delay_exponent、max_ack_delay、initial_source_connection_id、original_destination_connection_id、preferred_address、retry_source_connection_id，以及stateless_reset_token。 客户端必须使用握手期间服务端给出的新值。 如果服务端没有提供新的值，就使用默认值。
+试图发送0-RTT数据的客户端必须保存所有其他服务端需要使用且可以处理的传输参数。 服务端可以保存这些传输参数，或在会话票据中保存这些参数值的一份具备完整性保护的备份，并在收到0-RTT数据后恢复其具体信息。
+如果服务端收到了0-RTT数据，服务端必须不能放宽任何限制，或采用任何其他可能与客户端发来的0-RTT数据产生冲突的值。 尤其需要注意的是，服务端在接收0-RTT数据后，必须不 可为下述参数（详见18.2）设置一个低于保存值的值：
+ active_connection_id_limit initial_max_data initial_max_stream_data_bidi_local initial_max_stream_data_bidi_remote initial_max_stream_data_uni initial_max_streams_bidi initial_max_streams_uni  删除特定传输参数，或为之设置一个零值，可能导致启用0-RTT数据但却不可用。 允许发送应用数据的传输参数的适当子集应该被设置为非零值，以支持0-RTT。 这包括：initial_max_data和（1）initial_max_streams_bidi及initial_max_stream_data_bidi_remote，或（2）initial_max_streams_uni及initial_max_stream_data_uni。
+服务端可能给流设置的初始流控上限大于保存的0-RTT数据包中由客户端设置的值。 一旦握手完成，客户端必须根据更新后的initial_max_stream_data_bidi_remote及initial_max_stream_data_uni的值更新所有发送流的流控上限。
+服务端可以保存并恢复先前发送的max_idle_timeout、max_udp_payload_size及disable_active_migration参数的值，以及在选择更小值后拒绝0-RTT。 当接收0-RTT数据可能同时降低连接性能时，调低这些参数的值。 特别是调低max_udp_payload_size可能导致丢包，导致性能与直接拒绝0-RTT数据相比变得更差。
+当服务端不支持恢复后的值时，其必须拒绝0-RTT数据。
+当在0-RTT数据包中发送帧时，客户端必须只使用保存的传输参数；更重要的是，它必须不能使用 服务端更新后的传输参数，或使用从1-RTT数据包接收到的帧。 在握手过程中传输参数更新的值只适用于1-RTT数据包。 例如，保存的传输参数中的流控上限值适用于所有的0-RTT数据包，即使这些值通过握手或通过1-RTT数据包发送的帧调大了。 服务端可以将在0-RTT数据中使用更新后的传输参数视为一个PROTOCOL_VIOLATION类型的连接错误。</description>
     </item>
     
     <item>
@@ -1171,7 +1366,9 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/Transport_Parameters/7.4.2_New_Transport_Parameters/</guid>
-      <description></description>
+      <description>新传输参数可以用于协商新的协议行为。 终端必须忽略其不支持的传输参数。 缺失某个传输参数会因此禁用掉任何可选的、通过该参数协商的协议特性。 正如第18.1章所述，保留某些标识符是为了满足这个需求。
+对于一个传输参数，如果客户端不能识别，则客户端可以将其丢弃，并尝试在随后的连接中尝试0-RTT。 然而，如果客户端对一个丢弃的传输参数添加了支持，那么其在尝试0-RTT时就有可能与传输参数设置的限制出现冲突。 新传输参数可以通过设置一个最保守的默认值避免该问题。 客户端可以通过保存所有参数避免该问题，即使其中一些参数目前尚不支持。
+新传输参数根据第22.3章描述的规则进行注册。</description>
     </item>
     
     <item>
@@ -1180,7 +1377,10 @@ QUIC为AEAD的可信度上限和完整性上限分别进行计数。在可信度
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.5_Cryptographic_Message_Buffering/</guid>
-      <description></description>
+      <description>QUIC实现需要维护一个用于保存乱序接收到的加密数据的缓存区。 由于加密帧没有流量控制，终端有可能强制对端缓存无限量的数据。
+QUIC实现必须支持缓存至少4096字节从乱序加密帧收到的数据。 终端可以选择允许在握手期间缓存更多的数据。 更大的缓存上限意味着可以交换更大的密钥或证书。 终端的缓存区大小不必在整个连接生命周期内保持不变。
+握手期间无法缓存加密帧可能导致连接失败。 如果终端的缓存区在握手期间溢出，则其可以通过暂时扩大缓存空间确保握手完成。 如果终端不扩大其缓存，则其必须以错误码CRYPTO_BUFFER_EXCEEDED关闭连接。
+Once the handshake completes, if an endpoint is unable to buffer all data in a CRYPTO frame, it MAY discard that CRYPTO frame and all CRYPTO frames received in the future, or it MAY close the connection with a CRYPTO_BUFFER_EXCEEDED error code. Packets containing discarded CRYPTO frames MUST be acknowledged because the packet has been received and processed by the transport even though the CRYPTO frame was discarded.</description>
     </item>
     
     <item>

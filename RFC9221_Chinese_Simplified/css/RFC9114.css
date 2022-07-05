@@ -1,17 +1,16 @@
-@charset "UTF-8";
-/* 谨以此配色“致敬”二柱子 */
+/* Shokuhou Misaki */
+/* old #299c69*/
 /* content */
 /* block */
 html, body {
-  color: #040818;
-  background-color: #f8f9fd;
+  color: #cf9a61;
+  background-color: #fbf2db;
   letter-spacing: 0.1px;
   font-size: 15px;
 }
 
 .sidebar.sidebar-quic {
-  color: #f8f9fd;
-  background-color: #030616;
+  background-color: #cf9a61;
 }
 
 .content {
@@ -20,78 +19,68 @@ html, body {
 
 body::-webkit-scrollbar,
 .sidebar::-webkit-scrollbar {
-  background: #0d0d28;
+  background: #f1e4b9;
   width: 4px;
 }
 
 body::-webkit-scrollbar-thumb,
 .sidebar::-webkit-scrollbar-thumb {
-  background: #f8f9fd;
+  background: #fbf2db;
 }
 
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
-  background: #0d0d28;
-}
-
-/* Sidebar */
-.sidebar a, .sidebar a:hover, .sidebar a:visited {
-  text-decoration: none;
-  color: #f8f9fd;
-}
-.sidebar a:hover {
-  text-decoration: none;
-  color: gray;
+  background: #f1e4b9;
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
-  text-shadow: 2px 4px 5px snow;
-  border-color: #030616;
+  text-shadow: 2px 4px 5px #2f2f2f;
+  border-color: #cf9a61;
 }
 section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
-  color: #0b0b4d;
+  color: #cf9a61;
 }
 section.page a, section.page a:hover, section.page a:visited {
-  color: #0b0b4d;
+  color: #cf9a61;
 }
 section.page table, section.page th, section.page td {
-  border: solid #030616;
+  border: 1px solid #cf9a61;
 }
 
 .content code {
-  background: #141414;
-  -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: #fbf2db;
+  -webkit-box-shadow: inset 0 1px 10px #b68d9e4d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
+  -moz-box-shadow: inset 0 1px 10px #0000004d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
+  box-shadow: inset 0 1px 10px #0000004d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
 }
 .content em strong {
-  text-shadow: 2px 4px #0d0d28;
-  color: ghostwhite;
+  text-shadow: 1px 1px 2px #f1e4b9;
+  color: #cf9a61;
 }
 .content strong {
-  text-shadow: 0 0 7px #0d0d28;
-  color: whitesmoke;
+  text-shadow: 0 0 2px #f1e4b9;
+  color: #cf9a61;
 }
 
 .block {
-  background-color: grey;
-  color: white;
+  background-color: #f2f2f2;
+  color: #f1e4b9;
 }
 .block:before {
-  color: white;
+  color: #f1e4b9;
 }
 .block.ref {
-  background: #121212;
-  color: white;
+  background: #cf9a61;
+  color: #f2f2f2;
   border-radius: 2px;
 }
 .block.ref code {
-  background: #121212;
-  color: white;
-  -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: #cf9a61;
+  color: #f2f2f2;
+  -webkit-box-shadow: inset 0 1px 10px #e0dcdc4d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
 }
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
-  color: white;
+  color: #f2f2f2;
 }
 .block.tip {
   background: #454849;
@@ -110,4 +99,8 @@ section.page table, section.page th, section.page td {
   border-top-color: #270000;
 }
 
-/*# sourceMappingURL=fangqiuhang.css.map */
+.sidebar.sidebar-rfc9114 {
+  background-color: #cf9a61;
+}
+
+/*# sourceMappingURL=RFC9114.css.map */

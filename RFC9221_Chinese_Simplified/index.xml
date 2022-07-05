@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RFC9221中文：HTTP/3 on Autumn Navigation</title>
+    <link>/RFC9221_Chinese_Simplified/</link>
+    <description>Recent content in RFC9221中文：HTTP/3 on Autumn Navigation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language><atom:link href="/RFC9221_Chinese_Simplified/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

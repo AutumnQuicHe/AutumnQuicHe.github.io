@@ -73,7 +73,6 @@ dt {
   overflow: auto;
   text-align: center;
   padding: 1rem 1rem;
-  color: snow;
   display: flex;
   flex-direction: column;
 }
@@ -108,13 +107,6 @@ body::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
     border-radius: 2px;
-}
-
-.sidebar a,
-.sidebar a:hover,
-.sidebar a:visited {
-  text-decoration: none;
-  color: white;
 }
 
 .sidebar a:hover {

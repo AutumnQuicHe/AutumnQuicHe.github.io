@@ -10,6 +10,14 @@
   </url><url>
     <loc>/RFC9002_Chinese_Translation/Foreword/</loc>
   </url><url>
+    <loc>/RFC9114_Chinese_Simplified/Foreword/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/Foreword/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/Foreword/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/Foreword/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/forword/</loc>
@@ -17,6 +25,14 @@
     <loc>/RFC9001_Chinese_Translation/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC9002_Chinese_Translation/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9114_Chinese_Simplified/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/Foreword/forword/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/Foreword/forword/</loc>
   </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
@@ -26,6 +42,14 @@
   </url><url>
     <loc>/RFC9002_Chinese_Translation/Foreword/abstract/</loc>
   </url><url>
+    <loc>/RFC9114_Chinese_Simplified/Foreword/abstract/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/Foreword/abstract/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/Foreword/abstract/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/Foreword/abstract/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/status_of_this_memo/</loc>
@@ -34,6 +58,14 @@
   </url><url>
     <loc>/RFC9002_Chinese_Translation/Foreword/status_of_this_memo/</loc>
   </url><url>
+    <loc>/RFC9114_Chinese_Simplified/Foreword/status_of_this_memo/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/Foreword/status_of_this_memo/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/Foreword/status_of_this_memo/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/Foreword/status_of_this_memo/</loc>
+  </url><url>
     <loc>/RFC8999_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Foreword/copyright_notice/</loc>
@@ -41,6 +73,14 @@
     <loc>/RFC9001_Chinese_Translation/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9002_Chinese_Translation/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9114_Chinese_Simplified/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/Foreword/copyright_notice/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/Foreword/copyright_notice/</loc>
   </url><url>
     <loc>/RFC9001_Chinese_Translation/Introduction/</loc>
   </url><url>
@@ -111,6 +151,14 @@
     <loc>/RFC9001_Chinese_Translation/</loc>
   </url><url>
     <loc>/RFC9002_Chinese_Translation/</loc>
+  </url><url>
+    <loc>/RFC9114_Chinese_Simplified/</loc>
+  </url><url>
+    <loc>/RFC9204_Chinese_Simplified/</loc>
+  </url><url>
+    <loc>/RFC9221_Chinese_Simplified/</loc>
+  </url><url>
+    <loc>/RFC9250_Chinese_Simplified/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Flow_Control/4.1_Data_Flow_Control/</loc>
   </url><url>
@@ -825,6 +873,8 @@
     <loc>/RFC9000_Chinese_Translation/Pseudocode/A.4_Sample_ECN_Validation_Algorithm/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Contributors/</loc>
+  </url><url>
+    <loc>/RFC9000_Chinese_Translation/Author_s_Address/</loc>
   </url><url>
     <loc>/RFC9000_Chinese_Translation/Authors_Addresses/</loc>
   </url><url>

@@ -9,6 +9,7 @@ html, body {
 }
 
 .sidebar.sidebar-quic {
+  color: snow;
   background-color: #020202;
 }
 
@@ -30,6 +31,16 @@ body::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
   background: #020202;
+}
+
+/* Sidebar */
+.sidebar a, .sidebar a:hover, .sidebar a:visited {
+  text-decoration: none;
+  color: snow;
+}
+.sidebar a:hover {
+  text-decoration: none;
+  color: gray;
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
@@ -70,7 +81,16 @@ section.page table, section.page th, section.page td {
 }
 .block.ref {
   background: #121212;
+  color: white;
   border-radius: 2px;
+}
+.block.ref code {
+  background: #121212;
+  color: white;
+  -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.block.ref a, .block.ref a:hover, .block.ref a:visited {
+  color: white;
 }
 .block.tip {
   background: #454849;
@@ -90,6 +110,7 @@ section.page table, section.page th, section.page td {
 }
 
 .sidebar.sidebar-rfc9000 {
+  color: snow;
   background-color: #020202;
 }
 
