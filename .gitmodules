@@ -1,6 +1,9 @@
 [submodule "themes/kraiklyn"]
 	path = themes/kraiklyn
 	url = git@github.com:jsnjack/kraiklyn.git
+[submodule "content/Translation_Norms"]
+	path = content/Translation_Norms
+	url = git@github.com:fangqiuhang/Translation_Norms.git
 [submodule "content/RFC8999_Chinese_Translation"]
 	path = content/RFC8999_Chinese_Translation
 	url = git@github.com:fangqiuhang/RFC8999_Chinese_Translation
@@ -8,9 +11,9 @@
 [submodule "content/RFC9000_Chinese_Translation"]
 	path = content/RFC9000_Chinese_Translation
 	url = git@github.com:fangqiuhang/RFC9000_Chinese_Translation
-[submodule "content/Translation_Norms"]
-	path = content/Translation_Norms
-	url = git@github.com:fangqiuhang/Translation_Norms.git
+[submodule "content/RFC9001_Chinese_Translation"]
+	path = content/RFC9001_Chinese_Translation
+	url = git@github.com:fangqiuhang/RFC9001_Chinese_Translation
 [submodule "content/RFC9002_Chinese_Translation"]
 	path = content/RFC9002_Chinese_Translation
 	url = git@github.com:fangqiuhang/RFC9002_Chinese_Translation
