@@ -16,25 +16,27 @@ $header_a_colour: #0b0b4d;
 $page_table_border: solid $theme_colour;
 
 /* content */
-$content_code_background: #141414;
+$content_code_background: snow;/* #141414 */
 
 $code_webkit_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 $code_moz_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 $code_box_shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 
-$content_em_strong_text_shadow: 2px 4px $main_colour;
-$content_em_strong_colour: ghostwhite;
+$content_em_strong_text_shadow: 2px 2px 2px $main_colour;
+$content_em_strong_colour: $theme_colour;
 $content_strong_text_shadow: 0 0 7px $main_colour;
-$content_strong_colour: whitesmoke;
+$content_strong_colour: $theme_colour;
 
 /* block */
 $block_backgroud_colour: grey;
-$block_colour: white;
+$block_colour: snow;
 
 $ref_background: #121212;
 $ref_colour: $block_colour;
 $ref_code_colour: $ref_colour;
 $ref_code_webkit_box_shadow: $code_webkit_box_shadow;
+$ref_table_border: 1px solid #f8f9fd;
+
 $tip_background: #454849;
 $tip_border_top_colour: #284750;
 $note_background: #454b5e;
