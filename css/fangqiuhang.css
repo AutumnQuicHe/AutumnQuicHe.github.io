@@ -1,6 +1,8 @@
 @charset "UTF-8";
+/* Blocks*/
 /* 谨以此配色“致敬”二柱子 */
 /* content */
+/* #141414 */
 /* block */
 html, body {
   color: #040818;
@@ -59,55 +61,102 @@ section.page table, section.page th, section.page td {
 }
 
 .content code {
-  background: #141414;
+  background: snow;
   -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .content em strong {
-  text-shadow: 2px 4px #0d0d28;
-  color: ghostwhite;
+  text-shadow: 2px 2px 2px #0d0d28;
+  color: #030616;
 }
 .content strong {
   text-shadow: 0 0 7px #0d0d28;
-  color: whitesmoke;
+  color: #030616;
 }
 
 .block {
+  margin: 1em 0em 1em 0em;
+  padding: 0 4px 4px 4px;
+  border-top: 33px solid;
+  position: relative;
+  overflow-wrap: break-word;
+  display: block;
+  z-index: -1;
+  /* to ensure under sidebar */
   background-color: grey;
-  color: white;
+  color: snow;
 }
 .block:before {
-  color: white;
+  position: absolute;
+  top: -24px;
+  left: 12px;
+  color: snow;
 }
 .block.ref {
+  margin: 1em 0em 1em 1em;
+  padding: 3px 3px 3px 9px;
+  max-width: 800px;
+  position: relative;
+  overflow-wrap: break-word;
+  border-top: 0px solid;
   background: #121212;
-  color: white;
+  color: snow;
   border-radius: 2px;
+}
+.block.ref:before {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+}
+.block.ref pre {
+  margin: 0 0 0 0;
+}
+.block.ref p {
+  margin: 10px 0 0 0;
 }
 .block.ref code {
   background: #121212;
-  color: white;
+  color: snow;
   -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
-  color: white;
+  color: snow;
+}
+.block.ref table, .block.ref th, .block.ref td {
+  border: 1px solid #f8f9fd;
 }
 .block.tip {
   background: #454849;
   border-top-color: #284750;
 }
+.block.tip:before {
+  content: "Tip";
+  color: snow;
+}
 .block.note {
   background: #454b5e;
   border-top-color: #070d1d;
+}
+.block.note:before {
+  content: "Note";
+  color: snow;
 }
 .block.info {
   background: #2b2520;
   border-top-color: #271200;
 }
+.block.info:before {
+  content: "Info";
+  color: snow;
+}
 .block.warn {
   background: #533f3f;
   border-top-color: #270000;
+}
+.block.warn:before {
+  content: "Warn";
+  color: snow;
 }
 
 /*# sourceMappingURL=fangqiuhang.css.map */

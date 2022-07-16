@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* Blocks*/
 /* 谨以此配色“致敬”朱蛋挞（周丹泰） */
 /* content */
 /* block */
@@ -55,7 +56,7 @@ section.page a, section.page a:hover, section.page a:visited {
   color: #3a0000;
 }
 section.page table, section.page th, section.page td {
-  border: 1px solid #110007;
+  border: 1px solid #3a0000;
 }
 
 .content code {
@@ -74,16 +75,44 @@ section.page table, section.page th, section.page td {
 }
 
 .block {
+  margin: 1em 0em 1em 0em;
+  padding: 0 4px 4px 4px;
+  border-top: 33px solid;
+  position: relative;
+  overflow-wrap: break-word;
+  display: block;
+  z-index: -1;
+  /* to ensure under sidebar */
   background-color: #fff2f8;
   color: #3a0000;
 }
 .block:before {
+  position: absolute;
+  top: -24px;
+  left: 12px;
   color: #3a0000;
 }
 .block.ref {
+  margin: 1em 0em 1em 1em;
+  padding: 3px 3px 3px 9px;
+  max-width: 800px;
+  position: relative;
+  overflow-wrap: break-word;
+  border-top: 0px solid;
   background: #3a0000a3;
   color: snow;
   border-radius: 2px;
+}
+.block.ref:before {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+}
+.block.ref pre {
+  margin: 0 0 0 0;
+}
+.block.ref p {
+  margin: 10px 0 0 0;
 }
 .block.ref code {
   background: #3a0000a3;
@@ -93,21 +122,40 @@ section.page table, section.page th, section.page td {
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
   color: snow;
 }
+.block.ref table, .block.ref th, .block.ref td {
+  border: 1px solid snow;
+}
 .block.tip {
-  background: #454849;
+  background: #b2e9fc;
   border-top-color: #284750;
 }
+.block.tip:before {
+  content: "Tip";
+  color: snow;
+}
 .block.note {
-  background: #454b5e;
+  background: #a0b2ec;
   border-top-color: #070d1d;
 }
+.block.note:before {
+  content: "Note";
+  color: snow;
+}
 .block.info {
-  background: #2b2520;
+  background: #f3b07a;
   border-top-color: #271200;
 }
+.block.info:before {
+  content: "Info";
+  color: snow;
+}
 .block.warn {
-  background: #533f3f;
+  background: #dd9b9b;
   border-top-color: #270000;
+}
+.block.warn:before {
+  content: "Warn";
+  color: snow;
 }
 
 .sidebar.sidebar-rfc8999 {

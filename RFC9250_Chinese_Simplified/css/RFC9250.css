@@ -1,3 +1,4 @@
+/* Blocks*/
 /* Shokuhou Misaki */
 /* f6e7c2, */
 /* old #299c69*/
@@ -75,16 +76,44 @@ section.page table, section.page th, section.page td {
 }
 
 .block {
+  margin: 1em 0em 1em 0em;
+  padding: 0 4px 4px 4px;
+  border-top: 33px solid;
+  position: relative;
+  overflow-wrap: break-word;
+  display: block;
+  z-index: -1;
+  /* to ensure under sidebar */
   background-color: #f2f2f2;
   color: #f1e4b9;
 }
 .block:before {
+  position: absolute;
+  top: -24px;
+  left: 12px;
   color: #f1e4b9;
 }
 .block.ref {
+  margin: 1em 0em 1em 1em;
+  padding: 3px 3px 3px 9px;
+  max-width: 800px;
+  position: relative;
+  overflow-wrap: break-word;
+  border-top: 0px solid;
   background: #cf9a61;
   color: #f2f2f2;
   border-radius: 2px;
+}
+.block.ref:before {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+}
+.block.ref pre {
+  margin: 0 0 0 0;
+}
+.block.ref p {
+  margin: 10px 0 0 0;
 }
 .block.ref code {
   background: #cf9a61;
@@ -94,21 +123,40 @@ section.page table, section.page th, section.page td {
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
   color: #f2f2f2;
 }
+.block.ref table, .block.ref th, .block.ref td {
+  border: 1px solid #fbf2db;
+}
 .block.tip {
   background: #454849;
   border-top-color: #284750;
+}
+.block.tip:before {
+  content: "Tip";
+  color: snow;
 }
 .block.note {
   background: #454b5e;
   border-top-color: #070d1d;
 }
+.block.note:before {
+  content: "Note";
+  color: snow;
+}
 .block.info {
   background: #2b2520;
   border-top-color: #271200;
 }
+.block.info:before {
+  content: "Info";
+  color: snow;
+}
 .block.warn {
   background: #533f3f;
   border-top-color: #270000;
+}
+.block.warn:before {
+  content: "Warn";
+  color: snow;
 }
 
 .sidebar.sidebar-rfc9250 {

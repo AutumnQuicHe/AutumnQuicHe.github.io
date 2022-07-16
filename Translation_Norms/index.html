@@ -75,7 +75,7 @@
     </div>
 
     <div class="version">
-            generated on Jul 6, 2022
+            generated on Jul 16, 2022
     </div>
 </div>
 
@@ -93,16 +93,16 @@
     <div class="content">
         <h2 id="1-方括号引用参考文献">1. 方括号引用参考文献</h2>
 <p>形如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">The integration of TLS and QUIC is described in more detail in [<span style="color:#f92672">[QUIC-TLS</span>](<span style="color:#75af00">#QUIC-TLS</span>)].
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">The integration of TLS and QUIC is described in more detail in [<span class="nt">[QUIC-TLS</span>](<span class="na">#QUIC-TLS</span>)].
 </code></pre></div><p>[QUIC-TLS]是句子里实际提到的参考文献，这个结构本身参与语法构建，按照中文的习惯一般使用书名号《》将这种引用括起来。因此其应该翻译为：</p>
 <pre tabindex="0"><code>《[QUIC TLS](#QUIC-TLS)》
 </code></pre><p>但是下述这种：</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">QUIC integrates the TLS handshake [<span style="color:#f92672">[TLS13</span>](<span style="color:#75af00">#TLS13</span>)].
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">QUIC integrates the TLS handshake [<span class="nt">[TLS13</span>](<span class="na">#TLS13</span>)].
 </code></pre></div><p>[TLS13]并不是语句的一部分，更类似于书本中的上标或下标引用。本站将其统一用html的上标引用之：</p>
 <pre tabindex="0"><code>TLS握手&lt;sup&gt;[TLS 1.3](#TLS13)&lt;/sup&gt;
 </code></pre><h2 id="2-图或表格">2. 图或表格</h2>
 <p>为了支持文档中的图及表格，这里fork了kraiklyn主题并添加了一个shortcode方法专门用来绘图及表格，例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"><span style="color:#111">&lt;</span><span style="color:#f92672">div</span> <span style="color:#75af00">id</span><span style="color:#f92672">=</span><span style="color:#d88200">Table_1_Stream_ID_Types</span> <span style="color:#75af00">class</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;block ref&#34;</span><span style="color:#111">&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">Table_1_Stream_ID_Types</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;block ref&#34;</span><span class="p">&gt;</span>
 
 \`\`\`
 |位  |流类型|
@@ -113,11 +113,11 @@
 |0x03|服务端创建的单向流|
 \`\`\`
 
-[<span style="color:#f92672">表格1：流类型</span>](<span style="color:#75af00">#Table_1_Stream_ID_Types</span>)
-<span style="color:#111">&lt;/</span><span style="color:#f92672">div</span><span style="color:#111">&gt;</span>
+[<span class="nt">表格1：流类型</span>](<span class="na">#Table_1_Stream_ID_Types</span>)
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </code></pre></div><p>这里，<code>block_ref</code>是专门定义的shortcode，<code>indx</code>用来指定锚点（请注意锚点不能使用的特殊字符），<code>title</code>表示图表名称。
 <code>block_ref</code>会将<code>title</code>转成一个带跳转的href结构。引用该图表的方式：</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">[<span style="color:#f92672">表1</span>](<span style="color:#75af00">#Table_1_Stream_ID_Types</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">[<span class="nt">表1</span>](<span class="na">#Table_1_Stream_ID_Types</span>)
 </code></pre></div><h2 id="3-何时添加英语原文">3. 何时添加英语原文</h2>
 <p>只在如下情况添加：</p>
 <ul>

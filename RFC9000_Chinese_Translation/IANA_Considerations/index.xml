@@ -58,7 +58,7 @@ QUIC协议的码点0x00000001被指定为本文档中定义的协议，并具有
  代码：  该参数简短的帮助记忆的名称。
  描述：  对该错误码语义的简要描述，当提供了指向规范文件的引用时，此内容可以是一份概述。
   该注册表的初始内容如表7所示。
-   值 代码 描述 规范     0x00 NO_ERROR 无错误 第20章   0x01 INTERNAL_ERROR 实现中的错误 第20章   0x02 CONNECTION_REFUSED 服务器拒绝了连接 第20章   0x03 FLOW_CONTROL_ERROR 流量控制错误 第20章   0x04 STREAM_LIMIT_ERROR 打开了过多流 第20章   0x05 STREAM_STATE_ERROR 接收到了在当前流状态下非法的帧 第20章   0x06 FINAL_SIZE_ERROR 最终尺寸发生了变化 第20章   0x07 FRAME_ENCODING_ERROR 帧编码错误 第20章   0x08 TRANSPORT_PARAMETER_ERROR 传输参数中出现错误 第20章   0x09 CONNECTION_ID_LIMIT_ERROR 接收到了过多的连接ID 第20章   0x0a PROTOCOL_VIOLATION 通用的协议违背错误 第20章   0x0b INVALID_TOKEN 接收到了非法的令牌 第20章   0x0c APPLICATION_ERROR 应用错误 第20章   0x0d CRYPTO_BUFFER_EXCEEDED 加密数据缓存溢出 第20章   0x0e KEY_UPDATE_ERROR 对数据包保护密钥的非法更新 第20章   0x0f AEAD_LIMIT_REACHED 对数据包保护密钥的超量使用 第20章   0x10 NO_VIABLE_PATH 无可用网络路径 第20章   0x0100-0x01ff CRYPTO_ERROR TLS警告码 第20章    表6：QUIC传输参数注册表的初始项</description>
+   值 代码 描述 规范     0x00 NO_ERROR 无错误 第20章   0x01 INTERNAL_ERROR 实现中的错误 第20章   0x02 CONNECTION_REFUSED 服务器拒绝了连接 第20章   0x03 FLOW_CONTROL_ERROR 流量控制错误 第20章   0x04 STREAM_LIMIT_ERROR 打开了过多流 第20章   0x05 STREAM_STATE_ERROR 接收到了在当前流状态下非法的帧 第20章   0x06 FINAL_SIZE_ERROR 最终尺寸发生了变化 第20章   0x07 FRAME_ENCODING_ERROR 帧编码错误 第20章   0x08 TRANSPORT_PARAMETER_ERROR 传输参数中出现错误 第20章   0x09 CONNECTION_ID_LIMIT_ERROR 接收到了过多的连接ID 第20章   0x0a PROTOCOL_VIOLATION 通用的协议违背错误 第20章   0x0b INVALID_TOKEN 接收到了非法的令牌 第20章   0x0c APPLICATION_ERROR 应用错误 第20章   0x0d CRYPTO_BUFFER_EXCEEDED 加密数据缓存溢出 第20章   0x0e KEY_UPDATE_ERROR 对数据包保护密钥的非法更新 第20章   0x0f AEAD_LIMIT_REACHED 对数据包保护密钥的超量使用 第20章   0x10 NO_VIABLE_PATH 无可用网络路径 第20章   0x0100-0x01ff CRYPTO_ERROR TLS警告码 第20章    表7：QUIC传输错误码注册表的初始项</description>
     </item>
     
   </channel>

@@ -12,13 +12,16 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/RFC9000_Chinese_Translation/Cryptographic_and_Transport_Handshake/7.1_Example_Handshake_Flows/</guid>
-      <description>关于TLS如何与QUIC整合的更多细节详见《QUIC TLS》，但在此举出一些范例。 用以支持客户端地址验证的这种交换的一个扩展详见第8.1.2章。
+      <description>关于TLS如何与QUIC整合的更多细节详见《QUIC-TLS》，但在此举出一些范例。 用以支持客户端地址验证的这种交换的一个扩展详见第8.1.2章。
 一旦完成任何地址验证交换，加密握手将用于协商密钥。 加密握手由初始包（第17.2.2章）和握手包（第17.2.4章）携带。
 图5展示了1-RTT握手过程的概况。 每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。 例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的加密帧。
 多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见第12.2章。 因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。 例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。
-TODO：图5
-图6是一个0-RTT握手连接的示例，并且其中一个数据包携带0-RTT数据。 注意，如12.3章所述，服务端在1-RTT包中对0-RTT数据进行确认，并且客户端发送的1-RTT包处于同一个包号空间。
-TODO：图6</description>
+ TODO：图5
+  图5：1-RTT握手示例
+ 图6是一个0-RTT握手连接的示例，并且其中一个数据包携带0-RTT数据。 注意，如第12.3章所述，服务端在1-RTT包中对0-RTT数据进行确认，并且客户端发送的1-RTT包处于同一个包号空间。
+ TODO：图6
+  图6：0-RTT握手示例
+ </description>
     </item>
     
     <item>
@@ -30,7 +33,7 @@ TODO：图6</description>
       <description>连接ID用于确保数据包稳定路由，详见第5.1章。 长包头包含两个连接ID：目标连接ID由接收方指定并用于提供稳定路由；源连接ID供对端设置为目标连接ID。
 在握手期间，带有长包头（详见第17.2章）的数据包用于设置双端所使用的连接ID。 每端的源连接ID会作为发往该端的数据包的目标连接ID。 在处理完首个初始数据包后，每端将后续发送数据包的目标连接ID字段值设置为其接收的源连接ID字段值。
 当客户端发送初始包之前未从服务端收到过初始数据包或重试数据包，则生成不可预测值填充发送的初始包的目标连接ID字段。 目标连接ID的长度必须至少8字节。 客户端在一条连接上必须使用同一个目标连接ID，直到收到服务端发来的数据包为止。
-客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。 这些密钥在收到重试数据包后变更，详见QUIC TLS第5.2章。
+客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。 这些密钥在收到重试数据包后变更，详见QUIC-TLS第5.2章。
 客户端选择一个值填充源连接ID字段，并设置源连接ID长度字段以标识其长度。
 客户端发送的首个0-RTT数据包使用其发送的首个初始数据包一致的源连接ID和目标连接ID。
 在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务的提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。 这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次： 一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。 一旦客户端收到一个从服务端发来的有效的初始数据包，则其必须丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。
@@ -51,10 +54,12 @@ TODO：图6</description>
 终端必须将下述情况视为TRANSPORT_PARAMETER_ERROR或PROTOCOL_VIOLATION类型的连接错误：
  服务端在接收到一个重试数据包后，缺失retry_source_connection_id传输参数， 未接收到重试数据包，但是却存在retry_source_connection_id传输参数，或 从对端接收到的传输参数中的值与发送的初始数据包中相应目标连接ID或源连接ID字段不一致。  如果选择了一个零长度连接ID，则相应的传输参数包含一个零长度值。
 图7展示了一个完整握手过程中连接ID的使用（其中DCID表示目标连接ID，SCID表示源连接ID）。 图中展示了初始数据包如何交换，以及随后1-RTT数据包的交换，其中包括握手期间创建的连接ID。
-TODO：图7，握手期间连接ID的使用
-图8展示了包含重试数据包的握手过程。
-TODO：图8，使用重试数据包的握手中连接ID的使用
-在上述两种情况（图7和图8）下，客户端设置其initial_source_connection_id传输参数值为C1。
+ TODO：图7
+  图7：握手期间连接ID的使用
+ 图8展示了包含重试数据包的握手过程。
+ TODO：图8
+  图8：使用重试数据包的握手中连接ID的使用
+ 在上述两种情况（图7和图8）下，客户端设置其initial_source_connection_id传输参数值为C1。
 当握手过程没有出现重试数据包（图7），服务端设置original_destination_connection_id为S1（注意该值是客户端选择的），设置initial_source_connection_id为S3。 在这种情况下，服务端不包含retry_source_connection_id传输参数。
 When the handshake includes a Retry (Figure 8), the server sets original_destination_connection_id to S1, retry_source_connection_id to S2, and initial_source_connection_id to S3.
 当握手过程出现了重试数据包（图8），服务端设置original_destination_connection_id为S1，设置retry_source_connection_id为S2，设置initial_source_connection_id为S3。</description>
