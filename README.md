@@ -25,7 +25,7 @@
 调试：
 > ./scripts/sass.py && hugo server
 
-通过http://localhost:1313/访问。
+通过[http://localhost:1313/](http://localhost:1313/)访问。
 
 # sass
 
