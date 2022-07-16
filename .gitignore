@@ -1,5 +1,6 @@
 _gen/
 resources/
+*.xml
 *.scss
 *.css.map
 LICENSE
