@@ -11,12 +11,12 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/css/fangqiuhang.css" rel="stylesheet"/>
-<link href="/Translation_Norms/index.xml" rel="alternate" title="文档翻译规范" type="application/rss+xml"/>
-</head>
+<link href="/Translation_Norms/index.xml" rel="alternate" title="文档翻译规范" type="application/rss+xml">
+</link></head>
 <body>
 <div class="sidebar sidebar-quic">
 <div class="navigation">
-<div><a href="/">秋愧池</a></div>
+<div><a href="/">秋愧遲</a></div>
 <h1 class="site-title"><a href="/Translation_Norms/">文档翻译规范</a></h1>
 <nav class="internal">
 <ul>
@@ -68,8 +68,7 @@
 
 [<span class="nt">表格1：流类型</span>](<span class="na">#Table_1_Stream_ID_Types</span>)
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</code></pre></div><p>这里，<code>block_ref</code>是专门定义的shortcode，<code>indx</code>用来指定锚点（请注意锚点不能使用的特殊字符），<code>title</code>表示图表名称。
-<code>block_ref</code>会将<code>title</code>转成一个带跳转的href结构。引用该图表的方式：</p>
+</code></pre></div><p>这里，<code>block_ref</code>是专门定义的shortcode，<code>indx</code>用来指定锚点（请注意锚点不能使用的特殊字符），<code>title</code>表示图表名称。<code>block_ref</code>会将<code>title</code>转成一个带跳转的href结构。引用该图表的方式：</p>
 <div class="highlight"><pre class="chroma" tabindex="0"><code class="language-markdown" data-lang="markdown">[<span class="nt">表1</span>](<span class="na">#Table_1_Stream_ID_Types</span>)
 </code></pre></div><h2 id="3-何时添加英语原文">3. 何时添加英语原文</h2>
 <p>只在如下情况添加：</p>
@@ -95,11 +94,9 @@
   Application Protocol Error Code (i),
   Final Size (i),
 }
-</code></pre><p>其中Type、Stream ID等均是帧字段。
-用“”将字段括起来。</p>
+</code></pre><p>其中Type、Stream ID等均是帧字段。用“”将字段括起来。</p>
 <h2 id="2-错误类型翻译展示">2. 错误类型翻译展示</h2>
-<p>形如<code>CONNECTION_ID_LIMIT_ERROR</code>的错误类型也比较麻烦，因其可能细碎地提前引用。因此，需要将其特别考虑。
-在其正式介绍前，如果首次出现在一个大章节中，则该大写字段以括号（）附上中文翻译。同章节后续再出现则不再附上翻译。</p>
+<p>形如<code>CONNECTION_ID_LIMIT_ERROR</code>的错误类型也比较麻烦，因其可能细碎地提前引用。因此，需要将其特别考虑。在其正式介绍前，如果首次出现在一个大章节中，则该大写字段以括号（）附上中文翻译。同章节后续再出现则不再附上翻译。</p>
 <h2 id="3-传输参数翻译展示">3. 传输参数翻译展示</h2>
 <p>传输参数（transport parameters）展示方式同第2点。</p>
 </div>

@@ -11,12 +11,12 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC8999_Chinese_Translation/css/RFC8999.css" rel="stylesheet"/>
-<link href="/RFC8999_Chinese_Translation/index.xml" rel="alternate" title="RFC8999中文：QUIC版本通用属性" type="application/rss+xml"/>
-</head>
+<link href="/RFC8999_Chinese_Translation/index.xml" rel="alternate" title="RFC8999中文：QUIC版本通用属性" type="application/rss+xml">
+</link></head>
 <body>
 <div class="sidebar sidebar-rfc8999">
 <div class="navigation">
-<div><a href="/">秋愧池</a></div>
+<div><a href="/">秋愧遲</a></div>
 <h1 class="site-title"><a href="/RFC8999_Chinese_Translation/">RFC8999中文：QUIC版本通用属性</a></h1>
 <nav class="internal">
 <ul>
@@ -179,13 +179,9 @@
 <a href="#2_Fixed_Properties_of_All_QUIC_Versions">2. 所有QUIC版本之间保持不变的属性</a>
 </h1>
 <div class="content">
-<p>除了提供安全、多路复用的传输功能，QUIC《<a href="#QUIC_TRANSPORT">QUIC协议</a>》还支持版本协商。
-这将使得协议能够在以后的岁月中为适应新的需求而更新，而协议的诸多特性可以随着版本的迭代而不断改变。</p>
-<p>本文阐述QUIC的一些在新的QUIC版本开发及部署的过程中依旧保持不变的属性。
-所有这些不变属性都与IP版本无关。</p>
-<p>本文的主要目标是确保后续QUIC新版本的迭代。
-通过陈述QUIC的这些不可更改的属性，本文试图维持QUIC终端对QUIC协议任何其他方面的改动进行协商的能力。
-因此，这也保证了暴露到一条QUIC连接两个终端之外的信息量最少。QUIC协议在本文明确禁止之外的任何方面，都是可以在不同版本之间修改的。</p>
+<p>除了提供安全、多路复用的传输功能，QUIC《<a href="#QUIC_TRANSPORT">QUIC协议</a>》还支持版本协商。这将使得协议能够在以后的岁月中为适应新的需求而更新，而协议的诸多特性可以随着版本的迭代而不断改变。</p>
+<p>本文阐述QUIC的一些在新的QUIC版本开发及部署的过程中依旧保持不变的属性。所有这些不变属性都与IP版本无关。</p>
+<p>本文的主要目标是确保后续QUIC新版本的迭代。通过陈述QUIC的这些不可更改的属性，本文试图维持QUIC终端对QUIC协议任何其他方面的改动进行协商的能力。因此，这也保证了暴露到一条QUIC连接两个终端之外的信息量最少。QUIC协议在本文明确禁止之外的任何方面，都是可以在不同版本之间修改的。</p>
 <p><a href="#Appendix_A_Incorrect_Assumptions">附录A</a>包含一份非详尽的清单，列出了一些基于对QUIC版本1的了解可能做出的不正确的猜想，这些不适用于QUIC的任何版本。</p>
 </div>
 </section>
@@ -230,9 +226,7 @@
 <a href="#5_QUIC_Packets">5. QUIC数据包</a>
 </h1>
 <div class="content">
-<p>QUCI终端之间交换包含一个或多个QUIC数据包的UDP报文。
-本章描述QUIC包的不变特性。
-一个版本的QUIC准许多个QUIC数据包包含于同一个UDP报文里，但是其不变的特性只要求报文里的首个数据包保持。</p>
+<p>QUCI终端之间交换包含一个或多个QUIC数据包的UDP报文。本章描述QUIC包的不变特性。一个版本的QUIC准许多个QUIC数据包包含于同一个UDP报文里，但是其不变的特性只要求报文里的首个数据包保持。</p>
 <p>QUIC定义了两类数据包头：长包头与短包头。有长包头的数据包由其首个字节的首个比特位设置为1判定，而短包头数据包这个比特位设置为0。</p>
 <p>QUIC数据包可能被完全保护，包括包头。然而，QUIC版本协商包不会被完全保护，详见<a href="#6_Version_Negotiation">第6章</a>。</p>
 <p>除了这里描述的值之外，QUIC数据包的有效负载是由各个版本决定且任意长度的。</p>
@@ -280,9 +274,7 @@
 </code></pre></div><p><a href="#Figure_3_QUIC_Short_Header">图3：QUIC短包头</a></p>
 </div>
 <p>短包头QUIC数据包的首字节的最高位设置为0。</p>
-<p>短包头数据包紧随首字节之后是一个目标连接ID。
-短包头不会包含目标连接ID长度、源连接ID长度、源连接ID或版本字段。
-目标连接ID的长度不会编码在短包头数据包里，也不会受限于这个特性。</p>
+<p>短包头数据包紧随首字节之后是一个目标连接ID。短包头不会包含目标连接ID长度、源连接ID长度、源连接ID或版本字段。目标连接ID的长度不会编码在短包头数据包里，也不会受限于这个特性。</p>
 <p>数据包接下来剩余字段有与版本特定相关的语义。</p>
 </div>
 </section>
@@ -292,9 +284,7 @@
 </h2>
 <div class="content">
 <p>连接ID是一个任意长度的不透明字段。</p>
-<p>连接ID的主要功能是确保底层协议（UDP、IP及更底层的协议栈）发生地址变更时不会导致一个QUIC连接的数据包被传输到错误的QUIC终端上。
-连接ID由终端及支持的中间设备用以确保每个数据包能够被调度到相应终端的正确实体上。
-对于终端而言，连接ID用于标识数据包对应的QUIC连接。</p>
+<p>连接ID的主要功能是确保底层协议（UDP、IP及更底层的协议栈）发生地址变更时不会导致一个QUIC连接的数据包被传输到错误的QUIC终端上。连接ID由终端及支持的中间设备用以确保每个数据包能够被调度到相应终端的正确实体上。对于终端而言，连接ID用于标识数据包对应的QUIC连接。</p>
 <p>连接ID由每个终端根据版本特定的方式选择，而同一个QUIC连接的数据包可能使用不同的连接ID。</p>
 </div>
 </section>
@@ -328,15 +318,10 @@
 }
 </code></pre><p><a href="#Figure_4_Version_Negotiation_Packet">图4：版本协商包</a></p>
 </div>
-<p>版本协商包只有首字节最重要的那个比特位有着任意定义的值。
-其剩余的7个比特位标记为“未使用”，在发送的时候可以被设置为任意值，且<em><strong>必须</strong></em>被接收端忽略。</p>
-<p>版本协商包紧随源连接ID字段后面的是一个支持版本字段的列表，该列表每个字段标识终端能够支持的版本（也就是客户端支持的QUIC版本的版本号挨个列下去）。
-版本协商包不包含其他字段，终端<em><strong>必须</strong></em>忽略不包含支持版本字段或包含不完整版本值的包。</p>
-<p>版本协商包不使用完全的或加密的保护。
-某些特定的QUIC版本可能包含准许终端鉴别支持版本列表里的值是否存在修改或损坏的协议手段。</p>
-<p>终端<em><strong>必须</strong></em>在其目标连接ID字段包含它收到的数据包的源连接ID值。
-<em><strong>必须</strong></em>将收到数据包的目标连接ID字段值复制给源连接ID字段，该值是客户端随机产生的。
-回显两个连接ID给客户端一些保证，表明服务端收到了包，且版本协商包不是由对其不可见的攻击者生成的。</p>
+<p>版本协商包只有首字节最重要的那个比特位有着任意定义的值。其剩余的7个比特位标记为“未使用”，在发送的时候可以被设置为任意值，且<em><strong>必须</strong></em>被接收端忽略。</p>
+<p>版本协商包紧随源连接ID字段后面的是一个支持版本字段的列表，该列表每个字段标识终端能够支持的版本（也就是客户端支持的QUIC版本的版本号挨个列下去）。版本协商包不包含其他字段，终端<em><strong>必须</strong></em>忽略不包含支持版本字段或包含不完整版本值的包。</p>
+<p>版本协商包不使用完全的或加密的保护。某些特定的QUIC版本可能包含准许终端鉴别支持版本列表里的值是否存在修改或损坏的协议手段。</p>
+<p>终端<em><strong>必须</strong></em>在其目标连接ID字段包含它收到的数据包的源连接ID值。<em><strong>必须</strong></em>将收到数据包的目标连接ID字段值复制给源连接ID字段，该值是客户端随机产生的。回显两个连接ID给客户端一些保证，表明服务端收到了包，且版本协商包不是由对其不可见的攻击者生成的。</p>
 <p>终端收到版本协商包后，可以在随后的数据包中更改QUIC版本。终端更改QUIC版本的条件将取决于其选择的版本。</p>
 <p>《<a href="#QUIC_TRANSPORT">QUIC协议</a>》详细描述了支持QUIC版本1的终端如何创建及处理一个版本协商包。</p>
 </div>
@@ -364,17 +349,11 @@
 </h2>
 <div class="content">
 <div class="out_ref" id="RFC2119">
-<p>
-<a href="#RFC2119">[RFC2119]</a>
-        Bradner, S.
-    </p>
+<p><a href="#RFC2119">[RFC2119]</a>        Bradner, S.    </p>
 <p>《RFC文档中用于指出要求级别的关键字（Key words for use in RFCs to Indicate Requirement Levels）》, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
 </div>
 <div class="out_ref" id="RFC8174">
-<p>
-<a href="#RFC8174">[RFC8174]</a>
-        Leiba, B. 
-    </p>
+<p><a href="#RFC8174">[RFC8174]</a>        Leiba, B.     </p>
 <p>《RFC2119中关键字大写与小写的歧义（Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words）》, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
 </div>
 </div>
@@ -385,24 +364,15 @@
 </h2>
 <div class="content">
 <div class="out_ref" id="QUIC_TLS">
-<p>
-<a href="#QUIC_TLS">[QUIC TLS]</a>
-        Thomson, M., Ed. and S. Turner, Ed.
-    </p>
+<p><a href="#QUIC_TLS">[QUIC TLS]</a>        Thomson, M., Ed. and S. Turner, Ed.    </p>
 <p>《使用TLS加密QUIC（Using TLS to Secure QUIC）》, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
 </div>
 <div class="out_ref" id="QUIC_TRANSPORT">
-<p>
-<a href="#QUIC_TRANSPORT">[QUIC传输协议]</a>
-        Iyengar, J., Ed. and M. Thomson, Ed.
-    </p>
+<p><a href="#QUIC_TRANSPORT">[QUIC传输协议]</a>        Iyengar, J., Ed. and M. Thomson, Ed.    </p>
 <p>《QUIC：一种基于UDP的多路复用安全传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）》, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
 </div>
 <div class="out_ref" id="RFC5116">
-<p>
-<a href="#RFC5116">[RFC5116]</a>
-        McGrew, D.
-    </p>
+<p><a href="#RFC5116">[RFC5116]</a>        McGrew, D.    </p>
 <p>《一种用于认证加密的接口及算法（An Interface and Algorithms for Authenticated Encryption）》, RFC 5116, DOI 10.17487/RFC5116, January 2008, <a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>.</p>
 </div>
 </div>
