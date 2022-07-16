@@ -30,4 +30,5 @@ clear_public
 
 ./scripts/sass.py
 hugo
+./scripts/remove_p_newline.py
 find public -name "*.scss" | xargs rm
