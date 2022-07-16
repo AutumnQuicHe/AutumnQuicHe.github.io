@@ -550,7 +550,7 @@
 <div class="content">
 <p>QUIC是一个安全通用传输协议。本文定义了第1版QUIC，支持《<a href="../RFC8999_Chinese_Translation">QUIC不变量</a>》所定义的独立版本功能。</p>
 <p>QUIC是一个面向连接的协议，在客户端及服务端之间建立有状态的交互。</p>
-<p>QUIC握手由密钥协商及传输参数协商组成。QUIC集成了TLS握手《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》，同时以自定义的帧保护数据包。更多关于TLS与QUIC集成的细节描述详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》。握手过程被设计成支持尽早交换应用数据（0-RTT），包含一个需要通过某种形式的提前交流或配置来开启的客户端选项。</p>
+<p>QUIC握手由密钥协商及传输参数协商组成。QUIC集成了TLS握手《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》，同时以自定义的帧保护数据包。更多关于TLS与QUIC集成的细节描述详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》。握手过程被设计成支持尽早交换应用数据（0-RTT），包含一个需要通过某种形式的提前交流或配置来开启的客户端选项。</p>
 <p>终端通过QUIC交流是以交互QUIC数据包的形式实现的。大多数数据包装载着一个或多个在终端间搬运控制信息和应用数据的帧。QUIC会验证每个包的内容，并根据实际情况对每个数据包进行加密。QUIC数据包通过UDP报文<sup>《<a href="https://www.rfc-editor.org/info/rfc768">UDP</a>》</sup>传输从而能够更好地支持现有的系统及网络环境。</p>
 <p>应用层协议通过流在QUIC连接上交换信息，每条流都是有序的字节序列。流的类型分两种：双向流，支持双端发送数据；以及单向流，只支持一端发送数据。QUIC使用一种基于额度的方案来限制流的创建以及每条流可以发送的数据量。</p>
 <p>QUIC以提供必要反馈的方式实现可靠传输及拥塞控制，《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》第6章描述了QUIC的一种数据丢失及恢复算法；QUIC通过拥塞控制避免网络拥塞，《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》第7章描述了QUIC的一种典型拥塞控制算法。</p>
@@ -605,7 +605,7 @@
 </ul>
 </li>
 </ul>
-<p>相关文档《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》描述QUIC的数据丢失检测及拥塞控制，《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》描述TLS及其他加密机制的使用。</p>
+<p>相关文档《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》描述QUIC的数据丢失检测及拥塞控制，《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》描述TLS及其他加密机制的使用。</p>
 <p>本文定义了QUIC版本1，支持《<a href="../RFC8999_Chinese_Translation">QUIC不变量</a>》所定义的不变量。</p>
 <p>若引用QUIC版本1，请引用本文。若引用QUIC支持的独立版本的某个子集，请引用《<a href="../RFC8999_Chinese_Translation">QUIC不变量</a>》。</p>
 </div>
@@ -615,7 +615,7 @@
 <a href="#1.2_Terms_and_Definitions">1.2. 术语及定义</a>
 </h2>
 <div class="content">
-<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="#RFC2119">RFC2119</a>》《<a href="#RFC8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
 <p>本文常用术语列述如下：</p>
 <p>QUIC：本文描述的传输协议。QUIC是名称，不是首字母缩写。</p>
 <p>终端（Endpoint）：一个能够以创建、接收及处理QUIC数据包参与QUIC连接的实体。QUIC终端有两种类型：客户端（client）及服务端（server）。</p>
@@ -919,7 +919,7 @@
 <div class="content">
 <p>接收方需要限制缓存数据量以防发送方速度太快造成冲击或被恶意发送方消耗大量内存。为了让接收方能够限制连接的内存占用，不仅每条流有单独的流量控制，所有流也作为一个整体在连接层面有统一的流量控制。QUIC接收方控制发送方在一条流上以及任何时刻在所有流上可以发送的最大数据量，详见<a href="#4.1_Data_Flow_Control">第4.1章</a>或<a href="#4.2_Increasing_Flow_Control_Limits">第4.2章</a>。</p>
 <p>同样地，为了限制连接并发，QUIC终端控制对方可以同时开启的最大流数量，详见<a href="#4.6_Controlling_Concurrency">第4.6章</a>。</p>
-<p>通过<strong>加密帧</strong>发送的数据不像流数据那样受流量控制制约。QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》。为了防止在多个层次过量缓存数据，QUIC实现<em><strong>应该</strong></em>为加密协议实现提供一套接口以供其交流缓存区限制。</p>
+<p>通过<strong>加密帧</strong>发送的数据不像流数据那样受流量控制制约。QUIC依赖于加密协议的实现来避免这些数据被过量缓存，详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》。为了防止在多个层次过量缓存数据，QUIC实现<em><strong>应该</strong></em>为加密协议实现提供一套接口以供其交流缓存区限制。</p>
 </div>
 </section>
 <section class="page" id="4.1_Data_Flow_Control">
@@ -1012,8 +1012,8 @@
 </h1>
 <div class="content">
 <p>QUIC连接在客户端与服务端之间共享状态。</p>
-<p>QUIC连接从握手开始。在握手的过程中，双端使用加密握手协议（<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>）创建一个共享密钥并协商应用协议。握手过程（<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>）确认双端的交流意愿（<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>），并确立连接的各项参数（<a href="#7.4_Transport_Parameters">第7.4章</a>）。</p>
-<p>应用层协议可以在连接握手阶段使用连接，但这种使用是有所限制的。0-RTT准许客户端在收到服务端回复前发送应用数据，但是没有抵御回放攻击的措施，详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》第9.2章。服务端也可以在收到客户端的最终加密握手信息前发送应用数据，此时服务端尚未确认客户端的身份，也未确认客户端是否存活。应用层协议可以在安全性与降低延迟之间权衡，以决定是否使用这些功能。</p>
+<p>QUIC连接从握手开始。在握手的过程中，双端使用加密握手协议（<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>）创建一个共享密钥并协商应用协议。握手过程（<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>）确认双端的交流意愿（<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>），并确立连接的各项参数（<a href="#7.4_Transport_Parameters">第7.4章</a>）。</p>
+<p>应用层协议可以在连接握手阶段使用连接，但这种使用是有所限制的。0-RTT准许客户端在收到服务端回复前发送应用数据，但是没有抵御回放攻击的措施，详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》第9.2章。服务端也可以在收到客户端的最终加密握手信息前发送应用数据，此时服务端尚未确认客户端的身份，也未确认客户端是否存活。应用层协议可以在安全性与降低延迟之间权衡，以决定是否使用这些功能。</p>
 <p>连接ID（<a href="#5_Connections">第5章</a>）的存在使得连接可以迁移到新的网络通道上，这不仅可以是终端的主动选择，也可以是在网络中间件发生变更后的被动选择。<a href="#9_Connection_Migration">第9章</a>描述了如何缓解连接迁移带来的安全和隐私问题。</p>
 <p>对于不再需要的连接，有几种方法可以让客户端和服务端将其关闭，详见<a href="#10_Connection_Termination">第10章</a>。</p>
 </div>
@@ -1185,7 +1185,7 @@
 <a href="#7_Cryptographic_and_Transport_Handshake">7. 加密与传输握手</a>
 </h1>
 <div class="content">
-<p>QUIC通过将加密与传输握手组合最小化连接建立的延迟。QUIC使用<strong>加密帧</strong>（详见<a href="#19.6_CRYPTO_Frames">第19.6章</a>）传递加密握手信息。本文所定义的QUIC版本标识为<code>0x00000001</code>，使用《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》描述的TLS，而不同的QUIC版本可能表面其使用了不同的加密握手协议。</p>
+<p>QUIC通过将加密与传输握手组合最小化连接建立的延迟。QUIC使用<strong>加密帧</strong>（详见<a href="#19.6_CRYPTO_Frames">第19.6章</a>）传递加密握手信息。本文所定义的QUIC版本标识为<code>0x00000001</code>，使用《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》描述的TLS，而不同的QUIC版本可能表面其使用了不同的加密握手协议。</p>
 <p>QUIC可靠、有序地传递加密握手数据。QUIC数据包保护用于尽可能多地对握手协议进行加密。加密握手{&lt; req_level MUST &gt;}具备如下属性：</p>
 <ul>
 <li>密钥交换是认证的，需要
@@ -1214,7 +1214,7 @@
 <a href="#7.1_Example_Handshake_Flows">7.1. 握手流程示例</a>
 </h2>
 <div class="content">
-<p>关于TLS如何与QUIC整合的更多细节详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》，但在此举出一些范例。用以支持客户端地址验证的这种交换的一个扩展详见<a href="#8.1.2_Address_Validation_Using_Retry_Packets">第8.1.2章</a>。</p>
+<p>关于TLS如何与QUIC整合的更多细节详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》，但在此举出一些范例。用以支持客户端地址验证的这种交换的一个扩展详见<a href="#8.1.2_Address_Validation_Using_Retry_Packets">第8.1.2章</a>。</p>
 <p>一旦完成任何地址验证交换，加密握手将用于协商密钥。加密握手由初始包（<a href="#17.2.2_Initial_Packet">第17.2.2章</a>）和握手包（<a href="#17.2.4_Handshake_Packet">第17.2.4章</a>）携带。</p>
 <p><a href="#Figure_5_Example_1-RTT_Handshake">图5</a>展示了1-RTT握手过程的概况。每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的<strong>加密帧</strong>。</p>
 <p>多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见<a href="#12.2_Coalescing_Packets">第12.2章</a>。因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</p>
@@ -1237,7 +1237,7 @@
 <p>连接ID用于确保数据包稳定路由，详见<a href="#5.1_Connection_ID">第5.1章</a>。长包头包含两个连接ID：目标连接ID由接收方指定并用于提供稳定路由；源连接ID供对端设置为目标连接ID。</p>
 <p>在握手期间，带有长包头（详见<a href="#17.2_Long_Header_Packets">第17.2章</a>）的数据包用于设置双端所使用的连接ID。每端的源连接ID会作为发往该端的数据包的目标连接ID。在处理完首个初始数据包后，每端将后续发送数据包的目标连接ID字段值设置为其接收的源连接ID字段值。</p>
 <p>当客户端发送初始包之前未从服务端收到过初始数据包或重试数据包，则生成不可预测值填充发送的初始包的目标连接ID字段。目标连接ID的长度<em><strong>必须</strong></em>至少8字节。客户端在一条连接上<em><strong>必须</strong></em>使用同一个目标连接ID，直到收到服务端发来的数据包为止。</p>
-<p>客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。这些密钥在收到重试数据包后变更，详见<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a><a href="#5.2_Matching_Packets_to_Connections">第5.2章</a>。</p>
+<p>客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。这些密钥在收到重试数据包后变更，详见<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a><a href="#5.2_Matching_Packets_to_Connections">第5.2章</a>。</p>
 <p>客户端选择一个值填充源连接ID字段，并设置源连接ID长度字段以标识其长度。</p>
 <p>客户端发送的首个0-RTT数据包使用其发送的首个初始数据包一致的源连接ID和目标连接ID。</p>
 <p>在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务的提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次：一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。一旦客户端收到一个从服务端发来的有效的初始数据包，则其<em><strong>必须</strong></em>丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。</p>
@@ -1298,7 +1298,7 @@
 <a href="#7.4.1_Values_of_Transport_Parameters_for_0_RTT">7.4.1. 0-RTT传输参数</a>
 </h3>
 <div class="content">
-<p>是否使用0-RTT取决于客户端和服务端使用的传输参数是否由同一个旧连接协商的。为了开启0-RTT，终端需要保存服务端传输参数的值及在连接上收到的任何会话票据（session ticket）。终端也需要保存其他任何应用协议或加密握手所需要的信息，详见[QUIC-TLS]的<a href="#4.6_Controlling_Concurrency">第4.6章</a>。保存的传输参数的值在使用会话票据尝试进行0-RTT建连时使用。</p>
+<p>是否使用0-RTT取决于客户端和服务端使用的传输参数是否由同一个旧连接协商的。为了开启0-RTT，终端需要保存服务端传输参数的值及在连接上收到的任何会话票据（session ticket）。终端也需要保存其他任何应用协议或加密握手所需要的信息，详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="#4.6_Controlling_Concurrency">第4.6章</a>。保存的传输参数的值在使用会话票据尝试进行0-RTT建连时使用。</p>
 <p>保存的传输参数适用于新连接，直到握手完成，客户端开始发送1-RTT数据包为止。一旦握手完成，客户端就启用握手过程中创建的传输参数。不是所有的传输参数都需要保存，因为部分参数不会在后续连接中生效，或是在0-RTT建连期间不起作用。</p>
 <p>定义新的传输参数（详见<a href="#7.4.2_New_Transport_Parameters">第7.4.2章</a>）时，<em><strong>必须</strong></em>明确说明其作为0-RTT参数进行保存是否是强制性的、可选的，或必须禁止的。客户端不需要保存一个其不能处理的传输参数。</p>
 <p>客户端<em><strong>必须不</strong></em>使用下述参数的保存值：<code>ack_delay_exponent</code>、<code>max_ack_delay</code>、<code>initial_source_connection_id</code>、<code>original_destination_connection_id</code>、<code>preferred_address</code>、<code>retry_source_connection_id</code>，以及<code>stateless_reset_token</code>。客户端<em><strong>必须</strong></em>使用握手期间服务端给出的新值。如果服务端没有提供新的值，就使用默认值。</p>
@@ -1794,7 +1794,7 @@
 <p>如果接收方要求使用连接ID，那么那作为结果的至少21个字节并不保证无状态重置很难与其他数据包区分。为了做到这一点，终端<em><strong>应该</strong></em>确保所有它发送的数据包都比它要求对端在数据包中包含的最小的连接ID的长度要长至少22字节，不够就加<strong>填充帧</strong>。这么做能确保所有对端发出的无状态重置都无法和发送给当前终端的合法数据包区分。在发送无状态重置来响应一个不超过43字节的数据包时，终端<em><strong>应该</strong></em>发送一个比它要响应的那个数据包要短一个字节的无状态重置。</p>
 <p>以上数值假设了无状态重置令牌和数据包保护AEAD的最小扩充量具有相同长度。如果终端协商了具有更大的最小扩充量的数据包保护方案，那么就需要额外的不可预测字节。</p>
 <p>终端发送的无状态重置尺寸<em><strong>必须不</strong></em>是它接收到的数据包的三倍或更大，以免被用于放大攻击。<a href="#10.3.3_Looping">第10.3.3章</a>描述了无状态重置尺寸的额外限制。</p>
-<p>终端<em><strong>必须</strong></em>丢弃因过小而不合法的QUIC数据包。举个例子，在使用《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》中定义的AEAD函数组时，小于21字节的短包头数据包永远不可能合法。</p>
+<p>终端<em><strong>必须</strong></em>丢弃因过小而不合法的QUIC数据包。举个例子，在使用《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》中定义的AEAD函数组时，小于21字节的短包头数据包永远不可能合法。</p>
 <p>终端<em><strong>必须</strong></em>将无状态重置以短包头数据包的格式发送。然而，终端<em><strong>必须</strong></em>将任何以有效无状态重置令牌结尾的数据包视作无状态重置，因为其他QUIC版本可能允许使用长包头。</p>
 <p>终端<em><strong>可以</strong></em>在响应长包头数据包时发送无状态重置。在无状态重置令牌在对端处可用前发送无状态重置是没有效果的。在本QUIC版本中，只能在连接建立期间使用长包头数据包。由于无状态重置令牌只有在连接建立完成或临近完成时才可用，忽略长包头数据包的效果和发送无状态重置的效果可能是一样的。</p>
 <p>终端不能从短包头数据包中判断源连接ID；因此，它不能在无状态重置中设置目标连接ID。于是目标连接ID会和之前发送的数据包中使用的值不一样。随机的目标连接ID能使连接ID表现得像是迁移至由<strong>新连接ID帧</strong>提供的新连接ID的结果；详见<a href="#19.15_NEW_CONNECTION_ID_Frames">第19.15章</a>。</p>
@@ -1895,7 +1895,7 @@
 <a href="#12.1_Protected_Packets">12.1 受保护的数据包</a>
 </h2>
 <div class="content">
-<p>根据数据包类型不同，QUIC数据包具有不同级别的加密保护。有关数据包保护的细节，详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》；本节对这种保护做了概述。</p>
+<p>根据数据包类型不同，QUIC数据包具有不同级别的加密保护。有关数据包保护的细节，详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》；本节对这种保护做了概述。</p>
 <p>版本协商数据包没有加密保护，详见《<a href="../RFC8999_Chinese_Translation">QUIC不变量</a>》。</p>
 <p>重试数据包使用AEAD函数（带有关联数据的认证加密，详见《<a href="https://www.rfc-editor.org/info/rfc5116">AEAD</a>》）来保护数据包免于意外修改。</p>
 <p>初始数据包也使用AEAD函数，函数的密钥是用一个在传输中对外界可见的值衍生出来的。因此初始数据包不具有有效的可信度保护。使用初始数据包保护是为了确保数据包发送方是存在于当前网络路径上的。任何接收到来自客户端的初始数据包的实体都能重建出一个密钥，这个密钥既能让它们读取数据包的内容，也可以让它们创建出能被任一终端认证成功的初始数据包。AEAD函数还保护初始数据包免于意外修改。</p>
@@ -1939,7 +1939,7 @@
 <p>所有0-RTT数据包（详见<a href="#17.2.3_0-RTT">第17.2.3章</a>）和1-RTT数据包（<a href="#17.3.1_1-RTT_Packet">第17.3.1章</a>）都在这个空间中。</p>
 </dd>
 </dl>
-<p>如《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》所述，每种数据包类型使用不同的保护密钥。</p>
+<p>如《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》所述，每种数据包类型使用不同的保护密钥。</p>
 <p>概念上，数据包号空间是数据包被处理和确认的上下文。初始数据包只能使用初始数据包保护密钥发送，也只能在初始数据包中被确认。类似地，握手数据包使用握手加密级别发送，且只能在握手数据包中被确认。</p>
 <p>这样，在不同数据包号空间中发送的数据的加密得到了强制隔离。每个空间中的数据包号都从<code>0</code>开始。在相同数据包号空间中发送的后续数据包<em><strong>必须</strong></em>将数据包号增加至少<code>1</code>。</p>
 <p>0-RTT数据和1-RTT数据出现在相同数据包号空间，是为了使得丢包检测算法在这两种数据包类型间更好实现。</p>
@@ -2566,7 +2566,7 @@
 <p>QUIC版本使用一个32位无符号整型值来标识。</p>
 <p>版本<code>0x00000000</code>被保留使用，以表示版本协商。本规范的版本使用数值<code>0x00000001</code>来标识。</p>
 <p>其他QUIC版本的各种属性可能与本版本不同。《<a href="../RFC8999_Chinese_Translation">QUIC不变量</a>》中描述了保证在协议不同版本间保持一致的一些QUIC属性。</p>
-<p>如《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》所述，版本为<code>0x00000001</code>的QUIC使用TLS作为加密握手协议。</p>
+<p>如《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》所述，版本为<code>0x00000001</code>的QUIC使用TLS作为加密握手协议。</p>
 <p>版本号最高的16个有效位被清除的版本被保留使用，用于将来的IETF共识文档。</p>
 <p>遵循<code>0x?a?a?a?a</code>模式的版本——也就是所有字节的四个低位都是<code>1010</code>（二进制）的那些版本号——被保留使用，用于强制执行版本协商。客户端或服务器<em><strong>可以</strong></em>宣称自己支持这些保留版本中的任意版本。</p>
 <p>保留版本号绝不会表示一个真实的协议；客户端<em><strong>可以</strong></em>使用这些版本号中的一个并期望服务器会发起版本协商；服务器<em><strong>可以</strong></em>宣称自己支持这些版本中的一个，并期望客户端忽略这个值。</p>
@@ -2839,7 +2839,7 @@
 <p>先前由重试数据包或<strong>新令牌帧</strong>提供的令牌的值，详见<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 </dd>
 </dl>
-<p>为了防止不感知版本的中间件的篡改，初始数据包由连接特定密钥和版本特定密钥（初始密钥）所保护，如<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>中描述的那样。这种保护在面对有能力观测数据包的攻击者时并不能提供可信度或保证完整性，但是它能防止无法观测到数据包的攻击者伪造初始数据包。</p>
+<p>为了防止不感知版本的中间件的篡改，初始数据包由连接特定密钥和版本特定密钥（初始密钥）所保护，如<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>中描述的那样。这种保护在面对有能力观测数据包的攻击者时并不能提供可信度或保证完整性，但是它能防止无法观测到数据包的攻击者伪造初始数据包。</p>
 <p>客户端和服务器使用初始数据包这一类型，用于任何包含着初始加密握手消息的数据包。这包含所有需要新创建包含初始加密消息的数据包的情况，例如接收到一个重试数据包后被发送的的那个数据包，详见<a href="#17.2.5_Retry_Packet">第17.2.5章</a>。</p>
 <p>服务器发送它的首个初始数据包，作为客户端初始包的响应。服务器<em><strong>可以</strong></em>发送多个初始数据包。加密密钥交换可能需要多轮往返或数据重传。</p>
 <p>一个初始数据包的载荷包含一个（或多个）<strong>加密帧</strong>，每个<strong>加密帧</strong>包含一条加密握手消息，或数个<strong>ACK帧</strong>，或两者兼具。<strong>Ping帧</strong>、<strong>填充帧</strong>和类型为<code>0x1c</code>的<strong>连接关闭帧</strong>也是被允许的。终端收到包含其他帧的初始数据包后可以将该数据包作为虚假数据包丢弃或将其视为连接错误。</p>
@@ -3036,7 +3036,7 @@
 </dd>
 <dt>密钥阶段（Key Phase）：</dt>
 <dd>
-<p>字节0中的下一个比特位（<code>0x04</code>）表明了密钥阶段，它允许数据包的接收方辨别用于保护数据包的数据包保护密钥。有关细节见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》。这个比特位被头部保护所保护，详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#5.4_Header_Protection">第5.4章</a>。</p>
+<p>字节0中的下一个比特位（<code>0x04</code>）表明了密钥阶段，它允许数据包的接收方辨别用于保护数据包的数据包保护密钥。有关细节见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》。这个比特位被头部保护所保护，详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#5.4_Header_Protection">第5.4章</a>。</p>
 </dd>
 <dt>数据包号长度（Packet Number Length）：</dt>
 <dd>
@@ -3079,7 +3079,7 @@
 <a href="#18_Transport_Parameter_Encoding">18. 传输参数编码</a>
 </h1>
 <div class="content">
-<p>在《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》定义的<code>quic_transport_parameters</code>其<code>extension_data</code>字段包含QUIC传输参数。它们被编码为一个传输参数序列，如<a href="#Figure_20_Sequence_of_Transport_Parameters">图20</a>所示：</p>
+<p>在《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》定义的<code>quic_transport_parameters</code>其<code>extension_data</code>字段包含QUIC传输参数。它们被编码为一个传输参数序列，如<a href="#Figure_20_Sequence_of_Transport_Parameters">图20</a>所示：</p>
 <div class="block ref" id="Figure_20_Sequence_of_Transport_Parameters">
 <pre tabindex="0"><code>传输参数序列 {
   传输参数 (..) ...,
@@ -4066,7 +4066,7 @@
 <a href="#21.1.2_Protected_Packets">21.1.2. 受保护的数据包</a>
 </h3>
 <div class="content">
-<p>数据包保护（详见<a href="#12.1_Protected_Packets">第12.1章</a>）将认证加密应用到除版本协商数据包外的所有数据包上，不过出于使用了由QUIC版本指定的密钥材料的缘故，初始数据包和重试数据包仅受到有限的保护；有关细节详见《<a href="https://www.rfc-editor.org/info/rfc9001">QUIC-TLS</a>》。本节考量了针对受保护数据包的被动与主动攻击。</p>
+<p>数据包保护（详见<a href="#12.1_Protected_Packets">第12.1章</a>）将认证加密应用到除版本协商数据包外的所有数据包上，不过出于使用了由QUIC版本指定的密钥材料的缘故，初始数据包和重试数据包仅受到有限的保护；有关细节详见《<a href="/RFC9001_Chinese_Translation">QUIC-TLS</a>》。本节考量了针对受保护数据包的被动与主动攻击。</p>
 <p>在路径上和不在路径上的攻击者都能发起被动攻击，在这种攻击中，攻击者将观测到的数据包保存起来，将之用于将来的针对数据包保护的离线攻击；这对任何网络中任何数据包的任何观测者都是成立的。</p>
 <p>没有观测连接中数据包的能力就注入数据包的攻击者不太可能会成功，因为数据包保护确保了合法的数据包只能由拥有在握手期间建立的密钥材料的终端才能创建出来；详见<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>和<a href="#21.1.1_Handshake">第21.1.1章</a>。类似地，任何观测数据包并尝试往这些数据包中插入新数据或修改原有数据的主动攻击者应该都无法创建出能被接收方认定为合法的数据包，除非它操作的是初始数据包。</p>
 <p>伪造攻击，也就是由主动攻击者改写由它转发或被它注入的数据包中未经保护的部分，例如源地址或目标地址，只有在攻击者能够将数据包转发到原始终端上时才会生效。数据包保护确保了数据包载荷只能被完成了握手的终端所处理，并且非法的数据包会被终端忽略。</p>
@@ -4857,84 +4857,82 @@
 <a href="#23.1_Normative_References">23.1. 规范性参考文献</a>
 </h2>
 <div class="content">
-<dl>
-<dt>[BCP38]：</dt>
-<dd>
-<p>Ferguson, P. and D. Senie, “Network Ingress Filtering: Defeating Denial of Service Attacks which employ IP Source Address Spoofing”, BCP 38, RFC 2827, May 2000, <a href="https://www.rfc-editor.org/info/bcp38">https://www.rfc-editor.org/info/bcp38</a></p>
-</dd>
-<dt>[DPLPMTUD]：</dt>
-<dd>
-<p>Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, “Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
-</dd>
-<dt>[EARLY-ASSIGN]：</dt>
-<dd>
-<p>Cotton, M., “Early IANA Allocation of Standards Track Code Points”, BCP 100, RFC 7120, DOI 10.17487/RFC7120, January 2014, <a href="https://www.rfc-editor.org/info/rfc7120">https://www.rfc-editor.org/info/rfc7120</a>.</p>
-</dd>
-<dt>[IPv4]：</dt>
-<dd>
-<p>Postel, J., “Internet Protocol”, STD 5, RFC 791, DOI 10.17487/RFC0791, September 1981, <a href="https://www.rfc-editor.org/info/rfc791">https://www.rfc-editor.org/info/rfc791</a>.</p>
-</dd>
-<dt>[QUIC-INVARIANTS]：</dt>
-<dd>
-<p>Thomson, M., “Version-Independent Properties of QUIC”, RFC 8999, DOI 10.17487/RFC8999, May 2021, <a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>.</p>
-</dd>
-<dt>[QUIC-RECOVERY]：</dt>
-<dd>
-<p>Iyengar, J., Ed. and I. Swett, Ed., “QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
-</dd>
-<dt>[QUIC-TLS]：</dt>
-<dd>
-<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
-</dd>
-<dt>[RFC1191]：</dt>
-<dd>
+<div class="out_ref" id="BCP38">
+<p><a href="#BCP38"><strong>[BCP38]</strong></a> </p>
+<p>“Network Ingress Filtering: Defeating Denial of Service Attacks which employ IP Source Address Spoofing”, BCP 38, RFC 2827, May 2000. <a href="https://www.rfc-editor.org/info/bcp38">https://www.rfc-editor.org/info/bcp38</a></p>
+</div>
+<div class="out_ref" id="DPLPMTUD">
+<p><a href="#DPLPMTUD"><strong>[DPLPMTUD]</strong></a> </p>
+<p>“Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
+</div>
+<div class="out_ref" id="EARLY-ASSIGN">
+<p><a href="#EARLY-ASSIGN"><strong>[EARLY-ASSIGN]</strong></a> </p>
+<p>“Early IANA Allocation of Standards Track Code Points”, BCP 100, RFC 7120, DOI 10.17487/RFC7120, January 2014, <a href="https://www.rfc-editor.org/info/rfc7120">https://www.rfc-editor.org/info/rfc7120</a>.</p>
+</div>
+<div class="out_ref" id="IPv4">
+<p><a href="#IPv4"><strong>[IPv4]</strong></a> </p>
+<p>“Internet Protocol”, STD 5, RFC 791, DOI 10.17487/RFC0791, September 1981, <a href="https://www.rfc-editor.org/info/rfc791">https://www.rfc-editor.org/info/rfc791</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-INVARIANTS">
+<p><a href="#QUIC-INVARIANTS"><strong>[QUIC-INVARIANTS]</strong></a> </p>
+<p>“Version-Independent Properties of QUIC”, RFC 8999, DOI 10.17487/RFC8999, May 2021, <a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-RECOVERY">
+<p><a href="#QUIC-RECOVERY"><strong>[QUIC-RECOVERY]</strong></a> </p>
+<p>“QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TLS">
+<p><a href="#QUIC-TLS"><strong>[QUIC-TLS]</strong></a> </p>
+<p>“Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="RFC1191">
+<p><a href="#RFC1191"><strong>[RFC1191]</strong></a> </p>
 <p>Mogul, J. and S. Deering, “Path MTU discovery”, RFC 1191, DOI 10.17487/RFC1191, November 1990, <a href="https://www.rfc-editor.org/info/rfc1191">https://www.rfc-editor.org/info/rfc1191</a>.</p>
-</dd>
-<dt>[RFC2119]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC文档中用于指出要求级别的关键字</p>
 <p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
-</dd>
-<dt>[RFC3168]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC3168">
+<p><a href="#RFC3168"><strong>[RFC3168]</strong></a> </p>
 <p>Ramakrishnan, K., Floyd, S., and D. Black, “The Addition of Explicit Congestion Notification (ECN) to IP”, RFC 3168, DOI 10.17487/RFC3168, September 2001, <a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>.</p>
-</dd>
-<dt>[RFC3629]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC3629">
+<p><a href="#RFC3629"><strong>[RFC3629]</strong></a> </p>
 <p>Yergeau, F., “UTF-8, a transformation format of ISO 10646”, STD 63, RFC 3629, DOI 10.17487/RFC3629, November 2003, <a href="https://www.rfc-editor.org/info/rfc3629">https://www.rfc-editor.org/info/rfc3629</a>.</p>
-</dd>
-<dt>[RFC6437]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC6437">
+<p><a href="#RFC6437"><strong>[RFC6437]</strong></a> </p>
 <p>Amante, S., Carpenter, B., Jiang, S., and J. Rajahalme, “IPv6 Flow Label Specification”, RFC 6437, DOI 10.17487/RFC6437, November 2011, <a href="https://www.rfc-editor.org/info/rfc6437">https://www.rfc-editor.org/info/rfc6437</a>.</p>
-</dd>
-<dt>[RFC8085]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8085">
+<p><a href="#RFC8085"><strong>[RFC8085]</strong></a> </p>
 <p>Eggert, L., Fairhurst, G., and G. Shepherd, “UDP Usage Guidelines”, BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>.</p>
-</dd>
-<dt>[RFC8126]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8126">
+<p><a href="#RFC8126"><strong>[RFC8126]</strong></a> </p>
 <p>Cotton, M., Leiba, B., and T. Narten, “Guidelines for Writing an IANA Considerations Section in RFCs”, BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017, <a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>.</p>
-</dd>
-<dt>[RFC8174]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119中关键字大写与小写的歧义</p>
 <p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
-</dd>
-<dt>[RFC8201]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8201">
+<p><a href="#RFC8201"><strong>[RFC8201]</strong></a> </p>
 <p>McCann, J., Deering, S., Mogul, J., and R. Hinden, Ed., “Path MTU Discovery for IP version 6”, STD 87, RFC 8201, DOI 10.17487/RFC8201, July 2017, <a href="https://www.rfc-editor.org/info/rfc8201">https://www.rfc-editor.org/info/rfc8201</a>.</p>
-</dd>
-<dt>[RFC8311]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8311">
+<p><a href="#RFC8311"><strong>[RFC8311]</strong></a> </p>
 <p>Black, D., “Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation”, RFC 8311, DOI 10.17487/RFC8311, January 2018, <a href="https://www.rfc-editor.org/info/rfc8311">https://www.rfc-editor.org/info/rfc8311</a>.</p>
-</dd>
-<dt>[TLS13]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="TLS13">
+<p><a href="#TLS13"><strong>[TLS13]</strong></a> </p>
 <p>Rescorla, E., “The Transport Layer Security (TLS) Protocol Version 1.3”, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
-</dd>
-<dt>[UDP]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="UDP">
+<p><a href="#UDP"><strong>[UDP]</strong></a> </p>
 <p>Postel, J., “User Datagram Protocol”, STD 6, RFC 768, DOI 10.17487/RFC0768, August 1980, <a href="https://www.rfc-editor.org/info/rfc768">https://www.rfc-editor.org/info/rfc768</a>.</p>
-</dd>
-</dl>
+</div>
 </div>
 </section>
 <section class="page" id="23.2_Informative_References">
@@ -4942,116 +4940,114 @@
 <a href="#23.2_Informative_References">23.2. 资料性参考文献</a>
 </h2>
 <div class="content">
-<dl>
-<dt>[AEAD]：</dt>
-<dd>
+<div class="out_ref" id="AEAD">
+<p><a href="#AEAD"><strong>[AEAD]</strong></a> </p>
 <p>McGrew, D., “An Interface and Algorithms for Authenticated Encryption”, RFC 5116, DOI 10.17487/RFC5116, January 2008, <a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>.</p>
-</dd>
-<dt>[ALPN]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="ALPN">
+<p><a href="#ALPN"><strong>[ALPN]</strong></a> </p>
 <p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
-</dd>
-<dt>[ALTSVC]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="ALTSVC">
+<p><a href="#ALTSVC"><strong>[ALTSVC]</strong></a> </p>
 <p>Nottingham, M., McManus, P., and J. Reschke, “HTTP Alternative Services”, RFC 7838, DOI 10.17487/RFC7838, April 2016, <a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>.</p>
-</dd>
-<dt>[COOKIE]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="COOKIE">
+<p><a href="#COOKIE"><strong>[COOKIE]</strong></a> </p>
 <p>Barth, A., “HTTP State Management Mechanism”, RFC 6265, DOI 10.17487/RFC6265, April 2011, <a href="https://www.rfc-editor.org/info/rfc6265">https://www.rfc-editor.org/info/rfc6265</a>.</p>
-</dd>
-<dt>[CSRF]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="CSRF">
+<p><a href="#CSRF"><strong>[CSRF]</strong></a> </p>
 <p>Barth, A., Jackson, C., and J. Mitchell, “Robust defenses for cross-site request forgery”, Proceedings of the 15th ACM conference on Computer and communications security - CCS ‘08, DOI 10.1145/1455770.1455782, 2008, <a href="https://doi.org/10.1145/1455770.1455782">https://doi.org/10.1145/1455770.1455782</a>.</p>
-</dd>
-<dt>[EARLY-DESIGN]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="EARLY-DESIGN">
+<p><a href="#EARLY-DESIGN"><strong>[EARLY-DESIGN]</strong></a> </p>
 <p>Roskind, J., “QUIC: Multiplexed Stream Transport Over UDP”, 2 December 2013, <a href="https://docs.google.com/document/d/1RNHkx_VvKWyWg6Lr8SZ-saqsQx7rFV-ev2jRFUoVD34/edit?usp=sharing">https://docs.google.com/document/d/1RNHkx_VvKWyWg6Lr8SZ-saqsQx7rFV-ev2jRFUoVD34/edit?usp=sharing</a>.</p>
-</dd>
-<dt>[GATEWAY]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="GATEWAY">
+<p><a href="#GATEWAY"><strong>[GATEWAY]</strong></a> </p>
 <p>Hätönen, S., Nyrhinen, A., Eggert, L., Strowes, S., Sarolahti, P., and M. Kojo, “An experimental study of home gateway characteristics”, Proceedings of the 10th ACM SIGCOMM conference on Internet measurement - IMC ‘10, DOI 10.1145/1879141.1879174, November 2010, <a href="https://doi.org/10.1145/1879141.1879174">https://doi.org/10.1145/1879141.1879174</a>.</p>
-</dd>
-<dt>[HTTP2]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="HTTP2">
+<p><a href="#HTTP2"><strong>[HTTP2]</strong></a> </p>
 <p>Belshe, M., Peon, R., and M. Thomson, Ed., “Hypertext Transfer Protocol Version 2 (HTTP/2)”, RFC 7540, DOI 10.17487/RFC7540, May 2015, <a href="https://www.rfc-editor.org/info/rfc7540">https://www.rfc-editor.org/info/rfc7540</a>.</p>
-</dd>
-<dt>[IPv6]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="IPv6">
+<p><a href="#IPv6"><strong>[IPv6]</strong></a> </p>
 <p>Deering, S. and R. Hinden, “Internet Protocol, Version 6 (IPv6) Specification”, STD 86, RFC 8200, DOI 10.17487/RFC8200, July 2017, <a href="https://www.rfc-editor.org/info/rfc8200">https://www.rfc-editor.org/info/rfc8200</a>.</p>
-</dd>
-<dt>[QUIC-MANAGEABILITY]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="QUIC-MANAGEABILITY">
+<p><a href="#QUIC-MANAGEABILITY"><strong>[QUIC-MANAGEABILITY]</strong></a> </p>
 <p>Kuehlewind, M. and B. Trammell, “Manageability of the QUIC Transport Protocol”, Work in Progress, Internet-Draft, draft-ietf-quic-manageability-11, 21 April 2021, <a href="https://tools.ietf.org/html/draft-ietf-quic-manageability-11">https://tools.ietf.org/html/draft-ietf-quic-manageability-11</a>.</p>
-</dd>
-<dt>[RANDOM]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RANDOM">
+<p><a href="#RANDOM"><strong>[RANDOM]</strong></a> </p>
 <p>Eastlake 3rd, D., Schiller, J., and S. Crocker, “Randomness Requirements for Security”, BCP 106, RFC 4086, DOI 10.17487/RFC4086, June 2005, <a href="https://www.rfc-editor.org/info/rfc4086">https://www.rfc-editor.org/info/rfc4086</a>.</p>
-</dd>
-<dt>[RFC1812]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC1812">
+<p><a href="#RFC1812"><strong>[RFC1812]</strong></a> </p>
 <p>Baker, F., Ed., “Requirements for IP Version 4 Routers”, RFC 1812, DOI 10.17487/RFC1812, June 1995, <a href="https://www.rfc-editor.org/info/rfc1812">https://www.rfc-editor.org/info/rfc1812</a>.</p>
-</dd>
-<dt>[RFC1918]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC1918">
+<p><a href="#RFC1918"><strong>[RFC1918]</strong></a> </p>
 <p>Rekhter, Y., Moskowitz, B., Karrenberg, D., de Groot, G. J., and E. Lear, “Address Allocation for Private Internets”, BCP 5, RFC 1918, DOI 10.17487/RFC1918, February 1996, <a href="https://www.rfc-editor.org/info/rfc1918">https://www.rfc-editor.org/info/rfc1918</a>.</p>
-</dd>
-<dt>[RFC2018]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC2018">
+<p><a href="#RFC2018"><strong>[RFC2018]</strong></a> </p>
 <p>Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, “TCP Selective Acknowledgment Options”, RFC 2018, DOI 10.17487/RFC2018, October 1996, <a href="https://www.rfc-editor.org/info/rfc2018">https://www.rfc-editor.org/info/rfc2018</a>.</p>
-</dd>
-<dt>[RFC2104]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC2104">
+<p><a href="#RFC2104"><strong>[RFC2104]</strong></a> </p>
 <p>Krawczyk, H., Bellare, M., and R. Canetti, “HMAC: Keyed-Hashing for Message Authentication”, RFC 2104, DOI 10.17487/RFC2104, February 1997, <a href="https://www.rfc-editor.org/info/rfc2104">https://www.rfc-editor.org/info/rfc2104</a>.</p>
-</dd>
-<dt>[RFC3449]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC3449">
+<p><a href="#RFC3449"><strong>[RFC3449]</strong></a> </p>
 <p>Balakrishnan, H., Padmanabhan, V., Fairhurst, G., and M. Sooriyabandara, “TCP Performance Implications of Network Path Asymmetry”, BCP 69, RFC 3449, DOI 10.17487/RFC3449, December 2002, <a href="https://www.rfc-editor.org/info/rfc3449">https://www.rfc-editor.org/info/rfc3449</a>.</p>
-</dd>
-<dt>[RFC4193]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC4193">
+<p><a href="#RFC4193"><strong>[RFC4193]</strong></a> </p>
 <p>Hinden, R. and B. Haberman, “Unique Local IPv6 Unicast Addresses”, RFC 4193, DOI 10.17487/RFC4193, October 2005, <a href="https://www.rfc-editor.org/info/rfc4193">https://www.rfc-editor.org/info/rfc4193</a>.</p>
-</dd>
-<dt>[RFC4291]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC4291">
+<p><a href="#RFC4291"><strong>[RFC4291]</strong></a> </p>
 <p>Hinden, R. and S. Deering, “IP Version 6 Addressing Architecture”, RFC 4291, DOI 10.17487/RFC4291, February 2006, <a href="https://www.rfc-editor.org/info/rfc4291">https://www.rfc-editor.org/info/rfc4291</a>.</p>
-</dd>
-<dt>[RFC4443]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC4443">
+<p><a href="#RFC4443"><strong>[RFC4443]</strong></a> </p>
 <p>Conta, A., Deering, S., and M. Gupta, Ed., “Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification”, STD 89, RFC 4443, DOI 10.17487/RFC4443, March 2006, <a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>.</p>
-</dd>
-<dt>[RFC4787]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC4787">
+<p><a href="#RFC4787"><strong>[RFC4787]</strong></a> </p>
 <p>Audet, F., Ed. and C. Jennings, “Network Address Translation (NAT) Behavioral Requirements for Unicast UDP”, BCP 127, RFC 4787, DOI 10.17487/RFC4787, January 2007, <a href="https://www.rfc-editor.org/info/rfc4787">https://www.rfc-editor.org/info/rfc4787</a>.</p>
-</dd>
-<dt>[RFC5681]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC5681">
+<p><a href="#RFC5681"><strong>[RFC5681]</strong></a> </p>
 <p>Allman, M., Paxson, V., and E. Blanton, “TCP Congestion Control”, RFC 5681, DOI 10.17487/RFC5681, September 2009, <a href="https://www.rfc-editor.org/info/rfc5681">https://www.rfc-editor.org/info/rfc5681</a>.</p>
-</dd>
-<dt>[RFC5869]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC5869">
+<p><a href="#RFC5869"><strong>[RFC5869]</strong></a> </p>
 <p>Krawczyk, H. and P. Eronen, “HMAC-based Extract-and-Expand Key Derivation Function (HKDF)”, RFC 5869, DOI 10.17487/RFC5869, May 2010, <a href="https://www.rfc-editor.org/info/rfc5869">https://www.rfc-editor.org/info/rfc5869</a>.</p>
-</dd>
-<dt>[RFC7983]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC7983">
+<p><a href="#RFC7983"><strong>[RFC7983]</strong></a> </p>
 <p>Petit-Huguenin, M. and G. Salgueiro, “Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)”, RFC 7983, DOI 10.17487/RFC7983, September 2016, <a href="https://www.rfc-editor.org/info/rfc7983">https://www.rfc-editor.org/info/rfc7983</a>.</p>
-</dd>
-<dt>[RFC8087]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8087">
+<p><a href="#RFC8087"><strong>[RFC8087]</strong></a> </p>
 <p>Fairhurst, G. and M. Welzl, “The Benefits of Using Explicit Congestion Notification (ECN)”, RFC 8087, DOI 10.17487/RFC8087, March 2017, <a href="https://www.rfc-editor.org/info/rfc8087">https://www.rfc-editor.org/info/rfc8087</a>.</p>
-</dd>
-<dt>[RFC8981]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="RFC8981">
+<p><a href="#RFC8981"><strong>[RFC8981]</strong></a> </p>
 <p>Gont, F., Krishnan, S., Narten, T., and R. Draves, “Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6”, RFC 8981, DOI 10.17487/RFC8981, February 2021, <a href="https://www.rfc-editor.org/info/rfc8981">https://www.rfc-editor.org/info/rfc8981</a>.</p>
-</dd>
-<dt>[SEC-CONS]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="SEC-CONS">
+<p><a href="#SEC-CONS"><strong>[SEC-CONS]</strong></a> </p>
 <p>Rescorla, E. and B. Korver, “Guidelines for Writing RFC Text on Security Considerations”, BCP 72, RFC 3552, DOI 10.17487/RFC3552, July 2003, <a href="https://www.rfc-editor.org/info/rfc3552">https://www.rfc-editor.org/info/rfc3552</a>.</p>
-</dd>
-<dt>[SLOWLORIS]：</dt>
-<dd>
+</div>
+<div class="out_ref" id="SLOWLORIS">
+<p><a href="#SLOWLORIS"><strong>[SLOWLORIS]</strong></a> </p>
 <p>“RSnake” Hansen, R., “Welcome to Slowloris - the low bandwidth, yet greedy and poisonous HTTP client!”, June 2009, <a href="https://web.archive.org/web/20150315054838/http://ha.ckers.org/slowloris/">https://web.archive.org/web/20150315054838/http://ha.ckers.org/slowloris/</a>.</p>
-</dd>
-</dl>
+</div>
 </div>
 </section>
 <section class="page" id="Appendix_A_Pseudocode">
