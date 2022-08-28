@@ -766,7 +766,7 @@
 <div class="content">
 <p><a href="#Figure_2_States_for_Sending_Parts_of_Streams">图2</a>展示了通过流向对端发送发送数据的状态。</p>
 <div class="block ref" id="Figure_2_States_for_Sending_Parts_of_Streams">
-<img src="/RFC9000_Chinese_Translation/images/Figure_2_States_for_Sending_Parts_of_Streams.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_2_States_for_Sending_Parts_of_Streams.svg"/>
 <p><a href="#Figure_2_States_for_Sending_Parts_of_Streams">图2：流数据发送部分状态</a></p>
 </div>
 <p>终端发起的流的发送部分（客户端发起的流类型是0和2，1和3则是由服务端发起的）由应用层打开。用于发送的流数据可能被缓存起来。</p>
@@ -787,7 +787,7 @@
 <div class="content">
 <p><a href="#Figure_3_States_for_Receiving_Parts_of_Streams">图3</a>展示了通过流从对端接收数据的状态。流的接收部分只会反映对端流发送部分的一些状态。流的接收部分不能追踪发送部分那些不可见的状态，例如“就绪”状态。相反，流的接收部分追踪向应用层传递的数据，其中一些数据对发送端不可见。</p>
 <div class="block ref" id="Figure_3_States_for_Receiving_Parts_of_Streams">
-<img src="/RFC9000_Chinese_Translation/images/Figure_3_States_for_Receiving_Parts_of_Streams.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_3_States_for_Receiving_Parts_of_Streams.svg"/>
 <p><a href="#Figure_3_States_for_Receiving_Parts_of_Streams">图3：流数据接收部分状态</a></p>
 </div>
 <p>由对端发起的流（客户端发起的流类型是1和3，服务端发起的是0和2）的接收部分在收到该流的第一个<strong>流帧</strong>、<strong>流阻塞帧</strong>或<strong>流重置帧</strong>时创建。对于由对端创建的双向流，发送部分收到<strong>最大流数据帧</strong>或<strong>停止发送帧</strong>时也会创建该流的接收部分。流的接收部分的初始状态是“接受”状态。</p>
@@ -1202,7 +1202,7 @@
 <p><strong>加密帧</strong>可以在不同数据包号空间发送（详见<a href="#12.3_Packet_Numbers">第12.3章</a>）。在每个数据包号空间，<strong>加密帧</strong>用来确保加密握手数据有序传递的偏移量都是从0开始的。</p>
 <p><a href="#Figure_4_Simplified_QUIC_Handshake">图4</a>展示了一个简化的握手及用于推动握手进程的数据包与帧的交换。如果可以的话，尽量在握手期间交换应用层数据，并用星号（"*"）表示。一旦完成握手，终端就能自由交换应用层数据。</p>
 <div class="block ref" id="Figure_4_Simplified_QUIC_Handshake">
-<img src="/RFC9000_Chinese_Translation/images/Figure_4_Simplified_QUIC_Handshake.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_4_Simplified_QUIC_Handshake.svg"/>
 <p><a href="#Figure_4_Simplified_QUIC_Handshake">图4：简版QUIC握手</a></p>
 </div>
 <p>终端可以使用握手期间发送的数据包来测试是否支持显式拥塞通知（ECN），详见<a href="#13.4_Explicit_Congestion_Notification">第13.4章</a>。终端通过观察用于确认其发送的首个数据包的<strong>ACK帧</strong>是否携带ECN计数，验证是否支持ECN，更多细节详见<a href="#13.4.2_ECN_Validation">第13.4.2章</a>。</p>
@@ -1219,12 +1219,12 @@
 <p><a href="#Figure_5_Example_1-RTT_Handshake">图5</a>展示了1-RTT握手过程的概况。每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的<strong>加密帧</strong>。</p>
 <p>多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见<a href="#12.2_Coalescing_Packets">第12.2章</a>。因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</p>
 <div class="block ref" id="Figure_5_Example_1-RTT_Handshake">
-<img src="/RFC9000_Chinese_Translation/images/Figure_5_Example_1-RTT_Handshake.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_5_Example_1-RTT_Handshake.svg"/>
 <p><a href="#Figure_5_Example_1-RTT_Handshake">图5：1-RTT握手示例</a></p>
 </div>
 <p><a href="#Figure_6_Example_0-RTT_Handshake">图6</a>是一个0-RTT握手连接的示例，并且其中一个数据包携带0-RTT数据。注意，如<a href="#12.3_Packet_Numbers">第12.3章</a>所述，服务端在1-RTT包中对0-RTT数据进行确认，并且客户端发送的1-RTT包处于同一个包号空间。</p>
 <div class="block ref" id="Figure_6_Example_0-RTT_Handshake">
-<img src="/RFC9000_Chinese_Translation/images/Figure_6_Example_0-RTT_Handshake.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_6_Example_0-RTT_Handshake.svg"/>
 <p><a href="#Figure_6_Example_0-RTT_Handshake">图6：0-RTT握手示例</a></p>
 </div>
 </div>
@@ -1263,12 +1263,12 @@
 <p>如果选择了一个零长度连接ID，则相应的传输参数包含一个零长度值。</p>
 <p><a href="#Figure_7_Use_of_Connection_IDs_in_a_Handshake">图7</a>展示了一个完整握手过程中连接ID的使用（其中DCID表示目标连接ID，SCID表示源连接ID）。图中展示了初始数据包如何交换，以及随后1-RTT数据包的交换，其中包括握手期间创建的连接ID。</p>
 <div class="block ref" id="Figure_7_Use_of_Connection_IDs_in_a_Handshake">
-<img src="/RFC9000_Chinese_Translation/images/Figure_7_Use_of_Connection_IDs_in_a_Handshake.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_7_Use_of_Connection_IDs_in_a_Handshake.svg"/>
 <p><a href="#Figure_7_Use_of_Connection_IDs_in_a_Handshake">图7：握手期间连接ID的使用</a></p>
 </div>
 <p><a href="#Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">图8</a>展示了包含重试数据包的握手过程。</p>
 <div class="block ref" id="Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">
-<img src="/RFC9000_Chinese_Translation/images/Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry.svg"/>
 <p><a href="#Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">图8：使用重试数据包的握手中连接ID的使用</a></p>
 </div>
 <p>在上述两种情况（<a href="#Figure_7_Use_of_Connection_IDs_in_a_Handshake">图7</a>和<a href="#Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">图8</a>）下，客户端设置其<code>initial_source_connection_id</code>传输参数值为<code>C1</code>。</p>
@@ -1387,7 +1387,7 @@
 <p>如果服务器接收到了一个除了无效的重试令牌字段外都合法的客户端初始数据包，那么它能肯定客户端不会接收另一个重试令牌。服务器可以丢弃这样的数据包，并且允许客户端以超时的形式检测到本次握手的失败，但这会对客户端施加强烈的延迟惩罚。取而代之的是，服务器<em><strong>应该</strong></em>使用错误<code>INVALID_TOKEN</code>（无效令牌）立即关闭（详见<a href="#10.2_Immediate_Close">第10.2章</a>）连接。注意，服务器在这个时候还没有为连接建立任何状态数据所以不会进入到关闭状态。</p>
 <p><a href="#Figure_9_Example_Handshake_with_Retry">图9</a>展示的是关于重试数据包的使用的流程图。</p>
 <div class="block ref" id="Figure_9_Example_Handshake_with_Retry">
-<img src="/RFC9000_Chinese_Translation/images/Figure_9_Example_Handshake_with_Retry.svg"/>
+<img src="/RFC9000_Chinese_Simplified/images/Figure_9_Example_Handshake_with_Retry.svg"/>
 <p><a href="#Figure_9_Example_Handshake_with_Retry">图9：使用重试的握手样例</a></p>
 </div>
 </div>
