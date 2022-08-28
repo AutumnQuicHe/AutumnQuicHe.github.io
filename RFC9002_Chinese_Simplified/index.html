@@ -1,0 +1,1863 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9002中文：QUIC恢复</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9002_Chinese_Simplified/css/RFC9002.css" rel="stylesheet"/>
+<link href="/RFC9002_Chinese_Simplified/index.xml" rel="alternate" title="RFC9002中文：QUIC恢复" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9002">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9002_Chinese_Simplified/">RFC9002中文：QUIC恢复</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9002_QUIC">RFC9002 QUIC恢复</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 介绍</a>
+</li>
+<li>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</li>
+<li>
+<a href="#3_Design_of_the_QUIC_Transmission_Machinery">3. QUIC传输机制的设计</a>
+</li>
+<li>
+<a href="#4_Relevant_Differences_between_QUIC_and_TCP">4. QUIC和TCP间的相关差异</a>
+<ul>
+<li><a href="#4.1_Separate_Packet_Number_Spaces">4.1. 单独的数据包号空间</a></li>
+<li><a href="#4.2_Monotonically_Increasing_Packet_Numbers">4.2. 单调递增的数据包号</a></li>
+<li><a href="#4.3_Clearer_Loss_Epoch">4.3. 更准确的丢包计时器</a></li>
+<li><a href="#4.4_No_Reneging">4.4. 禁止食言</a></li>
+<li><a href="#4.5_More_ACK_Ranges">4.5. 更多ACK块</a></li>
+<li><a href="#4.6_Explicit_Correction_for_Delayed_Acknowledgments">4.6. 显式纠正确认延迟</a></li>
+<li><a href="#4.7_Probe_Timeout_Replaces_RTO_and_TLP">4.7. 探测包超时取代了RTO和TLP</a></li>
+<li><a href="#4.8_The_Minimum_Congestion_Window_Is_Two_Packets">4.8. 最小拥塞窗口为两个数据包</a></li>
+<li><a href="#4.9_Handshake_Packets_Are_Not_Special">4.9. 握手数据包并不特殊</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_Estimating_the_Round-Trip_Time">5. 预估往返时间</a>
+<ul>
+<li><a href="#5.1_Generating_RTT_Samples">5.1. 创建RTT样本</a></li>
+<li><a href="#5.2_Estimating_min_rtt">5.2. 预估min_rtt</a></li>
+<li><a href="#5.3_Estimating_smoothed_rtt_and_rttvar">5.3. 预估smoothed_rtt和rttvar</a></li>
+</ul>
+</li>
+<li>
+<a href="#6_Loss_Detection">6. 丢包检测</a>
+<ul>
+<li>
+<a href="#6.1_Acknowledgment-Based_Detection">6.1. 基于确认的检测</a>
+<ul>
+<li><a href="#6.1.1_Packet_Threshold">6.1.1. 数据包数量阈值</a></li>
+<li><a href="#6.1.2_Time_Threshold">6.1.2. 数据包发送时间阈值</a></li>
+</ul>
+</li>
+<li>
+<a href="#6.2_Probe_Timeout">6.2. 探测包超时</a>
+<ul>
+<li><a href="#6.2.1_Computing_PTO">6.2.1. 计算PTO</a></li>
+<li>
+<a href="#6.2.2_Handshakes_and_New_Paths">6.2.2. 握手与新路径</a>
+<ul>
+<li><a href="#6.2.2.1_Before_Address_Validation">6.2.2.1. 在地址验证之前</a></li>
+</ul>
+</li>
+<li><a href="#6.2.3_Speeding_up_Handshake_Completion">6.2.3. 加速握手完成</a></li>
+<li><a href="#6.2.4_Sending_Probe_Packets">6.2.4. 加速握手完成</a></li>
+</ul>
+</li>
+<li><a href="#6.3_Handling_Retry_Packets">6.3. 处理重试数据包</a></li>
+<li><a href="#6.4_Discarding_Keys_and_Packet_State">6.4. 弃用密钥和数据包状态</a></li>
+</ul>
+</li>
+<li>
+<a href="#7_Congestion_Control">7. 拥塞控制</a>
+<ul>
+<li><a href="#7.1_Explicit_Congestion_Notification">7.1. 显式拥塞通知</a></li>
+<li><a href="#7.2_Initial_and_Minimum_Congestion_Window">7.2. 初始拥塞窗口及其最小值</a></li>
+<li>
+<a href="#7.3_Congestion_Control_States">7.3. 拥塞控制的各种状态</a>
+<ul>
+<li><a href="#7.3.1_Slow_Start">7.3.1. 慢启动</a></li>
+<li><a href="#7.3.2_Recovery">7.3.2. 恢复</a></li>
+<li><a href="#7.3.3_Congestion_Avoidance">7.3.3. 拥塞回避</a></li>
+</ul>
+</li>
+<li><a href="#7.4_Ignoring_Loss_of_Undecryptable_Packets">7.4. 忽略无法解密数据包的丢包事件</a></li>
+<li><a href="#7.5_Probe_Timeout">7.5. 探测包超时</a></li>
+<li>
+<a href="#7.6_Persistent_Congestion">7.6. 持续拥塞</a>
+<ul>
+<li><a href="#7.6.1_Duration">7.6.1. 时长</a></li>
+<li><a href="#7.6.2_Establishing_Persistent_Congestion">7.6.2. 判定持续拥塞</a></li>
+<li><a href="#7.6.3_Example">7.6.3. 样例</a></li>
+</ul>
+</li>
+<li><a href="#7.7_Pacing">7.7. 限速</a></li>
+<li><a href="#7.8_Underutilizing_the_Congestion_Window">7.8. 不完全利用的拥塞窗口</a></li>
+</ul>
+</li>
+<li>
+<a href="#8_Security_Considerations">8. 关于安全性的考量</a>
+<ul>
+<li><a href="#8.1_Loss_and_Congestion_Signals">8.1. 丢包与拥塞的信号</a></li>
+<li><a href="#8.2_Traffic_Analysis">8.2. 流量分析</a></li>
+<li><a href="#8.3_Misreporting_ECN_Markings">8.3. 误报ECN标记</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_References">9. 参考文献</a>
+<ul>
+<li><a href="#9.1_Normative_References">9.1. 规范性参考文献</a></li>
+<li><a href="#9.2_Informative_References">9.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_A_Loss_Recovery_Pseudocode">附录A. 丢包检测伪代码</a>
+<ul>
+<li>
+<a href="#A.1_Tracking_Sent_Packets">A.1. 追踪已发送的数据包</a>
+<ul>
+<li><a href="#A.1.1_Sent_Packet_Fields">A.1.1. 已发送的数据包的追踪字段</a></li>
+</ul>
+</li>
+<li><a href="#A.2_Constants_of_Interest">A.2. 感兴趣的常量</a></li>
+<li><a href="#A.3_Variables_of_Interest">A.3. 感兴趣的变量</a></li>
+<li><a href="#A.4_Initialization">A.4. 初始化</a></li>
+<li><a href="#A.5_On_Sending_a_Packet">A.5. 在发送数据包时</a></li>
+<li><a href="#A.6_On_Receiving_a_Datagram">A.6. 在接收到数据报时</a></li>
+<li><a href="#A.7_On_Receiving_an_Acknowledgment">A.7. 在接收到确认时</a></li>
+<li><a href="#A.8_Setting_the_Loss_Detection_Timer">A.8. 设置丢包检测计时器</a></li>
+<li><a href="#A.9_On_Timeout">A.9. 在超时时</a></li>
+<li><a href="#A.10_Detecting_Lost_Packets">A.10. 检测丢包</a></li>
+<li><a href="#A.11_Upon_Dropping_Initial_or_Handshake_Keys">A.11. 在启用初始密钥或握手密钥时</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_B_Congestion_Control_Pseudocode">附录B. 拥塞控制伪代码</a>
+<ul>
+<li><a href="#B.1_Constants_of_Interest">B.1. 感兴趣的常量</a></li>
+<li><a href="#B.2_Variables_of_Interest">B.2. 感兴趣的变量</a></li>
+<li><a href="#B.3_Initialization">B.3. 初始化</a></li>
+<li><a href="#B.4_On_Packet_Sent">B.4. 在发送数据包时</a></li>
+<li><a href="#B.5_On_Packet_Acknowledgment">B.5. 在数据包得到确认时</a></li>
+<li><a href="#B.6_On_New_Congestion_Event">B.6. 在响应新的拥塞事件时</a></li>
+<li><a href="#B.7_Process_ECN_Information">B.7. 处理ECN信息</a></li>
+<li><a href="#B.8_On_Packets_Lost">B.8. 在丢包时</a></li>
+<li><a href="#B.9_Removing_Discarded_Packets_from_Bytes_in_Flight">B.9. 从在途字节数中移除被丢弃的数据包</a></li>
+</ul>
+</li>
+<li>
+<a href="#Contributors">贡献者</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Aug 28, 2022
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9002_QUIC">
+<h1>
+<a href="#RFC9002_QUIC">RFC9002 QUIC恢复</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9002">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9002&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9002">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/info/rfc9002">9002</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2021年5月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>J. Iyengar, Ed. <br/><i>Fastly</i></td>
+<td>I. Swett, Ed. <br/><i>Google</i></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于QUIC丢包检测与恢复的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>本文描述了QUIC丢包检测与拥塞控制机制的设计。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2021 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 介绍</a>
+</h1>
+<div class="content">
+<p>正如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》中描述的那样，QUIC是一种安全、通用的传输层协议。本文档描述了QUIC的丢包检测和拥塞控制机制。</p>
+</div>
+</section>
+<section class="page" id="2_Conventions_and_Definitions">
+<h1>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文档中使用到的术语定义如下：</p>
+<dl>
+<dt>ACK触发帧：</dt>
+<dd>
+<p>除了<strong>ACK帧</strong>、<strong>填充帧</strong>和<strong>连接关闭帧</strong>之外的所有帧都被认为是会触发ACK的帧。</p>
+</dd>
+<dt>ACK触发包：</dt>
+<dd>
+<p>包含ACK触发帧的数据包会使得接收方在不超过最大确认延迟的时间内发送一个<strong>ACK</strong>，它们被称为ACK触发包。</p>
+</dd>
+<dt>在途数据包：</dt>
+<dd>
+<p>当数据包会触发ACK或包含填充帧，并且它们已被发送出去，但处于未被确认、被认定为丢包或被与旧密钥一并丢弃的状态时，被称为在途数据包。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="3_Design_of_the_QUIC_Transmission_Machinery">
+<h1>
+<a href="#3_Design_of_the_QUIC_Transmission_Machinery">3. QUIC传输机制的设计</a>
+</h1>
+<div class="content">
+<p>在QUIC中，每次传输都会发送数据包头部，它表明了密级并且包含着一个数据包序列号（就是下文中的数据包号）。密级表明了数据包号空间，正如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.3_Packet_Numbers">第12.3章</a>中所述。在一条连接的生命周期中，同一数据包号空间中的数据包号不会重复。同一数据包号空间中的数据包号以单调递增的方式发送以避免歧义。保留某些数据包号不去使用，故意留出一些空档，是被允许的。</p>
+<p>这种设计使得不再需要区分传输和重传；它从QUIC版的TCP丢包检测机制中消去了大量的复杂度。</p>
+<p>QUIC数据包可以包含不同类型的多种帧。恢复机制确保了要求可靠分发的数据和帧要么被确认，要么被认定为丢包，然后在需要时用新数据包重新发送。数据包中包含的帧类型会影响恢复与拥塞控制的逻辑：</p>
+<ul>
+<li>
+<p>所有数据包都会被确认，不过仅包含非ACK触发帧的数据包只会和ACK触发包一起被确认。</p>
+</li>
+<li>
+<p>包含<strong>加密帧</strong>的长包头数据包对QUIC握手的性能至关重要，对于它们的确认会使用更短的计时器。</p>
+</li>
+<li>
+<p>包含除了<strong>ACK帧</strong>和<strong>连接关闭帧</strong>之外的帧的数据包会被计入拥塞控制计数，并被认为是在途数据包。</p>
+</li>
+<li>
+<p><strong>填充帧</strong>会使得数据包被计入在途字节数，但不会直接引发确认。</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="4_Relevant_Differences_between_QUIC_and_TCP">
+<h1>
+<a href="#4_Relevant_Differences_between_QUIC_and_TCP">4. QUIC和TCP间的相关差异</a>
+</h1>
+<div class="content">
+<p>熟悉TCP的丢包检测和拥塞控制的读者会发现本文中的算法与TCP中的一些知名算法类似。然而，QUIC和TCP间的协议差异会导致算法上的变化。下文简要描述了这些差异。</p>
+</div>
+</section>
+<section class="page" id="4.1_Separate_Packet_Number_Spaces">
+<h2>
+<a href="#4.1_Separate_Packet_Number_Spaces">4.1. 单独的数据包号空间</a>
+</h2>
+<div class="content">
+<p>除了0-RTT密钥会和所有的1-RTT密钥共享数据包号空间外，QUIC为每个密级使用单独的数据包号空间。单独的数据包号空间确保了以某个密级发送的数据包确认不会引发以另一密级发送的数据包被无效地重传。拥塞控制和往返时间（RTT）测量在不同数据包号空间之间是通用的。</p>
+</div>
+</section>
+<section class="page" id="4.2_Monotonically_Increasing_Packet_Numbers">
+<h2>
+<a href="#4.2_Monotonically_Increasing_Packet_Numbers">4.2. 单调递增的数据包号</a>
+</h2>
+<div class="content">
+<p>TCP强制接收方的接收顺序与发送方的发送顺序一致，这会引发重传歧义问题（详见《<a href="https://doi.org/10.1145/118544.118549">RETRANSMISSION</a>》）。QUIC将发送顺序与接收顺序分离：数据包号表明了发送顺序，而接收顺序是由<strong>流帧</strong>中的流偏移决定的。</p>
+<p>QUIC的数据包号在同一个数据包号空间中是严格递增的，并且其中直接编码了传输顺序。较大的数据包号表明该数据包是在较晚的时候被发送的，而较小的数据包号表明该数据包是在较早的时候被发送的。当包含ACK触发帧的数据包被认定为丢包时，QUIC会在具有新数据包号的新数据包中发送所有必要的帧，并在接收到确认时弄清楚实际送达了哪些数据包。此外，还可以基于数据包号更精确地进行RTT测量、更简单地检测无效重传、更通用地使用快速重传等机制。</p>
+<p>这一设计极大地简化了QUIC的丢包检测机制。大多数TCP机制都隐式地试图基于TCP序列号推断发送顺序——这是一项困难的工作，尤其是当TCP时间戳不可用时。</p>
+</div>
+</section>
+<section class="page" id="4.3_Clearer_Loss_Epoch">
+<h2>
+<a href="#4.3_Clearer_Loss_Epoch">4.3. 更准确的丢包计时器</a>
+</h2>
+<div class="content">
+<p>QUIC会在数据包丢包时启动一个丢包计时器。该丢包计时器会在其启动后被发送的任一数据包得到确认时停止计时。而在TCP中的行为是等到序列号空间的空档被填上为止，因此当某数据段连续遭遇丢包时，丢包计时器哪怕经过数轮往返时间也不会停止。因为两者都应该在每次计时期间仅缩小一次拥塞窗口，所以QUIC能够在每轮遭遇丢包的往返时间内缩小一次窗口，而TCP可能要经过数段往返时间才缩小一次。</p>
+</div>
+</section>
+<section class="page" id="4.4_No_Reneging">
+<h2>
+<a href="#4.4_No_Reneging">4.4. 禁止食言</a>
+</h2>
+<div class="content">
+<p>QUIC的<strong>ACK帧</strong>包含着的信息与TCP的可选确认（SACK）（详见《<a href="https://www.rfc-editor.org/info/rfc2018">RFC2018</a>》）中的类似。然而在QUIC中，禁止更改对某个数据包的确认，这极大地简化了两侧终端的实现并降低了发送方的内存压力。</p>
+</div>
+</section>
+<section class="page" id="4.5_More_ACK_Ranges">
+<h2>
+<a href="#4.5_More_ACK_Ranges">4.5. 更多ACK块</a>
+</h2>
+<div class="content">
+<p>与TCP的三个SACK块不同，QUIC支持多个ACK块。在高丢包率的环境下，这能加速恢复，减少无效重传，并且确保有效发送而不需要依赖超时机制。</p>
+</div>
+</section>
+<section class="page" id="4.6_Explicit_Correction_for_Delayed_Acknowledgments">
+<h2>
+<a href="#4.6_Explicit_Correction_for_Delayed_Acknowledgments">4.6. 显式纠正确认延迟</a>
+</h2>
+<div class="content">
+<p>QUIC终端会测量在接收到数据包时和在发送相应的确认时之间的延迟，使得对端能够维护更准确的RTT预估；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.7_Probe_Timeout_Replaces_RTO_and_TLP">
+<h2>
+<a href="#4.7_Probe_Timeout_Replaces_RTO_and_TLP">4.7. 探测包超时取代了RTO和TLP</a>
+</h2>
+<div class="content">
+<p>QUIC使用了探测包超时（PTO，详见<a href="#6.2_Probe_Timeout">第6.2章</a>）和一个基于TCP的重传超时（RTO）计算法的计时器；详见《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》。QUIC的PTO中包含着对端的最大预估确认延迟，而没有使用固定的最小超时时间。</p>
+<p>与TCP的RACK-TLP丢包检测算法（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》）类似，QUIC不会在PTO超时时缩小拥塞窗口，因为单个队尾数据包遭遇丢包并不能表明持续的拥塞。取而代之的是，QUIC会在持续拥塞出现时再次缩小拥塞窗口；详见<a href="#7.6_Persistent_Congestion">第7.6章</a>。在此过程中，QUIC会避免不必要的拥塞窗口缩减，从而避免需要前向RTO恢复（F-RTO，详见《<a href="https://www.rfc-editor.org/info/rfc5682">RFC5682</a>》）等纠正机制。由于QUIC不会在PTO超时时缩小拥塞窗口，所以QUIC发送方在仍有剩余拥塞窗口时，即使是在PTO超时后也不会在发送更多在途数据包时受限。这种情况会在发送方受到应用限制并且PTO计时器超时时发生。当受到应用限制时，这种做法会比TCP的RTO机制更激进，但是当不受到应用限制时，它是很理想的。</p>
+<p>无论计时器何时超时，QUIC都允许在发送探测数据包时临时超过拥塞窗口。</p>
+</div>
+</section>
+<section class="page" id="4.8_The_Minimum_Congestion_Window_Is_Two_Packets">
+<h2>
+<a href="#4.8_The_Minimum_Congestion_Window_Is_Two_Packets">4.8. 最小拥塞窗口为两个数据包</a>
+</h2>
+<div class="content">
+<p>TCP使用的最小拥塞窗口为一个数据包。然而，如果该单个数据包遭遇丢包，那么发送方就需要等待一个PTO时间才能恢复（详见<a href="#6.2_Probe_Timeout">第6.2章</a>），这可能远大于单个RTT时间。当接收方有意延迟确认时，仅发送单个ACK触发包还增加了引入额外延迟的可能性。</p>
+<p>因此QUIC推荐最小拥塞窗口为两个数据包。尽管这会增加网络负载，但是因为发送方仍然会在遇到持续拥塞时以指数形式降低自身的发送速率，因此这种做法被认为是安全的。</p>
+</div>
+</section>
+<section class="page" id="4.9_Handshake_Packets_Are_Not_Special">
+<h2>
+<a href="#4.9_Handshake_Packets_Are_Not_Special">4.9. 握手数据包并不特殊</a>
+</h2>
+<div class="content">
+<p>TCP将SYN数据包或SYN-ACK数据包遭遇丢包的情况视作为持续拥塞并且缩小拥塞窗口至一个数据包；详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》。QUIC将包含握手数据的数据包遭遇丢包的情况与其他丢包的情况一视同仁。</p>
+</div>
+</section>
+<section class="page" id="5_Estimating_the_Round-Trip_Time">
+<h1>
+<a href="#5_Estimating_the_Round-Trip_Time">5. 预估往返时间</a>
+</h1>
+<div class="content">
+<p>终端在架构中更上层的位置测量从数据包发送的一刻起至它被确认为止所经历的时间，并将之作为RTT样本。终端使用RTT样本和由对端报告的主机延迟（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>）来以统计上的方法创建对于网络路径RTT的描述。终端为每条路径上观测到的RTT样本（<code>rttvar</code>）计算以下三个值：在一段时间内的最小值（<code>min_rtt</code>）、以指数形式加权的滑动平均值（<code>smoothed_rtt</code>）、以及平均差（在后文中称之为“偏差”）。</p>
+</div>
+</section>
+<section class="page" id="5.1_Generating_RTT_Samples">
+<h2>
+<a href="#5.1_Generating_RTT_Samples">5.1. 创建RTT样本</a>
+</h2>
+<div class="content">
+<p>终端在接收到一个符合以下两项条件的<strong>ACK帧</strong>时，会创建一份RTT样本：</p>
+<ul>
+<li>
+<p>最大已确认数据包号是此次新确认的，并且</p>
+</li>
+<li>
+<p>此次新确认的数据包中至少有一个是ACK触发包。</p>
+</li>
+</ul>
+<p>随着时间流逝，最新的RTT样本<code>latest_rtt</code>会因为最大已确认数据包的不断更新而不断创建：</p>
+<div class="block ref" id="Pseudocode_5_1_1">
+<pre tabindex="0"><code>latest_rtt = 确认时间 - 最大已确认数据包的发送时间
+</code></pre><p><a href="#Pseudocode_5_1_1"></a></p>
+</div>
+<p>创建RTT样本时只会使用到接收到的那个<strong>ACK帧</strong>中的最大已确认数据包号。这是因为对端只会为<strong>ACK帧</strong>中的最大已确认数据包报告确认延迟。尽管报告的那个确认延迟不会在测量RTT样本时被用到，但是它会在后续计算<code>smoothed_rtt</code>和<code>rttvar</code>时（详见<a href="#5.3_Estimating_smoothed_rtt_and_rttvar">第5.3章</a>）被用于调整RTT样本。</p>
+<p>为了避免为同一数据包创建多份RTT样本，如果<strong>ACK帧</strong>中的最大已确认数据包号不是此次新确认的，那么它<em><strong>不应该</strong></em>被用于更新RTT预估。</p>
+<p>当接收到的<strong>ACK帧</strong>没有新确认任何ACK触发包时，<em><strong>必须不</strong></em>创建RTT样本。在仅接收到非ACK触发包时，对端通常不会发送<strong>ACK帧</strong>。因此，仅包含对非ACK触发包的确认的<strong>ACK帧</strong>中可能有着极高的ACK延迟值。忽略这样的<strong>ACK帧</strong>避免了后续计算<code>smoothed_rtt</code>和<code>rttvar</code>时的复杂度。</p>
+<p>当在一个RTT内接收到多个<strong>ACK帧</strong>时，发送方可能会在一个RTT内创建多个RTT样本。正如《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》中建议的那样，这么做可能会造成<code>smoothed_rtt</code>和<code>rttvar</code>中出现冗余的历史记录。确保RTT预估保持适量的历史记录是一个开放的待研究问题。</p>
+</div>
+</section>
+<section class="page" id="5.2_Estimating_min_rtt">
+<h2>
+<a href="#5.2_Estimating_min_rtt">5.2. 预估min_rtt</a>
+</h2>
+<div class="content">
+<p><code>min_rtt</code>是发送方对于一段时间内在给定网络路径上观测到的最小RTT的预估。在本文中，<code>min_rtt</code>会被丢包检测用于去除那些过小的RTT样本。</p>
+<p>在首份RTT样本上，<code>min_rtt</code><em><strong>必须</strong></em>被设置为<code>latest_rtt</code>。在其余样本上，<code>min_rtt</code><em><strong>必须</strong></em>被设置为<code>min_rtt</code>和<code>latest_rtt</code>（详见<a href="#5.1_Generating_RTT_Samples">第5.1章</a>）中的较小值。</p>
+<p>终端在计算<code>min_rtt</code>时仅使用本地观测到的时间，不会因对端报告的确认延迟而做出调整。这么做使得终端能够为完全基于其观测结果的<code>smoothed_rtt</code>设置较低的下限，并且减少潜在的因为对端误报的延迟而产生的过低估计。</p>
+<p>一条网络路径的RTT可能会随时间变化。如果一条路径的实际RTT降低了，那么<code>min_rtt</code>就会立即在首个低值样本上作出响应。然而，如果一条路径的实际RTT升高了，那么<code>min_rtt</code>不会作出响应，从而允许将来的比此新RTT要小的RTT样本能被包含在<code>smoothed_rtt</code>中。</p>
+<p>终端<em><strong>应该</strong></em>在检测到持续拥塞后将<code>min_rtt</code>设置为最新的RTT样本。这避免了当RTT升高时反复报告持续拥塞。这还使得连接能够在一次网络中断事件后重置它的<code>min_rtt</code>和<code>smoothed_rtt</code>；详见<a href="#5.3_Estimating_smoothed_rtt_and_rttvar">第5.3章</a>。</p>
+<p>中断<em><strong>可以</strong></em>在其他时间点重建连接的<code>min_rtt</code>，例如当流量较低时和当接收到具有较低的确认延迟的确认时。QUIC实现<em><strong>不应该</strong></em>过于频繁地重置<code>min_rtt</code>，因为一条路径真正的最小RTT不会经常被观测到。</p>
+</div>
+</section>
+<section class="page" id="5.3_Estimating_smoothed_rtt_and_rttvar">
+<h2>
+<a href="#5.3_Estimating_smoothed_rtt_and_rttvar">5.3. 预估smoothed_rtt和rttvar</a>
+</h2>
+<div class="content">
+<p><code>smoothed_rtt</code>是终端RTT样本的以指数形式加权的滑动平均值，而<code>rttvar</code>用平均差的方式预估了RTT样本间的偏差。</p>
+<p><code>smoothed_rtt</code>的计算需要用到经过确认延迟调整的RTT样本。这些延迟是按照《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#19.3_ACK_Frames">第19.3章</a>中所描述的那样，从<strong>ACK帧</strong>的ACK延迟字段中解码出来的。</p>
+<p>对端报告的确认延迟可能会比它在握手期间宣称的<code>max_ack_delay</code>（最大ACK延迟，详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）还大。为了解决这个问题，终端在握手确认前<em><strong>应该</strong></em>按照《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.1.2_Handshake_Confirmed">第4.1.2章</a>中描述的那样，忽略<code>max_ack_delay</code>。当这种情况发生时，这些巨大的确认延迟很有可能不会反复出现，并且仅限于在握手期间出现。因此终端可以使用它们而不受限于<code>max_ack_delay</code>，避免RTT预估不必要地膨胀。</p>
+<p>注意，如果在对端报告确认延迟或预估<code>min_rtt</code>的过程中出现错误，那么巨大的确认延迟会导致<code>smoothed_rtt</code>的显著膨胀。因此，在握手确认前，如果使用确认延迟调整后的RTT样本低于<code>min_rtt</code>，那么终端<em><strong>可以</strong></em>忽略这样的RTT样本。</p>
+<p>在握手确认后，对端报告的任何大于其<code>max_ack_delay</code>的确认延迟都可以被认为是无意中重复计量的延迟，例如对端的调度器延迟或因之前的确认遭遇丢包而产生的延迟。不遵守协议的接收方也有可能引入额外的延迟。因此，这些额外的延迟被认为是路径延迟的有效部分，并被计入RTT预估。</p>
+<p>因此，当使用由对端报告的确认延迟来调整RTT样本时：</p>
+<ul>
+<li>
+<p><em><strong>可以</strong></em>忽略对初始数据包的确认延迟，因为这些确认不是被对端延误的（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）；</p>
+</li>
+<li>
+<p>在握手确认前，<em><strong>应该</strong></em>忽略对端的<code>max_ack_delay</code>；</p>
+</li>
+<li>
+<p>在握手确认后，<em><strong>必须</strong></em>使用确认延迟和对端的<code>max_ack_delay</code>中的较小值；并且</p>
+</li>
+<li>
+<p>当产生的结果小于<code>min_rtt</code>时，<em><strong>必须不</strong></em>从RTT样本中减去确认延迟。这减少了因为对端错误地报告而对于<code>smoothed_rtt</code>作出过低估计的情况。</p>
+</li>
+</ul>
+<p>除此之外，终端可能在相应的解密密钥尚未可用时推迟确认的处理。例如，客户端可能接收到一个对于0-RTT数据包的确认但它却无法解密，因为1-RTT数据包保护密钥尚未可用。在这种情况下，终端<em><strong>应该</strong></em>在握手确认前从它的RTT样本中减去这些由本机产生的延迟。</p>
+<p>与《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》类似，<code>smoothed_rtt</code>和<code>rttvar</code>的计算过程如下所述。</p>
+<p>终端在连接建立期间初始化RTT预估器，以及在连接迁移期间重置预估器时也会将它初始化；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>。在任何新路径的RTT样本可用前，或在预估器被重置后，预估器都会使用初始RTT来初始化；详见<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>。</p>
+<p><code>smoothed_rtt</code>和<code>rttvar</code>会以这种方式初始化，其中<code>kInitialRtt</code>为初始RTT值：</p>
+<div class="block ref" id="Pseudocode_5_3_1">
+<pre tabindex="0"><code>smoothed_rtt = kInitialRtt
+rttvar = kInitialRtt / 2
+</code></pre><p><a href="#Pseudocode_5_3_1"></a></p>
+</div>
+<p>网络路径的RTT样本被记录在<code>latest_rtt</code>中；详见<a href="#5.1_Generating_RTT_Samples">第5.1章</a>。在初始化后得到首份RTT样本时，使用该样本来重置预估器。这确保了预估器中不留有过去样本的历史记录。在其他路径上发送的数据包并不会为当前路径的RTT样本做出贡献，如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述。</p>
+<p>在初始化后得到首份RTT样本时，以这种方式设置<code>smoothed_rtt</code>和<code>rttvar</code>：</p>
+<div class="block ref" id="Pseudocode_5_3_2">
+<pre tabindex="0"><code>smoothed_rtt = latest_rtt
+rttvar = latest_rtt / 2
+</code></pre><p><a href="#Pseudocode_5_3_2"></a></p>
+</div>
+<p>在得到后续RTT样本时，以这种方式更新<code>smoothed_rtt</code>和<code>rttvar</code>：</p>
+<div class="block ref" id="Pseudocode_5_3_3">
+<pre tabindex="0"><code>ack_delay = 从ACK帧中解码的确认延迟
+if (握手已确认):
+  ack_delay = min(ack_delay, max_ack_delay)
+adjusted_rtt = latest_rtt
+if (latest_rtt &gt;= min_rtt + ack_delay):
+  adjusted_rtt = latest_rtt - ack_delay
+smoothed_rtt = 7/8 * smoothed_rtt + 1/8 * adjusted_rtt
+rttvar_sample = abs(smoothed_rtt - adjusted_rtt)
+rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
+</code></pre><p><a href="#Pseudocode_5_3_3"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="6_Loss_Detection">
+<h1>
+<a href="#6_Loss_Detection">6. 丢包检测</a>
+</h1>
+<div class="content">
+<p>QUIC发送方使用确认来检测遭遇丢包的数据包，使用PTO来确保确认已被接收到；详见<a href="#6.2_Probe_Timeout">第6.2章</a>。本章描述了这些算法。</p>
+<p>如果某数据包遭遇丢包，那么QUIC传输需要从该丢包的状态中恢复，例如通过重传数据、发送更新后的帧或放弃传输该帧的的方式。更多信息详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.3_Retransmission_of_Information">第13.3章</a>。</p>
+<p>不像RTT测量和拥塞控制那样，每个数据包号空间中的丢包检测是独立的，因为RTT和拥塞控制都是路径的某些属性，而丢包检测还依赖着密钥的可用性。</p>
+</div>
+</section>
+<section class="page" id="6.1_Acknowledgment-Based_Detection">
+<h2>
+<a href="#6.1_Acknowledgment-Based_Detection">6.1. 基于确认的检测</a>
+</h2>
+<div class="content">
+<p>基于确认的丢包检测吸收了TCP的快速重传（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》）、早期重传（详见《<a href="https://www.rfc-editor.org/info/rfc5827">RFC5827</a>》）、前向确认（详见《<a href="https://doi.org/10.1145/248157.248181">FACK</a>》）、SACK丢包恢复（详见《<a href="https://www.rfc-editor.org/info/rfc6675">RFC6675</a>》）和RACK-TLP（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》）的思想。本节概述了这些算法在QUIC中是如何实现的。</p>
+<p>如果数据包满足了所有以下条件，那么它会被认定为丢包：</p>
+<ul>
+<li>
+<p>该数据包处于未被确认和在途的状态，并且发送时间早于某已被确认的数据包。</p>
+</li>
+<li>
+<p>该数据包的发送顺序比某已被确认的数据包还要早<code>kPacketThreshold</code>个数据包（详见<a href="#6.1.1_Packet_Threshold">第6.1.1章</a>），或距离其发送已经过去足够久的时间（详见<a href="#6.1.2_Time_Threshold">第6.1.2章</a>）。</p>
+</li>
+</ul>
+<p>确认能表明某个后发送的数据包已经被接收到，而数据包数量阈值和数据包发送时间阈值为数据包乱序提供了一定的容忍度。</p>
+<p>将数据包错误地认定为丢包会导致不必要的重传，并有可能因为拥塞控制器在检测到丢失时的行为而产生性能上的损失。QUIC实现可以检测到无效重传，然后提高针对乱序的数据包数量阈值或数据包发送时间阈值来减少将来的无效重传和错误的丢包事件。具有自适应的时间阈值的QUIC实现<em><strong>可以</strong></em>选择以较小的初始乱序阈值来启动，以最小化恢复延迟。</p>
+</div>
+</section>
+<section class="page" id="6.1.1_Packet_Threshold">
+<h3>
+<a href="#6.1.1_Packet_Threshold">6.1.1. 数据包数量阈值</a>
+</h3>
+<div class="content">
+<p>基于TCP丢包检测的最佳实践（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》和《<a href="https://www.rfc-editor.org/info/rfc6675">RFC6675</a>》）<em><strong>推荐</strong></em>将针对乱序的数据包数量阈值（<code>kPacketThreshold</code>）初始值设置为<code>3</code>。为了和TCP保持相似，QUIC实现<em><strong>不应该</strong></em>使用低于<code>3</code>的数据包数量阈值；详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》。</p>
+<p>一些网络可能表现出高度的数据包乱序特征，使得发送方错误地检测到数据包丢包的情况。除此之外，数据包乱序在QUIC中可能比在TCP中更常见，因为有能力观测TCP数据包并重建顺序的网络设备不能为QUIC做同样的处理，还因为QUIC数据包的数据包号是经过加密的。在错误地检测到丢包后提升乱序阈值的算法，例如RACK（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》），被证明在TCP中是有用的，它们在QUIC中应该至少有同样的效果。</p>
+</div>
+</section>
+<section class="page" id="6.1.2_Time_Threshold">
+<h3>
+<a href="#6.1.2_Time_Threshold">6.1.2. 数据包发送时间阈值</a>
+</h3>
+<div class="content">
+<p>一旦相同数据包号空间内的后续数据包得到确认，终端就<em><strong>应该</strong></em>将比它更早发送的且已经超过一定时间的数据包认定为丢包。为了避免过早地将数据包认定为丢包，该时间阈值<em><strong>必须</strong></em>至少被设置为本机计时器的粒度；后者用常量<code>kGranularity</code>来表示。时间阈值可以表示为：</p>
+<div class="block ref" id="Pseudocode_6_1_2_1">
+<pre tabindex="0"><code>max(kTimeThreshold * max(smoothed_rtt, latest_rtt), kGranularity)
+</code></pre><p><a href="#Pseudocode_6_1_2_1"></a></p>
+</div>
+<p>如果某个比最大已确认数据包更早发送的数据包尚未被认定为丢包，那么应该以其残余时间设置一个计时器。</p>
+<p>使用<code>max(smoothed_rtt, latest_rtt)</code>可以避免以下两种情况：</p>
+<ul>
+<li>
+<p>最新的RTT样本低于经平滑的RTT，这可能是因为包含着确认的数据包走了一条更短路径而产生了乱序；</p>
+</li>
+<li>
+<p>最新的RTT样本高于经平滑的RTT，这可能是因为真实RTT升高了，但是经平滑的RTT还没有追上此变化。</p>
+</li>
+</ul>
+<p><em><strong>推荐</strong></em>将时间阈值（<code>kTimeThreshold</code>），也就是RTT倍率，设置为<code>9/8</code>。<em><strong>推荐</strong></em>将计时器粒度（<code>kGranularity</code>）设置为1毫秒。</p>
+<blockquote>
+<p>注意：出于类似的目的，TCP的RACK（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》）指定了一个稍微大一些的阈值，该值相当于<code>5/4</code>。在QUIC中实践表明<code>9/8</code>表现得更好一些。</p>
+</blockquote>
+<p>QUIC实现<em><strong>可以</strong></em>尝试使用绝对阈值、来自先前连接的阈值、自适应阈值或引入RTT偏差。较小的阈值会降低对乱序的容忍度并增加无效重传，较大的阈值会增大丢包检测的响应时间。</p>
+</div>
+</section>
+<section class="page" id="6.2_Probe_Timeout">
+<h2>
+<a href="#6.2_Probe_Timeout">6.2. 探测包超时</a>
+</h2>
+<div class="content">
+<p>当ACK触发包没有在期望的时间内得到确认或服务器可能还没有验证完客户端的地址时，探测包超时（PTO）能够引发一至两个探测数据报。PTO使得连接能够从丢失队尾数据包或确认的状态中恢复过来。</p>
+<p>就像丢包检测一样，每个数据包号空间中的PTO也是独立的。也就是说，每个数据包号空间中的PTO值是单独计算的。</p>
+<p>PTO计时器的超时事件并不表明数据包遭遇了丢包，并且它<em><strong>必须不</strong></em>使得在它之前的尚未确认的数据包被认定为丢包。当接收到确认且它新确认了一些数据包时，丢包检测机制会遵循数据包数量阈值和数据包发送时间阈值启动；详见<a href="#6.1_Acknowledgment-Based_Detection">第6.1章</a>。</p>
+<p>QUIC中使用的PTO算法实现了尾部丢失探测（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》）中的可靠度函数、RTO（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》）和面向TCP的F-RTO算法（详见《<a href="https://www.rfc-editor.org/info/rfc5682">RFC5682</a>》）。超时的计算方法是基于TCP的RTO时间（详见《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》）的。</p>
+</div>
+</section>
+<section class="page" id="6.2.1_Computing_PTO">
+<h3>
+<a href="#6.2.1_Computing_PTO">6.2.1. 计算PTO</a>
+</h3>
+<div class="content">
+<p>当发送ACK触发包时，发送方会启动一个PTO计时器，它的计算方式如下：</p>
+<div class="block ref" id="Pseudocode_6_2_1_1">
+<pre tabindex="0"><code>PTO = smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay
+</code></pre><p><a href="#Pseudocode_6_2_1_1"></a></p>
+</div>
+<p>PTO就是发送方为某数据包的确认应该等待的时间量。该时间量包含了预估的网络RTT（<code>smoothed_rtt</code>）、预估的偏差量（<code>4*rttvar</code>）和<code>max_ack_delay</code>，包含<code>max_ack_delay</code>能将接收方可以在发送确认前延迟的最长时间考虑进来。</p>
+<p>当在初始数据包号空间或握手数据包号空间中使用PTO时，其计算式中的<code>max_ack_delay</code>要设为<code>0</code>，因为对端不应该有意推迟发送这些数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>。</p>
+<p>PTO的值<em><strong>必须</strong></em>不小于<code>kGranularity</code>，以避免计时器立即超时。</p>
+<p>当多个数据包号空间中的ACK触发包均在途时，计时器<em><strong>必须</strong></em>被设置为在初始数据包号空间和握手数据包号空间中较早超时的那个值。</p>
+<p>终端在握手确认前<em><strong>必须不</strong></em>为应用数据数据包号空间设置其PTO计时器。这么做避免了终端在对端还没有用于处理的密钥或终端还没有用于处理确认的密钥时就重传信息。举例来说，这种情况可能在客户端向服务器发送0-RTT数据包时出现；它无需了解服务器是否会有能力解密就会发送它们。类似地，这种情况还可能在服务器未等到确认客户端已验证完服务器证书从而读取1-RTT数据包就发送这些数据包时出现。</p>
+<p>发送方<em><strong>应该</strong></em>在每次发送或确认ACK触发包时，或当启用初始密钥或握手密钥时（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9_Discarding_Unused_Keys">第4.9章</a>），重启自己的PTO计时器。这确保了计算出来的PTO总是基于最新的RTT预估的，并且针对的总是不同数据包号空间中的那个正确的数据包。</p>
+<p>当PTO计时器超时时，<em><strong>必须</strong></em>增加PTO补偿，使得PTO被设置为当前量的两倍。除非是下文所述的情况，否则PTO补偿因子会在接收到确认时被重置。服务器可能在握手期间花费比其他时候更长的时间来响应数据包。为了保护这样的服务器免于重复的客户端探测包，尚未确定服务器是否已验证完自身地址的客户端处的PTO补偿不会被重置。也就是说，客户端不会在接收到来自初始数据包中的确认的时候重置PTO补偿因子。</p>
+<p>发送方速率的指数级降低非常重要，因为严重的拥塞引发的数据包或确认的丢包可能连续导致PTO超时。即使多个数据包号空间中均有在途数据包，所有空间中PTO的指数级增加也能避免对网络施加额外的负载。举个例子，初始数据包号空间中的超时会使得握手数据包号空间中的超时时间翻倍。</p>
+<p>连续PTO超时的总时长会受到空闲超时时间的限制。</p>
+<p>如果已经为基于发送时间阈值的丢包检测设置了计时器，那么<em><strong>必须不</strong></em>设置PTO计时器。为基于发送时间阈值的丢包检测设置的计时器在大多数情况下都会比PTO计时器更早超时，并且更不太可能会无效地重传数据。</p>
+</div>
+</section>
+<section class="page" id="6.2.2_Handshakes_and_New_Paths">
+<h3>
+<a href="#6.2.2_Handshakes_and_New_Paths">6.2.2. 握手与新路径</a>
+</h3>
+<div class="content">
+<p>在相同的网络路径上恢复出来的连接<em><strong>可以</strong></em>使用先前连接中最终的经平滑的RTT值作为恢复出来的连接的初始RTT。如果没有先前的RTT可用，那么初始RTT<em><strong>应该</strong></em>被设置为333毫秒。这能使得握手以1秒的PTO启动，这与TCP初始RTO的推荐值一致；详见《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》的<a href="https://www.rfc-editor.org/rfc/rfc6298.html#section-2">第2章</a>。</p>
+<p>连接可以使用从发送<strong>通道挑战帧</strong>起至接收到<strong>回复通道帧</strong>为止所经过的时间来为新路径设置初始RTT（详见<a href="#A.2_Constants_of_Interest">附录A.2</a>中的<code>kInitialRtt</code>），但是该时间<em><strong>不应该</strong></em>被取作RTT样本。</p>
+<p>当初始密钥和握手密钥被弃用后（详见<a href="#6.4_Discarding_Keys_and_Packet_State">第6.4章</a>），无法确认任何初始数据包和握手数据包，所以可以将它们从在途字节计数中移除。当弃用初始密钥或握手密钥时，<em><strong>必须</strong></em>重置PTO和丢包检测计时器，因为弃用密钥表明了进度的推进，而丢包检测计时器可能是为已弃用的数据包号空间设置的。</p>
+</div>
+</section>
+<section class="page" id="6.2.2.1_Before_Address_Validation">
+<h4>
+<a href="#6.2.2.1_Before_Address_Validation">6.2.2.1. 在地址验证之前</a>
+</h4>
+<div class="content">
+<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所规定的那样，在服务器验证完客户端在路径上的地址前，它能发送的数据量被限制于它所接收到数据量的三倍。如果不能发送更多数据，那么服务器<em><strong>必须不</strong></em>启动PTO计时器，除非接收到了来自客户端的数据报，因为在PTO超时时发送的数据包会被计入抗放大上限。</p>
+<p>当服务器接收到了来自客户端的数据报时，抗放大上限会被提升，服务器会重置PTO计时器。如果这时PTO计时器被设置为了一个已过去的时间，那么它会立即超时。这么做能避免在发送对完成握手至关重要的数据包前发送新的1-RTT数据包。这种情况尤其会在服务器接受了0-RTT但是没有成功验证客户端地址时发生。</p>
+<p>由于服务器在接收到来自客户端的更多数据报前处于禁言状态，发送数据包来解禁服务器就成了客户端的责任，除非它能确定服务器已经完成了对它的地址验证（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8_Address_Validation">第8章</a>）。也就是说，如果客户端没有接收到任何对于它的握手数据包的确认，并且握手尚未确认（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.1.2_Handshake_Confirmed">第4.1.2章</a>），那么它<em><strong>必须</strong></em>设置PTO计时器，哪怕没有在途数据包。当此PTO超时时，如果客户端持有握手密钥，那么它<em><strong>必须</strong></em>发送一个握手数据包，否则它<em><strong>必须</strong></em>用一个载荷至少长1200字节的UD数据报P来发送一个初始数据包。</p>
+</div>
+</section>
+<section class="page" id="6.2.3_Speeding_up_Handshake_Completion">
+<h3>
+<a href="#6.2.3_Speeding_up_Handshake_Completion">6.2.3. 加速握手完成</a>
+</h3>
+<div class="content">
+<p>当服务器接收到了一个包含重复的<strong>加密帧</strong>数据的初始数据包时，它可以假定客户端没有接收到服务器用初始数据包发送的任何数据，或客户端的预估RTT过小。当客户端在取得握手密钥前就接收到了握手数据包或1-RTT数据包，那么它可以假定服务器的部分甚至全部初始数据包都遭遇了丢包。</p>
+<p>为了在这些条件下加速握手完成，终端<em><strong>可以</strong></em>，但在每条连接上仅尝试数次，在PTO超时前发送一个包含未经确认的<strong>加密帧</strong>数据的数据包，不过这仍受到《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>中的地址验证限制。在每条连接上至多一次这么做，非常适合快速地从单个数据包丢包的状态中恢复。总是用重传数据包来响应接收到了但无法处理的数据包的终端要承担无限交换数据包的风险。</p>
+<p>终端还可以使用合并数据包（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.2_Coalescing_Packets">第12.2章</a>）的方法来确保每份数据报都能触发至少一次确认。例如，客户端可以将包含<strong>Ping帧</strong>和<strong>填充帧</strong>的初始数据包与0-RTT数据包合并，服务器可以将包含<strong>Ping帧</strong>的初始数据包与一个或多个其他数据包合并到首次发送的数据报中。</p>
+</div>
+</section>
+<section class="page" id="6.2.4_Sending_Probe_Packets">
+<h3>
+<a href="#6.2.4_Sending_Probe_Packets">6.2.4. 加速握手完成</a>
+</h3>
+<div class="content">
+<p>当PTO计时器超时时，发送方<em><strong>必须</strong></em>发送一个在该数据包号空间中的ACK触发包来作为探测包。终端<em><strong>可以</strong></em>发送至多两个完整尺寸的包含ACK触发包的数据报来避免因为单个数据报遭遇丢包引发的代价高昂的连续PTO超时，或是为了在多个数据包号空间中发送数据。所有在PTO超时时发送的探测数据包都<em><strong>必须</strong></em>是能触发ACK的。</p>
+<p>除了在超时的计时器所在的数据包号空间中发送数据外，发送方<em><strong>应该</strong></em>在其他具有在途数据的数据包号空间中发送ACK触发包，并且尽可能合并数据包。这在服务器同时具有在途的初始数据或握手数据时或在客户端同时具有在途的握手数据和应用数据时是非常有用的，因为对端可能只持有两个数据包号空间的接收密钥中的一个。</p>
+<p>如果发送方想要在PTO超时时更快地引发确认，它可以跳过数据包号来消除确认延迟。</p>
+<p>终端<em><strong>应该</strong></em>在因为PTO超时而发送的数据包中包含新数据。如果没有新数据可供发送，那么<em><strong>可以</strong></em>发送先前发送过的数据。QUIC实现<em><strong>可以</strong></em>使用其他策略来决定探测数据包的内容，比如基于应用所指定的优先级来发送新的数据或重传数据。</p>
+<p>发送方有可能没有新数据也没有先前的数据用于发送。考虑这样一个例子：新的应用数据被发送于<strong>流帧</strong>中，被认定为丢包，随后在新的数据包中被重传，接着先前的数据包实际上得到了确认。当没有新数据可以发送时，发送方<em><strong>应该</strong></em>在数据包中发送<strong>Ping帧</strong>或其他ACK触发帧，来重新启动PTO计时器。</p>
+<p>作为发送ACK触发包的替代，发送方<em><strong>可以</strong></em>将仍在途的数据包标记为丢包。这么做避免了发送额外的数据包，但是增大了过于激进地将数据包认定为丢包的风险，导致拥塞控制器不必要地降低发送速率。</p>
+<p>连续的PTO超时会使得PTO的值以指数形式上升，随着数据包在网络中被持续丢弃，连接恢复所需的时间会以指数形式增长。在PTO超时时发送两个数据包提高了对数据包丢包的容忍度，因而降低了连续出现PTO超时事件的可能性。</p>
+<p>当PTO计时器多次超时，没有新数据可以发送时，QUIC实现必须选择要么每次发送相同的载荷，要么发送不同的载荷。发送相同的载荷可能会更简单，并且确保了能首先送达最高优先级的帧。每次发送不同的载荷则减少了出现无效重传的机会。</p>
+</div>
+</section>
+<section class="page" id="6.3_Handling_Retry_Packets">
+<h2>
+<a href="#6.3_Handling_Retry_Packets">6.3. 处理重试数据包</a>
+</h2>
+<div class="content">
+<p>重试数据包使得客户端再发送一个初始数据包，能有效地重启连接的过程。重试数据包表明了初始数据包已被接收到但是没有得到处理。重试数据包不能被当作确认来对待，因为它既不表明数据包得到了处理，也没有指明数据包号。</p>
+<p>接收到重试数据包的客户端会重置拥塞控制器和丢包恢复状态，包括重置任何进行中的计时器。其他连接状态，尤其是加密握手消息，会得到保留；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17.2.5_Retry_Packet">第17.2.5章</a>。</p>
+<p>客户端<em><strong>可以</strong></em>为服务器计算一份RTT预估，该值从首个初始数据包被发送起，至接收到重试数据包或版本协商数据包为止。客户端<em><strong>可以</strong></em>使用该值来作为初始RTT预估的默认值。</p>
+</div>
+</section>
+<section class="page" id="6.4_Discarding_Keys_and_Packet_State">
+<h2>
+<a href="#6.4_Discarding_Keys_and_Packet_State">6.4. 弃用密钥和数据包状态</a>
+</h2>
+<div class="content">
+<p>当初始数据包保护密钥和握手数据包保护密钥被弃用时（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9_Discarding_Unused_Keys">第4.9章</a>）所有用这些密钥发送的数据包都不再能被确认，因为对于这些数据包的确认无法得到处理。发送方<em><strong>必须</strong></em>丢弃所有于这些数据包相关的用于恢复的状态数据，并且<em><strong>必须</strong></em>将它们从在途字节计数中移除。</p>
+<p>终端一旦开始使用握手数据包通信，就会停止发送和接收初始数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17.2.2.1_Abandoning_Initial_Packets">第17.2.2.1章</a>。在这时，所有在途初始数据包的用于恢复的状态数据都会被丢弃。</p>
+<p>当0-RTT被拒绝时，所有在途0-RTT数据包的用于恢复的状态数据都会被丢弃。</p>
+<p>如果服务器接受0-RTT，但是没有缓存比初始数据包更早到达的0-RTT数据包，那么提前到达的0-RTT数据包会被认定为丢包，但是这种情况不太会频繁出现。</p>
+<p>在用某密钥加密的数据包得到确认或被认定为丢包后一段时间后，该密钥应该被弃用。然而，在握手密钥和1-RTT密钥被认为同时对客户端和服务器可用时，初始秘密值和握手秘密值就会被弃用；详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9.1_Discarding_Initial_Keys">第4.9.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="7_Congestion_Control">
+<h1>
+<a href="#7_Congestion_Control">7. 拥塞控制</a>
+</h1>
+<div class="content">
+<p>本文档为QUIC定义了一种与TCP的NewReno算法（详见《<a href="https://www.rfc-editor.org/info/rfc6582">RFC6582</a>》）类似的位于发送方一侧的拥塞控制器。</p>
+<p>QUIC为拥塞控制提供一些通用的信号，它们被设计为能够支持各种位于发送方一侧的算法。发送方可以单方面地选择使用不同的算法，例如CUBIC（详见《<a href="https://www.rfc-editor.org/info/rfc8312">RFC8312</a>》）。</p>
+<p>如果发送方使用的控制器与本文档中定义的不同，那么所选的控制器<em><strong>必须</strong></em>遵循《<a href="https://www.rfc-editor.org/info/rfc8085">RFC8085</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8085.html#section-3.1">第3.1章</a>中规定的拥塞控制规范。</p>
+<p>与TCP类似，仅包含<strong>ACK帧</strong>的数据包不会被计入在途字节计数，也不会受到拥塞控制。与TCP不一样的是，QUIC能够检测到这些数据包的丢包情况，并且<em><strong>可以</strong></em>使用此信息来调整拥塞控制器或调整仅包含<strong>ACK帧</strong>的数据包的发送速率，但本文档中并没有描述如何进行此过程。</p>
+<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述，每条路径上的拥塞控制器是独立的，所以在其他路径上发送的数据包不会影响当前路径上的拥塞控制器。</p>
+<p>本文档中的算法以字节为单位指定和使用控制器的拥塞窗口。</p>
+<p>如果在途字节数（详见<a href="#B.2_Variables_of_Interest">附录B.2</a>）会超过拥塞窗口，那么终端<em><strong>必须不</strong></em>发送数据包，除非这个数据包是因为PTO超时而发送的（详见<a href="#6.2_Probe_Timeout">第6.2章</a>），或是因为进入了恢复期而发送的（详见<a href="#7.3.2_Recovery">第7.3.2章</a>）。</p>
+</div>
+</section>
+<section class="page" id="7.1_Explicit_Congestion_Notification">
+<h2>
+<a href="#7.1_Explicit_Congestion_Notification">7.1. 显式拥塞通知</a>
+</h2>
+<div class="content">
+<p>如果一条路径被验证为支持显式拥塞通知（ECN，详见《<a href="https://www.rfc-editor.org/info/rfc3168">RFC3168</a>》和《<a href="https://www.rfc-editor.org/info/rfc8311">RFC8311</a>》），那么QUIC会将IP头部中的拥塞预警（CE）码点识别为一次拥塞的信号。本文档规定了终端在由对端报告的<code>ECN-CE</code>计数增加时应该如何作出响应；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.4.2_ECN_Validation">第13.4.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="7.2_Initial_and_Minimum_Congestion_Window">
+<h2>
+<a href="#7.2_Initial_and_Minimum_Congestion_Window">7.2. 初始拥塞窗口及其最小值</a>
+</h2>
+<div class="content">
+<p>QUIC以慢启动的方式启动每条连接，并将拥塞窗口设置为初始值。终端<em><strong>应该</strong></em>将初始拥塞窗口设置为最大数据报尺寸（<code>max_datagram_size</code>）的十倍大小，并且限制窗口不小于14720字节与最大数据报尺寸的两倍大小中的较大值。这种做法遵循的是《<a href="https://www.rfc-editor.org/info/rfc6928">RFC6928</a>》中的分析与推荐，并且提高了字节数限制来适应UDP中较小的8字节头部，而不是TCP中的20字节头部。</p>
+<p>如果在连接过程中最大数据报尺寸发生了变化，那么初始拥塞窗口<em><strong>应该</strong></em>用新的尺寸值来计算。如果为了完成握手而降低了最大数据报尺寸，那么<em><strong>应该</strong></em>将拥塞窗口设置为新的值。</p>
+<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所述，在验证完客户端的地址前，服务器会被抗放大上限所限制。尽管抗放大上限会阻止拥塞窗口被完全利用，因而减缓拥塞窗口的尺寸增长，但是它并不会直接影响到拥塞窗口。</p>
+<p>最小拥塞窗口是拥塞窗口在应对丢包、由对端报告的<code>ECN-CE</code>计数增加或持续拥塞时能达到的最小值。<em><strong>推荐</strong></em>将该值设置为<code>2 * max_datagram_size</code>。</p>
+</div>
+</section>
+<section class="page" id="7.3_Congestion_Control_States">
+<h2>
+<a href="#7.3_Congestion_Control_States">7.3. 拥塞控制的各种状态</a>
+</h2>
+<div class="content">
+<p>在本文档中描述的NewReno拥塞控制器具有三种状态，如<a href="#Figure_1_Congestion_Control_States_and_Transitions">图1</a>所示。</p>
+<div class="block ref" id="Figure_1_Congestion_Control_States_and_Transitions">
+<img src="/RFC9002_Chinese_Translation/images/Figure_1_Congestion_Control_States_and_Transitions.svg"/>
+<p><a href="#Figure_1_Congestion_Control_States_and_Transitions">图1：拥塞控制的各种状态及其转变</a></p>
+</div>
+<p>后续章节描述了这些状态及其转变。</p>
+</div>
+</section>
+<section class="page" id="7.3.1_Slow_Start">
+<h3>
+<a href="#7.3.1_Slow_Start">7.3.1. 慢启动</a>
+</h3>
+<div class="content">
+<p>只要拥塞窗口低于慢启动阈值，使用NewReno的发送方就会进入慢启动状态。发送方一开始会处于慢启动状态，是因为慢启动阈值的初始值为无穷大。</p>
+<p>当发送方处于慢启动状态时，拥塞窗口就会在每次处理到确认时按照已确认的字节数逐渐扩大。这会使得拥塞窗口以指数形式扩大。</p>
+<p>当数据包遭遇丢包或当由对端报告的<code>ECN-CE</code>计数增加时，发送方<em><strong>必须</strong></em>退出慢启动状态并进入恢复期。</p>
+<p>任何时候，只要拥塞窗口低于慢启动阈值，发送方就会重新进入慢启动状态，这种情况只会在检测到持续拥塞时才会出现。</p>
+</div>
+</section>
+<section class="page" id="7.3.2_Recovery">
+<h3>
+<a href="#7.3.2_Recovery">7.3.2. 恢复</a>
+</h3>
+<div class="content">
+<p>当检测到丢包或当由对端报告的<code>ECN-CE</code>计数增加时，使用NewReno的发送方就会进入恢复期。已经处于恢复期的发送方不会重新进入恢复期。</p>
+<p>在进入恢复期时，发送方<em><strong>必须</strong></em>将慢启动阈值设置为检测到丢包时的拥塞窗口大小的一半。<em><strong>必须</strong></em>在退出恢复期前完成此减半操作。</p>
+<p>QUIC实现<em><strong>可以</strong></em>在进入恢复期时立即缩小拥塞窗口，或使用其他机制，例如比例降速法（详见《<a href="https://www.rfc-editor.org/info/rfc6937">PRR</a>》），来逐渐缩小拥塞窗口。如果选择立即缩小拥塞窗口，那么可以在缩小前先发送一个数据包。如《<a href="https://www.rfc-editor.org/info/rfc6675">RFC6675</a>》的<a href="https://www.rfc-editor.org/rfc/rfc6675.html#section-5">第5章</a>所述，如果遭遇丢包的数据包中的数据得到重传，那么这种做法能加速丢包恢复，并且与TCP中的行为一致。</p>
+<p>恢复期的目的是将缩小拥塞窗口的频率控制在每一轮往返时间内不超过一次。因此，在恢复期中，拥塞窗口不会对新的丢包事件或ECN-CN计数的增加作出响应。</p>
+<p>一旦在恢复期中发送的数据包得到确认，恢复期就会结束，发送方会进入拥塞回避状态。这与TCP中对恢复的定义稍微有点区别，在后者中，恢复期是在引发恢复的那个被丢失的数据段得到确认时结束的。</p>
+</div>
+</section>
+<section class="page" id="7.3.3_Congestion_Avoidance">
+<h3>
+<a href="#7.3.3_Congestion_Avoidance">7.3.3. 拥塞回避</a>
+</h3>
+<div class="content">
+<p>任何时候，只要拥塞窗口超过或等于慢启动阈值并且当前并不处于恢复期，使用NewReno的发送方就会进入拥塞回避状态。</p>
+<p>处于拥塞回避状态的发送方使用加法递增乘法递减（AIMD）的策略，且<em><strong>必须</strong></em>将在每次得到数据包确认时对拥塞窗口的扩大量限制至不超过最大数据报尺寸的一倍。</p>
+<p>当数据包遭遇丢包或由对端报告的<code>ECN-CE</code>计数增加时，发送方就会退出拥塞回避状态并进入恢复期。</p>
+</div>
+</section>
+<section class="page" id="7.4_Ignoring_Loss_of_Undecryptable_Packets">
+<h2>
+<a href="#7.4_Ignoring_Loss_of_Undecryptable_Packets">7.4. 忽略无法解密数据包的丢包事件</a>
+</h2>
+<div class="content">
+<p>在握手期间，一些数据包保护密钥可能在某数据包抵达时尚未可用，并且接收方可以选择丢弃这样的数据包。特别是，握手和0-RTT数据包在初始数据包抵达前无法得到处理，并且1-RTT数据包在握手完成前也无法得到处理。如果握手数据包、0-RTT数据包和1-RTT数据包有可能先于用于处理它们的数据包保护密钥变为可用就抵达了，那么终端<em><strong>可以</strong></em>忽略这些数据包的丢包事件。如果在给定数据包号空间中，晚于首个得到确认的数据包发送的数据包遭遇了丢包，那么终端<em><strong>必须不</strong></em>忽略它们。</p>
+</div>
+</section>
+<section class="page" id="7.5_Probe_Timeout">
+<h2>
+<a href="#7.5_Probe_Timeout">7.5. 探测包超时</a>
+</h2>
+<div class="content">
+<p>拥塞控制器<em><strong>必须不</strong></em>阻拦探测数据包。然而发送方<em><strong>必须</strong></em>将这些数据包额外计入在途字节中，因为这些数据包增加了网络负载。注意，发送探测数据包可能使得发送方的在途字节数超过拥塞窗口，直到接收到了那个能够确定该数据包是遭遇了丢包还是已被送达的确认。</p>
+</div>
+</section>
+<section class="page" id="7.6_Persistent_Congestion">
+<h2>
+<a href="#7.6_Persistent_Congestion">7.6. 持续拥塞</a>
+</h2>
+<div class="content">
+<p>当在一段足够长的时间内的所有数据包都被发送方认定为丢包时，就可以认为网络正在经历持续拥塞。</p>
+</div>
+</section>
+<section class="page" id="7.6.1_Duration">
+<h3>
+<a href="#7.6.1_Duration">7.6.1. 时长</a>
+</h3>
+<div class="content">
+<p>持续拥塞的时长是以这种方式计算的：</p>
+<div class="block ref" id="Pseudocode_7_6_1_1">
+<pre tabindex="0"><code>(smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay) *
+    kPersistentCongestionThreshold
+</code></pre><p><a href="#Pseudocode_7_6_1_1"></a></p>
+</div>
+<p>与<a href="#6.2_Probe_Timeout">第6.2章</a>中的PTO计算式不同，该时长的计算式中也包含了<code>max_ack_delay</code>但无需关心发生丢包的数据包号空间。</p>
+<p>该时长使得发送方能够在出现持续拥塞前发送的数据包数量与TCP用尾部丢失探测（详见《<a href="https://www.rfc-editor.org/info/rfc8985">RFC8985</a>》）和RTO（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》）时能发送的数量一样，其中包括在PTO超时时发送的那些数据包。</p>
+<p>更大的<code>kPersistentCongestionThreshold</code>值使得发送方对网络中的持续拥塞变得更不敏感，这会导致它向拥塞的网络中激进地继续发送数据包。过小的值会导致发送方不必要地检测到持续拥塞，降低发送方的吞吐量。</p>
+<p><em><strong>推荐</strong></em>将<code>kPersistentCongestionThreshold</code>的值设为<code>3</code>，这使得发送方的行为与在两个TLP后建立一个RTO的TCP发送方的行为几乎一致。</p>
+<p>这种设计没有使用连续的PTO事件来识别持续拥塞，因为应用的行为模式会影响PTO的超时。举个例子，间歇地发送少量数据且在两次发送间存在静默期的发送方会在每次发送数据时重启PTO计时器，有可能使得PTO计时器很长时间都没有出现超时，哪怕它没有接收到任何确认。时长的计算使得发送方无需依赖PTO超时就能识别持续拥塞。</p>
+</div>
+</section>
+<section class="page" id="7.6.2_Establishing_Persistent_Congestion">
+<h3>
+<a href="#7.6.2_Establishing_Persistent_Congestion">7.6.2. 判定持续拥塞</a>
+</h3>
+<div class="content">
+<p>要使发送方判定持续拥塞，需要其接收到的确认能反映出有两个ACK触发包遭遇了丢包，并且：</p>
+<ul>
+<li>
+<p>在所有数据包号空间中，这两个数据包的发送时间之间没有任何数据包是得到确认了的；</p>
+</li>
+<li>
+<p>这两个数据包的发送时间之差超过了持续拥塞的时长（详见<a href="#7.6.1_Duration">第7.6.1章</a>）；并且</p>
+</li>
+<li>
+<p>在这两个数据包被发送前，存在RTT样本。</p>
+</li>
+</ul>
+<p>这两个数据包<em><strong>必须</strong></em>是触发ACK的，因为接收方仅被要求在其最大确认延迟之内确认触发ACK的数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
+<p><em><strong>不应该</strong></em>在没有RTT样本时就开始一段持续拥塞。在得到首份RTT样本前，发送方基于初始RTT（详见<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>）建立PTO计时器，它可能会比实际RTT要大。存在RTT样本的这项要求防止了发送方在几乎没有发送过探测包的情况下就开始识别持续拥塞。</p>
+<p>由于网络拥塞不会受到数据包号空间的影响，所以持续拥塞<em><strong>应该</strong></em>将在所有数据包号空间中发送的数据包都考虑进来。尚未为全部数据包号空间建立状态数据的发送方或无法在不同数据包号空间间比较发送时间的QUIC实现<em><strong>可以</strong></em>仅使用得到确认的数据包号空间的状态数据。这种做法可能导致错误地识别到持续拥塞，但它不会引发漏判。</p>
+<p>与TCP的发送方对RTO（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》）作出的响应行为类似，当识别出持续拥塞时，发送方的拥塞窗口<em><strong>必须</strong></em>被缩小至拥塞窗口的最小值（<code>kMinimumWindow</code>）。</p>
+</div>
+</section>
+<section class="page" id="7.6.3_Example">
+<h3>
+<a href="#7.6.3_Example">7.6.3. 样例</a>
+</h3>
+<div class="content">
+<p>接下来的样例展示了发送方是怎样判定持续拥塞的。假设：</p>
+<div class="block ref" id="Pseudocode_7_6_3_1">
+<pre tabindex="0"><code>smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay = 2
+kPersistentCongestionThreshold = 3
+</code></pre><p><a href="#Pseudocode_7_6_3_1"></a></p>
+</div>
+<p>考虑下列事件序列：</p>
+<div class="block ref" id="Table_1">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">时间</th>
+<th style="text-align:left">行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">t=0</td>
+<td style="text-align:left">发送1号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=1</td>
+<td style="text-align:left">发送2号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=1.2</td>
+<td style="text-align:left">接收到对于1号数据包的确认</td>
+</tr>
+<tr>
+<td style="text-align:left">t=2</td>
+<td style="text-align:left">发送3号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=3</td>
+<td style="text-align:left">发送4号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=4</td>
+<td style="text-align:left">发送5号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=5</td>
+<td style="text-align:left">发送6号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=6</td>
+<td style="text-align:left">发送7号数据包（应用数据）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=8</td>
+<td style="text-align:left">发送8号数据包（PTO 1）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=12</td>
+<td style="text-align:left">发送9号数据包（PTO 2）</td>
+</tr>
+<tr>
+<td style="text-align:left">t=12.2</td>
+<td style="text-align:left">接收到对于9号数据包的确认</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_1">表1</a></p>
+</div>
+<p>当在<code>t=12.2</code>处接收到对于9号数据包的确认时，2号数据包至8号数据包都会被认定为丢包。</p>
+<p>从最早的丢包数据包起至最后的丢包数据包之间的持续时间被算作拥塞期：<code>8 - 1 = 7</code>。持续拥塞的时长为<code>2 * 3 = 6</code>。由于超过了阈值并且最早的丢包数据包与最后的丢包数据包间没有数据包得到了确认，所以认为网络经历过一次持续拥塞。</p>
+<p>尽管本例中出现了PTO超时，但是它对于持续拥塞的判定不是必需的。</p>
+</div>
+</section>
+<section class="page" id="7.7_Pacing">
+<h2>
+<a href="#7.7_Pacing">7.7. 限速</a>
+</h2>
+<div class="content">
+<p>发送方<em><strong>应该</strong></em>基于来自拥塞控制器的输入来限制发送在途数据包的速率。</p>
+<p>不带间隔地向网络中发送多个数据包的行为将构成一次数据包暴发，这可能引发短暂的拥塞与丢包。发送方<strong>必需</strong>要么使用限速器要么限制这样的暴发。发送方<em><strong>应该</strong></em>将一次暴发的数量限制至不超过初始拥塞窗口的尺寸，详见<a href="#7.2_Initial_and_Minimum_Congestion_Window">第7.2章</a>。如果发送方能够了解到通向接收方的网络路径可以吸收较大的暴发，那么它<em><strong>可以</strong></em>使用更高的上限值。</p>
+<p>QUIC实现应该小心地设计其拥塞控制器的架构以使之与限速器协作良好。比如，限速器可以包装拥塞控制器并且控制拥塞窗口的可用性，或者限速器可以限制由拥塞控制器传出的数据包的发送速率。</p>
+<p>按时送达<strong>ACK帧</strong>对于高效的丢包检测是非常重要的。因此，为了避免延误，仅包含<strong>ACK帧</strong>的数据包<em><strong>应该</strong></em>不受限速器影响。</p>
+<p>终端可以自由实现限速器。完美地进行限速的发送方能将数据包等间隔地发送出去。对于基于窗口的拥塞控制器，例如本文档中描述的这种，该发送速率可以用将拥塞窗口平摊到RTT上的方法来计算。其表示方法如下，其中速率（<code>rate</code>）和拥塞窗口（<code>congestion_window</code>）都用字节来度量：</p>
+<div class="block ref" id="Pseudocode_7_7_1">
+<pre tabindex="0"><code>rate = N * congestion_window / smoothed_rtt
+</code></pre><p><a href="#Pseudocode_7_7_1"></a></p>
+</div>
+<p>或用每两个数据包间的时间间隔（<code>interval</code>）的方式来表示（<code>packet_size</code>表示数据包尺寸）：</p>
+<div class="block ref" id="Pseudocode_7_7_2">
+<pre tabindex="0"><code>interval = ( smoothed_rtt * packet_size / congestion_window ) / N
+</code></pre><p><a href="#Pseudocode_7_7_2"></a></p>
+</div>
+<p>使用较小的但至少为<code>1</code>的<code>N</code>值（例如<code>1.25</code>）确保了RTT间的偏差不会导致拥塞窗口的不完全利用。</p>
+<p>在实践时要考量的方面，例如分包、调度延迟和计算效率，可能使得发送方在远小于RTT的时间间隔内偏离该速率。</p>
+<p>限速器的一种可能实现策略是使用漏桶算法，其中“桶”的容量被限制为最大暴发量，填充“桶”的速率由上文中的函数决定。</p>
+</div>
+</section>
+<section class="page" id="7.8_Underutilizing_the_Congestion_Window">
+<h2>
+<a href="#7.8_Underutilizing_the_Congestion_Window">7.8. 不完全利用的拥塞窗口</a>
+</h2>
+<div class="content">
+<p>当在途字节数小于拥塞窗口且发送数据包未受到限速时，拥塞窗口将处于不完全利用的状态。这种情况可能因为应用数据不充足或流量控制限制而发生。当该情况发生且处于慢启动或拥塞回避状态时，拥塞窗口<em><strong>不应该</strong></em>被扩大。</p>
+<p>对数据包进行限速（详见<a href="#7.7_Pacing">第7.7章</a>）的发送方可能推迟发送数据包，从而使得拥塞窗口没有被完全利用。如果发送方在不受到限速延迟的影响下其实能够完全利用拥塞窗口，那么它<em><strong>不应该</strong></em>认为自己受到的是应用的限制。。</p>
+<p>发送方<em><strong>可以</strong></em>实现替代机制以在不完全利用的时期过去之后更新其拥塞窗口，例如那些在《<a href="https://www.rfc-editor.org/info/rfc7661">RFC7661</a>》中为TCP提出的方案。</p>
+</div>
+</section>
+<section class="page" id="8_Security_Considerations">
+<h1>
+<a href="#8_Security_Considerations">8. 关于安全性的考量</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="8.1_Loss_and_Congestion_Signals">
+<h2>
+<a href="#8.1_Loss_and_Congestion_Signals">8.1. 丢包与拥塞的信号</a>
+</h2>
+<div class="content">
+<p>丢包检测与拥塞控制实际上会使用到来自未经认证的实体的信号，例如延误、丢包，以及ECN标记。攻击者能够通过控制这些信号的方式使得终端降低发送速率：它可以丢弃数据包、有意改变路径上的数据包延迟表现，或修改ECN码点。</p>
+</div>
+</section>
+<section class="page" id="8.2_Traffic_Analysis">
+<h2>
+<a href="#8.2_Traffic_Analysis">8.2. 流量分析</a>
+</h2>
+<div class="content">
+<p>可以通过观测数据包尺寸的方法启发式地识别出仅携带<strong>ACK帧</strong>的数据包。与确认有关的一些行为模式可能暴露关于链路特征或应用行为的信息。要减少遭泄露的信息，终端可以将确认与其他帧打包到一起，或者在承担潜在的性能影响的基础上使用<strong>填充帧</strong>。</p>
+</div>
+</section>
+<section class="page" id="8.3_Misreporting_ECN_Markings">
+<h2>
+<a href="#8.3_Misreporting_ECN_Markings">8.3. 误报ECN标记</a>
+</h2>
+<div class="content">
+<p>接收方可以通过误报ECN标记的方法改变发送方对于拥塞的响应行为。抑制<code>ECN-CE</code>标记的报告可以使得发送方提高其发送速率。这种提高可能导致拥塞与丢包。</p>
+<p>发送方可以对发送的数据包偶尔添加<code>ECN-CE</code>标记的方式检测出抑制行为。如果某个带着<code>ECN-CE</code>标记的数据包在被确认时没有被报告为带有CE标记，那么发送方就可以通过不再在该路径上的后续数据包上设置ECN传输能力（<code>ECT</code>）码点的方式对该路径禁用ECN。</p>
+<p>额外报告<code>ECN-CE</code>标记会使得发送方降低其发送速率，这与在连接上宣称降低流量控制限制的效果相似而且相比起来没有额外的优势。</p>
+<p>终端可以选择其使用的拥塞控制器。拥塞控制器送过降低其速率的方式对<code>ECN-CE</code>报告作出响应，但是响应的行为可能各不一样。对待这些标记时可以将它们等价于丢包事件（详见《<a href="https://www.rfc-editor.org/info/rfc3168">RFC3168</a>》），不过也可以指定其他的响应行为，例如《<a href="https://www.rfc-editor.org/info/rfc8511">RFC8511</a>》或《<a href="https://www.rfc-editor.org/info/rfc8311">RFC8311</a>》中的那些。</p>
+</div>
+</section>
+<section class="page" id="9_References">
+<h1>
+<a href="#9_References">9. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="9.1_Normative_References">
+<h2>
+<a href="#9.1_Normative_References">9.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="QUIC-TLS">
+<p><a href="#QUIC-TLS"><strong>[QUIC-TLS]</strong></a> </p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TRANSPORT">
+<p><a href="#QUIC-TRANSPORT"><strong>[QUIC-TRANSPORT]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC文档中用于指出要求级别的关键字</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC3168">
+<p><a href="#RFC3168"><strong>[RFC3168]</strong></a> </p>
+<p>Ramakrishnan, K., Floyd, S., and D. Black, “The Addition of Explicit Congestion Notification (ECN) to IP”, RFC 3168, DOI 10.17487/RFC3168, September 2001, <a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>.</p>
+</div>
+<div class="out_ref" id="RFC8085">
+<p><a href="#RFC8085"><strong>[RFC8085]</strong></a> </p>
+<p>Eggert, L., Fairhurst, G., and G. Shepherd, “UDP Usage Guidelines”, BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119中关键字大写与小写的歧义</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="9.2_Informative_References">
+<h2>
+<a href="#9.2_Informative_References">9.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="FACK">
+<p><a href="#FACK"><strong>[FACK]</strong></a> </p>
+<p>Mathis, M. and J. Mahdavi, “Forward acknowledgement: Refining TCP Congestion Control”, ACM SIGCOMM Computer Communication Review, DOI 10.1145/248157.248181, August 1996, <a href="https://doi.org/10.1145/248157.248181">https://doi.org/10.1145/248157.248181</a>.</p>
+</div>
+<div class="out_ref" id="PRR">
+<p><a href="#PRR"><strong>[PRR]</strong></a> </p>
+<p>Mathis, M., Dukkipati, N., and Y. Cheng, “Proportional Rate Reduction for TCP”, RFC 6937, DOI 10.17487/RFC6937, May 2013, <a href="https://www.rfc-editor.org/info/rfc6937">https://www.rfc-editor.org/info/rfc6937</a>.</p>
+</div>
+<div class="out_ref" id="RETRANSMISSION">
+<p><a href="#RETRANSMISSION"><strong>[RETRANSMISSION]</strong></a> </p>
+<p>Karn, P. and C. Partridge, “Improving Round-Trip Time Estimates in Reliable Transport Protocols”, ACM Transactions on Computer Systems, DOI 10.1145/118544.118549, November 1991, <a href="https://doi.org/10.1145/118544.118549">https://doi.org/10.1145/118544.118549</a>.</p>
+</div>
+<div class="out_ref" id="RFC2018">
+<p><a href="#RFC2018"><strong>[RFC2018]</strong></a> </p>
+<p>Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, “TCP Selective Acknowledgment Options”, RFC 2018, DOI 10.17487/RFC2018, October 1996, <a href="https://www.rfc-editor.org/info/rfc2018">https://www.rfc-editor.org/info/rfc2018</a>.</p>
+</div>
+<div class="out_ref" id="RFC3465">
+<p><a href="#RFC3465"><strong>[RFC3465]</strong></a> </p>
+<p>Allman, M., “TCP Congestion Control with Appropriate Byte Counting (ABC)”, RFC 3465, DOI 10.17487/RFC3465, February 2003, <a href="https://www.rfc-editor.org/info/rfc3465">https://www.rfc-editor.org/info/rfc3465</a>.</p>
+</div>
+<div class="out_ref" id="RFC5681">
+<p><a href="#RFC5681"><strong>[RFC5681]</strong></a> </p>
+<p>Allman, M., Paxson, V., and E. Blanton, “TCP Congestion Control”, RFC 5681, DOI 10.17487/RFC5681, September 2009, <a href="https://www.rfc-editor.org/info/rfc5681">https://www.rfc-editor.org/info/rfc5681</a>.</p>
+</div>
+<div class="out_ref" id="RFC5682">
+<p><a href="#RFC5682"><strong>[RFC5682]</strong></a> </p>
+<p>Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata, “Forward RTO-Recovery (F-RTO): An Algorithm for Detecting Spurious Retransmission Timeouts with TCP”, RFC 5682, DOI 10.17487/RFC5682, September 2009, <a href="https://www.rfc-editor.org/info/rfc5682">https://www.rfc-editor.org/info/rfc5682</a>.</p>
+</div>
+<div class="out_ref" id="RFC5827">
+<p><a href="#RFC5827"><strong>[RFC5827]</strong></a> </p>
+<p>Allman, M., Avrachenkov, K., Ayesta, U., Blanton, J., and P. Hurtig, “Early Retransmit for TCP and Stream Control Transmission Protocol (SCTP)”, RFC 5827, DOI 10.17487/RFC5827, May 2010, <a href="https://www.rfc-editor.org/info/rfc5827">https://www.rfc-editor.org/info/rfc5827</a>.</p>
+</div>
+<div class="out_ref" id="RFC6298">
+<p><a href="#RFC6298"><strong>[RFC6298]</strong></a> </p>
+<p>Paxson, V., Allman, M., Chu, J., and M. Sargent, “Computing TCP’s Retransmission Timer”, RFC 6298, DOI 10.17487/RFC6298, June 2011, <a href="https://www.rfc-editor.org/info/rfc6298">https://www.rfc-editor.org/info/rfc6298</a>.</p>
+</div>
+<div class="out_ref" id="RFC6582">
+<p><a href="#RFC6582"><strong>[RFC6582]</strong></a> </p>
+<p>Henderson, T., Floyd, S., Gurtov, A., and Y. Nishida, “The NewReno Modification to TCP’s Fast Recovery Algorithm”, RFC 6582, DOI 10.17487/RFC6582, April 2012, <a href="https://www.rfc-editor.org/info/rfc6582">https://www.rfc-editor.org/info/rfc6582</a>.</p>
+</div>
+<div class="out_ref" id="RFC6675">
+<p><a href="#RFC6675"><strong>[RFC6675]</strong></a> </p>
+<p>Blanton, E., Allman, M., Wang, L., Jarvinen, I., Kojo, M., and Y. Nishida, “A Conservative Loss Recovery Algorithm Based on Selective Acknowledgment (SACK) for TCP”, RFC 6675, DOI 10.17487/RFC6675, August 2012, <a href="https://www.rfc-editor.org/info/rfc6675">https://www.rfc-editor.org/info/rfc6675</a>.</p>
+</div>
+<div class="out_ref" id="RFC6928">
+<p><a href="#RFC6928"><strong>[RFC6928]</strong></a> </p>
+<p>Chu, J., Dukkipati, N., Cheng, Y., and M. Mathis, “Increasing TCP’s Initial Window”, RFC 6928, DOI 10.17487/RFC6928, April 2013, <a href="https://www.rfc-editor.org/info/rfc6928">https://www.rfc-editor.org/info/rfc6928</a>.</p>
+</div>
+<div class="out_ref" id="RFC7661">
+<p><a href="#RFC7661"><strong>[RFC7661]</strong></a> </p>
+<p>Fairhurst, G., Sathiaseelan, A., and R. Secchi, “Updating TCP to Support Rate-Limited Traffic”, RFC 7661, DOI 10.17487/RFC7661, October 2015, <a href="https://www.rfc-editor.org/info/rfc7661">https://www.rfc-editor.org/info/rfc7661</a>.</p>
+</div>
+<div class="out_ref" id="RFC8311">
+<p><a href="#RFC8311"><strong>[RFC8311]</strong></a> </p>
+<p>Black, D., “Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation”, RFC 8311, DOI 10.17487/RFC8311, January 2018, <a href="https://www.rfc-editor.org/info/rfc8311">https://www.rfc-editor.org/info/rfc8311</a>.</p>
+</div>
+<div class="out_ref" id="RFC8312">
+<p><a href="#RFC8312"><strong>[RFC8312]</strong></a> </p>
+<p>Rhee, I., Xu, L., Ha, S., Zimmermann, A., Eggert, L., and R. Scheffenegger, “CUBIC for Fast Long-Distance Networks”, RFC 8312, DOI 10.17487/RFC8312, February 2018, <a href="https://www.rfc-editor.org/info/rfc8312">https://www.rfc-editor.org/info/rfc8312</a>.</p>
+</div>
+<div class="out_ref" id="RFC8511">
+<p><a href="#RFC8511"><strong>[RFC8511]</strong></a> </p>
+<p>Khademi, N., Welzl, M., Armitage, G., and G. Fairhurst, “TCP Alternative Backoff with ECN (ABE)”, RFC 8511, DOI 10.17487/RFC8511, December 2018, <a href="https://www.rfc-editor.org/info/rfc8511">https://www.rfc-editor.org/info/rfc8511</a>.</p>
+</div>
+<div class="out_ref" id="RFC8985">
+<p><a href="#RFC8985"><strong>[RFC8985]</strong></a> </p>
+<p>Cheng, Y., Cardwell, N., Dukkipati, N., and P. Jha, “The RACK-TLP Loss Detection Algorithm for TCP”, RFC 8985, DOI 10.17487/RFC8985, February 2021, <a href="https://www.rfc-editor.org/info/rfc8985">https://www.rfc-editor.org/info/rfc8985</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_A_Loss_Recovery_Pseudocode">
+<h1>
+<a href="#Appendix_A_Loss_Recovery_Pseudocode">附录A. 丢包检测伪代码</a>
+</h1>
+<div class="content">
+<p>我们现在来描述<a href="#6_Loss_Detection">第6章</a>中所述丢包检测机制的一种样例实现。</p>
+<p>本章中的伪代码片段以代码组件的形式受到权利保护；详见版权声明。</p>
+</div>
+</section>
+<section class="page" id="A.1_Tracking_Sent_Packets">
+<h2>
+<a href="#A.1_Tracking_Sent_Packets">A.1. 追踪已发送的数据包</a>
+</h2>
+<div class="content">
+<p>要准确实现拥塞控制，QUIC发送方得在每一个ACK触发包得到确认或遭遇丢包前保持对它们的追踪。QUIC实现应该有能力通过数据包号和加密上下文访问到该追踪信息，并将每个数据包的追踪字段（详见<a href="#A.1.1_Sent_Packet_Fields">附录A.1.1</a>）存储起来用于丢包恢复和拥塞控制。</p>
+<p>在数据包被认定为丢包后，终端仍可以将它的状态数据保留一段时间以允许数据包乱序的情况出现；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.3_Retransmission_of_Information">第13.3章</a>。这使得发送方能够检测到无效的重传。</p>
+<p>每个数据包号空间中的已发送数据包都会被追踪，而对<strong>ACK帧</strong>的处理则只适用于单个空间。</p>
+</div>
+</section>
+<section class="page" id="A.1.1_Sent_Packet_Fields">
+<h3>
+<a href="#A.1.1_Sent_Packet_Fields">A.1.1. 已发送的数据包的追踪字段</a>
+</h3>
+<div class="content">
+<dl>
+<dt>数据包号（<code>packet_number</code>）：</dt>
+<dd>
+<p>已发送数据包的数据包号。</p>
+</dd>
+<dt>是否触发ACK（<code>ack_eliciting</code>）：</dt>
+<dd>
+<p>一个表明该数据包是否触发ACK的布尔值。若为真值，则应该接收到确认，不过对端可以推迟发送包含该确认的ACK帧，但不会晚于<code>max_ack_delay</code>。</p>
+</dd>
+<dt>是否计入在途字节数（<code>in_flight</code>）：</dt>
+<dd>
+<p>一个表明该数据包是否会被计入在途字节数的布尔值。</p>
+</dd>
+<dt>发送字节数（<code>sent_bytes</code>）：</dt>
+<dd>
+<p>在数据包中发送的字节数，不包含UDP或IP的头部，但包含QUIC的头部。</p>
+</dd>
+<dt>发送时间（<code>time_sent</code>）：</dt>
+<dd>
+<p>该数据包被发送时的时间。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="A.2_Constants_of_Interest">
+<h2>
+<a href="#A.2_Constants_of_Interest">A.2. 感兴趣的常量</a>
+</h2>
+<div class="content">
+<p>在丢包恢复中使用到的常量是基于一系列RFC、论文和常用实践的组合。</p>
+<dl>
+<dt><code>kPacketThreshold</code>：</dt>
+<dd>
+<p>在基于数据包数量阈值的丢包检测法认定某数据包丢包前允许出现乱序数据包的最大数量。在<a href="#6.1.1_Packet_Threshold">第6.1.1章</a>中推荐的值为<code>3</code>。</p>
+</dd>
+<dt><code>kTimeThreshold</code>：</dt>
+<dd>
+<p>在基于数据包发送时间阈值的丢包检测法认定某数据包丢包前允许出现乱序数据包的最长时间。它被指定为RTT倍率。在<a href="#6.1.2_Time_Threshold">第6.1.2章</a>中推荐的值为<code>9/8</code>。</p>
+</dd>
+<dt><code>kGranularity</code>：</dt>
+<dd>
+<p>计时器粒度。这是一个与系统相关的值，在<a href="#6.1.2_Time_Threshold">第6.1.2章</a>中推荐的值为1毫秒。</p>
+</dd>
+<dt><code>kInitialRtt</code>：</dt>
+<dd>
+<p>在对RTT进行采样前使用的RTT初始值。在<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>中推荐的值为333毫秒。</p>
+</dd>
+<dt><code>kPacketNumberSpace</code>：</dt>
+<dd>
+<p>用于枚举三个数据包号空间的枚举值。</p>
+</dd>
+</dl>
+<div class="block ref" id="Pseudocode_10_2_1">
+<pre tabindex="0"><code>enum kPacketNumberSpace {
+  Initial,
+  Handshake,
+  ApplicationData,
+}
+</code></pre><p><a href="#Pseudocode_10_2_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.3_Variables_of_Interest">
+<h2>
+<a href="#A.3_Variables_of_Interest">A.3. 感兴趣的变量</a>
+</h2>
+<div class="content">
+<p>本节描述了实现丢包检测机制所需的变量。</p>
+<dl>
+<dt><code>latest_rtt</code>：</dt>
+<dd>
+<p>当接收到对于一个未曾确认过的数据包的确认时的最近一次的RTT测量值。</p>
+</dd>
+<dt><code>smoothed_rtt</code>：</dt>
+<dd>
+<p>当前连接的经平滑的RTT，有关计算方法详见<a href="#5.3_Estimating_smoothed_rtt_and_rttvar">第5.3章</a>。</p>
+</dd>
+<dt><code>rttvar</code>：</dt>
+<dd>
+<p>RTT的偏差，有关计算方法详见<a href="#5.3_Estimating_smoothed_rtt_and_rttvar">第5.3章</a>。</p>
+</dd>
+<dt><code>min_rtt</code>：</dt>
+<dd>
+<p>在一段时间内观测到的RTT最小值，并忽略确认延迟，详见<a href="#5.2_Estimating_min_rtt">第5.2章</a>。</p>
+</dd>
+<dt><code>first_rtt_sample</code>：</dt>
+<dd>
+<p>取得首份RTT样本的时间。</p>
+</dd>
+<dt><code>max_ack_delay</code>：</dt>
+<dd>
+<p>接收方有意拖延对处于应用数据数据包号空间中的数据包的确认的最长时间，其定义与同名传输参数一致（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#18.2_Transport_Parameter_Definitions">第18.2章</a>）。注意在接收到的<strong>ACK帧</strong>中的实际<code>ack_delay</code>可能会因为计时器延迟、数据包乱序或丢包的原因而超过该值。</p>
+</dd>
+<dt><code>loss_detection_timer</code>：</dt>
+<dd>
+<p>用于丢包检测的多用途计时器。</p>
+</dd>
+<dt><code>pto_count</code>：</dt>
+<dd>
+<p>在没有接收到确认的情况下PTO超时的触发次数。</p>
+</dd>
+<dt><code>time_of_last_ack_eliciting_packet[kPacketNumberSpace]</code>：</dt>
+<dd>
+<p>最近一个ACK触发包被发送时的时间。</p>
+</dd>
+<dt><code>largest_acked_packet[kPacketNumberSpace]</code>：</dt>
+<dd>
+<p>至今为止在该数据包号空间中发送过的最大数据包号。</p>
+</dd>
+<dt><code>loss_time[kPacketNumberSpace]</code>：</dt>
+<dd>
+<p>该数据包号空间中的下一个数据包会因为超过乱序数据包的时间阈值而被认定为丢包的时间。</p>
+</dd>
+<dt><code>sent_packets[kPacketNumberSpace]</code>：</dt>
+<dd>
+<p>该数据包号空间中数据包号与其对应的数据包信息之间的关联。在上文的<a href="#A.1_Tracking_Sent_Packets">附录A.1</a>中已详细描述。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="A.4_Initialization">
+<h2>
+<a href="#A.4_Initialization">A.4. 初始化</a>
+</h2>
+<div class="content">
+<p>在连接的一开始，以这种方式初始化丢包检测变量：</p>
+<div class="block ref" id="Pseudocode_10_4_1">
+<pre tabindex="0"><code>loss_detection_timer.reset()
+pto_count = 0
+latest_rtt = 0
+smoothed_rtt = kInitialRtt
+rttvar = kInitialRtt / 2
+min_rtt = 0
+first_rtt_sample = 0
+for pn_space in [ Initial, Handshake, ApplicationData ]:
+  largest_acked_packet[pn_space] = infinite
+  time_of_last_ack_eliciting_packet[pn_space] = 0
+  loss_time[pn_space] = 0
+</code></pre><p><a href="#Pseudocode_10_4_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.5_On_Sending_a_Packet">
+<h2>
+<a href="#A.5_On_Sending_a_Packet">A.5. 在发送数据包时</a>
+</h2>
+<div class="content">
+<p>在发送某个数据包后，有关该数据包的信息会被储存。<code>OnPacketSent</code>的参数已在上文的<a href="#A.1.1_Sent_Packet_Fields">附录A.1.1</a>中描述。</p>
+<p><code>OnPacketSent</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_5_1">
+<pre tabindex="0"><code>OnPacketSent(packet_number, pn_space, ack_eliciting,
+             in_flight, sent_bytes):
+  sent_packets[pn_space][packet_number].packet_number =
+                                           packet_number
+  sent_packets[pn_space][packet_number].time_sent = now()
+  sent_packets[pn_space][packet_number].ack_eliciting =
+                                           ack_eliciting
+  sent_packets[pn_space][packet_number].in_flight = in_flight
+  sent_packets[pn_space][packet_number].sent_bytes = sent_bytes
+  if (in_flight):
+    if (ack_eliciting):
+      time_of_last_ack_eliciting_packet[pn_space] = now()
+    OnPacketSentCC(sent_bytes)
+    SetLossDetectionTimer()
+</code></pre><p><a href="#Pseudocode_10_5_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.6_On_Receiving_a_Datagram">
+<h2>
+<a href="#A.6_On_Receiving_a_Datagram">A.6. 在接收到数据报时</a>
+</h2>
+<div class="content">
+<p>当服务器被抗放大上限阻止发送时，接收到的数据报能够为它解除禁言，即使该数据报中没有一个数据包成功得到处理。在这种情况下，需要重新设置PTO计时器。</p>
+<p><code>OnDatagramReceived</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_6_1">
+<pre tabindex="0"><code>OnDatagramReceived(datagram):
+  // 如果该数据报能为服务器解禁，
+  // 那么设置PTO计时器来避免死锁。
+  if (服务器被抗放大上限阻止发送):
+    SetLossDetectionTimer()
+  if loss_detection_timer.timeout &lt; now():
+    // 假设抗放大上限仍生效，
+    // 如果PTO会超时，那么执行它。
+    OnLossDetectionTimeout()
+</code></pre><p><a href="#Pseudocode_10_6_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.7_On_Receiving_an_Acknowledgment">
+<h2>
+<a href="#A.7_On_Receiving_an_Acknowledgment">A.7. 在接收到确认时</a>
+</h2>
+<div class="content">
+<p>当接收到某<strong>ACK帧</strong>时，它可能新确认任意数量的数据包。</p>
+<p><code>OnAckReceived</code>和<code>UpdateRtt</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_7_1">
+<pre tabindex="0"><code>IncludesAckEliciting(packets):
+  for packet in packets:
+    if (packet.ack_eliciting):
+      return true
+  return false
+
+OnAckReceived(ack, pn_space):
+  if (largest_acked_packet[pn_space] == infinite):
+    largest_acked_packet[pn_space] = ack.largest_acked
+  else:
+    largest_acked_packet[pn_space] =
+        max(largest_acked_packet[pn_space], ack.largest_acked)
+
+  // `DetectAndRemoveAckedPackets`找到新确认的数据包
+  // 并将它们从`sent_packets`中移除。
+  newly_acked_packets =
+      DetectAndRemoveAckedPackets(ack, pn_space)
+  // 如果没有新确认的数据包，那么什么都不做。
+  if (newly_acked_packets.empty()):
+    return
+
+  // 如果最大已确认数据包是此次新确认的，
+  // 并且此次至少确认一个ACK触发包，那么更新RTT。
+  if (newly_acked_packets.largest().packet_number ==
+          ack.largest_acked &amp;&amp;
+      IncludesAckEliciting(newly_acked_packets)):
+    latest_rtt =
+      now() - newly_acked_packets.largest().time_sent
+    UpdateRtt(ack.ack_delay)
+
+  // 如果存在ECN信息，那么处理它们。
+  if (ACK frame contains ECN information):
+      ProcessECN(ack, pn_space)
+
+  lost_packets = DetectAndRemoveLostPackets(pn_space)
+  if (!lost_packets.empty()):
+    OnPacketsLost(lost_packets)
+  OnPacketsAcked(newly_acked_packets)
+
+  // 除非客户端不确定服务器是否
+  // 已验证完自身地址，否则重置`pto_count`。
+  if (PeerCompletedAddressValidation()):
+    pto_count = 0
+  SetLossDetectionTimer()
+
+
+UpdateRtt(ack_delay):
+  if (first_rtt_sample == 0):
+    min_rtt = latest_rtt
+    smoothed_rtt = latest_rtt
+    rttvar = latest_rtt / 2
+    first_rtt_sample = now()
+    return
+
+  // `min_rtt`会忽略确认延迟。
+  min_rtt = min(min_rtt, latest_rtt)
+  // 在握手确认后用`max_ack_delay`来限制`ack_delay`
+  if (handshake confirmed):
+    ack_delay = min(ack_delay, max_ack_delay)
+
+  // 如果确认延迟是个合理值，
+  // 那么使用它调整RTT。
+  adjusted_rtt = latest_rtt
+  if (latest_rtt &gt;= min_rtt + ack_delay):
+    adjusted_rtt = latest_rtt - ack_delay
+
+  rttvar = 3/4 * rttvar + 1/4 * abs(smoothed_rtt - adjusted_rtt)
+  smoothed_rtt = 7/8 * smoothed_rtt + 1/8 * adjusted_rtt
+</code></pre><p><a href="#Pseudocode_10_7_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.8_Setting_the_Loss_Detection_Timer">
+<h2>
+<a href="#A.8_Setting_the_Loss_Detection_Timer">A.8. 设置丢包检测计时器</a>
+</h2>
+<div class="content">
+<p>QUIC的丢包检测使用一个计时器来检测所有超时事件，计时器的时长取决于计时器的模式，后者是在下文描述的数据包事件和计时器事件中指定的。下文定义的<code>SetLossDetectionTimer</code>展示了怎样设置这个计时器。</p>
+<p>本算法可能导致计时器被设置到一个过去的时间，尤其是计时器没有被及时唤醒时。被设置到过去的时间的计时器会立即超时。</p>
+<p><code>SetLossDetectionTimer</code>的伪代码如下（其中<code>^</code>符号表示幂运算）：</p>
+<div class="block ref" id="Pseudocode_10_8_1">
+<pre tabindex="0"><code>GetLossTimeAndSpace():
+  time = loss_time[Initial]
+  space = Initial
+  for pn_space in [ Handshake, ApplicationData ]:
+    if (time == 0 || loss_time[pn_space] &lt; time):
+      time = loss_time[pn_space];
+      space = pn_space
+  return time, space
+
+GetPtoTimeAndSpace():
+  duration = (smoothed_rtt + max(4 * rttvar, kGranularity))
+      * (2 ^ pto_count)
+  // 解死锁PTO从当前时间启动。
+  if (没有在途的ACK触发包):
+    assert(!PeerCompletedAddressValidation())
+    if (有握手密钥):
+      return (now() + duration), Handshake
+    else:
+      return (now() + duration), Initial
+  pto_timeout = infinite
+  pto_space = Initial
+  for space in [ Initial, Handshake, ApplicationData ]:
+    if (该space中没有在途的ACK触发包):
+      continue;
+    if (space == ApplicationData):
+      // 除非握手已确认，否则跳过应用数据。
+      if (未确认握手):
+        return pto_timeout, pto_space
+      // 为应用数据空间将`max_ack_delay`和补偿纳入考量
+      duration += max_ack_delay * (2 ^ pto_count)
+
+    t = time_of_last_ack_eliciting_packet[space] + duration
+    if (t &lt; pto_timeout):
+      pto_timeout = t
+      pto_space = space
+  return pto_timeout, pto_space
+
+PeerCompletedAddressValidation():
+  // 假定客户端已隐式地验证了服务器的地址。
+  if (终端是服务器):
+    return true
+  // 当接收到受保护的数据包时，
+  // 服务器完成地址验证。
+  return 已接收到对于握手的确认 || 握手已确认
+
+SetLossDetectionTimer():
+  earliest_loss_time, _ = GetLossTimeAndSpace()
+  if (earliest_loss_time != 0):
+    // 基于数据包发送时间阈值的丢包检测法。
+    loss_detection_timer.update(earliest_loss_time)
+    return
+
+  if (server is at anti-amplification limit):
+    // 如果没有数据可供发送，那么服务器不会设置计时器。
+    loss_detection_timer.cancel()
+    return
+
+  if (没有在途的ACK触发包 &amp;&amp;
+      PeerCompletedAddressValidation()):
+    // 没有数据包可供丢包检测，所以不会设置计时器。
+    // 但是，如果服务器可能被抗放大上限阻止了发送，
+    // 那么客户端需要设置计时器
+    loss_detection_timer.cancel()
+    return
+
+  timeout, _ = GetPtoTimeAndSpace()
+  loss_detection_timer.update(timeout)
+</code></pre><p><a href="#Pseudocode_10_8_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.9_On_Timeout">
+<h2>
+<a href="#A.9_On_Timeout">A.9. 在超时时</a>
+</h2>
+<div class="content">
+<p>当丢包检测计时器超时时，计时器的模式决定了需要采取的行动。</p>
+<p><code>OnLossDetectionTimeout</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_9_1">
+<pre tabindex="0"><code>OnLossDetectionTimeout():
+  earliest_loss_time, pn_space = GetLossTimeAndSpace()
+  if (earliest_loss_time != 0):
+    // 基于数据包发送时间阈值的丢包检测法。
+    lost_packets = DetectAndRemoveLostPackets(pn_space)
+    assert(!lost_packets.empty())
+    OnPacketsLost(lost_packets)
+    SetLossDetectionTimer()
+  return
+
+  if (没有在途的ACK触发包):
+    assert(!PeerCompletedAddressValidation())
+    // 客户端发送了解死锁数据包：填充了初始数据包来挣得
+    // 更多的抗放大额度，握手数据包则证明了对地址的所有权。
+    if (有握手密钥):
+      SendOneAckElicitingHandshakePacket()
+    else:
+      SendOneAckElicitingPaddedInitialPacket()
+  else:
+    // PTO。如果有新数据可用，那就发送，否则重传旧数据。
+    // 如果两者均不可用，那就发送一个Ping帧。
+    _, pn_space = GetPtoTimeAndSpace()
+    SendOneOrTwoAckElicitingPackets(pn_space)
+
+  pto_count++
+  SetLossDetectionTimer()
+</code></pre><p><a href="#Pseudocode_10_9_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.10_Detecting_Lost_Packets">
+<h2>
+<a href="#A.10_Detecting_Lost_Packets">A.10. 检测丢包</a>
+</h2>
+<div class="content">
+<p>每次接收到<strong>ACK帧</strong>或时间阈值丢包检测计时器超时时，都会调用<code>DetectAndRemoveLostPackets</code>。该函数对响应数据包号空间中的已发送数据包（<code>sent_packets</code>）进行操作，并返回一份最新被认定为丢包的数据包的列表。</p>
+<p><code>DetectAndRemoveLostPackets</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_10_1">
+<pre tabindex="0"><code>DetectAndRemoveLostPackets(pn_space):
+  assert(largest_acked_packet[pn_space] != infinite)
+  loss_time[pn_space] = 0
+  lost_packets = []
+  loss_delay = kTimeThreshold * max(latest_rtt, smoothed_rtt)
+
+  // 在数据包被认定为丢失前经过的最少时间，但不小于`kGranularity`。
+  loss_delay = max(loss_delay, kGranularity)
+
+  // 在此时间之前发送的数据包被认定为丢包。
+  lost_send_time = now() - loss_delay
+
+  foreach unacked in sent_packets[pn_space]:
+    if (unacked.packet_number &gt; largest_acked_packet[pn_space]):
+      continue
+
+    // 标记数据包为丢包，或设置一个它应该被标记为丢包的时间。
+    // 注意：这里使用`kPacketThreshold`的前提是
+    // 假定了在数据包号空间中没有由发送方引入的空档。
+    if (unacked.time_sent &lt;= lost_send_time ||
+        largest_acked_packet[pn_space] &gt;=
+          unacked.packet_number + kPacketThreshold):
+      sent_packets[pn_space].remove(unacked.packet_number)
+      lost_packets.insert(unacked)
+    else:
+      if (loss_time[pn_space] == 0):
+        loss_time[pn_space] = unacked.time_sent + loss_delay
+      else:
+        loss_time[pn_space] = min(loss_time[pn_space],
+                                  unacked.time_sent + loss_delay)
+  return lost_packets
+</code></pre><p><a href="#Pseudocode_10_10_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="A.11_Upon_Dropping_Initial_or_Handshake_Keys">
+<h2>
+<a href="#A.11_Upon_Dropping_Initial_or_Handshake_Keys">A.11. 在启用初始密钥或握手密钥时</a>
+</h2>
+<div class="content">
+<p>当弃用初始密钥或握手密钥时，位于这些空间中的数据包会被丢弃，且丢包检测状态会被更新。</p>
+<p><code>OnPacketNumberSpaceDiscarded</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_10_11_1">
+<pre tabindex="0"><code>OnPacketNumberSpaceDiscarded(pn_space):
+  assert(pn_space != ApplicationData)
+  RemoveFromBytesInFlight(sent_packets[pn_space])
+  sent_packets[pn_space].clear()
+  // 重置丢包检测计时器和PTO计时器。
+  time_of_last_ack_eliciting_packet[pn_space] = 0
+  loss_time[pn_space] = 0
+  pto_count = 0
+  SetLossDetectionTimer()
+</code></pre><p><a href="#Pseudocode_10_11_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_B_Congestion_Control_Pseudocode">
+<h1>
+<a href="#Appendix_B_Congestion_Control_Pseudocode">附录B. 拥塞控制伪代码</a>
+</h1>
+<div class="content">
+<p>我们现在来描述<a href="#7_Congestion_Control">第7章</a>中所述拥塞控制器的一种样例实现。</p>
+<p>本章中的伪代码片段以代码组件的形式受到权利保护；详见版权声明。</p>
+</div>
+</section>
+<section class="page" id="B.1_Constants_of_Interest">
+<h2>
+<a href="#B.1_Constants_of_Interest">B.1. 感兴趣的常量</a>
+</h2>
+<div class="content">
+<p>在拥塞控制中使用到的常量是基于一系列RFC、论文和常用实践的组合。</p>
+<dl>
+<dt><code>kInitialWindow</code>：</dt>
+<dd>
+<p>在途字节数的初始值，详见<a href="#7.2_Initial_and_Minimum_Congestion_Window">第7.2章</a>。</p>
+</dd>
+<dt><code>kMinimumWindow</code>：</dt>
+<dd>
+<p>拥塞窗口的最小字节数，详见<a href="#7.2_Initial_and_Minimum_Congestion_Window">第7.2章</a>。</p>
+</dd>
+<dt><code>kLossReductionFactor</code>：</dt>
+<dd>
+<p>当检测到新的丢包事件而缩小拥塞窗口时使用的缩放因子。在<a href="#7_Congestion_Control">第7章</a>中推荐的值为<code>0.5</code>。</p>
+</dd>
+<dt><code>kPersistentCongestionThreshold</code>：</dt>
+<dd>
+<p>用于判定持续拥塞的时间量，它被指定为PTO倍率。在<a href="#7.6_Persistent_Congestion">第7.6章</a>中推荐的值为<code>3</code>。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="B.2_Variables_of_Interest">
+<h2>
+<a href="#B.2_Variables_of_Interest">B.2. 感兴趣的变量</a>
+</h2>
+<div class="content">
+<p>本节描述了实现拥塞控制机制所需的变量。</p>
+<dl>
+<dt><code>max_datagram_size</code>：</dt>
+<dd>
+<p>发送方当前的最大载荷尺寸。其中不包含UDP或IP头部。最大的数据包尺寸会被用于计算拥塞窗口。终端基于其路径最大传输单元（PMTU；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#14.2_Path_Maximum_Transmission_Unit">第14.2章</a>）来设置该值，且不会低于1200字节。</p>
+</dd>
+<dt><code>ecn_ce_counters[kPacketNumberSpace]</code>：</dt>
+<dd>
+<p>该数据包号空间中由对端在<strong>ACK帧</strong>中为<code>ECN-CE</code>计数器报告的最大值。该值被用于检测<code>ECN-CE</code>计数是否增加。</p>
+</dd>
+<dt><code>bytes_in_flight</code>：</dt>
+<dd>
+<p>所有已发送的、包含至少一个ACK触发帧或<strong>填充帧</strong>的且尚未得到确认或被认定为丢包的数据包以字节为单位的尺寸总和。其中不包含IP或UDP头部，但是包含QUIC头部和带有关联数据的认证加密（AEAD）开销。仅包含<strong>ACK帧</strong>的数据包不会被计入<code>bytes_in_flight</code>以确保拥塞控制不会妨碍拥塞反馈。</p>
+</dd>
+<dt><code>congestion_window</code>：</dt>
+<dd>
+<p>允许的在途字节数的最大值。</p>
+</dd>
+<dt><code>congestion_recovery_start_time</code>：</dt>
+<dd>
+<p>因为检测到丢包或ECN而进入当前恢复期的时间。当在此时间后发送的数据包得到确认时，QUIC会退出拥塞恢复。</p>
+</dd>
+<dt><code>ssthresh</code>：</dt>
+<dd>
+<p>慢启动以字节为单位的阈值。当拥塞窗口尺寸低于<code>ssthresh</code>时，就会处于慢启动状态，并且窗口会随着得到确认的字节数增长而扩大。</p>
+</dd>
+</dl>
+<p>拥塞控制的伪代码还访问了一些来自丢包恢复伪代码中的变量。</p>
+</div>
+</section>
+<section class="page" id="B.3_Initialization">
+<h2>
+<a href="#B.3_Initialization">B.3. 初始化</a>
+</h2>
+<div class="content">
+<p>在连接的一开始，以这种方式初始化拥塞控制变量：</p>
+<div class="block ref" id="Pseudocode_11_3_1">
+<pre tabindex="0"><code>congestion_window = kInitialWindow
+bytes_in_flight = 0
+congestion_recovery_start_time = 0
+ssthresh = infinite
+for pn_space in [ Initial, Handshake, ApplicationData ]:
+  ecn_ce_counters[pn_space] = 0
+</code></pre><p><a href="#Pseudocode_11_3_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.4_On_Packet_Sent">
+<h2>
+<a href="#B.4_On_Packet_Sent">B.4. 在发送数据包时</a>
+</h2>
+<div class="content">
+<p>只要被发送的数据包中包含非<strong>ACK帧</strong>，该数据包就会使得<code>bytes_in_flight</code>增长。</p>
+<div class="block ref" id="Pseudocode_11_4_1">
+<pre tabindex="0"><code>OnPacketSentCC(sent_bytes):
+  bytes_in_flight += sent_bytes
+</code></pre><p><a href="#Pseudocode_11_4_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.5_On_Packet_Acknowledgment">
+<h2>
+<a href="#B.5_On_Packet_Acknowledgment">B.5. 在数据包得到确认时</a>
+</h2>
+<div class="content">
+<p>该过程会被丢包检测的<code>OnAckReceived</code>调用，并且会被传入在<code>sent_packets</code>中最新的已确认数据包（<code>acked_packets</code>）。</p>
+<p>在拥塞回避状态下，为拥塞窗口尺寸使用整型来表达的实现者应该小心的进行除法操作，并且可以使用在《<a href="https://www.rfc-editor.org/info/rfc3465">RFC3465</a>》的<a href="https://www.rfc-editor.org/rfc/rfc3465.html#section-2.1">第2.1章</a>中建议的替代方案。</p>
+<div class="block ref" id="Pseudocode_11_5_1">
+<pre tabindex="0"><code>InCongestionRecovery(sent_time):
+  return sent_time &lt;= congestion_recovery_start_time
+
+OnPacketsAcked(acked_packets):
+  for acked_packet in acked_packets:
+    OnPacketAcked(acked_packet)
+
+OnPacketAcked(acked_packet):
+  if (!acked_packet.in_flight):
+    return;
+  // 从`bytes_in_flight`中移除
+  bytes_in_flight -= acked_packet.sent_bytes
+  // 如果是受到应用或流量控制的限制，
+  // 那么不要扩大拥塞窗口。
+  if (IsAppOrFlowControlLimited())
+    return
+  // 在恢复期不要扩大拥塞窗口。
+  if (InCongestionRecovery(acked_packet.time_sent)):
+    return
+  if (congestion_window &lt; ssthresh):
+    // 慢启动。
+    congestion_window += acked_packet.sent_bytes
+  else:
+    // 拥塞回避。
+    congestion_window +=
+      max_datagram_size * acked_packet.sent_bytes
+      / congestion_window
+</code></pre><p><a href="#Pseudocode_11_5_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.6_On_New_Congestion_Event">
+<h2>
+<a href="#B.6_On_New_Congestion_Event">B.6. 在响应新的拥塞事件时</a>
+</h2>
+<div class="content">
+<p>该过程会在检测到新的拥塞事件时被<code>ProcessECN</code>和<code>OnPacketsLost </code>调用。如果此时并不处于恢复期，那么就会启动恢复期，立即降低慢启动阈值并且缩小拥塞窗口。</p>
+<div class="block ref" id="Pseudocode_11_6_1">
+<pre tabindex="0"><code>OnCongestionEvent(sent_time):
+  // 如果已经处于恢复期，那么不进行任何动作。
+  if (InCongestionRecovery(sent_time)):
+    return
+
+  // 进入恢复期。
+  congestion_recovery_start_time = now()
+  ssthresh = congestion_window * kLossReductionFactor
+  congestion_window = max(ssthresh, kMinimumWindow)
+  // 可以发送一个数据包来加速丢包检测。
+  MaybeSendOnePacket()
+</code></pre><p><a href="#Pseudocode_11_6_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.7_Process_ECN_Information">
+<h2>
+<a href="#B.7_Process_ECN_Information">B.7. 处理ECN信息</a>
+</h2>
+<div class="content">
+<p>该过程会在从对端接收到具有ECN相关字段的<strong>ACK帧</strong>时被调用。</p>
+<div class="block ref" id="Pseudocode_11_7_1">
+<pre tabindex="0"><code>ProcessECN(ack, pn_space):
+  // 如果由对端报告的`ECN-CE`计数增加了，
+  // 那么这可能是一次新的拥塞事件。
+  if (ack.ce_counter &gt; ecn_ce_counters[pn_space]):
+    ecn_ce_counters[pn_space] = ack.ce_counter
+    sent_time = sent_packets[ack.largest_acked].time_sent
+    OnCongestionEvent(sent_time)
+</code></pre><p><a href="#Pseudocode_11_7_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.8_On_Packets_Lost">
+<h2>
+<a href="#B.8_On_Packets_Lost">B.8. 在丢包时</a>
+</h2>
+<div class="content">
+<p>该过程会在<code>DetectAndRemoveLostPackets</code>将数据包认定为丢包时被调用。</p>
+<div class="block ref" id="Pseudocode_11_8_1">
+<pre tabindex="0"><code>OnPacketsLost(lost_packets):
+  sent_time_of_last_loss = 0
+  // 从`bytes_in_flight`中移除遭遇丢包的数据包。
+  for lost_packet in lost_packets:
+    if lost_packet.in_flight:
+      bytes_in_flight -= lost_packet.sent_bytes
+      sent_time_of_last_loss =
+        max(sent_time_of_last_loss, lost_packet.time_sent)
+  // 如果在途数据包遭遇丢包，那么触发拥塞事件。
+  if (sent_time_of_last_loss != 0):
+    OnCongestionEvent(sent_time_of_last_loss)
+
+  // 如果这些数据包的丢包表明了持续拥塞，
+  // 那么重置拥塞窗口。
+  // 只考虑在取得首份RTT样本后发送的数据包。
+  if (first_rtt_sample == 0):
+    return
+  pc_lost = []
+  for lost in lost_packets:
+    if lost.time_sent &gt; first_rtt_sample:
+      pc_lost.insert(lost)
+  if (InPersistentCongestion(pc_lost)):
+    congestion_window = kMinimumWindow
+    congestion_recovery_start_time = 0
+</code></pre><p><a href="#Pseudocode_11_8_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.9_Removing_Discarded_Packets_from_Bytes_in_Flight">
+<h2>
+<a href="#B.9_Removing_Discarded_Packets_from_Bytes_in_Flight">B.9. 从在途字节数中移除被丢弃的数据包</a>
+</h2>
+<div class="content">
+<p>当初始密钥或握手密钥被弃用时，在这些空间中发送的数据包不再被计入在途字节数中。</p>
+<p><code>RemoveFromBytesInFlight</code>的伪代码如下：</p>
+<div class="block ref" id="Pseudocode_11_9_1">
+<pre tabindex="0"><code>RemoveFromBytesInFlight(discarded_packets):
+  // 从在途字节数中移除所有未得到确认的数据包。
+  foreach packet in discarded_packets:
+    if packet.in_flight
+      bytes_in_flight -= size
+</code></pre><p><a href="#Pseudocode_11_9_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="Contributors">
+<h1>
+<a href="#Contributors">贡献者</a>
+</h1>
+<div class="content">
+<p>IETF QUIC工作组接收到了来自许多人员的大量支持。以下人员对本文档做出了重要贡献：</p>
+<ul>
+<li>
+<p>Alessandro Ghedini</p>
+</li>
+<li>
+<p>Benjamin Saunders</p>
+</li>
+<li>
+<p>Gorry Fairhurst</p>
+</li>
+<li>
+<p>山本和彦 (Kazu Yamamoto)</p>
+</li>
+<li>
+<p>奥 一穂 (Kazuho Oku)</p>
+</li>
+<li>
+<p>Lars Eggert</p>
+</li>
+<li>
+<p>Magnus Westerlund</p>
+</li>
+<li>
+<p>Marten Seemann</p>
+</li>
+<li>
+<p>Martin Duke</p>
+</li>
+<li>
+<p>Martin Thomson</p>
+</li>
+<li>
+<p>Mirja Kühlewind</p>
+</li>
+<li>
+<p>Nick Banks</p>
+</li>
+<li>
+<p>Praveen Balasubramanian</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<p><strong>Jana Iyengar (编辑)</strong></p>
+<p>Fastly</p>
+<p>Email: <a href="mainto:jri.ietf@gmail.com">jri.ietf@gmail.com</a></p>
+<p><strong>Ian Swett (编辑)</strong></p>
+<p>Google</p>
+<p>Email: <a href="mailto:ianswett@google.com">ianswett@google.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</div>
+</body>
+</html>
