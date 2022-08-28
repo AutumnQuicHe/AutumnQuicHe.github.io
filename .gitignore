@@ -1,5 +1,5 @@
 *.sw*
 *.css.map
-static/css/fangqiuhang.css
+static/css/AutumnQuic.css
 public
 .hugo_build.lock

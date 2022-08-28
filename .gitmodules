@@ -4,19 +4,19 @@
 [submodule "content/Translation_Norms"]
 	path = content/Translation_Norms
 	url = git@github.com:fangqiuhang/Translation_Norms.git
-[submodule "content/RFC8999_Chinese_Translation"]
-	path = content/RFC8999_Chinese_Translation
-	url = git@github.com:fangqiuhang/RFC8999_Chinese_Translation
+[submodule "content/RFC8999_Chinese_Simplified"]
+	path = content/RFC8999_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC8999_Chinese_Simplified.git
 	branch = main
-[submodule "content/RFC9000_Chinese_Translation"]
-	path = content/RFC9000_Chinese_Translation
-	url = git@github.com:fangqiuhang/RFC9000_Chinese_Translation
-[submodule "content/RFC9001_Chinese_Translation"]
-	path = content/RFC9001_Chinese_Translation
-	url = git@github.com:fangqiuhang/RFC9001_Chinese_Translation
-[submodule "content/RFC9002_Chinese_Translation"]
-	path = content/RFC9002_Chinese_Translation
-	url = git@github.com:fangqiuhang/RFC9002_Chinese_Translation
+[submodule "content/RFC9000_Chinese_Simplified"]
+	path = content/RFC9000_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9000_Chinese_Simplified.git
+[submodule "content/RFC9001_Chinese_Simplified"]
+	path = content/RFC9001_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9001_Chinese_Simplified.git
+[submodule "content/RFC9002_Chinese_Simplified"]
+	path = content/RFC9002_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9002_Chinese_Simplified.git
 [submodule "content/RFC9114_Chinese_Simplified"]
 	path = content/RFC9114_Chinese_Simplified
 	url = git@github.com:AutumnQuicHe/RFC9114_Chinese_Simplified.git

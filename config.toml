@@ -13,7 +13,7 @@ disablePathToLower = true
 [params]
   externalTitle = ""
   sidebarColor = "quic"
-  customCss = ["css/fangqiuhang.css"]
+  customCss = ["css/AutumnQuic.css"]
 
 [markup]
   #defaultMarkdownHandler = "goldmark"
