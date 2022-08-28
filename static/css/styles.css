@@ -59,13 +59,11 @@ dt {
 .content code,
 .content em strong {
   border-radius: 2px;
-  padding-right: 2px;
 }
 
 .content code {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
-  padding-left: 2px;
 }
 
 /* Sidebar */
