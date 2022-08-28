@@ -7,11 +7,11 @@ clear_public() {
     index.html
     index.xml
     QUIC
-    RFC8999_Chinese_Translation
-    RFC9000_Chinese_Translation
+    RFC8999_Chinese_Simplified
+    RFC9000_Chinese_Simplified
     rfc9000-zh-cn
-    RFC9001_Chinese_Translation
-    RFC9002_Chinese_Translation
+    RFC9001_Chinese_Simplified
+    RFC9002_Chinese_Simplified
     RFC9114_Chinese_Simplified
     RFC9204_Chinese_Simplified
     RFC9221_Chinese_Simplified
