@@ -1,5 +1,8 @@
-
+/* Default values */
 /* Blocks*/
+$ref_strong_colour: snow;
+$ref_strong_shadow: 1px 1px 1px lightgray;
+
 $tip_background: #454849;
 $tip_border_top_colour: #284750;
 $note_background: #454b5e;
@@ -8,3 +11,6 @@ $info_background: #2b2520;
 $info_border_top_colour: #271200;
 $warn_background: #533f3f;
 $warn_border_top_colour: #270000;
+
+$content_blockquote_left_colour: dimgray;
+$content_blockquote_background: transparent;

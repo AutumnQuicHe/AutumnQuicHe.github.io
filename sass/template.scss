@@ -73,6 +73,10 @@ section.page {
         text-shadow: $content_strong_text_shadow;
         color: $content_strong_colour;
     }
+    blockquote {
+        border-left: 0.7em groove $content_blockquote_left_colour;
+        background: $content_blockquote_background;
+    }
 }
 
 
@@ -125,6 +129,10 @@ section.page {
         }
         table, th, td {
             border: $ref_table_border;
+        }
+        strong {
+            color: $ref_strong_colour;
+            text-shadow: $ref_strong_shadow;
         }
     }
 

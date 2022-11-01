@@ -199,7 +199,6 @@ section.page h4 {
 }
 
 section.page blockquote {
-  border-left: 0.7em groove;
   margin-inline-start: 0em;
   padding-left: 0.3em;
 }
