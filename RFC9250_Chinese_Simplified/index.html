@@ -29,6 +29,109 @@
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
 </li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Key_Words">2. 关键词</a>
+</li>
+<li>
+<a href="#3_Design_Considerations">3. 关于设计的考量</a>
+<ul>
+<li><a href="#3.1_Provide_DNS_Privacy">3.1. 为DNS提供隐私</a></li>
+<li><a href="#3.2_Design_for_Minimum_Latency">3.2. 为最小化延迟而设计</a></li>
+<li><a href="#3.3_Middlebox_Considerations">3.3. 有关中间设备的考量</a></li>
+<li><a href="#3.4_No_Server_Initiated_Transactions">3.4. 不考虑由服务器发起的事务</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Specifications">4. 规范</a>
+<ul>
+<li>
+<a href="#4.1_Connection_Establishment">4.1. 连接的建立</a>
+<ul>
+<li><a href="#4.1.1_Port_Selection">4.1.1. 端口的选择</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.2_Stream_Mapping_and_Usage">4.2. 流的映射与用法</a>
+<ul>
+<li><a href="#4.2.1_DNS_Message_IDs">4.2.1. DNS消息ID</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.3_DoQ_Error_Codes">4.3. DoQ错误码</a>
+<ul>
+<li><a href="#4.3.1_Transaction_Cancellation">4.3.1. 事务的取消</a></li>
+<li><a href="#4.3.2_Transaction_Errors">4.3.2. 事务错误</a></li>
+<li><a href="#4.3.3_Protocol_Errors">4.3.3. 协议错误</a></li>
+<li><a href="#4.3.4_Alternative_Error_Codes">4.3.4. 备用错误码</a></li>
+</ul>
+</li>
+<li><a href="#4.4_Connection_Management">4.4. 连接的管理</a></li>
+<li><a href="#4.5_Session_Resumption_and_0-RTT">4.5. 会话恢复与0-RTT</a></li>
+<li><a href="#4.6_Message_Sizes">4.6. 消息尺寸</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_Implementation_Requirements">5. 对实现的要求</a>
+<ul>
+<li><a href="#5.1_Authentication">5.1. 认证</a></li>
+<li><a href="#5.2_Fallback_to_Other_Protocols_on_Connection_Failure">5.2. 在连接失败时回退至其他协议</a></li>
+<li><a href="#5.3_Address_Validation">5.3. 地址验证</a></li>
+<li><a href="#5.4_Padding">5.4. 填充</a></li>
+<li>
+<a href="#5.5_Connection_Handling">5.5. 对连接的处理</a>
+<ul>
+<li><a href="#5.5.1_Connection_Reuse">5.5.1. 连接的重用</a></li>
+<li><a href="#5.5.2_Resource_Management">5.5.2. 资源的管理</a></li>
+<li><a href="#5.5.3_Using_0-RTT_and_Session_Resumption">5.5.3. 使用0-RTT和会话恢复</a></li>
+<li><a href="#5.5.4_Controlling_Connection_Migration_for_Privacy">5.5.4. 控制连接迁移以保护隐私</a></li>
+</ul>
+</li>
+<li><a href="#5.6_Processing_Queries_in_Parallel">5.6. 并行处理查询</a></li>
+<li><a href="#5.7_Zone_Transfer">5.7. 区域传送</a></li>
+<li><a href="#5.8_Flow_Control_Mechanisms">5.8. 流量控制机制</a></li>
+</ul>
+</li>
+<li>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</li>
+<li>
+<a href="#7_Privacy_Considerations">7. 关于隐私的考量</a>
+<ul>
+<li><a href="#7.1_Privacy_Issues_with_0-RTT_data">7.1. 有关0-RTT数据的隐私问题</a></li>
+<li><a href="#7.2_Privacy_Issues_with_Session_Resumption">7.2. 有关会话恢复的隐私问题</a></li>
+<li><a href="#7.3_Privacy_Issues_with_Address_Validation_Tokens">7.3. 有关地址验证令牌的隐私问题</a></li>
+<li><a href="#7.4_Privacy_Issues_with_Long_Duration_Sessions">7.4. 有关持久会话的隐私问题</a></li>
+<li><a href="#7.5_Traffic_Analysis">7.5. 流量分析</a></li>
+</ul>
+</li>
+<li>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+<ul>
+<li><a href="#8.1_Registration_of_a_DoQ_Identification_String">8.1. DoQ标识字符串的注册项</a></li>
+<li><a href="#8.2_Reservation_of_a_Dedicated_Port">8.2. 专用端口的保留使用</a></li>
+<li><a href="#8.3_Reservation_of_an_Extended_DNS_Error_Code_Too_Early">8.3. 扩展的DNS错误码：Too Early</a></li>
+<li><a href="#8.4_DNS-over-QUIC_Error_Codes_Registry">8.4. 经由QUIC的DNS错误码注册表</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_References">9. 参考文献</a>
+<ul>
+<li><a href="#9.1_Normative_References">9.1. 规范性参考文献</a></li>
+<li><a href="#9.2_Informative_References">9.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_A_The_NOTIFY_Service">10. NOTIFY服务</a>
+</li>
+<li>
+<a href="#Acknowledgements">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">12. NOTIFY服务</a>
+</li>
 </ul>
 </nav>
 <nav class="external">
@@ -38,7 +141,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -104,7 +207,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>This document describes the use of QUIC to provide transport confidentiality for DNS. The encryption provided by QUIC has similar properties to those provided by TLS, while QUIC transport eliminates the head-of-line blocking issues inherent with TCP and provides more efficient packet-loss recovery than UDP. DNS over QUIC (DoQ) has privacy properties similar to DNS over TLS (DoT) specified in RFC 7858, and latency characteristics similar to classic DNS over UDP. This specification describes the use of DoQ as a general-purpose transport for DNS and includes the use of DoQ for stub to recursive, recursive to authoritative, and zone transfer scenarios.</p>
+<p>本文档描述了如何使用QUIC来为DNS提供传输层上的机密性。QUIC与TLS提供的两种加密间具有相似的特性，但是QUIC传输能够避免TCP传输带来的队头阻塞问题，并且有着比起UDP更高效的丢包恢复机制。基于QUIC的DNS（DoQ）在隐私方面的属性与RFC 7858中定义的基于TLS的DNS（DoT）类似，在延迟方面的特征与传统的基于UDP的DNS类似。本规范描述了如何将DoQ用作一种通用的DNS传输方法，还涉及到如何将DoQ用于存根解析器与递归解析器的交互、递归解析器与权威域名服务器的交互，以及区域传送等场景。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -124,6 +227,1058 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>域名系统（DNS）这一概念是在《域名——概念与基础设施》（详见《<a href="">RFC1034</a>》）中建立的。《域名——实现与规范》（详见《<a href="">RFC1035</a>》）则介绍了DNS查询与响应基于UDP和TCP的传输方式。</p>
+<p>本文档描述了DNS协议的一种基于QUIC传输（详见《<a href="">RFC9000</a>》和《<a href="">RFC9001</a>》）的映射。下文使用DoQ来指代基于QUIC的DNS，这是符合“DNS术语”（详见《<a href="">DNS-TERMS</a>》）的。</p>
+<p>DoQ映射的目标是：</p>
+<ol>
+<li>
+<p>提供与DoT（详见《<a href="">RFC7858</a>》）一致的DNS隐私保护。这包括为客户端提供一项可选的使用认证域名来验证服务器身份的机制，《基于TLS和DTLS的DNS的配置用例》（详见《<a href="">RFC8310</a>》）中介绍了这项机制。</p>
+</li>
+<li>
+<p>比起传统的基于UDP的DNS，为DNS服务器提供经过改进的源地址验证机制。</p>
+</li>
+<li>
+<p>提供一种不会根据路径MTU来限制DNS响应尺寸的传输方式。</p>
+</li>
+</ol>
+<p>为了达成以上目标，以及支持正在进行的DNS加密方面的工作，本文档讨论的范畴包含：</p>
+<ul>
+<li>
+<p>“存根解析器与递归解析器交互”场景（本文档中也会称之为“存根与递归”场景）；</p>
+</li>
+<li>
+<p>“递归解析器与权威域名服务器交互”场景（本文档中也会称之为“递归与权威”场景）；以及</p>
+</li>
+<li>
+<p>“域名服务器与域名服务器交互”场景（主要被用于区域传送（XFR，详见《<a href="">RFC1995</a>》和《<a href="">RFC5936</a>》））。</p>
+</li>
+</ul>
+<p>换句话说，本文档将QUIC视作DNS的一种通用传输方式。</p>
+<p>以下内容并非本文档的目标：</p>
+<ol>
+<li>
+<p>致力于回避中间设备可能引发的DoQ流量阻塞。</p>
+</li>
+<li>
+<p>支持由服务器发起的事务，这只会在DNS有状态操作（DSO，详见《<a href="">RFC8490</a>》）中被用到。</p>
+</li>
+</ol>
+<p>要为基于QUIC的应用制定传输方式，需要规定如何将应用消息映射到QUIC流上，以及指定应用如何使用QUIC。《超文本传输协议版本3（HTTP/3）》（详见《<a href="">HTTP/3</a>》）中就是这么做的。本文档的意图是定义如何经由QUIC来传输DNS消息。</p>
+<p>可以结合使用HTTP/3和经由HTTPS的DNS（DoH，详见《<a href="">RFC8484</a>》）来利用QUIC的部分优势。然而，直接且轻量的DoQ映射天生更适用于权威性递归和区域传送的场景，这些场景几乎不会牵涉到中间设备。而在这些场景中，HTTP的额外开销并不会因为HTTP代理或缓存行为而被消除。</p>
+<p>在本文档中，<a href="">第3章</a>介绍了本设计是如何成型的。<a href="">第4章</a>规定了DoQ实际的映射方式。<a href="">第5章</a>指导了如何实现、使用和部署DoQ。</p>
+</div>
+</section>
+<section class="page" id="2_Key_Words">
+<h1>
+<a href="#2_Key_Words">2. 关键词</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+</div>
+</section>
+<section class="page" id="3_Design_Considerations">
+<h1>
+<a href="#3_Design_Considerations">3. 关于设计的考量</a>
+</h1>
+<div class="content">
+<p>本章及其子章节介绍了设计DoQ时所遵循的方针。本文档的其他章节都是规范性的，而本章的内容是资料性的。</p>
+</div>
+</section>
+<section class="page" id="3.1_Provide_DNS_Privacy">
+<h2>
+<a href="#3.1_Provide_DNS_Privacy">3.1. 为DNS提供隐私</a>
+</h2>
+<div class="content">
+<p>DoT（详见《<a href="">RFC7858</a>》）通过规定如何经由TLS来传输DNS消息的方式，针对在《关于DNS隐私的考量》（详见《<a href="">RFC9076</a>》）中描述的部分攻击，定义了抵御方法。《基于TLS和DTLS的DNS的配置用例》（详见《<a href="">RFC8310</a>》）中为DoT分别指定了“严格”和“投机”两种配置，其中包括存根解析器如何认证递归解析器。</p>
+<p>按照《QUIC-TLS》（详见《<a href="">RFC9001</a>》）所规定的那样，QUIC连接的建立过程中使用TLS来协商与安全性有关的参数，这使得QUIC传输受到了加密保护。经由QUIC发送DNS消息能从根本上提供与DoT（详见《<a href="">RFC7858</a>》），无论使用的是“严格”还是“投机”配置（详见《<a href="">RFC8310</a>》），一致的隐私保护效果。<a href="">第7章</a>对此进行了深入探讨。</p>
+</div>
+</section>
+<section class="page" id="3.2_Design_for_Minimum_Latency">
+<h2>
+<a href="#3.2_Design_for_Minimum_Latency">3.2. 为最小化延迟而设计</a>
+</h2>
+<div class="content">
+<p>QUIC是专门被设计出来降低由协议引入的延迟的，并且具有以下特性：</p>
+<ol>
+<li>
+<p>在会话恢复期间支持0-RTT数据。</p>
+</li>
+<li>
+<p>支持高级的丢包恢复机制，《QUIC恢复》（详见《<a href="">RFC9002</a>》）定义了这种机制。</p>
+</li>
+<li>
+<p>通过允许在多个流上并行发送数据的方式抵御队头阻塞。</p>
+</li>
+</ol>
+<p>从DNS至QUIC的映射将在三个方面利用以上特性：</p>
+<ol>
+<li>
+<p>在会话恢复期间对于0-RTT数据的可选支持（后续章节讨论了这一点对于安全性和隐私性的影响）。</p>
+</li>
+<li>
+<p>进行过多次DNS事务的稳定的QUIC连接所产生的持续流量使连接能够从高级的丢包恢复机制中受益。</p>
+</li>
+<li>
+<p>为了抵御队头阻塞而将每项DNS查询/响应事务映射至一条独立流的做法使得服务器能够“乱序”响应查询。这还使得客户端能够随时处理刚刚抵达的响应，而无需等待服务器发送的前序响应。</p>
+</li>
+</ol>
+<p>这些考量被反映在了<a href="">第4.2章</a>内从DNS流量到QUIC流的映射中。</p>
+</div>
+</section>
+<section class="page" id="3.3_Middlebox_Considerations">
+<h2>
+<a href="#3.3_Middlebox_Considerations">3.3. 有关中间设备的考量</a>
+</h2>
+<div class="content">
+<p>利用QUIC可以使得某协议针对网络路径上的设备掩饰自身的目的，方法是对流量进行加密，以及使用填充、流量调速或流量构造等针对流量分析的抵御技术。本规范并不包含任何被设计用于回避中间设备的协议分类的方法；<a href="">第5.4章</a>中定义的填充机制是为了混淆在DNS查询和响应中包含着的特定记录，而不是掩盖它是DNS流量的事实。因此，防火墙或其他中间设备可能将DoQ与其他使用QUIC的协议，如HTTP，区分开来，然后区别对待。</p>
+<p>本规范中缺少回避协议分类的方法并不意味着支持此类做法。</p>
+</div>
+</section>
+<section class="page" id="3.4_No_Server_Initiated_Transactions">
+<h2>
+<a href="#3.4_No_Server_Initiated_Transactions">3.4. 不考虑由服务器发起的事务</a>
+</h2>
+<div class="content">
+<p>如<a href="">第1章</a>所述，本文档没有规定如何在已建立的DoQ连接上支持由服务器发起的事务。也就是说，只有DoQ连接的发起者可以经由连接发送查询。</p>
+<p>在一条已建立的连接上，DSO不支持由服务器发起的事务。然而，本文定义的DoQ并不满足一种可适用DSO的传输方式的标准，因为它无法保证消息的有序分发；详见《<a href="">RFC8490</a>》的<a href="">第4.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="4_Specifications">
+<h1>
+<a href="#4_Specifications">4. 规范</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="4.1_Connection_Establishment">
+<h2>
+<a href="#4.1_Connection_Establishment">4.1. 连接的建立</a>
+</h2>
+<div class="content">
+<p>DoQ连接是按照QUIC传输规范《<a href="">RFC9000</a>》来建立的。在连接建立期间，通过在加密握手中选择应用层协议协商（ALPN）词汇<code>doq</code>来表明对DoQ的支持。</p>
+</div>
+</section>
+<section class="page" id="4.1.1_Port_Selection">
+<h3>
+<a href="#4.1.1_Port_Selection">4.1.1. 端口的选择</a>
+</h3>
+<div class="content">
+<p>默认情况下，支持DoQ的DNS服务器 <em><strong>必须</strong></em>在专门的UDP端口<code>853</code>上监听并接受QUIC连接（详见<a href="">第8章</a>），除非它与客户端约定了使用另一端口。</p>
+<p>默认情况下，希望与某特定服务器使用DoQ的DNS客户端 <em><strong>必须</strong></em>与服务器的UDP端口<code>853</code>建立QUIC连接，除非它与服务器约定了使用另一端口。</p>
+<p>DoQ连接<em><strong>必须不</strong></em>使用UDP端口<code>53</code>。避免为DoQ使用<code>53</code>端口的这项要求是为了防止混淆DoQ与基于UDP的DNS（详见《<a href="">RFC1035</a>》）。混淆的后果在于即便双方约定使用<code>53</code>端口，也仍然存在不知道这一约定的第三方，它会在该端口试图使用不受支持的协议。</p>
+<p>在存根至递归场景中，将<code>443</code>端口用作双方约定的替代端口的做法也许存在益处，因为比起其他端口，<code>443</code>端口被许多QUIC和HTTP/3服务所使用，更不太可能被封锁。一些可被存根服务器用于发现递归服务器的机制尚处在研究过程中，它们能提供加密的传输方式并支持使用自定义端口。</p>
+</div>
+</section>
+<section class="page" id="4.2_Stream_Mapping_and_Usage">
+<h2>
+<a href="#4.2_Stream_Mapping_and_Usage">4.2. 流的映射与用法</a>
+</h2>
+<div class="content">
+<p>基于QUIC流的DNS流量映射利用了在QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第2章</a>中介绍的QUIC流特性。</p>
+<p>DNS查询/响应的流量（详见《<a href="">RFC1034</a>》和《<a href="">RFC1035</a>》）遵循着简单的模式：由客户端发送一条查询，然后服务器提供一条或多条响应（多条响应会出现在区域传送场景中）。</p>
+<p>本文规定的映射需要客户端为每次查询选择一条单独的QUIC流。接着服务器使用同一条流来为该查询提供所有响应消息。为了使得数条响应都能得到解析，会用到一个2字节的长度字段，其用法与在基于TCP的DNS（详见《<a href="">RFC1035</a>》）中定义的2字节字段完全一致。该操作的作用是使得每条QUIC流的内容与传递单条查询的TCP连接的内容完全一致。</p>
+<p>经由DoQ连接发送的所有DNS消息（查询与响应） <em><strong>必须</strong></em>以一个2字节的长度字段加上在《<a href="">RFC1035</a>》中规定的消息内容的形式构造。</p>
+<p>客户端 <em><strong>必须</strong></em>为同一条QUIC连接上的连续查询，以符合QUIC传输规范《<a href="">RFC9000</a>》的形式，接连选择下一条可由客户端发起的双向流。丢包和其他网络事件可能使得查询乱序抵达。服务器<em><strong>应该</strong></em>随时处理刚刚抵达的查询，因为不这么做就会引入不必要的延迟。</p>
+<p>客户端 <em><strong>必须</strong></em>在所选的流上发送DNS查询，且 <em><strong>必须</strong></em>通过流的FIN置位机制来表明它不会再在流上发送更多数据。</p>
+<p>服务器 <em><strong>必须</strong></em>在同一条流上发送响应，且 <em><strong>必须</strong></em>在发送完最后一条响应后通过流的FIN置位机制来表明它不会再在流上发送更多数据。</p>
+<p>因此，一次DNS事务会消耗掉一条由客户端发起的双向流。这意味着客户端的首条查询会出现在QUIC流<code>0</code>上，第二条则在流<code>4</code>，以此类推（详见《<a href="">RFC9000</a>》的<a href="">第2.1章</a>）。</p>
+<p>服务器<em><strong>可以</strong></em>推迟处理查询，直到客户端在所选的流上进行了流的FIN置位。</p>
+<p>服务器和客户端<em><strong>可以</strong></em>监视“悬而未决”的流数量。这类流指的是到实现指定的超时时间为止出现了以下事件的开放流：</p>
+<ul>
+<li>
+<p>未接收到期望的查询或响应，或</p>
+</li>
+<li>
+<p>接收到了期望的查询或响应，但缺少流的FIN置位。</p>
+</li>
+</ul>
+<p>实现<em><strong>可以</strong></em>对此类“悬而未决”的流数量设置上限。如果数量到达了上限，那么实现<em><strong>可以</strong></em>关闭连接。</p>
+</div>
+</section>
+<section class="page" id="4.2.1_DNS_Message_IDs">
+<h3>
+<a href="#4.2.1_DNS_Message_IDs">4.2.1. DNS消息ID</a>
+</h3>
+<div class="content">
+<p>在经由QUIC连接发送查询时，DNS消息ID <em><strong>必须</strong></em>被置为<code>0</code>。DoQ的流映射使得查询和响应能够被明确关联起来，因此不需要消息ID字段。</p>
+<p>这会影响从其他传输方式或向其他传输方式对DoQ消息进行代理。例如，代理可能不得不考虑到DoQ比起基于TCP的DNS能够支持更多处于进行状态的查询的事实，因为DoQ不会被消息ID空间所限制。这个问题已经在DoH中出现过，其中就推荐将消息ID置为<code>0</code>。</p>
+<p>当从DoQ向另一种传输方式转发DNS消息时， <em><strong>必须</strong></em>根据正在使用的协议规则来指定DNS消息ID。当从其他传输方式向DoQ转发DNS消息时， <em><strong>必须</strong></em>将消息ID置为<code>0</code>。</p>
+</div>
+</section>
+<section class="page" id="4.3_DoQ_Error_Codes">
+<h2>
+<a href="#4.3_DoQ_Error_Codes">4.3. DoQ错误码</a>
+</h2>
+<div class="content">
+<p>以下错误码被定义出来，它们可以被用于对流突然发起终止的情形，可以在中止对流的读取时被用作应用协议错误码，也可以被用于立即关闭连接的情形。</p>
+<dl>
+<dt>DOQ_NO_ERROR（无错误，值为<code>0x0</code>）：</dt>
+<dd>
+<p>没有错误发生。它被用于需要关闭连接或流，但没有错误可以报告的情形。</p>
+</dd>
+<dt>DOQ_INTERNAL_ERROR（内部错误，值为<code>0x1</code>）：</dt>
+<dd>
+<p>DoQ实现遇到了内部错误，并且它无法继续完成事务或维持连接。</p>
+</dd>
+<dt>DOQ_PROTOCOL_ERROR（协议错误，值为<code>0x2</code>）：</dt>
+<dd>
+<p>DoQ实现遇到了协议错误，并且它正在强行中止连接。</p>
+</dd>
+<dt>DOQ_REQUEST_CANCELLED（请求被取消，值为<code>0x3</code>）：</dt>
+<dd>
+<p>DoQ客户端使用该错误码来表明它想要取消一项正在进行的事务。</p>
+</dd>
+<dt>DOQ_EXCESSIVE_LOAD（负载过量，值为<code>0x4</code>）：</dt>
+<dd>
+<p>DoQ实现使用该错误码来表明它正因过量的负载而关闭连接。</p>
+</dd>
+<dt>DOQ_UNSPECIFIED_ERROR（未指定的错误，值为<code>0x5</code>）：</dt>
+<dd>
+<p>在找不到更准确的错误码时，DoQ实现会使用该错误码。</p>
+</dd>
+<dt>DOQ_ERROR_RESERVED（值为<code>0xd098ea5e</code>）：</dt>
+<dd>
+<p>用于测试的备用错误码。</p>
+</dd>
+</dl>
+<p>有关注册新错误码的细节，详见<a href="">第8.4章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.3.1_Transaction_Cancellation">
+<h3>
+<a href="#4.3.1_Transaction_Cancellation">4.3.1. 事务的取消</a>
+</h3>
+<div class="content">
+<p>QUIC中的<strong>停止发送帧</strong>能要求对端停止在某条流上的传输。如果DoQ客户端希望取消某正在进行的请求，那么它 <em><strong>必须</strong></em>发送QUIC的<strong>停止发送帧</strong>，并且它<em><strong>应该</strong></em>使用错误码<code>DOQ_REQUEST_CANCELLED</code>。它<em><strong>可以</strong></em>使用一个按<a href="">第8.4章</a>所述来注册的更准确的错误码。客户端可以随时发送<strong>停止发送帧</strong>，但是一旦服务器已经将响应发送出来，这个帧就不会产生任何效果，在这种情况下客户端会直接将发送过来的响应丢弃掉。与之相应的DNS事务 <em><strong>必须</strong></em>被舍弃。</p>
+<p>接收到<strong>停止发送帧</strong>的服务器要按照《<a href="">RFC9000</a>》的<a href="">第3.5章</a>来作出反应。如果服务器接收到了<strong>停止发送帧</strong>，那么它<em><strong>不应该</strong></em>继续处理DNS事务。</p>
+<p>服务器<em><strong>可以</strong></em>对被取消请求的总数或请求被取消的速率施加上限。一旦触及该上限，服务器就<em><strong>可以</strong></em>关闭连接。在这种情况下，愿意帮助客户端调试问题的服务器<em><strong>可以</strong></em>使用错误码<code>DOQ_EXCESSIVE_LOAD</code>。在帮助善意的客户端调试问题与允许拒绝服务攻击者测试服务器的防御能力之间总是需要权衡取舍；根据情况不同，服务器可以选择发送不同的错误码。</p>
+<p>注意，这项机制为辅服务器提供了一种不需要关闭QUIC连接就能够取消某条流上的单次区域传送的方法。</p>
+<p>如果服务器在客户端进行流的FIN置位前就从客户端处接收到了<strong>流重置帧</strong>，那么它<em><strong>必须不</strong></em>继续处理DNS事务。服务器 <em><strong>必须</strong></em>发送<strong>流重置帧</strong>，以表明该事务已被舍弃，除非：</p>
+<ul>
+<li>
+<p>它已经出于其他理由而发送过该帧了，或</p>
+</li>
+<li>
+<p>它已经将响应发送出去，且对流进行了FIN置位。</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="4.3.2_Transaction_Errors">
+<h3>
+<a href="#4.3.2_Transaction_Errors">4.3.2. 事务错误</a>
+</h3>
+<div class="content">
+<p>正常情况下，服务器通过向事务所在的流发送DNS响应的方式来完成事务，即便DNS响应中表明了某DNS错误。比如，<em><strong>应该</strong></em>通过响应码被置为<code>SERVFAIL</code>的响应来告知客户端有关服务器故障（详见《<a href="">RFC1035</a>》）的消息。</p>
+<p>如果出于某内部错误的原因，服务器无法发送DNS响应，那么它<em><strong>应该</strong></em>发送QUIC的<strong>流重置帧</strong>。该帧中的错误码<em><strong>应该</strong></em>被置为<code>DOQ_INTERNAL_ERROR</code>。相应的DNS事务 <em><strong>必须</strong></em>被舍弃。客户端<em><strong>可以</strong></em>对在同一条连接上意外接收到QUIC<code>流重置帧</code>的次数设置上限，一旦超过就关闭连接。</p>
+<p>注意，这项机制为主服务器提供了一种不需要关闭QUIC连接就能够取消某条流上的单次区域传送的方法。</p>
+</div>
+</section>
+<section class="page" id="4.3.3_Protocol_Errors">
+<h3>
+<a href="#4.3.3_Protocol_Errors">4.3.3. 协议错误</a>
+</h3>
+<div class="content">
+<p>其他错误可能因为事务中畸形、不完整或意料外的消息而发生。这包括（但不限于）：</p>
+<ul>
+<li>
+<p>客户端或服务器接收到了消息ID非零的消息</p>
+</li>
+<li>
+<p>客户端或服务器在接收完由2字节的长度字段指定的完整消息数据前就接收到了流的FIN置位</p>
+</li>
+<li>
+<p>客户端在接收到所有应该收到的响应前就遇到了流的FIN置位</p>
+</li>
+<li>
+<p>服务器在一条流上接收到了多条查询</p>
+</li>
+<li>
+<p>客户端在一条流上接收到的响应数量与预期不同（例如，对A记录的查询出现了数条响应）</p>
+</li>
+<li>
+<p>客户端接收到了<strong>停止发送帧</strong></p>
+</li>
+<li>
+<p>客户端或服务器没有在发送完请求或响应后对流进行FIN置位（详见<a href="">第4.2章</a>）</p>
+</li>
+<li>
+<p>实现接收到了包含着<code>EDNS(0)</code>选项<code>edns-tcp-keepalive</code>（详见《<a href="">RFC7828</a>》）的消息（详见<a href="">第5.5.2章</a>）</p>
+</li>
+<li>
+<p>客户端或服务器企图打开单向的QUIC流</p>
+</li>
+<li>
+<p>服务器企图发起一条双向QUIC流</p>
+</li>
+<li>
+<p>服务器在0-RTT数据中接收到了“可重放”的事务（但服务器不愿意处理这种情况，详见<a href="">第4.5章</a>）</p>
+</li>
+</ul>
+<p>如果对端表现出了此类错误行为，那么终端会将此认为是致命的错误。它<em><strong>应该</strong></em>使用QUIC的<strong>连接关闭帧</strong>机制来强行中止连接，并且<em><strong>应该</strong></em>使用DoQ错误码<code>DOQ_PROTOCOL_ERROR</code>。在某些情况下，它<em><strong>可以</strong></em>静默地舍弃该连接，这种做法占用的本地资源更少，但是使得出错的对端处的调试变得更加困难。</p>
+<p>注意，上述对于<code>EDNS(0)</code>选项的限制会影响从TCP/DoT/DoH向DoQ对消息进行代理。</p>
+</div>
+</section>
+<section class="page" id="4.3.4_Alternative_Error_Codes">
+<h3>
+<a href="#4.3.4_Alternative_Error_Codes">4.3.4. 备用错误码</a>
+</h3>
+<div class="content">
+<p>本规范在<a href="">第4.3.1章</a>、<a href="">第4.3.2章</a>和<a href="">第4.3.3章</a>中介绍了专用的错误码。这些错误码是为了向故障及其他意外情况的调试提供依据。将来版本的DoQ可能定义新的错误码，也可以按照<a href="">第8.4章</a>中的规定来注册新错误码。</p>
+<p>由于无需协商就可以定义新的错误码，如果接收到了未知的或意料外的错误码，那么就 <em><strong>必须</strong></em>将它们被视作错误码<code>DOQ_UNSPECIFIED_ERROR</code>。</p>
+<p>实现<em><strong>可以</strong></em>通过使用本文档未列出的错误码来测试对错误码扩展机制的支持，也<em><strong>可以</strong></em>使用错误码<code>DOQ_ERROR_RESERVED</code>。</p>
+</div>
+</section>
+<section class="page" id="4.4_Connection_Management">
+<h2>
+<a href="#4.4_Connection_Management">4.4. 连接的管理</a>
+</h2>
+<div class="content">
+<p>QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第10章</a>规定，可以使用以下三种方法关闭连接：</p>
+<ul>
+<li>
+<p>空闲超时</p>
+</li>
+<li>
+<p>立即关闭</p>
+</li>
+<li>
+<p>无状态重置</p>
+</li>
+</ul>
+<p>实现DoQ的客户端和服务器<em><strong>应该</strong></em>对空闲超时的值进行协商。因空闲超时而关闭连接时无需数据包通信，这最小化了协议开销。按照QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第10.1章</a>所述，空闲超时的有效值为两侧终端宣告的值中较小的那个。<a href="">第5.5.2章</a>中讨论了在实际设置空闲超时时的考量。</p>
+<p>客户端<em><strong>应该</strong></em>监视它与服务器间的连接的空闲时长，该时长的定义为从最后一次接收到来自服务器的数据包起所经过的时间。当客户端准备向服务器发送新的DNS查询时，它<em><strong>应该</strong></em>检查当前的空闲时长是否低于空闲计时器的设置值。如果是，那么客户端**应该通过现有的连接来发送DNS查询。否则，客户端<em><strong>应该</strong></em>建立一条新连接并通过此连接来发送查询。</p>
+<p>客户端<em><strong>可以</strong></em>在临近空闲超时时舍弃它与服务器间的连接。若客户端尚有正在进行中的查询，那么它<em><strong>应该</strong></em>主动使用QUIC的<strong>连接关闭帧</strong>机制来关闭连接，并在帧中使用DoQ错误码<code>DOQ_NO_ERROR</code>。</p>
+<p>客户端和服务器<em><strong>可以</strong></em>出于其他各种理由，使用QUIC的<strong>连接关闭帧</strong>来关闭连接。使用已被对端舍弃的连接来发送数据包的客户端和服务器可能会接收到无状态重置。如果连接出现故障，那么该连接上所有尚未完成的事务都 <em><strong>必须</strong></em>被舍弃。</p>
+</div>
+</section>
+<section class="page" id="4.5_Session_Resumption_and_0-RTT">
+<h2>
+<a href="#4.5_Session_Resumption_and_0-RTT">4.5. 会话恢复与0-RTT</a>
+</h2>
+<div class="content">
+<p>如果服务器支持，那么客户端<em><strong>可以</strong></em>将QUIC传输《<a href="">RFC9000</a>》和QUIC-TLS《<a href="">RFC9001</a>》所支持的会话恢复和0-RTT机制利用起来。客户端在决定使用会话恢复机制前<em><strong>应该</strong></em>考虑到与之相关的潜在的隐私方面的问题，并且仔细权衡本文档各章节中描述的利弊。<a href="">第7.1章</a>和<a href="">第7.2章</a>详述了隐私方面的问题，而<a href="">第5.5.3章</a>中讨论了关于实现的考量。</p>
+<p><em><strong>必须不</strong></em>使用0-RTT机制来发送并非“可重放”事务的DNS请求。在本规范中，只有<code>OPCODE</code>（操作码）为<code>QUERY</code>或<code>NOTIFY</code>的事务才是可重放的；因此，<em><strong>必须不</strong></em>在0-RTT数据中发送其他<code>OPCODE</code>。有关此处为何包含了<code>NOTIFY</code>的详细讨论，详见<a href="">附录A</a>。</p>
+<p>服务器<em><strong>可以</strong></em>支持会话恢复，与此同时<em><strong>可以</strong></em>支持或不支持0-RTT，《<a href="">RFC9001</a>》的<a href="">第4.6.1章</a>中描述了0-RTT机制。在接收到0-RTT数据中的不可重放的事务时，支持0-RTT的服务器<em><strong>必须不</strong></em>立即处理它们，而是 <em><strong>必须</strong></em>选择以下行为之一来操作：</p>
+<ul>
+<li>
+<p>将不可重放的事务排入队列，并在完成QUIC握手后再处理它们，详见《<a href="">RFC9001</a>》的<a href="">第4.1.1章</a>。</p>
+</li>
+<li>
+<p>按照在《<a href="">RFC6891</a>》中定义的扩展的<code>RCODE</code>机制和在《<a href="">RFC8914</a>》中定义的扩展的DNS错误，使用响应码<code>REFUSED</code>和扩展的DNS错误码<code>Too Early</code>来响应不可重放的事务；详见<a href="">第8.3章</a>。</p>
+</li>
+<li>
+<p>使用错误码<code>DOQ_PROTOCOL_ERROR</code>来关闭连接。</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="4.6_Message_Sizes">
+<h2>
+<a href="#4.6_Message_Sizes">4.6. 消息尺寸</a>
+</h2>
+<div class="content">
+<p>DoQ查询和响应是在QUIC流上发送的，理论上可以携带至多<code>2<sup>62</sup></code>字节的数据。然而在实践中，DNS消息的最大尺寸被限制为65535字节。该最大尺寸是根据基于TCP的DNS（详见《<a href="">RFC1035</a>》）和DoT（详见《<a href="">RFC7858</a>》）中2字节的消息长度字段，以及DoH（详见《<a href="">RFC8484</a>》）的<code>application/dns-message</code>定义而得到的。DoQ使用与它们相同的最大尺寸。</p>
+<p>《DNS的扩展机制（EDNS(0)）》（详见《<a href="">RFC6891</a>》）允许对端指定UDP消息的尺寸。该参数会被DoQ忽略。DoQ实现总是假定消息的最大尺寸为65535字节。</p>
+</div>
+</section>
+<section class="page" id="5_Implementation_Requirements">
+<h1>
+<a href="#5_Implementation_Requirements">5. 对实现的要求</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="5.1_Authentication">
+<h2>
+<a href="#5.1_Authentication">5.1. 认证</a>
+</h2>
+<div class="content">
+<p>对于存根至递归场景，关于认证的要求与DoT（详见《<a href="">RFC7858</a>》）和《基于TLS和DTLS的DNS的配置用例》（详见《<a href="">RFC8310</a>》）中所述的一致。《<a href="">RFC8932</a>》中指出，DNS隐私服务<em><strong>应该</strong></em>向客户端提供用于验证服务器身份的凭据。基于这一点，同时为了与DoH的认证模型一致，DoQ存根服务器<em><strong>应该</strong></em>选用“严格”配置。没有任何关于DNS的RFC提到过在受到加密保护的存根至递归场景下的客户端认证。</p>
+<p>对于区域传送场景，关于认证的要求与《<a href="">RFC9103</a>》中所述的一致。</p>
+<p>对于递归至权威场景，关于认证的要求尚未制定，它是工作草案《DNS PRIVate Exchange (DPRIVE)》的内容。</p>
+</div>
+</section>
+<section class="page" id="5.2_Fallback_to_Other_Protocols_on_Connection_Failure">
+<h2>
+<a href="#5.2_Fallback_to_Other_Protocols_on_Connection_Failure">5.2. 在连接失败时回退至其他协议</a>
+</h2>
+<div class="content">
+<p>如果DoQ连接的建立失败了，那么客户端<em><strong>可以</strong></em>尝试回退至DoT，再接着按照DoT（详见《<a href="">RFC7858</a>》）和《基于TLS和DTLS的DNS的配置用例》（详见《<a href="">RFC8310</a>》）的规定，根据其配置回退至明文传输。</p>
+<p>DNS客户端<em><strong>应该</strong></em>记住不支持DoQ的服务器的IP地址。移动端的客户端还可以按照场景（例如，根据网络类型或所用的域名）来记忆不支持DoQ的IP地址。</p>
+<p>超时、连接受拒，以及QUIC握手的失败都是服务器不支持DoQ的依据。在一段合理的时间内（例如对每台服务器设置一小时的时长），客户端<em><strong>不应该</strong></em>向不支持DoQ的服务器尝试DoQ查询。遵循使用带外数据固定密钥配置（详见<a href="">RFC7858</a>）的DNS客户端<em><strong>可以</strong></em>在经历DoQ连接失败后更激进地发起重试。</p>
+</div>
+</section>
+<section class="page" id="5.3_Address_Validation">
+<h2>
+<a href="#5.3_Address_Validation">5.3. 地址验证</a>
+</h2>
+<div class="content">
+<p>为了避免服务器被用于地址放大攻击，QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第8章</a>定义了地址验证的流程。DoQ实现 <em><strong>必须</strong></em>遵从该规范，它能将最坏情况下的放大系数限制至<code>3</code>。</p>
+<p>DoQ实现<em><strong>应该</strong></em>考虑将服务器配置为使用QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第8.1.2章</a>中定义的重试数据包流程来进行地址验证。该流程向客户端源地址的回程可达性验证增加了一个单次往返时间的延迟，这与DNS Cookies机制（详见《<a href="">RFC7873</a>》）的效果类似。</p>
+<p>将地址验证配置为使用重试数据包的DoQ实现<em><strong>应该</strong></em>实现定义在QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第8.1.3章</a>中的适用于未来连接的地址验证流程。它定义了服务器在验证完客户端地址后如何向客户端发送<strong>新令牌帧</strong>，为的是在来自相同地址的客户端发起后续连接时减少一个单次往返时间的延迟。</p>
+</div>
+</section>
+<section class="page" id="5.4_Padding">
+<h2>
+<a href="#5.4_Padding">5.4. 填充</a>
+</h2>
+<div class="content">
+<p>实现 <em><strong>必须</strong></em>通过巧妙地注入填充数据的方式抵御<a href="">第7.5章</a>中描述的流量分析攻击。这可以通过使用<code>EDNS(0)</code>的填充选项（详见《<a href="">RFC7830</a>》）来填充单条DNS消息或通过填充QUIC数据包（详见《<a href="">RFC9000</a>》的<a href="">第19.1章</a>）的方式来做到。</p>
+<p>理论上，在QUIC数据包层面的填充可以在达到相同保护效果的前提下取得更好的性能，因为填充的数据量会考虑到非DNS帧的数据，例如确认或流量控制的更新，还因为QUIC数据包能够携带多条DNS消息。然而，只有在QUIC实现提供了合适的API，应用才能控制QUIC数据包中的填充量。这引出了以下推荐做法：</p>
+<ul>
+<li>
+<p>如果QUIC实现提供了能够设置填充策略的API，那么DoQ<em><strong>应该</strong></em>使用此API来将数据包尺寸对齐至少数的固定尺寸。</p>
+</li>
+<li>
+<p>如果QUIC数据包层面的填充是不可用的或未使用的，那么DoQ <em><strong>必须</strong></em>使用《<a href="">RFC7830</a>》中规定的<code>EDNS(0)</code>的填充扩展来确保所有DNS查询和响应都被填充至少数固定尺寸</p>
+</li>
+</ul>
+<p>如果重用现有的用于其他加密传输方式的DNS消息填充逻辑更为简单，那么实现可以选择不使用QUIC的API来填充。</p>
+<p>在缺少填充尺寸标准的情况下，实现<em><strong>应该</strong></em>遵循处于试行（<code>Experimental</code>）状态《针对DNS扩展机制（EDNS(0)）的填充策略》（详见《<a href="">RFC8467</a>》）中的推荐做法。尽管处于试行状态，但本文还是引用了其中的推荐做法，因为它们是为DoT实现和部署的，且提供了与本规范完全兼容的实现方法。</p>
+</div>
+</section>
+<section class="page" id="5.5_Connection_Handling">
+<h2>
+<a href="#5.5_Connection_Handling">5.5. 对连接的处理</a>
+</h2>
+<div class="content">
+<p>《基于TCP的DNS传输——对实现的要求》（详见《<a href="">RFC7766</a>》）为基于TCP的DNS提供了经过更新的指引，其中部分内容适用于DoQ。本节为DoQ对连接的处理提供了类似的建议。</p>
+</div>
+</section>
+<section class="page" id="5.5.1_Connection_Reuse">
+<h3>
+<a href="#5.5.1_Connection_Reuse">5.5.1. 连接的重用</a>
+</h3>
+<div class="content">
+<p>知名的DNS客户端实现都为每条DNS查询打开和关闭专门的TCP连接。为了抵消连接建立时的开销，客户端和服务器都<em><strong>应该</strong></em>以在一条持续的QUIC连接上多次发送查询与响应的方式支持连接的重用。</p>
+<p>为了达到与UDP同等的性能，DNS客户端<em><strong>应该</strong></em>经过同一条QUIC连接上的多个QUIC流并发地发送其查询。也就是说，当DNS客户端经由QUIC连接向服务器发送多条查询时，它在发送下一条查询前<em><strong>不应该</strong></em>为尚未接收到的响应而等待。</p>
+</div>
+</section>
+<section class="page" id="5.5.2_Resource_Management">
+<h3>
+<a href="#5.5.2_Resource_Management">5.5.2. 资源的管理</a>
+</h3>
+<div class="content">
+<p>能否恰当地管理已建立的和空闲的连接对于DNS服务器的健康运行非常重要。</p>
+<p>DoQ实现<em><strong>应该</strong></em>遵循与为基于TCP的DNS（详见《<a href="">RFC7766</a>》）而规定的最佳实践类似的做法，特别是：</p>
+<ul>
+<li>
+<p>并发的连接（详见《<a href="">RFC7766</a>》的<a href="">第6.2.2章</a>，及《<a href="">RFC9103</a>》的<a href="">第6.4章</a>中的更新内容）</p>
+</li>
+<li>
+<p>关于安全性的考量（详见《<a href="">RFC7766</a>》的<a href="">第10章</a>）</p>
+</li>
+</ul>
+<p>不这么做可能导致服务器的资源被耗尽并拒绝服务。</p>
+<p>想要维持长时间DoQ连接的客户端<em><strong>应该</strong></em>使用QUIC传输规范《<a href="">RFC9000</a>》的<a href="">第10.1章</a>中定义的空闲超时机制。客户端和服务器在任何消息中都<em><strong>必须不</strong></em>发送<code>EDNS(0)</code>选项<code>edns-tcp-keepalive</code>（因为它的使用仅限于使用TCP/TLS作为传输协议的情况，详见《<a href="">RFC7828</a>》）。</p>
+<p>本文档没有为空闲连接的超时时间做出推荐。客户端和服务器应该根据可用资源的水平重用和/或关闭连接。在网络活动较少的时期，超时时间可以变长，较多的时期则变短。</p>
+</div>
+</section>
+<section class="page" id="5.5.3_Using_0-RTT_and_Session_Resumption">
+<h3>
+<a href="#5.5.3_Using_0-RTT_and_Session_Resumption">5.5.3. 使用0-RTT和会话恢复</a>
+</h3>
+<div class="content">
+<p>为DoQ使用0-RTT具有强大的优势。客户端无需受到连接延迟的影响就能够建立连接并发送查询。因此服务器可以为连接计时器协商一个较低的值，这能减少它们需要管理的连接总数。之所以服务器可以这么做，是因为使用0-RTT的客户端在为新查询建立连接时不会受到连接延迟的影响。</p>
+<p>会话恢复和0-RTT数据的传输会带来隐私上的风险，<a href="">第7.1章</a>和<a href="">第7.2章</a>中详述了这一点。以下推荐做法是为了在降低隐私上的风险的同时利用0-RTT数据带来的性能提升，它们受到<a href="">第4.5章</a>所述限制的制约。</p>
+<p>按照《<a href="">RFC8446</a>》的<a href="">附录C.4</a>所述，客户端<em><strong>应该</strong></em>一次性地使用会话恢复票据。默认情况下，如果客户端的连接环境发生了变化，那么就<em><strong>不应该</strong></em>使用会话恢复。</p>
+<p>通过<strong>新令牌帧</strong>机制，客户端可能从服务器处接收到地址验证令牌；详见《<a href="">RFC9000</a>》的<a href="">第8章</a>。<a href="">第7.3章</a>中提及了受到对这种关联进行的追踪的风险。客户端<em><strong>应该</strong></em>仅在使用了会话恢复时才使用地址验证令牌，从而避免额外的受到追踪的风险。</p>
+<p>服务器<em><strong>应该</strong></em>为签发的会话恢复票据设置足够长的有效期（例如，6小时），以使得客户端既不会尝试维持连接也不会频繁地向服务器要求更新会话恢复票据。服务器<em><strong>应该</strong></em>实现《<a href="">RFC8446</a>》的<a href="">第8章</a>中规定的抗重放机制。</p>
+</div>
+</section>
+<section class="page" id="5.5.4_Controlling_Connection_Migration_for_Privacy">
+<h3>
+<a href="#5.5.4_Controlling_Connection_Migration_for_Privacy">5.5.4. 控制连接迁移以保护隐私</a>
+</h3>
+<div class="content">
+<p>DoQ实现可以考虑使用《<a href="">RFC9000</a>》的<a href="">第9章</a>中定义的连接迁移特性。这些特性使得连接能随着客户端连接环境的变化而继续运行。如<a href="">第7.4章</a>所述，这些特性为了低延迟而牺牲了隐私。默认情况下，<em><strong>应该</strong></em>将客户端配置为以隐私为优先，在连接环境变化时启用新会话。</p>
+</div>
+</section>
+<section class="page" id="5.6_Processing_Queries_in_Parallel">
+<h2>
+<a href="#5.6_Processing_Queries_in_Parallel">5.6. 并行处理查询</a>
+</h2>
+<div class="content">
+<p>正如《基于TCP的DNS传输——对实现的要求》（详见《<a href="">RFC7766</a>》）的<a href="">第7章</a>所述，<em><strong>推荐</strong></em>解析器支持并行地为响应进行准备，且发送响应时无需按照顺序。在DoQ中，服务器的做法是尽可能快地将响应在各自的流上发送，而不需要按顺序准备响应。</p>
+</div>
+</section>
+<section class="page" id="5.7_Zone_Transfer">
+<h2>
+<a href="#5.7_Zone_Transfer">5.7. 区域传送</a>
+</h2>
+<div class="content">
+<p>《<a href="">RFC9103</a>》定义了基于TLS的区域传送（XoT），并且包含着对于《<a href="">RFC1995</a>》（IXFR）、《<a href="">RFC5936</a>》（AXFR）和《<a href="">RFC7766</a>》的更新。其中介绍的有关XoT连接重用的考量可以被类似地应用到使用DoQ连接实现的区域传送上。重申这些规范的原因之一是当前的TCP/TLS区域传送实现均缺乏有效的连接重用机制。以下为推荐做法：</p>
+<ul>
+<li>
+<p>DoQ服务器 <em><strong>必须</strong></em>有能力处理在单条QUIC连接上的并发的IXFR请求。</p>
+</li>
+<li>
+<p>DoQ服务器 <em><strong>必须</strong></em>有能力处理在单条QUIC连接上的并发的AXFR请求。</p>
+</li>
+<li>
+<p>DoQ实现<em><strong>应该</strong></em></p>
+<ul>
+<li>
+<p>为指向同一台主服务器的AXFR和IXFR请求使用同一条QUIC连接。</p>
+</li>
+<li>
+<p>一旦这些请求进入队列，就立即并行地发送它们，也就是说，在连接上发送下一条请求前不会等待响应的抵达（这与TCP/TLS连接上的流水线请求类似）。</p>
+</li>
+<li>
+<p>一旦响应抵达，就立即发送它们，也就是说，<em><strong>可以</strong></em>乱序发送响应流。</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="5.8_Flow_Control_Mechanisms">
+<h2>
+<a href="#5.8_Flow_Control_Mechanisms">5.8. 流量控制机制</a>
+</h2>
+<div class="content">
+<p>服务器和客户端使用《<a href="">RFC9000</a>》的<a href="">第4章</a>中定义的机制来进行流量控制。这些机制使得客户端和服务器能够指定流的最大创建数量、单条流上发送的最大数据量，以及在所有流上发送的最大数据总量。对于DoQ来说，控制流的最大创建数量使服务器得以控制客户端能够在给定连接上发送的新请求数量。</p>
+<p>流量控制的出现是为了保护终端的资源。对于服务器来说，全局性的和单条流上的流量控制上限能够调整客户端能够发送的数据量。该机制还使得客户端能够控制服务器发送的数据量。过小的值将不必要地限制性能。过大的值可能使终端暴露于过载或内存耗尽的风险之中。实现或部署需要调整流量控制上限从而平衡这些问题。特别是，区域传送的实现需要小心地控制这些限制值以确保巨大且并发的区域传送能够得到妥善处理。</p>
+<p>在连接起始时的参数的初始值控制了客户端和服务器能够发送多少请求和数据。这些值是在连接握手期间交换的传输参数中指定的。在初次连接中接收到的参数值还控制了使用0-RTT数据的客户端在恢复的会话中能够发送多少请求和数据。为这些参数使用过小的值将限制0-RTT数据的使用效果。</p>
+</div>
+</section>
+<section class="page" id="6_Security_Considerations">
+<h1>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>《<a href="">RFC3833</a>》中可以找到对于域名系统的威胁分析。这份分析写于DoT、DoH和DoQ的开发之前，可能需要更新。</p>
+<p>DoQ在安全性方面的考量应该与DoT（详见《<a href="">RFC7858</a>》）中的考量相当。《<a href="">RFC7858</a>》中定义的DoT仅讨论了存根至递归场景，但是有关中间人攻击、中间设备，以及来自明文连接的数据缓存的考量同样适用于DoQ的递归至权威场景。正如<a href="">第5.1章</a>指出的那样，对于保护使用DoQ的区域传送的认证要求与基于DoT的区域传送的要求一致；因此，安全性上的一般考量与《<a href="">RFC9103</a>》中描述的考量完全类似。</p>
+<p>DoQ依赖于QUIC，后者依赖于TLS1.3，且默认支持对《<a href="">BCP195</a>》中描述的降级攻击进行抵御。《<a href="">RFC9000</a>》的<a href="">第21章</a>介绍了特定于QUIC的问题及其抵御方法。</p>
+</div>
+</section>
+<section class="page" id="7_Privacy_Considerations">
+<h1>
+<a href="#7_Privacy_Considerations">7. 关于隐私的考量</a>
+</h1>
+<div class="content">
+<p>在《关于DNS隐私的考量》（详见《<a href="">RFC9076</a>》）中提供的对于加密传输通用的考量对DoQ是适用的。其中提供的几点的考量并不区分DoT还是DoQ，这里不再赘述。类似地，《有关DNS隐私服务操作符的推荐》（详见《<a href="">RFC8932</a>》，它涵盖了DNS隐私服务的可操作性、策略，及其安全方面的考量）同样适用于DoQ服务。</p>
+<p>QUIC内部使用的是TLS 1.3（详见《<a href="">RFC8446</a>》）的机制，这使得QUIC能够传输“0-RTT”数据。它在延迟方面能提供吸引人的收益，但是它引发了两点担忧：</p>
+<ul>
+<li>
+<p>攻击者可以重放0-RTT数据，并从接收到数据的服务器的行为中推断数据内容。</p>
+</li>
+<li>
+<p>0-RTT机制依赖于TLS的会话恢复特性，这使得客户端相继的数次会话被关联起来。</p>
+</li>
+</ul>
+<p><a href="">第7.1章</a>和<a href="">第7.2章</a>中展开讨论了这些问题。</p>
+</div>
+</section>
+<section class="page" id="7.1_Privacy_Issues_with_0-RTT_data">
+<h2>
+<a href="#7.1_Privacy_Issues_with_0-RTT_data">7.1. 有关0-RTT数据的隐私问题</a>
+</h2>
+<div class="content">
+<p>0-RTT数据可能被攻击者重放。此数据可能触发递归解析器向权威解析器的查询。攻击者可能可能挑选一个方便观察递归解析器传出流量的时间，从而找出它为0-RTT数据查询的那个域名。</p>
+<p>此风险的本质是在《关于DNS隐私的考量》（详见《<a href="">RFC9076</a>》）中讨论的递归解析器行为观察问题的子集。该攻击可以通过降低此流量的可观察性来部分抵御。在TLS 1.3（详见《<a href="">RFC8446</a>》）中强制性的重放保护机制能够限制重放的风险，但是无法完全消除。只能在狭窄的时间窗口内重放0-RTT数据包，该窗口的宽度仅足够用来容许时钟偏差和网络传输的波动。</p>
+<p>对于TLS 1.3（详见《<a href="">RFC8446</a>》）的推荐做法是默认情况下禁用0-RTT数据，且仅在用户明确理解相关风险的情况下启用。在DoQ的场景中，允许0-RTT数据能够带来巨大的性能提升，不推荐使用0-RTT数据的要求很有可能会被忽略。相反，<a href="">第4.5章</a>和<a href="">第5.5.3章</a>中提供了一系列可实践的推荐做法。</p>
+<p>在<a href="">第4.5章</a>中的规范能够阻挡大多数重放攻击的直接风险，因为它仅允许了不会修改服务器持久数据的事务。</p>
+<p>上文描述的攻击适用于存根至递归的场景，但类似地攻击也可以被实行在递归至权威的场景，而该抵御方法仍然适用。</p>
+</div>
+</section>
+<section class="page" id="7.2_Privacy_Issues_with_Session_Resumption">
+<h2>
+<a href="#7.2_Privacy_Issues_with_Session_Resumption">7.2. 有关会话恢复的隐私问题</a>
+</h2>
+<div class="content">
+<p>QUIC的会话恢复机制降低了重新建立会话所需的成本，并支持了0-RTT数据。如果同一个恢复令牌被多次使用，那么会出现与会话恢复相关的关联性问题。在客户端与服务器间的路径上的攻击者能够观察到令牌的重复使用，并利用它来将出现在不同时间或不同地区的客户端关联起来。</p>
+<p>会话恢复机制使得服务器能够将恢复的会话与初始的会话关联起来从而追踪同一个客户端。它创建了一个虚拟的持久会话。服务器可以使用在该会话中的一系列查询来辨识客户端。当客户端地址保持不变时，服务器总是可以做到这一点，但是会话恢复票据使得这种追踪能够不受客户端地址变化的影响。</p>
+<p>在<a href="">第5.5.3章</a>中的推荐做法被设计用来抵御此类风险。一次性地使用会话票据的做法能够消除被第三方追踪的风险。如果地址发生变化，那么放弃恢复会话能够消除被服务器追踪的增量风险（但仍存在通过IP地址追踪的风险）。</p>
+<p>隐私性的利弊可能随场景而变化。存根解析器会有强烈的动机去用延迟换取隐私，因为它们经常改变定位。然而，使用一组少量固定IP地址的递归解析器更有可能选择由会话恢复带来的低延迟，并且即使会话的IP地址发生了变化，也会认为这是使用会话恢复票据的合理理由。</p>
+<p>加密的区域传送（详见《<a href="">RFC9103</a>》）没有试图隐藏与传送有关的各方的身份；同时，这类传送对延迟并不是特别敏感。这意味着支持区域传送的应用可能选择使用与存根至递归场景中的应用类似的保护措施。</p>
+</div>
+</section>
+<section class="page" id="7.3_Privacy_Issues_with_Address_Validation_Tokens">
+<h2>
+<a href="#7.3_Privacy_Issues_with_Address_Validation_Tokens">7.3. 有关地址验证令牌的隐私问题</a>
+</h2>
+<div class="content">
+<p>QUIC在《<a href="">RFC9000</a>》的<a href="">第8章</a>中规定了地址验证机制。地址验证令牌使得QUIC服务器能够在新连接上避免花费额外的往返时间。地址验证令牌经常与IP地址绑定。QUIC客户端通常仅当从曾使用过的地址发起新连接时才使用这些令牌。然而，客户端并不总是注意到它们正在使用新的地址。这可能是NAT的原因，或者因为客户端没有能够用来检查IP地址是否发生变化的API（这经常在IPv6中发生）。如果客户端在无感知的情况下移动到新地址后又错误地使用了地址验证令牌，就会产生关联性问题。</p>
+<p>在<a href="">第5.5.3章</a>中的推荐做法通过将<strong>新令牌帧</strong>的使用与会话恢复的使用绑定的方法，抵御了这类攻击，尽管该推荐做法没有覆盖到客户端没有感知到地址变化的情况。</p>
+</div>
+</section>
+<section class="page" id="7.4_Privacy_Issues_with_Long_Duration_Sessions">
+<h2>
+<a href="#7.4_Privacy_Issues_with_Long_Duration_Sessions">7.4. 有关持久会话的隐私问题</a>
+</h2>
+<div class="content">
+<p>会话恢复的潜在替代方案是使用持久会话：如果某会话长时间处于打开状态，那么在发送新查询时就不需要引入建立连接所需的延迟。值得指出的是，这两种方案在隐私方面具有相似的特征。会话恢复可以使得服务器有能力追踪客户端的IP地址，但是持久会话也有相同的效果。</p>
+<p>特别是，DoQ实现可能利用QUIC的连接迁移特性从而在客户端的连接环境发生变化时维持会话，例如，客户端从某Wi-Fi连接迁移到蜂窝网络连接，随后又迁移到另一个Wi-Fi连接。服务器将有能力通过监测该持久会话相继使用的IP地址的方式来追踪客户端的位置。</p>
+<p>在<a href="">第5.5.4章</a>中的推荐做法能够消除有关使用多个客户端地址的持久连接的隐私问题。</p>
+</div>
+</section>
+<section class="page" id="7.5_Traffic_Analysis">
+<h2>
+<a href="#7.5_Traffic_Analysis">7.5. 流量分析</a>
+</h2>
+<div class="content">
+<p>即便QUIC数据包是受到加密保护的，攻击者仍然可以通过观测查询与响应的数据包长度及耗时的方法获取信息。许多DNS请求都是由网络浏览器触发的。加载某网页可能需要解析十几个域名。如果应用采用了将每次查询或响应映射至一个数据包，或“每个数据包对应一个QUIC<strong>流帧</strong>”的做法，那么这些连续数据包的长度提供的信息也许足以用来辨识所请求的站点。</p>
+<p>实现<em><strong>应该</strong></em>使用<a href="">第5.4章</a>中定义的机制来抵御此类攻击。</p>
+</div>
+</section>
+<section class="page" id="8_IANA_Considerations">
+<h1>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="8.1_Registration_of_a_DoQ_Identification_String">
+<h2>
+<a href="#8.1_Registration_of_a_DoQ_Identification_String">8.1. DoQ标识字符串的注册项</a>
+</h2>
+<div class="content">
+<p>本文档在注册表“TLS应用层协议协商（ALPN）协议ID”（详见《<a href="">RFC7301</a>》）中为DoQ的标识符创建了一条注册项。</p>
+<p>字符串<code>doq</code>标识着DoQ：</p>
+<dl>
+<dt>协议（Protocol）：</dt>
+<dd>
+<p>DoQ</p>
+</dd>
+<dt>标识序列（Identification Sequence）：</dt>
+<dd>
+<p><code>0x64 0x6F 0x71</code>（“doq”）</p>
+</dd>
+<dt>规范（Specification）：</dt>
+<dd>
+<p>本文档</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="8.2_Reservation_of_a_Dedicated_Port">
+<h2>
+<a href="#8.2_Reservation_of_a_Dedicated_Port">8.2. 专用端口的保留使用</a>
+</h2>
+<div class="content">
+<p>目前，TCP和UDP的端口<code>853</code>因为《运行于TLS/DTLS上的DNS查询-响应协议》（详见《<a href="">RFC7858</a>》）而被保留使用。</p>
+<p>然而，经由DTLS的DNS（DoQ）的规范（详见《<a href="">RFC8094</a>》）处于试行状态、仅适用于存根至递归场景，并且据作者所知尚未出现有关实现或部署（即使距离该规范出版已有数年时间）。</p>
+<p>本规范为DoQ额外保留了UDP端口<code>853</code>的使用。QUIC版本1被设计为可以在同一端口与其他协议共存，包括DTLS；详见《<a href="">RFC9000</a>》的<a href="">第17.2章</a>。这意味着在某端口同时提供DoD和DoQ（基于QUIC版本1）服务的实现将有能力通过UDP载荷的第二最高有效位来将它们解复用。这类部署应该在为了提供DNS服务而将QUIC和DTLS的将来版本或扩展（例如《<a href="">GREASING-QUIC</a>》）部署到同一端口前对其检查其签名。</p>
+<p>IANA已经在“服务名称与传输协议端口号注册表”的系统部分中更新了一下值。该部分的注册项需要得到IETF审查或IESG批准（详见《<a href="">RFC6335</a>》）。</p>
+<dl>
+<dt>服务名称（Service Name）：</dt>
+<dd>
+<p><code>domain-s</code></p>
+</dd>
+<dt>端口号（Port Number）：</dt>
+<dd>
+<p>853</p>
+</dd>
+<dt>传输协议（Transport Protocol(s)）：</dt>
+<dd>
+<p>UDP</p>
+</dd>
+<dt>指派（Assignee）：</dt>
+<dd>
+<p>IESG</p>
+</dd>
+<dt>联系方式（Contact）：</dt>
+<dd>
+<p>IETF主席</p>
+</dd>
+<dt>描述（Description）：</dt>
+<dd>
+<p>运行于DTLS或QUIC上的DNS查询-响应协议</p>
+</dd>
+<dt>参考文献（Reference）：</dt>
+<dd>
+<p>《<a href="">RFC7858</a>》、《<a href="">RFC8094</a>》、本文档</p>
+</dd>
+</dl>
+<p>除此之外，出于连续性和清晰性的考虑，IANA已经将与TCP端口<code>853</code>分配相关项的描述字段更新为“运行于TLS上的DNS查询-响应协议”，并将《<a href="">RFC8094</a>》从TCP分配项的参考文献字段中移除。</p>
+</div>
+</section>
+<section class="page" id="8.3_Reservation_of_an_Extended_DNS_Error_Code_Too_Early">
+<h2>
+<a href="#8.3_Reservation_of_an_Extended_DNS_Error_Code_Too_Early">8.3. 扩展的DNS错误码：Too Early</a>
+</h2>
+<div class="content">
+<p>IANA在注册表“扩展的DNS错误码”（详见《<a href="">RFC8914</a>》）中注册了以下值：</p>
+<dl>
+<dt>信息码（INFO-CODE）：</dt>
+<dd>
+<p><code>26</code></p>
+</dd>
+<dt>含义（Purpose）：</dt>
+<dd>
+<p>过早</p>
+</dd>
+<dt>参考文献（Reference）：</dt>
+<dd>
+<p>本文档</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="8.4_DNS-over-QUIC_Error_Codes_Registry">
+<h2>
+<a href="#8.4_DNS-over-QUIC_Error_Codes_Registry">8.4. 经由QUIC的DNS错误码注册表</a>
+</h2>
+<div class="content">
+<p>IANA在网页“域名系统（DNS）参数”上为“经由QUIC的DNS的错误码”添加了一个注册表。</p>
+<p>注册表“经由QUIC的DNS错误码”管理着62比特位长的空间。该空间被分为三段使用不同策略来管理的区域：</p>
+<ul>
+<li>
+<p>值在<code>0x00</code>至<code>0x3f</code>之间（十六进制，包含两端）的永久注册项，它们会以标准行为（<code>Standards Action</code>）或IESG批准的方式指定，详见《<a href="">RFC8126</a>》的<a href="">第4.9章</a>和<a href="">第4.10章</a>。</p>
+</li>
+<li>
+<p>值大于<code>0x3f</code>的永久注册项，它们会以强制规范（<code>Specification Required</code>）的方式指定，详见《<a href="">RFC8126</a>》。</p>
+</li>
+<li>
+<p>值大于<code>0x3f</code>的临时注册项，它们会以专家评审（<code>Expert Review</code>）的方式指定，详见《<a href="">RFC8126</a>》的<a href="">第4.5章</a>。</p>
+</li>
+</ul>
+<p>临时注册项与一些永久注册项共享大于<code>0x3f</code>的值范围。这种设计是有意的，从而使得无需修改部署系统就能够将临时注册项转换为永久注册项。（该设计符合《<a href="">RFC9000</a>》的<a href="">第22章</a>中的原则。）</p>
+<p>该注册表中的注册项 <em><strong>必须</strong></em>包含以下字段：</p>
+<dl>
+<dt>值（Value）：</dt>
+<dd>
+<p>分配的码点</p>
+</dd>
+<dt>状态（Status）：</dt>
+<dd>
+<p>“永久”或“临时”</p>
+</dd>
+<dt>联系方式：</dt>
+<dd>
+<p>注册者的联系方式</p>
+</dd>
+</dl>
+<p>除此之外，永久注册项中 <em><strong>必须</strong></em>包含</p>
+<dl>
+<dt>错误（Error）：</dt>
+<dd>
+<p>该参数简短的帮助记忆的名称</p>
+</dd>
+<dt>规范（Specification）：</dt>
+<dd>
+<p>指向一份公开可用的针对此值的规范的引用（该字段对临时注册项是可选的）</p>
+</dd>
+<dt>描述（Description）：</dt>
+<dd>
+<p>对该错误码语义的简要描述，当提供了指向规范文件的引用时，此内容<em><strong>可以</strong></em>是一份概述。</p>
+</dd>
+</dl>
+<p>码点的临时注册项是为了支持私有用途和DoQ的实验性扩展。然而，临时注册项可以被释放或重新指定为另一用途。除了上方列出的字段外，临时注册项还 <em><strong>必须</strong></em>包括：</p>
+<dl>
+<dt>日期：</dt>
+<dd>
+<p>最后一次更新此注册项的日期</p>
+</dd>
+</dl>
+<p>对任何临时注册项的日期进行更新的申请不需要经过专家（组）的评审。</p>
+<p><a href="">表1</a>为该注册表的初始内容，所有项目均使用以下字段和值：</p>
+<dl>
+<dt>状态：</dt>
+<dd>
+<p>永久</p>
+</dd>
+<dt>联系方式：</dt>
+<dd>
+<p>DPRIVE WG</p>
+</dd>
+<dt>规范：</dt>
+<dd>
+<p><a href="">第4.3章</a></p>
+</dd>
+</dl>
+<div class="block ref" id="Table_1_Initial_DNS-over-QUIC_Error_Codes_Entries">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">值</th>
+<th style="text-align:left">错误</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>0x0</code></td>
+<td style="text-align:left"><code>DOQ_NO_ERROR</code>（无错误）</td>
+<td style="text-align:left">没有错误发生</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0x1</code></td>
+<td style="text-align:left"><code>DOQ_INTERNAL_ERROR</code>（内部错误）</td>
+<td style="text-align:left">实现中的错误</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0x2</code></td>
+<td style="text-align:left"><code>DOQ_PROTOCOL_ERROR</code>（协议错误）</td>
+<td style="text-align:left">因违反协议而产生的通用错误</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0x3</code></td>
+<td style="text-align:left"><code>DOQ_REQUEST_CANCELLED</code>（请求被取消）</td>
+<td style="text-align:left">请求被客户端取消</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0x4</code></td>
+<td style="text-align:left"><code>DOQ_EXCESSIVE_LOAD</code>（负载过量）</td>
+<td style="text-align:left">因过量的负载而关闭连接</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0x5</code></td>
+<td style="text-align:left"><code>DOQ_UNSPECIFIED_ERROR</code>（未指定的错误）</td>
+<td style="text-align:left">未指定错误原因</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>0xd098ea5e</code></td>
+<td style="text-align:left"><code>DOQ_ERROR_RESERVED</code>（保留的错误）</td>
+<td style="text-align:left">用于测试的备用错误码</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_1_Initial_DNS-over-QUIC_Error_Codes_Entries">表1：经由QUIC的DNS错误码注册表的初始项</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="9_References">
+<h1>
+<a href="#9_References">9. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="9.1_Normative_References">
+<h2>
+<a href="#9.1_Normative_References">9.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="RFC1034">
+<p><a href="#RFC1034"><strong>[RFC1034]</strong></a> </p>
+<p>Mockapetris, P., “Domain names - concepts and facilities”, STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987, <a href="https://www.rfc-editor.org/info/rfc1034">https://www.rfc-editor.org/info/rfc1034</a>.</p>
+</div>
+<div class="out_ref" id="RFC1035">
+<p><a href="#RFC1035"><strong>[RFC1035]</strong></a> </p>
+<p>Mockapetris, P., “Domain names - implementation and specification”, STD 13, RFC 1035, DOI 10.17487/RFC1035, November 1987, <a href="https://www.rfc-editor.org/info/rfc1035">https://www.rfc-editor.org/info/rfc1035</a>.</p>
+</div>
+<div class="out_ref" id="RFC1995">
+<p><a href="#RFC1995"><strong>[RFC1995]</strong></a> </p>
+<p>Ohta, M., “Incremental Zone Transfer in DNS”, RFC 1995, DOI 10.17487/RFC1995, August 1996, <a href="https://www.rfc-editor.org/info/rfc1995">https://www.rfc-editor.org/info/rfc1995</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC5936">
+<p><a href="#RFC5936"><strong>[RFC5936]</strong></a> </p>
+<p>Lewis, E. and A. Hoenes, Ed., “DNS Zone Transfer Protocol (AXFR)”, RFC 5936, DOI 10.17487/RFC5936, June 2010, <a href="https://www.rfc-editor.org/info/rfc5936">https://www.rfc-editor.org/info/rfc5936</a>.</p>
+</div>
+<div class="out_ref" id="RFC6891">
+<p><a href="#RFC6891"><strong>[RFC6891]</strong></a> </p>
+<p>Damas, J., Graff, M., and P. Vixie, “Extension Mechanisms for DNS (EDNS(0))”, STD 75, RFC 6891, DOI 10.17487/RFC6891, April 2013, <a href="https://www.rfc-editor.org/info/rfc6891">https://www.rfc-editor.org/info/rfc6891</a>.</p>
+</div>
+<div class="out_ref" id="RFC7301">
+<p><a href="#RFC7301"><strong>[RFC7301]</strong></a> </p>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</div>
+<div class="out_ref" id="RFC7766">
+<p><a href="#RFC7766"><strong>[RFC7766]</strong></a> </p>
+<p>Dickinson, J., Dickinson, S., Bellis, R., Mankin, A., and D. Wessels, “DNS Transport over TCP - Implementation Requirements”, RFC 7766, DOI 10.17487/RFC7766, March 2016, <a href="https://www.rfc-editor.org/info/rfc7766">https://www.rfc-editor.org/info/rfc7766</a>.</p>
+</div>
+<div class="out_ref" id="RFC7830">
+<p><a href="#RFC7830"><strong>[RFC7830]</strong></a> </p>
+<p>Mayrhofer, A., “The EDNS(0) Padding Option”, RFC 7830, DOI 10.17487/RFC7830, May 2016, <a href="https://www.rfc-editor.org/info/rfc7830">https://www.rfc-editor.org/info/rfc7830</a>.</p>
+</div>
+<div class="out_ref" id="RFC7858">
+<p><a href="#RFC7858"><strong>[RFC7858]</strong></a> </p>
+<p>Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D., and P. Hoffman, “Specification for DNS over Transport Layer Security (TLS)”, RFC 7858, DOI 10.17487/RFC7858, May 2016, <a href="https://www.rfc-editor.org/info/rfc7858">https://www.rfc-editor.org/info/rfc7858</a>.</p>
+</div>
+<div class="out_ref" id="RFC8126">
+<p><a href="#RFC8126"><strong>[RFC8126]</strong></a> </p>
+<p>Cotton, M., Leiba, B., and T. Narten, “Guidelines for Writing an IANA Considerations Section in RFCs”, BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017, <a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> </p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="RFC8310">
+<p><a href="#RFC8310"><strong>[RFC8310]</strong></a> </p>
+<p>Dickinson, S., Gillmor, D., and T. Reddy, “Usage Profiles for DNS over TLS and DNS over DTLS”, RFC 8310, DOI 10.17487/RFC8310, March 2018, <a href="https://www.rfc-editor.org/info/rfc8310">https://www.rfc-editor.org/info/rfc8310</a>.</p>
+</div>
+<div class="out_ref" id="RFC8446">
+<p><a href="#RFC8446"><strong>[RFC8446]</strong></a> </p>
+<p>Rescorla, E., “The Transport Layer Security (TLS) Protocol Version 1.3”, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
+</div>
+<div class="out_ref" id="RFC8467">
+<p><a href="#RFC8467"><strong>[RFC8467]</strong></a> </p>
+<p>Mayrhofer, A., “Padding Policies for Extension Mechanisms for DNS (EDNS(0))”, RFC 8467, DOI 10.17487/RFC8467, October 2018, <a href="https://www.rfc-editor.org/info/rfc8467">https://www.rfc-editor.org/info/rfc8467</a>.</p>
+</div>
+<div class="out_ref" id="RFC8914">
+<p><a href="#RFC8914"><strong>[RFC8914]</strong></a> </p>
+<p>Kumari, W., Hunt, E., Arends, R., Hardaker, W., and D. Lawrence, “Extended DNS Errors”, RFC 8914, DOI 10.17487/RFC8914, October 2020, <a href="https://www.rfc-editor.org/info/rfc8914">https://www.rfc-editor.org/info/rfc8914</a>.</p>
+</div>
+<div class="out_ref" id="RFC9000">
+<p><a href="#RFC9000"><strong>[RFC9000]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC9001">
+<p><a href="#RFC9001"><strong>[RFC9001]</strong></a> </p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="RFC9103">
+<p><a href="#RFC9103"><strong>[RFC9103]</strong></a> </p>
+<p>Toorop, W., Dickinson, S., Sahib, S., Aras, P., and A. Mankin, “DNS Zone Transfer over TLS”, RFC 9103, DOI 10.17487/RFC9103, August 2021, <a href="https://www.rfc-editor.org/info/rfc9103">https://www.rfc-editor.org/info/rfc9103</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="9.2_Informative_References">
+<h2>
+<a href="#9.2_Informative_References">9.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="BCP195">
+<p><a href="#BCP195"><strong>[BCP195]</strong></a> </p>
+<p>Sheffer, Y., Holz, R., and P. Saint-Andre, “Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)”, BCP 195, RFC 7525, May 2015.</p>
+<p>Moriarty, K. and S. Farrell, “Deprecating TLS 1.0 and TLS 1.1”, BCP 195, RFC 8996, March 2021.</p>
+<p><a href="https://www.rfc-editor.org/info/bcp195">https://www.rfc-editor.org/info/bcp195</a></p>
+</div>
+<div class="out_ref" id="DNS-TERMS">
+<p><a href="#DNS-TERMS"><strong>[DNS-TERMS]</strong></a> </p>
+<p>Hoffman, P. and K. Fujiwara, “DNS Terminology”, Work in Progress, Internet-Draft, draft-ietf-dnsop-rfc8499bis-03, 28 September 2021, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-rfc8499bis-03">https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-rfc8499bis-03</a>.</p>
+</div>
+<div class="out_ref" id="DNS0RTT">
+<p><a href="#DNS0RTT"><strong>[DNS0RTT]</strong></a> </p>
+<p>Kahn Gillmor, D., “DNS + 0-RTT”, Message to DNS-Privacy WG mailing list, 6 April 2016, <a href="https://www.ietf.org/mail-archive/web/dns-privacy/current/msg01276.html">https://www.ietf.org/mail-archive/web/dns-privacy/current/msg01276.html</a>.</p>
+</div>
+<div class="out_ref" id="GREASING-QUIC">
+<p><a href="#GREASING-QUIC"><strong>[GREASING-QUIC]</strong></a> </p>
+<p>Thomson, M., “Greasing the QUIC Bit”, Work in Progress, Internet-Draft, draft-ietf-quic-bit-grease-02, 10 November 2021, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-bit-grease-02">https://datatracker.ietf.org/doc/html/draft-ietf-quic-bit-grease-02</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> </p>
+<p>Bishop, M., Ed., “Hypertext Transfer Protocol Version 3 (HTTP/3)”, Work in Progress, Internet-Draft, draft-ietf-quic-http-34, 2 February 2021, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34">https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34</a>.</p>
+</div>
+<div class="out_ref" id="RFC1996">
+<p><a href="#RFC1996"><strong>[RFC1996]</strong></a> </p>
+<p>Vixie, P., “A Mechanism for Prompt Notification of Zone Changes (DNS NOTIFY)”, RFC 1996, DOI 10.17487/RFC1996, August 1996, <a href="https://www.rfc-editor.org/info/rfc1996">https://www.rfc-editor.org/info/rfc1996</a>.</p>
+</div>
+<div class="out_ref" id="RFC3833">
+<p><a href="#RFC3833"><strong>[RFC3833]</strong></a> </p>
+<p>Atkins, D. and R. Austein, “Threat Analysis of the Domain Name System (DNS)”, RFC 3833, DOI 10.17487/RFC3833, August 2004, <a href="https://www.rfc-editor.org/info/rfc3833">https://www.rfc-editor.org/info/rfc3833</a>.</p>
+</div>
+<div class="out_ref" id="RFC6335">
+<p><a href="#RFC6335"><strong>[RFC6335]</strong></a> </p>
+<p>Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S. Cheshire, “Internet Assigned Numbers Authority (IANA) Procedures for the Management of the Service Name and Transport Protocol Port Number Registry”, BCP 165, RFC 6335, DOI 10.17487/RFC6335, August 2011, <a href="https://www.rfc-editor.org/info/rfc6335">https://www.rfc-editor.org/info/rfc6335</a>.</p>
+</div>
+<div class="out_ref" id="RFC7828">
+<p><a href="#RFC7828"><strong>[RFC7828]</strong></a> </p>
+<p>Wouters, P., Abley, J., Dickinson, S., and R. Bellis, “The edns-tcp-keepalive EDNS0 Option”, RFC 7828, DOI 10.17487/RFC7828, April 2016, <a href="https://www.rfc-editor.org/info/rfc7828">https://www.rfc-editor.org/info/rfc7828</a>.</p>
+</div>
+<div class="out_ref" id="RFC7873">
+<p><a href="#RFC7873"><strong>[RFC7873]</strong></a> </p>
+<p>Eastlake 3rd, D. and M. Andrews, “Domain Name System (DNS) Cookies”, RFC 7873, DOI 10.17487/RFC7873, May 2016, <a href="https://www.rfc-editor.org/info/rfc7873">https://www.rfc-editor.org/info/rfc7873</a>.</p>
+</div>
+<div class="out_ref" id="RFC8094">
+<p><a href="#RFC8094"><strong>[RFC8094]</strong></a> </p>
+<p>Reddy, T., Wing, D., and P. Patil, “DNS over Datagram Transport Layer Security (DTLS)”, RFC 8094, DOI 10.17487/RFC8094, February 2017, <a href="https://www.rfc-editor.org/info/rfc8094">https://www.rfc-editor.org/info/rfc8094</a>.</p>
+</div>
+<div class="out_ref" id="RFC8484">
+<p><a href="#RFC8484"><strong>[RFC8484]</strong></a> </p>
+<p>Hoffman, P. and P. McManus, “DNS Queries over HTTPS (DoH)”, RFC 8484, DOI 10.17487/RFC8484, October 2018, <a href="https://www.rfc-editor.org/info/rfc8484">https://www.rfc-editor.org/info/rfc8484</a>.</p>
+</div>
+<div class="out_ref" id="RFC8490">
+<p><a href="#RFC8490"><strong>[RFC8490]</strong></a> </p>
+<p>Bellis, R., Cheshire, S., Dickinson, J., Dickinson, S., Lemon, T., and T. Pusateri, “DNS Stateful Operations”, RFC 8490, DOI 10.17487/RFC8490, March 2019, <a href="https://www.rfc-editor.org/info/rfc8490">https://www.rfc-editor.org/info/rfc8490</a>.</p>
+</div>
+<div class="out_ref" id="RFC8932">
+<p><a href="#RFC8932"><strong>[RFC8932]</strong></a> </p>
+<p>Dickinson, S., Overeinder, B., van Rijswijk-Deij, R., and A. Mankin, “Recommendations for DNS Privacy Service Operators”, BCP 232, RFC 8932, DOI 10.17487/RFC8932, October 2020, <a href="https://www.rfc-editor.org/info/rfc8932">https://www.rfc-editor.org/info/rfc8932</a>.</p>
+</div>
+<div class="out_ref" id="RFC9002">
+<p><a href="#RFC9002"><strong>[RFC9002]</strong></a> </p>
+<p>Iyengar, J., Ed. and I. Swett, Ed., “QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</div>
+<div class="out_ref" id="RFC9076">
+<p><a href="#RFC9076"><strong>[RFC9076]</strong></a> </p>
+<p>Wicinski, T., Ed., “DNS Privacy Considerations”, RFC 9076, DOI 10.17487/RFC9076, July 2021, <a href="https://www.rfc-editor.org/info/rfc9076">https://www.rfc-editor.org/info/rfc9076</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_A_The_NOTIFY_Service">
+<h1>
+<a href="#Appendix_A_The_NOTIFY_Service">10. NOTIFY服务</a>
+</h1>
+<div class="content">
+<p>本附录讨论了为何允许在0-RTT数据中发送NOTIFY（详见《<a href="">RFC1996</a>》）。</p>
+<p><a href="">第4.5章</a>中提到，<em><strong>必须不</strong></em>使用0-RTT机制来发送并非“可重放”事务的DNS请求。本规范支持在0-RTT数据中发送NOTIFY的原因是尽管技术上NOTIFY会改变接收它的服务器的状态，但是重放NOTIFY所能够造成的实际影响微乎其微。</p>
+<p>NOTIFY消息向辅服务器发出提醒，使其根据是否有新版本的可用区域来向主服务器发送SOA查询或XFR请求。NOTIFY可以被伪造，并且理论上可以被用来使辅服务器向主服务器发送重复的冗余请求，这是众所周知的。基于这个原因，大多数实现都具有某种机制，从而限制因接收到NOTIFY而触发的SOA/XFR查询频次。</p>
+<p>《<a href="">RFC9103</a>》描述了与NOTIFY和SOA查询有关的隐私方面的风险，且没有涉及如何在加密区域传送场景中消除这些风险。因此，将DoQ用于NOTIFY的做法在隐私方面的好处并不明确，但是出于相同的理由，将NOTIFY作为0-RTT数据来发送的做法在隐私方面的风险并不会高于使用明文DNS来发送它时的风险。</p>
+</div>
+</section>
+<section class="page" id="Acknowledgements">
+<h1>
+<a href="#Acknowledgements">致谢</a>
+</h1>
+<div class="content">
+<p>本文档从Mike Bishop编辑的HTTP/3规范《<a href="">HTTP/3</a>》及由Zi Hu、Liang Zhu、John Heidemann、Allison Mankin、Duane Wessels，和Paul Hoffman撰写的DoT规范《<a href="">RFC7858</a>》中摘抄了内容。</p>
+<p>有关0-RTT数据和会话恢复的隐私问题是由Daniel Kahn Gillmor（DKG）在发向IETF DPRIVE工作组的消息中分析的（详见《<a href="">DNS0RTT</a>》）。</p>
+<p>感谢Tony Finch对本文档的初始草案进行的大量评审，和Robert Evans对0-RTT隐私问题的讨论。Paul Hoffman和Martin Thomson的早期评阅和Stephane Bortzmeyer进行的互操作性测试对提升协议的定义颇有帮助。</p>
+<p>还要感谢Martin Thomson和Martin Duke在后期对于底层QUIC细节的审阅，这帮助澄清了DoQ的许多方面。感谢Andrey Meshkov、Loganaden Velvindron、Lucas Pardue、Matt Joras、Mirja Kuelewind、Brian Trammell，和Phillip Hallam-Baker的评阅与贡献。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">12. NOTIFY服务</a>
+</h1>
+<div class="content">
+<hr/>
+<h2 id="rank-h1">title: “联系作者”
+anchor: “Authors_Addresses”
+weight: 150000
+rank: “h1”</h2>
+<h5 id="christian-huitema">Christian Huitema</h5>
+<p>Private Octopus Inc.</p>
+<p>427 Golfcourse Rd</p>
+<p>Friday Harbor, WA 98250</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:huitema@huitema.net">huitema@huitema.net</a></p>
+<h5 id="sara-dickinson">Sara Dickinson</h5>
+<p>Sinodun IT</p>
+<p>Oxford Science Park</p>
+<p>Oxford</p>
+<p>OX4 4GA</p>
+<p>United Kingdom</p>
+<p>Email: <a href="sara@sinodun.com">sara@sinodun.com</a></p>
+<h5 id="allison-mankin">Allison Mankin</h5>
+<p>Salesforce</p>
+<p>Email: <a href="mailto:allison.mankin@gmail.com">allison.mankin@gmail.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/ruokeqx">ruokeqx</a></p>
+<ul>
+<li>Email: <a href="mailto:ruokeqx@163.com">ruokeqx@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>

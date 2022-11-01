@@ -29,6 +29,53 @@
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
 </li>
+<li>
+<a href="#1_Introduction">1. 介绍</a>
+<ul>
+<li><a href="#1.1_Specification_of_Requirements">1.1. 约束规范</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_Motivation">2. 动机</a>
+</li>
+<li>
+<a href="#3_Transport_Parameter">3. 传输参数</a>
+</li>
+<li>
+<a href="#4_Datagram_Frame_Types">4. 数据报帧的类型</a>
+</li>
+<li>
+<a href="#5_Behavior_and_Usage">5. 行为与用法</a>
+<ul>
+<li><a href="#5.1_Multiplexing_Datagrams">5.1. 数据报的多路复用</a></li>
+<li><a href="#5.2_Acknowledgement_Handling">5.2. 处理确认</a></li>
+<li><a href="#5.3_Flow_Control">5.3. 流量控制</a></li>
+<li><a href="#5.4_Congestion_Control">5.4. 拥塞控制</a></li>
+</ul>
+</li>
+<li>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</li>
+<li>
+<a href="#7_IANA_Considerations">7. 关于IANA的考量</a>
+<ul>
+<li><a href="#7.1_QUIC_Transport_Parameter">7.1. QUIC传输参数</a></li>
+<li><a href="#7.2_QUIC_Frame_Types">7.2. QUIC帧类型</a></li>
+</ul>
+</li>
+<li>
+<a href="#8_References">8. 参考文献</a>
+<ul>
+<li><a href="#8.1_Normative_References">8.1. 规范性参考文献</a></li>
+<li><a href="#8.2_Informative_References">8.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
+</li>
 </ul>
 </nav>
 <nav class="external">
@@ -38,7 +85,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -124,6 +171,305 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 介绍</a>
+</h1>
+<div class="content">
+<p>QUIC传输协议（详见《<a href="">RFC9000</a>》）为传输可靠应用数据的流提供了安全且可多路复用的连接。QUIC在数据包中使用各种不同的帧类型来传输数据，每种帧类型都定义了其中的数据是否需要被重传。可靠应用数据的流是使用<strong>流帧</strong>来发送的。</p>
+<p>部分应用，尤其是那些需要传输实时数据的应用，倾向于传输无需可靠性的数据。在过去，这些应用都是直接基于UDP（详见《<a href="">RFC0768</a>》）建立传输连接，并通常使用DTLS（详见《<a href="">RFC6347</a>》）来增强安全性。扩展QUIC并使其支持不可靠应用数据的传输，则为安全传输数据报提供了另一种方案，而且还有着共享在可靠流中使用的加密和认证上下文的好处。</p>
+<p>本文档定义了两种新的名为<strong>数据报帧</strong>的QUIC帧类型，它们能传递应用数据而无需重传。</p>
+</div>
+</section>
+<section class="page" id="1.1_Specification_of_Requirements">
+<h2>
+<a href="#1.1_Specification_of_Requirements">1.1. 约束规范</a>
+</h2>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+</div>
+</section>
+<section class="page" id="2_Motivation">
+<h1>
+<a href="#2_Motivation">2. 动机</a>
+</h1>
+<div class="content">
+<p>通过QUIC传输不可靠数据，比起现有的方案，具有以下优势：</p>
+<ul>
+<li>
+<p>想要面向同一个对端同时使用可靠流和不可靠流的应用能够在可靠的QUIC流和不可靠的QUIC数据报流间共享相同的握手和认证上下文，从而从中受益。比起既要打开TLS连接又要打开DTLS连接的方案，这能够降低握手过程的延迟。</p>
+</li>
+<li>
+<p>QUIC使用的丢包重传机制比起DTLS握手更加敏感。这使得QUIC数据在遭遇丢包后能更快地开始重传。</p>
+</li>
+<li>
+<p>QUIC数据报受限于QUIC的拥塞控制。为可靠的和不可靠的数据共用拥塞控制是更加有效且高效的。</p>
+</li>
+</ul>
+<p>这项特性对于优化音频/视频流应用、游戏应用和其他实时网络应用会很有用。</p>
+<p>不可靠的QUIC数据报还可以被用来实现一种基于QUIC的IP数据包隧道，例如虚拟专用网（VPN）。基于互联网的隧道协议在安全地传输不可靠的IP数据包前通常需要进行可靠且经认证的握手。这可能就需要用到，比如说，一条用于控制数据的TLS连接和用于隧道传输IP数据包的DTLS连接。只要使用不可靠的数据报和可靠的流，那么仅用单条QUIC连接就能够同时满足这两部分要求。</p>
+</div>
+</section>
+<section class="page" id="3_Transport_Parameter">
+<h1>
+<a href="#3_Transport_Parameter">3. 传输参数</a>
+</h1>
+<div class="content">
+<p>对<strong>数据报帧</strong>的支持是通过某个QUIC传输参数（名为<code>max_datagram_frame_size</code>，ID为<code>0x20</code>）来告知对端的。传输参数<code>max_datagram_frame_size</code>是一个整型值（用可变长度整型来表示），它表示着<strong>数据报帧</strong>的最大尺寸。</p>
+<p>默认情况下，该参数的值为0，这表示终端不支持<strong>数据报帧</strong>。大于0的值则表示终端支持<strong>数据报帧</strong>并且愿意在此连接中接收<strong>数据报帧</strong>。</p>
+<p>除非终端在握手期间（或上一次握手期间，如果使用了0-RTT）接收到了非零的传输参数<code>max_datagram_frame_size</code>，否则它<em><strong>必须不</strong></em>发送<strong>数据报帧</strong>。终端发送的<strong>数据报帧</strong>尺寸<em><strong>必须不</strong></em>超过它从对端接收到的<code>max_datagram_frame_size</code>值。没有通过传输参数表明支持<strong>数据报帧</strong>就接收到<strong>数据报帧</strong>的终端<em><strong>必须</strong></em>使用类型为<code>PROTOCOL_VIOLATION</code>（协议违背）的错误终止连接。类似地，如果终端接收到的<strong>数据报帧</strong>尺寸超过了它发送的传输参数<code>max_datagram_frame_size</code>的值，那么它<em><strong>必须</strong></em>使用类型为<code>PROTOCOL_VIOLATION</code>的错误终止连接。</p>
+<p>对于大多数<strong>数据报帧</strong>的使用场景，<em><strong>推荐</strong></em>用值为<code>65535</code>的传输参数<code>max_datagram_frame_size</code>来表明终端愿意接受所有能够放进QUIC数据包的<strong>数据报帧</strong>。</p>
+<p>传输参数<code>max_datagram_frame_size</code>是一个单向的限制，并且表明着对<strong>数据报帧</strong>是否支持。使用<strong>数据报帧</strong>的应用协议<em><strong>可以</strong></em>选择仅在单一方向上协商与使用这种帧。</p>
+<p>当客户端使用0-RTT时，它们<em><strong>可以</strong></em>存储来自服务器的传输参数<code>max_datagram_frame_size</code>的值。这么做使得客户端可以在0-RTT数据包中发送<strong>数据报帧</strong>。当服务器决定接收0-RTT数据时，它们发送的传输参数<code>max_datagram_frame_size </code>的值<em><strong>必须</strong></em>大于等于它们曾在发送了<code>NewSessionTicket</code>消息的连接中发送给客户端的值。如果客户端存储了传输参数<code>max_datagram_frame_size</code>的值和它们的0-RTT状态数据，那么它们<em><strong>必须</strong></em>验证服务器在握手时新发送的传输参数<code>max_datagram_frame_size</code>的值，确保它大于等于客户端存储的旧值；如若不然，客户端<em><strong>必须</strong></em>使用类型为<code>PROTOCOL_VIOLATION</code>的错误终止连接。</p>
+<p>使用数据报的应用协议<em><strong>必须</strong></em>定义在缺失传输参数<code>max_datagram_frame_size</code>时的行为。如果对数据报的支持对于应用至关重要，那么应用协议在传输参数<code>max_datagram_frame_size</code>缺失时可以使握手失败。</p>
+</div>
+</section>
+<section class="page" id="4_Datagram_Frame_Types">
+<h1>
+<a href="#4_Datagram_Frame_Types">4. 数据报帧的类型</a>
+</h1>
+<div class="content">
+<p><strong>数据报帧</strong>被用来以不可靠的方式传输应用数据。<strong>数据报帧</strong>中的类型字段使用<code>0b0011000X</code>的形式（或者说值<code>0x30</code>和<code>0x31</code>）。<strong>数据报帧</strong>的类型字段的最低有效位被称为<code>LEN</code>比特位（掩码为<code>0x01</code>），它表示着后方是否存在长度字段；如果该比特位被置为<code>0</code>，那么就不存在长度字段，并且数据报数据字段一路延伸至数据包的末尾；如果该比特位被置为<code>1</code>，那么就表示后方存在长度字段。</p>
+<p><strong>数据报帧</strong>的结构如下：</p>
+<div class="block ref" id="Figure_1_DATAGRAM_Frame_Format">
+<pre tabindex="0"><code>数据报帧 {
+  类型 (i) = 0x30..0x31,
+  [长度 (i)],
+  数据报数据 (..),
+}
+</code></pre><p><a href="#Figure_1_DATAGRAM_Frame_Format">图1：数据报帧格式</a></p>
+</div>
+<p><strong>数据报帧</strong>包含着以下字段：</p>
+<dl>
+<dt>长度：</dt>
+<dd>
+<p>一个可变长度整型，标示着数据报数据字段以字节为单位的长度。只有当<code>LEN</code>比特位被置为<code>1</code>时，该字段才存在。当<code>LEN</code>比特位被置为<code>0</code>时，数据报数据字段一路延伸至QUIC数据包的末尾。注意，空数据报（也就是零长度）是被允许的。</p>
+</dd>
+<dt>数据报数据：</dt>
+<dd>
+<p>正在传递的数据报字节。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="5_Behavior_and_Usage">
+<h1>
+<a href="#5_Behavior_and_Usage">5. 行为与用法</a>
+</h1>
+<div class="content">
+<p>当应用通过QUIC连接发送数据报时，QUIC会创建一个新的<strong>数据报帧</strong>并将它放在首个可用的数据包中发送。这个帧<em><strong>应该</strong></em>被尽快发送（主要由拥塞控制等其他因素控制，如下文所述），并且<em><strong>可以</strong></em>和其他帧一起被合并。</p>
+<p>当某个QUIC终端接收到一个合法的<strong>数据报帧</strong>时，只要它有能力处理这个帧并且能够将内容存储在内存中，它就<em><strong>应该</strong></em>将数据立即传递给应用。</p>
+<p>就像<strong>流帧</strong>一样，<strong>数据报帧</strong>包含着应用数据并且<em><strong>必须</strong></em>收到0-RTT或1-RTT密钥的保护。</p>
+<p>注意，传输参数<code>max_datagram_frame_size</code>限制了<strong>数据报帧</strong>的最大尺寸，该限制值可能被传输参数<code>max_udp_payload_size</code>和终端间路径的最大传输单元（MTU）进一步限制。<strong>数据报帧</strong>不能被分段；因此，应用协议需要处理最大数据报尺寸被其他因素限制的情况。</p>
+</div>
+</section>
+<section class="page" id="5.1_Multiplexing_Datagrams">
+<h2>
+<a href="#5.1_Multiplexing_Datagrams">5.1. 数据报的多路复用</a>
+</h2>
+<div class="content">
+<p><strong>数据报帧</strong>直接归属于一条QUIC连接，并且没有与任何QUIC层的流ID关联。然而，应用可能希望通过标识符来区分特定的<strong>数据报帧</strong>，例如用于逻辑流的数据报，或区分不同类型的数据报。</p>
+<p>定义用于将不同种类的数据报或不同的数据报流多路复用的标识符是运行于QUIC上的应用协议的责任。数据报数据字段的语义及其解析方法是由应用定义的。</p>
+<p>如果应用需要支持多路数据报流的存在，一种推荐的方法是在数据报数据字段的起始位置使用一个可变长度整型。这是一个能够在最少空间内编码大量流的简单方法。</p>
+<p>QUIC实现<em><strong>应该</strong></em>向应用提供一个可以指定<strong>数据报流</strong>之间及其相对QUIC流的优先级的API。</p>
+</div>
+</section>
+<section class="page" id="5.2_Acknowledgement_Handling">
+<h2>
+<a href="#5.2_Acknowledgement_Handling">5.2. 处理确认</a>
+</h2>
+<div class="content">
+<p>尽管<strong>数据报帧</strong>在遭遇丢包时不会被重传，但它们是会触发ACK的（详见《<a href="">RFC9002</a>》）。接收方<em><strong>应该</strong></em>支持在响应接收到的仅包含<strong>数据报帧</strong>的数据包时推迟发送<strong>ACK帧</strong>（但不超过由<code>max_ack_delay</code>指定的限制），因为即便这些数据包暂时没有得到确认，发送方也不会采取任何行动。在数据包可能遭遇了丢包或时，接收方将恢复发送<strong>ACK帧</strong>，因为数据包的载荷对于接收方是未知的，<code>max_ack_delay</code>或其他协议组件的限制也会使得<strong>ACK帧</strong>恢复发送。</p>
+<p>就像对待其他ACK触发帧的行为一样，当发送方怀疑仅包含<strong>数据报帧</strong>的数据包遭遇了丢包时，它会发送探测数据包来引发更快的确认，详见《<a href="">RFC9002</a>》的<a href="">第6.2.4章</a>。</p>
+<p>如果发送方检测到包含着某个特定<strong>数据报帧</strong>的数据包可能遭遇了丢包，那么实现<em><strong>可以</strong></em>通知应用有关它认为该数据报遭遇了丢包的消息。</p>
+<p>类似地，如果包含着<strong>数据报帧</strong>的数据包得到了确认，那么实现<em><strong>可以</strong></em>通知作为发送方的应用有关该数据报传输与接收成功的消息。由于数据包乱序的存在，可能出现<strong>数据报帧</strong>起初被认为遭遇丢包但是后来被接收到且得到确认的情况。必须注意，对于某<strong>数据报帧</strong>的确认只能表明接收方的传输层处理了这个帧，并不保证接收方的应用成功处理了数据。因此，这个信号无法代替能够表明成功处理数据的应用层信号。</p>
+</div>
+</section>
+<section class="page" id="5.3_Flow_Control">
+<h2>
+<a href="#5.3_Flow_Control">5.3. 流量控制</a>
+</h2>
+<div class="content">
+<p><strong>数据报帧</strong>不提供任何显式的流量控制信号机制，并且不会被计入任何单条流层面上的和整条连接层面上的数据量限制。</p>
+<p>不为<strong>数据报帧</strong>提供流量控制，它所带来的风险在于接收方可能无法腾出足够的资源来处理这些帧。举个例子，接收方可能没有能力将帧的内容存储在内存中。然而，由于<strong>数据报帧</strong>天然具有不可靠的特性，如果接收方无法处理它们，那么它们<em><strong>可以</strong></em>被丢弃。</p>
+</div>
+</section>
+<section class="page" id="5.4_Congestion_Control">
+<h2>
+<a href="#5.4_Congestion_Control">5.4. 拥塞控制</a>
+</h2>
+<div class="content">
+<p><strong>数据报帧</strong>采用了QUIC连接的拥塞控制器。于是，在拥塞控制器批准之前（详见《<a href="">RFC9002</a>》），某条连接可能无法发送<strong>数据报帧</strong>。发送方<em><strong>必须</strong></em>要么推迟发送该帧，直到拥塞控制器批准为止，或者丢弃该帧，干脆不发送它（这时发送方<em><strong>可以</strong></em>通知应用有关该事件的消息）。使用了数据包限速（详见《<a href="">RFC9002</a>》的<a href="">第7.7章</a>）的实现还可以推迟<strong>数据报帧</strong>的发送，来维持稳定的数据包发送速率。</p>
+<p>实现可以选择性地支持由应用指定的发送超时时间，一旦超过了该时间，那么被拥塞控制机制限制的<strong>数据报帧</strong>就应该被丢弃，而不进行传输。</p>
+</div>
+</section>
+<section class="page" id="6_Security_Considerations">
+<h1>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p><strong>数据报帧</strong>与在同一QUIC连接中发送的其他数据共享相同的安全属性，并且都适用于《<a href="">RFC9000</a>》中描述的安全性上的考量。所有用<strong>数据报帧</strong>传输的应用数据都，像<strong>流帧</strong>一样，<em><strong>必须</strong></em>受到0-RTT或1-RTT密钥的保护。</p>
+<p>允许在0-RTT中发送<strong>数据报帧</strong>的应用协议需要定义0-RTT的使用范围；详见《<a href="">RFC9001</a>》的<a href="">第5.6章</a>。</p>
+<p>路径上的有能力丢弃数据包的中间设备可以检测到<strong>数据报帧</strong>的使用与否。由于<strong>数据报帧</strong>不需要使用传输层的重传，因此<strong>数据报帧</strong>对待数据包丢包的与众不同的响应行为可能令使用了该帧的连接被区分出来。</p>
+</div>
+</section>
+<section class="page" id="7_IANA_Considerations">
+<h1>
+<a href="#7_IANA_Considerations">7. 关于IANA的考量</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="7.1_QUIC_Transport_Parameter">
+<h2>
+<a href="#7.1_QUIC_Transport_Parameter">7.1. QUIC传输参数</a>
+</h2>
+<div class="content">
+<p>本文档在注册表“QUIC传输参数”中注册了一个新值，该注册表被维护于<a href="https://www.iana.org/assignments/quic">https://www.iana.org/assignments/quic</a>。</p>
+<dl>
+<dt>值：</dt>
+<dd>
+<p><code>0x20</code></p>
+</dd>
+<dt>参数名称：</dt>
+<dd>
+<p><code>max_datagram_frame_size</code></p>
+</dd>
+<dt>状态：</dt>
+<dd>
+<p>永久</p>
+</dd>
+<dt>规范：</dt>
+<dd>
+<p>RFC 9221</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="7.2_QUIC_Frame_Types">
+<h2>
+<a href="#7.2_QUIC_Frame_Types">7.2. QUIC帧类型</a>
+</h2>
+<div class="content">
+<p>本文档在注册表“QUIC帧类型”中注册了一个新值，该注册表被维护于<a href="https://www.iana.org/assignments/quic">https://www.iana.org/assignments/quic</a>。</p>
+<dl>
+<dt>值：</dt>
+<dd>
+<p><code>0x30-0x31</code></p>
+</dd>
+<dt>帧类型名称：</dt>
+<dd>
+<p><code>DATAGRAM</code></p>
+</dd>
+<dt>状态：</dt>
+<dd>
+<p>永久</p>
+</dd>
+<dt>规范：</dt>
+<dd>
+<p>RFC 9221</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="8_References">
+<h1>
+<a href="#8_References">8. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="8.1_Normative_References">
+<h2>
+<a href="#8.1_Normative_References">8.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="RFC9000">
+<p><a href="#RFC9000"><strong>[RFC9000]</strong></a> QUIC传输</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC9001">
+<p><a href="#RFC9001"><strong>[RFC9001]</strong></a> QUIC-TLS</p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="RFC9002">
+<p><a href="#RFC9002"><strong>[RFC9002]</strong></a> QUIC恢复</p>
+<p>Iyengar, J., Ed. and I. Swett, Ed., “QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="8.2_Informative_References">
+<h2>
+<a href="#8.2_Informative_References">8.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="RFC0768">
+<p><a href="#RFC0768"><strong>[RFC0768]</strong></a> </p>
+<p>Postel, J., “User Datagram Protocol”, STD 6, RFC 768, DOI 10.17487/RFC0768, August 1980, <a href="https://www.rfc-editor.org/info/rfc768">https://www.rfc-editor.org/info/rfc768</a>.</p>
+</div>
+<div class="out_ref" id="RFC6347">
+<p><a href="#RFC6347"><strong>[RFC6347]</strong></a> </p>
+<p>Rescorla, E. and N. Modadugu, “Datagram Transport Layer Security Version 1.2”, RFC 6347, DOI 10.17487/RFC6347, January 2012, <a href="https://www.rfc-editor.org/info/rfc6347">https://www.rfc-editor.org/info/rfc6347</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>本项工作的原始提案来自于Ian Swett。</p>
+<p>本文档收到了来自IETF QUIC工作组中诸多贡献者的反馈和建议，尤其是Nick Banks、Lucas Pardue、Rui Paulo、Martin Thomson、Victor Vasiliev和Chris Wood。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="tommy-pauly">Tommy Pauly</h5>
+<p>Apple Inc.</p>
+<p>One Apple Park Way</p>
+<p>Cupertino, CA 95014</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:tpauly@apple.com">tpauly@apple.com</a></p>
+<h5 id="eric-kinnear">Eric Kinnear</h5>
+<p>Apple Inc.</p>
+<p>One Apple Park Way</p>
+<p>Cupertino, CA 95014</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:ekinnear@apple.com">ekinnear@apple.com</a></p>
+<h5 id="david-schinazi">David Schinazi</h5>
+<p>Google LLC</p>
+<p>1600 Amphitheatre Parkway</p>
+<p>Mountain View, CA 94043</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:dschinazi.ietf@gmail.com">dschinazi.ietf@gmail.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>

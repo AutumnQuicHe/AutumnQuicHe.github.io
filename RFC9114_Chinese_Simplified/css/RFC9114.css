@@ -5,7 +5,7 @@
 /* content */
 /* block */
 html, body {
-  color: #cf9a61;
+  color: #27242b;
   background-color: #efefef;
   letter-spacing: 0.1px;
   font-size: 15px;
@@ -28,7 +28,7 @@ body::-webkit-scrollbar,
 
 body::-webkit-scrollbar-thumb,
 .sidebar::-webkit-scrollbar-thumb {
-  background: #efefef;
+  background: #dcc9c2;
 }
 
 body::-webkit-scrollbar-track,
@@ -43,7 +43,7 @@ body::-webkit-scrollbar-track,
 }
 .sidebar a:hover {
   text-decoration: none;
-  color: #b1948c;
+  color: #726c79;
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
@@ -62,9 +62,9 @@ section.page table, section.page th, section.page td {
 
 .content code {
   background: #efefef;
-  -webkit-box-shadow: inset 0 1px 10px #b68d9e4d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
-  -moz-box-shadow: inset 0 1px 10px #0000004d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
-  box-shadow: inset 0 1px 10px #0000004d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
+  -webkit-box-shadow: inset 0 1px 10px #cf9a61, 0 1px 0 #dcc9c21a, 0 -1px 0 #f1e4b91a;
+  -moz-box-shadow: inset 0 1px 10px #cf9a61, 0 1px 0 #dcc9c21a, 0 -1px 0 #f1e4b91a;
+  box-shadow: inset 0 1px 10px #cf9a61, 0 1px 0 #dcc9c21a, 0 -1px 0 #f1e4b91a;
 }
 .content em strong {
   text-shadow: 1px 1px 2px #f1e4b9;
@@ -101,8 +101,8 @@ section.page table, section.page th, section.page td {
   position: relative;
   overflow-wrap: break-word;
   border-top: 0px solid;
-  background: #cf9a61;
-  color: #efefef;
+  background: #f1e4b9;
+  color: #2f2f2f;
   border-radius: 2px;
 }
 .block.ref:before {
@@ -117,15 +117,18 @@ section.page table, section.page th, section.page td {
   margin: 10px 0 0 0;
 }
 .block.ref code {
-  background: #cf9a61;
-  color: #efefef;
+  background: #f1e4b9;
+  color: #2f2f2f;
   -webkit-box-shadow: inset 0 1px 10px #e0dcdc4d, 0 1px 0 #ffffff1a, 0 -1px 0 #0000001a;
 }
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
-  color: #efefef;
+  color: #2f2f2f;
 }
 .block.ref table, .block.ref th, .block.ref td {
-  border: 1px solid #efefef;
+  border: 1px solid #cf9a61;
+}
+.block.ref strong {
+  color: #2f2f2f;
 }
 .block.tip {
   background: #454849;

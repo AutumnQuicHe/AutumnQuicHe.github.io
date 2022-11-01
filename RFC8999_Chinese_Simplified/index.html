@@ -67,7 +67,7 @@
 <a href="#Appendix_A_Incorrect_Assumptions">附录A：不正确的猜想</a>
 </li>
 <li>
-<a href="#Author_s_Address">作者地址</a>
+<a href="#Authors_Address">作者地址</a>
 </li>
 </ul>
 </nav>
@@ -78,7 +78,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -179,7 +179,7 @@
 <a href="#2_Fixed_Properties_of_All_QUIC_Versions">2. 所有QUIC版本之间保持不变的属性</a>
 </h1>
 <div class="content">
-<p>除了提供安全、多路复用的传输功能，QUIC《<a href="/RFC9000_Chinese_Translation">QUIC协议</a>》还支持版本协商。这将使得协议能够在以后的岁月中为适应新的需求而更新，而协议的诸多特性可以随着版本的迭代而不断改变。</p>
+<p>除了提供安全、多路复用的传输功能，QUIC《<a href="../RFC9000_Chinese_Simplified">QUIC协议</a>》还支持版本协商。这将使得协议能够在以后的岁月中为适应新的需求而更新，而协议的诸多特性可以随着版本的迭代而不断改变。</p>
 <p>本文阐述QUIC的一些在新的QUIC版本开发及部署的过程中依旧保持不变的属性。所有这些不变属性都与IP版本无关。</p>
 <p>本文的主要目标是确保后续QUIC新版本的迭代。通过陈述QUIC的这些不可更改的属性，本文试图维持QUIC终端对QUIC协议任何其他方面的改动进行协商的能力。因此，这也保证了暴露到一条QUIC连接两个终端之外的信息量最少。QUIC协议在本文明确禁止之外的任何方面，都是可以在不同版本之间修改的。</p>
 <p><a href="#Appendix_A_Incorrect_Assumptions">附录A</a>包含一份非详尽的清单，列出了一些基于对QUIC版本1的了解可能做出的不正确的猜想，这些不适用于QUIC的任何版本。</p>
@@ -192,7 +192,7 @@
 <div class="content">
 <p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
 <p>本文定义了未来QUIC版本需要的属性，即使没有使用规范语言。</p>
-<p>本文使用了《<a href="/RFC9000_Chinese_Translation">QUIC协议</a>》的术语及标准转换。</p>
+<p>本文使用了《<a href="../RFC9000_Chinese_Simplified">QUIC协议</a>》的术语及标准转换。</p>
 </div>
 </section>
 <section class="page" id="4_Notational_Conventions">
@@ -200,7 +200,7 @@
 <a href="#4_Notational_Conventions">4. 标准规范</a>
 </h1>
 <div class="content">
-<p>数据包的格式使用本章定义的符号描述，这些符号与《<a href="/RFC9000_Chinese_Translation">QUIC协议</a>》中使用的一致。</p>
+<p>数据包的格式使用本章定义的符号描述，这些符号与《<a href="../RFC9000_Chinese_Simplified">QUIC协议</a>》中使用的一致。</p>
 <p>复杂的字段被命名后，由紧随命名的一个以一对花括号括起来的字段列表描述，列表中的字段以逗号分隔。</p>
 <p>单个字段包括长度信息、带正号的定值、可选值或本字段的副本。单个字段使用下述标准规范，且所有长度都以比特为单位：</p>
 <p><code>x (A)</code>: 表示<code>x</code>是<code>A</code>比特长度</p>
@@ -323,7 +323,7 @@
 <p>版本协商包不使用完全的或加密的保护。某些特定的QUIC版本可能包含准许终端鉴别支持版本列表里的值是否存在修改或损坏的协议手段。</p>
 <p>终端<em><strong>必须</strong></em>在其目标连接ID字段包含它收到的数据包的源连接ID值。<em><strong>必须</strong></em>将收到数据包的目标连接ID字段值复制给源连接ID字段，该值是客户端随机产生的。回显两个连接ID给客户端一些保证，表明服务端收到了包，且版本协商包不是由对其不可见的攻击者生成的。</p>
 <p>终端收到版本协商包后，可以在随后的数据包中更改QUIC版本。终端更改QUIC版本的条件将取决于其选择的版本。</p>
-<p>《<a href="/RFC9000_Chinese_Translation">QUIC协议</a>》详细描述了支持QUIC版本1的终端如何创建及处理一个版本协商包。</p>
+<p>《<a href="../RFC9000_Chinese_Simplified">QUIC协议</a>》详细描述了支持QUIC版本1的终端如何创建及处理一个版本协商包。</p>
 </div>
 </section>
 <section class="page" id="7_Security_and_Privacy_Considerations">
@@ -382,11 +382,11 @@
 <a href="#Appendix_A_Incorrect_Assumptions">附录A：不正确的猜想</a>
 </h1>
 <div class="content">
-<p>QUIC版本1《<a href="/RFC9000_Chinese_Translation">QUIC协议</a>》有一系列特性没有被保护为外部不可见，但是一般认为可以在后续的QUIC版本中更改。</p>
+<p>QUIC版本1《<a href="../RFC9000_Chinese_Simplified">QUIC协议</a>》有一系列特性没有被保护为外部不可见，但是一般认为可以在后续的QUIC版本中更改。</p>
 <p>本章列出了基于QUIC版本1的了解可能做出的一些错误猜想，其中一些陈述甚至对QUIC版本1也是错误的。这个列举并不充分，目的在于做一些阐述。</p>
 <p><strong>对于一个QUIC版本，下述任意一条甚至所有的陈述都可能是错的</strong>：</p>
 <ul>
-<li>QUIC使用TLS《<a href="/RFC9001_Chinese_Translation">QUIC TLS</a>》，而链路上一些TLS的信息是可见的。</li>
+<li>QUIC使用TLS《<a href="../RFC9001_Chinese_Simplified">QUIC TLS</a>》，而链路上一些TLS的信息是可见的。</li>
 <li>QUIC长包头只在连接建立阶段发生更改。</li>
 <li>五元组上的每条流都会包含一个连接建立过程。</li>
 <li>一条流的前几个包使用长包头。</li>
@@ -406,12 +406,12 @@
 </ul>
 </div>
 </section>
-<section class="page" id="Author_s_Address">
+<section class="page" id="Authors_Address">
 <h1>
-<a href="#Author_s_Address">作者地址</a>
+<a href="#Authors_Address">作者地址</a>
 </h1>
 <div class="content">
-<p>Martin Thomson</p>
+<h5 id="martin-thomson">Martin Thomson</h5>
 <p>Mozilla</p>
 <p>Email: <a href="mailto:mt@lowentropy.net">mt@lowentropy.net</a></p>
 <h2 id="译">译</h2>

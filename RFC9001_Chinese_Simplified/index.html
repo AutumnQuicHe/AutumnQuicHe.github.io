@@ -183,7 +183,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -277,7 +277,7 @@
 <a href="#1_Introduction">1. 介绍</a>
 </h1>
 <div class="content">
-<p>本文档描述了如何使用TLS（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》）来加固QUIC（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》）的安全。</p>
+<p>本文档描述了如何使用TLS（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》）来加固QUIC（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》）的安全。</p>
 <p>TLS 1.3比起之前的版本，在延迟方面为连接的建立提供了重要的性能提升。在没有数据包丢包的情况下，绝大多数新连接都能够在单次往返时间内得到建立和加固；当在相同客户端和服务器间进行后续连接时，客户端通常可以立即发送应用数据，也就是，使用零往返启动来进行连接。</p>
 <p>本文档描述了TLS作为QUIC的安全组件时是如何工作的。</p>
 </div>
@@ -288,7 +288,7 @@
 </h1>
 <div class="content">
 <p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
-<p>本文档使用了在《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》中建立的术语。</p>
+<p>本文档使用了在《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》中建立的术语。</p>
 <p>为了简洁，缩写TLS指代的是TLS 1.3，但也可以使用更高的版本；详见<a href="#4.2_TLS_Version">第4.2章</a>。</p>
 </div>
 </section>
@@ -346,7 +346,7 @@
 <a href="#3_Protocol_Overview">3. 协议概述</a>
 </h1>
 <div class="content">
-<p>QUIC（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》）负责数据包的可信度和完整性保护。为此它使用了衍生自TLS握手（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》）的密钥，但如<a href="#Figure_3_QUIC_Layers">图3</a>所示，TLS握手和警告消息由QUIC传输层直接传递，而不是在QUIC传输层的基础上使用TLS记录来传递（TCP是这么做的），也就是说QUIC接管了TLS记录层的职责。</p>
+<p>QUIC（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》）负责数据包的可信度和完整性保护。为此它使用了衍生自TLS握手（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》）的密钥，但如<a href="#Figure_3_QUIC_Layers">图3</a>所示，TLS握手和警告消息由QUIC传输层直接传递，而不是在QUIC传输层的基础上使用TLS记录来传递（TCP是这么做的），也就是说QUIC接管了TLS记录层的职责。</p>
 <div class="block ref" id="Figure_3_QUIC_Layers">
 <img src="/RFC9001_Chinese_Simplified/images/Figure_3_QUIC_Layers.svg"/>
 <p><a href="#Figure_3_QUIC_Layers">图3：QUIC的层</a></p>
@@ -376,7 +376,7 @@
 </h1>
 <div class="content">
 <p>QUIC使用<strong>加密帧</strong>传递TLS握手数据，每个帧由一些连续的握手数据块组成，并使用偏移值和长度值来区分数据块。这些帧被封装进QUIC数据包并受到当前密级的加密。就像基于TCP的TLS一样，一旦TLS握手数据被交付给QUIC，QUIC就有责任将数据可靠地交付给对端。每一份由TLS生成的数据分块都被关联到TLS正在使用的一组密钥。如果QUIC需要重传某份数据，那么它<em><strong>必须</strong></em>使用相同的密钥，哪怕TLS已经改用更新的密钥了。</p>
-<p>每个密级对应着一个数据包号空间。正在使用的数据包号空间决定了帧的语义。在特定的数据包号空间里，有些帧是被禁止使用的；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.5_Frames_and_Number_Spaces">第12.5章</a>。</p>
+<p>每个密级对应着一个数据包号空间。正在使用的数据包号空间决定了帧的语义。在特定的数据包号空间里，有些帧是被禁止使用的；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#12.5_Frames_and_Number_Spaces">第12.5章</a>。</p>
 <p>由于数据包在链路上可能出现乱序，QUIC使用数据包类型来表明用于保护给定数据包的密钥，如<a href="#Table_1_Encryption_Keys_by_Packet_Type">表1</a>所示。当要发送不同类型的数据包时，终端<em><strong>应该</strong></em>使用合并数据包的方法从而在单个UDP数据报中发送它们。</p>
 <div class="block ref" id="Table_1_Encryption_Keys_by_Packet_Type">
 <table>
@@ -422,7 +422,7 @@
 </table>
 <p><a href="#Table_1_Encryption_Keys_by_Packet_Type">表1：数据包类型对应的加密密钥</a></p>
 </div>
-<p>《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17_Packet_Formats">第17章</a>描述了各种密级的数据包如何参与握手过程。</p>
+<p>《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17_Packet_Formats">第17章</a>描述了各种密级的数据包如何参与握手过程。</p>
 </div>
 </section>
 <section class="page" id="4.1_Interface_to_TLS">
@@ -491,7 +491,7 @@
 </li>
 </ul>
 <p>每次将新数据交给TLS时，都会向TLS获取新的握手字节。如果TLS接收到的握手消息不完整或它没有数据需要发送，那么它可能不会提供任何字节数据。</p>
-<p><strong>加密帧</strong>的内容可能会被TLS增量处理，或被缓存起来直到有完整的可用消息。TLS负责缓存按序到达的握手字节数据。QUIC负责缓存未按序到达或属于尚未可用的密级的握手字节。QUIC不会为<strong>加密帧</strong>提供任何流量控制的方法；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#7.5_Cryptographic_Message_Buffering">第7.5章</a>。</p>
+<p><strong>加密帧</strong>的内容可能会被TLS增量处理，或被缓存起来直到有完整的可用消息。TLS负责缓存按序到达的握手字节数据。QUIC负责缓存未按序到达或属于尚未可用的密级的握手字节。QUIC不会为<strong>加密帧</strong>提供任何流量控制的方法；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#7.5_Cryptographic_Message_Buffering">第7.5章</a>。</p>
 <p>一旦TLS握手完成，这一事件就会随着TLS要发送的最后的握手字节一起被告知给QUIC。在这个阶段，握手期间对端宣告的传输参数会被验证；详见<a href="#8.2_QUIC_Transport_Parameters_Extension">第8.2章</a>。</p>
 <p>一旦握手完成，TLS就变得被动起来。TLS仍然可以从对端接收数据并作出响应，但它没有必要发送更多数据，除非被应用或QUIC专门提出要发送数据的请求。发送数据的可能原因之一是服务器可能想要向客户端新增或更新会话票据。</p>
 <p>当握手完成后，QUIC只需要向TLS提供以<strong>加密帧</strong>的形式到达的数据。和握手期间的行为一样，处理完接收到的数据后QUIC会向TLS获取新数据。</p>
@@ -554,11 +554,11 @@
 <a href="#4.3_ClientHello_Size">4.3. ClientHello的尺寸</a>
 </h2>
 <div class="content">
-<p>来自客户端的首个初始数据包包含着客户端首个加密握手消息的所有部分或起始部分，对TLS来说这个消息就是<code>ClientHello</code>（客户端问候）。服务器可能需要解析完完整的<code>ClientHello</code>（例如，为了访问服务器名称认证（SNI）和应用层协议协商（ALPN）等扩展）后才能决定要不要接受这个新传入的QUIC连接。如果<code>ClientHello</code>被拆分为多个初始数据包，那么这么做的服务器就需要缓存接收到的数据分段，这会在客户端地址尚未被验证时消耗过多资源。为了避免这一情况，服务器<em><strong>可以</strong></em>使用重试特性（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>）以仅缓存来自具有经验证地址的客户端的<code>ClientHello</code>消息。</p>
+<p>来自客户端的首个初始数据包包含着客户端首个加密握手消息的所有部分或起始部分，对TLS来说这个消息就是<code>ClientHello</code>（客户端问候）。服务器可能需要解析完完整的<code>ClientHello</code>（例如，为了访问服务器名称认证（SNI）和应用层协议协商（ALPN）等扩展）后才能决定要不要接受这个新传入的QUIC连接。如果<code>ClientHello</code>被拆分为多个初始数据包，那么这么做的服务器就需要缓存接收到的数据分段，这会在客户端地址尚未被验证时消耗过多资源。为了避免这一情况，服务器<em><strong>可以</strong></em>使用重试特性（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>）以仅缓存来自具有经验证地址的客户端的<code>ClientHello</code>消息。</p>
 <p>QUIC数据包和分帧过程会向<code>ClientHello</code>消息添加至少36字节的开销。如果客户端选择了长于零字节的源连接ID字段，那么这个开销还会增加。这个开销还不包含令牌字段和长于8字节的目标连接ID字段，当服务器发送重试数据包时会需要它们。</p>
 <p>一个典型的TLS<code>ClientHello</code>可以被轻松地放进1200字节的数据包中。然而，除了由QUIC引入的开销之外，还有其他因素会使得<code>ClientHello</code>的尺寸超过这一限制。较大的会话票据、多个或较大的密钥共享值和较长的受支持的加密方法、签名算法、版本、QUIC传输参数或其他可协商参数与扩展的列表都可能使得这条消息变大。</p>
 <p>对服务器而言，除了连接ID和令牌外，TLS会话票据的尺寸也可能会影响客户端能否高效地进行连接。尽可能减小这些值的尺寸可以提高客户端使用它们并且仍能将整个<code>ClientHello</code>消息放进首个初始数据包的可能性。</p>
-<p>TLS实现不需要确保<code>ClientHello</code>的尺寸足够大来满足QUIC对于传递初始数据包的数据报的要求；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#14.1_Initial_Datagram_Size">第14.1章</a>。QUIC实现会使用<strong>填充帧</strong>或数据包合并的方法来确保数据报足够大。</p>
+<p>TLS实现不需要确保<code>ClientHello</code>的尺寸足够大来满足QUIC对于传递初始数据包的数据报的要求；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14.1_Initial_Datagram_Size">第14.1章</a>。QUIC实现会使用<strong>填充帧</strong>或数据包合并的方法来确保数据报足够大。</p>
 </div>
 </section>
 <section class="page" id="4.4_Peer_Authentication">
@@ -569,7 +569,7 @@
 <p>有关验证的要求是视正在使用的应用协议而定的。TLS提供了验证服务器的手段，并且允许服务器请求进行客户端验证。</p>
 <p>客户端<em><strong>必须</strong></em>验证服务器的身份。这通常包含两部分验证过程，一是验证证书中包含着服务器的身份，二是验证证书是由可信任的实体签发的（有关样例详见《<a href="https://www.rfc-editor.org/info/rfc2818">RFC2818</a>》）。</p>
 <blockquote>
-<p>注意：当服务器提供用于验证的证书时，证书链的尺寸可能消耗大量字节。控制证书链的尺寸对于QUIC的性能是十分关键的，因为服务器在验证客户端地址前可发送的字节数不能超过接收到字节数的3倍；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。证书链的尺寸是可以被控制的，为此可以限制名称或扩展的数量；使用以较短的公钥表示方法，如ECDSA，表示的密钥；或使用证书压缩（详见《<a href="https://www.rfc-editor.org/info/rfc8879">COMPRESS</a>》）。</p>
+<p>注意：当服务器提供用于验证的证书时，证书链的尺寸可能消耗大量字节。控制证书链的尺寸对于QUIC的性能是十分关键的，因为服务器在验证客户端地址前可发送的字节数不能超过接收到字节数的3倍；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。证书链的尺寸是可以被控制的，为此可以限制名称或扩展的数量；使用以较短的公钥表示方法，如ECDSA，表示的密钥；或使用证书压缩（详见《<a href="https://www.rfc-editor.org/info/rfc8879">COMPRESS</a>》）。</p>
 </blockquote>
 <p>服务器<em><strong>可以</strong></em>在握手期间请求进行客户端验证。如果客户端在被请求验证后不能够提供证明，那么服务器<em><strong>可以</strong></em>拒绝这条连接。对于客户端验证的要求会基于应用协议和部署方法的不同而不同。</p>
 <p>服务器<em><strong>必须不</strong></em>使用握手后客户端验证（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.6.2">第4.6.2章</a>），因为QUIC提供的多路复用机制使得客户端不能将证书请求与触发它的应用层事件关联起来（详见《<a href="https://www.rfc-editor.org/info/rfc8740">HTTP2-TLS13</a>》）。更准确地说，在握手完成后服务器<em><strong>必须不</strong></em>发送TLS的<code>CertificateRequest</code>（证书请求）消息，并且客户端<em><strong>必须</strong></em>将接收到这种消息的情况视作类型为<code>PROTOCOL_VIOLATION</code>的连接错误。</p>
@@ -581,7 +581,7 @@
 </h2>
 <div class="content">
 <p>QUIC可以使用TLS 1.3的会话恢复特性。这可以在握手完成后通过使用<strong>加密帧</strong>传递<code>NewSessionTicket</code>（新会话票据）消息的方式来做到。会话恢复可以被用于提供0-RTT，无论0-RTT是否被禁用。</p>
-<p>使用会话恢复的终端可能需要在恢复会话时记录有关当前连接的一些信息。TLS会要求某些信息得到持续保留；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.6.1">第4.6.1章</a>。在恢复连接时，QUIC本身不依赖于任何被持续保留的状态，除非还使用了0-RTT；详见<a href="#4.6.1_Enabling_0-RTT">第4.6.1章</a>和《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#7.4.1_Values_of_Transport_Parameters_for_0_RTT">第7.4.1章</a>。应用协议可以依赖在被恢复的连接间持续保留的状态。</p>
+<p>使用会话恢复的终端可能需要在恢复会话时记录有关当前连接的一些信息。TLS会要求某些信息得到持续保留；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.6.1">第4.6.1章</a>。在恢复连接时，QUIC本身不依赖于任何被持续保留的状态，除非还使用了0-RTT；详见<a href="#4.6.1_Enabling_0-RTT">第4.6.1章</a>和《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#7.4.1_Values_of_Transport_Parameters_for_0_RTT">第7.4.1章</a>。应用协议可以依赖在被恢复的连接间持续保留的状态。</p>
 <p>客户端可以将任何恢复会话所需的状态与会话票据一起存储起来。服务器可以使用会话票据来协助保存状态。</p>
 <p>会话恢复使得服务器将原始连接上的活动与被恢复的连接关联起来，这可能涉及到客户端的隐私问题。客户端可以选择禁用恢复机制来避免建立这种关联。客户端<em><strong>不应该</strong></em>重用票据，因为这使得除服务器外的实体能够将不同连接关联起来；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#appendix-C.4">附录C.4</a>。</p>
 </div>
@@ -605,7 +605,7 @@
 <p>TLS在<code>NewSessionTicket</code>消息中定义的<code>early_data</code>（早期数据）扩展是为了（在<code>max_early_data_size</code>（最大早期数据尺寸）参数中）传达服务器愿意接受的TLS 0-RTT的数据量。QUIC并不使用TLS的早期数据。QUIC使用0-RTT数据包来传递早期数据。于是，<code>max_early_data_size</code>参数被重新定义，当它的值为<code>0xffffffff</code>时，意味着服务器愿意接受QUIC 0-RTT数据。想要表明服务器并不接受0-RTT数据，就要从<code>NewSessionTicket</code>中省略<code>early_data</code>扩展。客户端能够在QUIC 0-RTT中发送的数据量是由服务器提供的<code>initial_max_data</code>（初始最大数据量）传输参数控制的。</p>
 <p>若<code>max_early_data_size</code>字段的值并非<code>0xffffffff</code>，则服务器<em><strong>必须不</strong></em>发送<code>early_data</code>扩展。如果客户端收到的<code>NewSessionTicket</code>中包含<code>early_data</code>扩展但是<code>max_early_data_size</code>是其他值，那么客户端<em><strong>必须</strong></em>将此情况视作类型为<code>PROTOCOL_VIOLATION</code>的连接错误。</p>
 <p>想要发送0-RTT数据包的客户端在后续握手的<code>ClientHello</code>消息中使用<code>early_data</code>扩展；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.2">第4.2章</a>。然后它就能在0-RTT数据包中发送应用数据。</p>
-<p>如果服务器曾发送过<strong>新令牌帧</strong>，那么尝试0-RTT的客户端可能还会提供一个地址验证令牌；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
+<p>如果服务器曾发送过<strong>新令牌帧</strong>，那么尝试0-RTT的客户端可能还会提供一个地址验证令牌；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 </div>
 </section>
 <section class="page" id="4.6.2_Accepting_and_Rejecting_0-RTT">
@@ -633,7 +633,7 @@
 <a href="#4.7_HelloRetryRequest">4.7. HelloRetryRequest</a>
 </h2>
 <div class="content">
-<p>可以使用<code>HelloRetryRequest</code>消息（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.1.4">第4.1.4章</a>）来请求客户端提供密钥共享值等新信息，或验证客户端的一些特征。在QUIC看来，<code>HelloRetryRequest</code>与其他使用初始数据包传递的加密握手消息没有差别。尽管理论上可以使用这项特性来进行地址验证，但是QUIC实现<em><strong>应该</strong></em>改用重试特性来做地址验证；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
+<p>可以使用<code>HelloRetryRequest</code>消息（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.1.4">第4.1.4章</a>）来请求客户端提供密钥共享值等新信息，或验证客户端的一些特征。在QUIC看来，<code>HelloRetryRequest</code>与其他使用初始数据包传递的加密握手消息没有差别。尽管理论上可以使用这项特性来进行地址验证，但是QUIC实现<em><strong>应该</strong></em>改用重试特性来做地址验证；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 </div>
 </section>
 <section class="page" id="4.8_TLS_Errors">
@@ -642,9 +642,9 @@
 </h2>
 <div class="content">
 <p>如果TLS遇到了错误，那么它会按照《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-6">第6章</a>中定义的那样创建一个合适的警告。</p>
-<p>TLS警告会被转换为QUIC的连接错误。为了使创建出的QUIC错误码落在为<code>CRYPTO_ERROR</code>（加密错误）保留的范围内，警告描述的值需要与<code>0x0100</code>相加；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#20.1_Transport_Error_Codes">第20.1章</a>。相加的结果使用QUIC的类型为<code>0x1c</code>的<strong>连接关闭帧</strong>来发送。</p>
+<p>TLS警告会被转换为QUIC的连接错误。为了使创建出的QUIC错误码落在为<code>CRYPTO_ERROR</code>（加密错误）保留的范围内，警告描述的值需要与<code>0x0100</code>相加；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#20.1_Transport_Error_Codes">第20.1章</a>。相加的结果使用QUIC的类型为<code>0x1c</code>的<strong>连接关闭帧</strong>来发送。</p>
 <p>QUIC仅仅有能力传达级别为“致命”的警告。在TLS 1.3中，“警告”级别的唯一用处是发送连接关闭的信号；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-6.1">第6.1章</a>。由于QUIC提供了关闭连接的替代机制，并且TLS连接只会在遇到错误时才被关闭，QUIC终端<em><strong>必须</strong></em>将所有来自TLS的警告都视作为“致命”级别。</p>
-<p>QUIC允许使用通用的错误码来代替专门的错误码；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#11_Error_Handling">第11章</a>。对TLS警告来说，这就表示允许将任何警告都替换为通用的警告，比如<code>handshake_failure</code>（握手失败，在QUIC中的错误码为<code>0x0128</code>）。终端<em><strong>可以</strong></em>使用通用的错误码来避免暴露加密信息。</p>
+<p>QUIC允许使用通用的错误码来代替专门的错误码；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#11_Error_Handling">第11章</a>。对TLS警告来说，这就表示允许将任何警告都替换为通用的警告，比如<code>handshake_failure</code>（握手失败，在QUIC中的错误码为<code>0x0128</code>）。终端<em><strong>可以</strong></em>使用通用的错误码来避免暴露加密信息。</p>
 </div>
 </section>
 <section class="page" id="4.9_Discarding_Unused_Keys">
@@ -683,7 +683,7 @@
 <div class="content">
 <p>0-RTT数据包和1-RTT数据包共享同一个数据包号空间，并且客户端在发送了1-RTT数据包后就不会再发送0-RTT数据包（详见<a href="#5.6_Use_of_0-RTT_Keys">第5.6章</a>）。</p>
 <p>因此，客户端<em><strong>应该</strong></em>在建立了1-RTT密钥后立即弃用0-RTT密钥，因为在那之后它们不再有任何用处。</p>
-<p>除此之外，服务器<em><strong>应该</strong></em>在接收到1-RTT数据包后立即弃用0-RTT密钥。然而，由于数据包乱序的存在，0-RTT数据包可能晚于1-RTT数据包到达。服务器<em><strong>应该</strong></em>暂时保留0-RTT密钥以能够解密乱序数据包而不需要等对端用1-RTT密钥重传其中的数据。在接收到1-RTT数据包后，服务器<em><strong>必须</strong></em>在一段较短的时间内弃用0-RTT密钥；<em><strong>推荐</strong></em>的时长是探测包超时时间（PTO，详见《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》）的三倍大小。如果服务器判断它已经接收到了所有0-RTT数据包，那么它<em><strong>可以</strong></em>提早弃用0-RTT密钥，这可以通过追踪缺失的数据包号来做到。</p>
+<p>除此之外，服务器<em><strong>应该</strong></em>在接收到1-RTT数据包后立即弃用0-RTT密钥。然而，由于数据包乱序的存在，0-RTT数据包可能晚于1-RTT数据包到达。服务器<em><strong>应该</strong></em>暂时保留0-RTT密钥以能够解密乱序数据包而不需要等对端用1-RTT密钥重传其中的数据。在接收到1-RTT数据包后，服务器<em><strong>必须</strong></em>在一段较短的时间内弃用0-RTT密钥；<em><strong>推荐</strong></em>的时长是探测包超时时间（PTO，详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》）的三倍大小。如果服务器判断它已经接收到了所有0-RTT数据包，那么它<em><strong>可以</strong></em>提早弃用0-RTT密钥，这可以通过追踪缺失的数据包号来做到。</p>
 </div>
 </section>
 <section class="page" id="5_Packet_Protection">
@@ -752,7 +752,7 @@ server_initial_secret = HKDF-Expand-Label(initial_secret,
 <p>对于初始数据包，必须使用在TLS 1.3中定义的<code>HKDF-Expand-Label</code>函数，即便可使用的TLS版本中并不包含TLS 1.3。</p>
 <p>当服务器发送重试数据包以使用由服务器选择的连接ID时，用于构建后续初始数据包的秘密值会发生变化。在客户端为了响应来自服务器的初始数据包而更改目标连接ID时，这些秘密值不会发生变化。</p>
 <blockquote>
-<p>注意：目标连接ID字段的长度可以是不超过20字节的任意值，包括零长度，零长度的情况会在服务器发送具有零长度的源连接ID字段的重试数据包时出现。在启动重试流程后，初始密钥就不能使得客户端确信服务器接收到了它的数据包，所以客户端必须依靠包含重试数据包的通信才能验证服务器地址；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
+<p>注意：目标连接ID字段的长度可以是不超过20字节的任意值，包括零长度，零长度的情况会在服务器发送具有零长度的源连接ID字段的重试数据包时出现。在启动重试流程后，初始密钥就不能使得客户端确信服务器接收到了它的数据包，所以客户端必须依靠包含重试数据包的通信才能验证服务器地址；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 </blockquote>
 <p><a href="#Appendix_A_Sample_Packet_Protection">附录A</a>中展示了作为样例的初始数据包。</p>
 </div>
@@ -768,7 +768,7 @@ server_initial_secret = HKDF-Expand-Label(initial_secret,
 <p>当构建数据包时，AEAD函数会在进行头部保护前被应用；详见<a href="#5.4_Header_Protection">第5.4章</a>。未经保护的数据包头部是关联数据（A）的一部分。在处理数据包时，终端首先移除头部保护。</p>
 <p>数据包的密钥和IV的计算方法如<a href="#5.1_Packet_Protection_Keys">第5.1章</a>所述。随机数，N，是通过组合数据包保护的IV和数据包号的方式来构造的。以网络字节序重建的62位QUIC数据包号会以在左侧补零的方式被扩充至IV的长度。扩充后的数据包号与IV的按位异或结果就是AEAD的随机数。</p>
 <p>AEAD的关联数据，A，就是QUIC头部的内容，无论短包头还是长包头都是从首个字节开始，结束于且包含未受保护的数据包号。</p>
-<p>AEAD的输入明文，P，就是QUIC数据包的载荷，如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》中所述。</p>
+<p>AEAD的输入明文，P，就是QUIC数据包的载荷，如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》中所述。</p>
 <p>AEAD的输出密文，C，会代替P被传输至对端。</p>
 <p>一些AEAD函数对于在相同密钥和IV下能够加密的数据包数量有限制；详见<a href="#6.6_Limits_on_AEAD_Usage">第6.6章</a>。这个限制值可能会低于数据包号的数量限制。在超出当前使用的AEAD所设的任何限制前，终端<em><strong>必须</strong></em>发起密钥更新（详见<a href="#6_Key_Update">第6章</a>）。</p>
 </div>
@@ -931,11 +931,11 @@ if packet_type == Initial:
 </h2>
 <div class="content">
 <p>如果可以使用0-RTT密钥（详见<a href="#4.6.1_Enabling_0-RTT">第4.6.1章</a>），那么在缺乏针对重放攻击的保护措施的情况下就必须限制它们的使用以避免针对QUIC协议的重放攻击。</p>
-<p>在《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》定义的各种帧中，<strong>流帧</strong>、<strong>重置流帧</strong>、<strong>停止发送帧</strong>和<strong>连接关闭帧</strong>在与0-RTT一起使用时可能是不安全的，因为它们携带着应用数据。在0-RTT中接收到的应用数据会使得客户端处的应用重复处理相同数据，而不是只处理一次。客户端如果重复处理了经重放的应用数据，那么有可能产生意外的副作用。因此客户端<em><strong>必须不</strong></em>将0-RTT用于应用数据，除非正在运行的应用有意要求这么做。</p>
+<p>在《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》定义的各种帧中，<strong>流帧</strong>、<strong>重置流帧</strong>、<strong>停止发送帧</strong>和<strong>连接关闭帧</strong>在与0-RTT一起使用时可能是不安全的，因为它们携带着应用数据。在0-RTT中接收到的应用数据会使得客户端处的应用重复处理相同数据，而不是只处理一次。客户端如果重复处理了经重放的应用数据，那么有可能产生意外的副作用。因此客户端<em><strong>必须不</strong></em>将0-RTT用于应用数据，除非正在运行的应用有意要求这么做。</p>
 <p>使用QUIC的应用协议<em><strong>必须</strong></em>提供一份文件并在其中定义允许使用0-RTT的范围；否则，0-RTT只能被用于传递没有携带应用数据的QUIC帧。例如，HTTP对应的这份内容被描述于《<a href="https://www.rfc-editor.org/info/rfc8470">HTTP-REPLAY</a>》中，并且被使用在HTTP/3里；详见《<a href="https://tools.ietf.org/html/draft-ietf-quic-http-34">QUIC-HTTP</a>》的<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34#section-10.9">第10.9章</a>。</p>
 <p>尽管重放数据包可能会引发额外的连接尝试，但是处理经重放的却未携带应用数据的帧的影响仅限于改变相关连接的状态。使用经重放的数据包无法使得TLS握手成功完成。</p>
 <p>在TLS握手完成前，客户端<em><strong>可以</strong></em>对它发送的数据施加额外的限制。</p>
-<p>否则，客户端将0-RTT密钥与1-RTT密钥等同对待，只不过它不能用0-RTT密钥发送特定类型的帧；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.5_Frames_and_Number_Spaces">第12.5章</a>。</p>
+<p>否则，客户端将0-RTT密钥与1-RTT密钥等同对待，只不过它不能用0-RTT密钥发送特定类型的帧；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#12.5_Frames_and_Number_Spaces">第12.5章</a>。</p>
 <p>如果客户端接收到了能够表明服务器已经接受0-RTT数据的信号，那么它可以继续发送0-RTT数据，直到它接收到了服务器的所有握手消息。如果客户端接收到了能够表明0-RTT数据被拒绝的信号，那么它<em><strong>应该</strong></em>停止发送0-RTT数据。</p>
 <p>服务器<em><strong>必须不</strong></em>使用0-RTT密钥来保护数据包；它使用1-RTT密钥来保护对于0-RTT数据包的确认。客户端<em><strong>必须不</strong></em>尝试解密它接收到的0-RTT数据包，而是<em><strong>必须</strong></em>丢弃它们。</p>
 <p>一旦客户端已经建立了1-RTT密钥，那么它<em><strong>必须不</strong></em>再发送0-RTT数据包。</p>
@@ -956,7 +956,7 @@ if packet_type == Initial:
 <p>客户端还未经验证，除非服务器愿意接受预共享密钥并且已经验证过了客户端的预共享密钥绑定；详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-4.2.11">第4.2.11章</a>。</p>
 </li>
 <li>
-<p>客户端还未表现出活动的迹象，除非服务器已经用重试数据包或其他手段验证了客户端的地址；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
+<p>客户端还未表现出活动的迹象，除非服务器已经用重试数据包或其他手段验证了客户端的地址；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 </li>
 <li>
 <p>服务器准备对之响应的任何0-RTT数据都有可能是由重放攻击制造的。</p>
@@ -976,7 +976,7 @@ if packet_type == Initial:
 <a href="#5.8_Retry_Packet_Integrity">5.8. 重试数据包的完整性</a>
 </h2>
 <div class="content">
-<p>重试数据包（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17.2.5_Retry_Packet">第17.2.5章</a>）携带着重试完整性标签，该标签具有两项属性：它使得被网络意外破坏的数据包可以被丢弃，同时只有观测到初始数据包的实体才能发送合法的重试数据包。</p>
+<p>重试数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.5_Retry_Packet">第17.2.5章</a>）携带着重试完整性标签，该标签具有两项属性：它使得被网络意外破坏的数据包可以被丢弃，同时只有观测到初始数据包的实体才能发送合法的重试数据包。</p>
 <p>重试完整性标签是一个长度为128位的字段，它是将以下参数作为<code>AEAD_AES_128_GCM</code>（详见《<a href="https://www.rfc-editor.org/info/rfc5116">AEAD</a>》）的输入而计算出的结果。</p>
 <ul>
 <li>
@@ -1102,7 +1102,7 @@ if packet_type == Initial:
 <p>由于受来自下一阶段的密钥保护的数据包会与受来自上一阶段的密钥保护的数据包使用相同的密钥阶段，要想处理受旧密钥保护的数据包，就有必要区分这两种数据包。这可以通过使用数据包号来做到。如果重建出来的数据包号比当前密钥阶段的任一数据包号要小，那么这些数据包就要使用上一阶段的数据包保护密钥；如果重建出来的数据包号比当前密钥阶段的任一数据包号要大，那么这些数据包就要使用下一阶段的数据包保护密钥。</p>
 <p>为了确保在上一阶段、当前阶段和下一阶段的数据包保护密钥间选择的过程不会在计时侧信道上泄露最终用于移除数据包保护的是哪一组密钥，必须谨慎操作。有关更多信息，详见<a href="#9.5_Header_Protection_Timing_Side_Channels">第9.5章</a>。</p>
 <p>作为替代方案，终端可以仅维护两组数据包保护密钥，只需在经过对网络重排序来说充足的时间后将上一阶段的密钥替换为下一阶段的密钥。在这种情况下，只需要密钥阶段比特位就足以选择密钥。</p>
-<p>在将下一阶段的接收密钥提升为当前阶段后，终端<em><strong>可以</strong></em>在建立再下一组数据包保护密钥前等待一段约为一个探测包超时（PTO；详见《<a href="../RFC9002_Chinese_Translation">QUIC恢复</a>》）的时间。这组被推迟建立的新密钥<em><strong>可以</strong></em>在经过这段等待时间后才替换上一阶段的旧密钥。只不过有一个缺点，即PTO是一个主观的测量结果——也就是说，对端对于RTT的预估可能不同——这段等待时间既应该足够长以使得所有乱序数据包哪怕被确认了也都会被对端认定为丢包，又应该足够短以使得对端可以发起后续的密钥更新。</p>
+<p>在将下一阶段的接收密钥提升为当前阶段后，终端<em><strong>可以</strong></em>在建立再下一组数据包保护密钥前等待一段约为一个探测包超时（PTO；详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》）的时间。这组被推迟建立的新密钥<em><strong>可以</strong></em>在经过这段等待时间后才替换上一阶段的旧密钥。只不过有一个缺点，即PTO是一个主观的测量结果——也就是说，对端对于RTT的预估可能不同——这段等待时间既应该足够长以使得所有乱序数据包哪怕被确认了也都会被对端认定为丢包，又应该足够短以使得对端可以发起后续的密钥更新。</p>
 <p>在对端保留旧密钥期间，对端可能无法解密发起密钥更新的数据包，终端需要允许这种情况的存在。在接收到能够表明先前的密钥更新已经被接收到的确认后，终端在发起密钥更新前<em><strong>应该</strong></em>等待一段时长为PTO三倍大小的时间。若没有留足时间，可能导致数据包被丢弃。</p>
 <p>在接收到受新密钥保护的数据包后，终端保留旧的读取密钥的时长<em><strong>应该</strong></em>不超过PTO的三倍。在这段等待时间之后，旧的读取密钥和它们对应的秘密值<em><strong>应该</strong></em>被弃用。</p>
 </div>
@@ -1157,7 +1157,7 @@ if packet_type == Initial:
 </h2>
 <div class="content">
 <p>QUIC要求加密握手提供经认证的协议协商过程。TLS使用应用层协议协商（ALPN，详见《<a href="https://www.rfc-editor.org/info/rfc7301">ALPN</a>》）来选择应用协议。终端<em><strong>必须</strong></em>使用ALPN来协商应用协议，除非使用了其他机制来就应用协议达成一致。</p>
-<p>在使用ALPN时，如果没有协商出应用协议，那么终端<em><strong>必须</strong></em>立即使用值为<code>no_application_protocol</code>（无应用协议）的TLS警告（QUIC的错误码为<code>0x0178</code>；详见<a href="#4.8_TLS_Errors">第4.8章</a>）来关闭连接（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#10.2_Immediate_Close">第10.2章</a>）。尽管《<a href="https://www.rfc-editor.org/info/rfc7301">ALPN</a>》中只规定了服务器要使用此警告，但是QUIC客户端在ALPN协商失败时<em><strong>必须</strong></em>使用类型为<code>0x0178</code>的错误来终止连接。</p>
+<p>在使用ALPN时，如果没有协商出应用协议，那么终端<em><strong>必须</strong></em>立即使用值为<code>no_application_protocol</code>（无应用协议）的TLS警告（QUIC的错误码为<code>0x0178</code>；详见<a href="#4.8_TLS_Errors">第4.8章</a>）来关闭连接（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#10.2_Immediate_Close">第10.2章</a>）。尽管《<a href="https://www.rfc-editor.org/info/rfc7301">ALPN</a>》中只规定了服务器要使用此警告，但是QUIC客户端在ALPN协商失败时<em><strong>必须</strong></em>使用类型为<code>0x0178</code>的错误来终止连接。</p>
 <p>应用协议<em><strong>可以</strong></em>限制它所操作的QUIC版本。服务器<em><strong>必须</strong></em>选择一个与客户端所选QUIC版本兼容的应用协议。服务器<em><strong>必须</strong></em>将无法选出兼容的应用协议的情况视作类型为<code>0x0178</code>（相当于<code>no_application_protocol</code>）的连接错误。类似地，客户端<em><strong>必须</strong></em>将服务器选择了不兼容的应用协议的情况视作类型为<code>0x0178</code>的连接错误。</p>
 </div>
 </section>
@@ -1224,7 +1224,7 @@ if packet_type == Initial:
 <div class="content">
 <p>正如《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-8">第8章</a>所述，只要使用了TLS早期数据就会被暴露于重放攻击之下。QUIC的0-RTT有着类似的风险。</p>
 <p>终端<em><strong>必须</strong></em>实现并使用《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》中描述的重放保护，然而这些保护并不被认为是完美的。因此，对于重放攻击的风险还需要更多考量。</p>
-<p>QUIC并不易受到重放攻击，除非是利用QUIC传递的应用协议信息的攻击。基于在《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》中定义的帧类型的QUIC协议状态管理机制不易受到重放攻击。QUIC帧的处理是幂等的，在帧被重放、乱序或遭遇丢包时不会引发连接状态异常。QUIC连接期间产生的副作用在连接的生命周期结束后就会失效，除非是那些由QUIC承载的应用协议产生的副作用。</p>
+<p>QUIC并不易受到重放攻击，除非是利用QUIC传递的应用协议信息的攻击。基于在《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》中定义的帧类型的QUIC协议状态管理机制不易受到重放攻击。QUIC帧的处理是幂等的，在帧被重放、乱序或遭遇丢包时不会引发连接状态异常。QUIC连接期间产生的副作用在连接的生命周期结束后就会失效，除非是那些由QUIC承载的应用协议产生的副作用。</p>
 <p>TLS会话票据和地址验证令牌被用于在不同的连接间传递QUIC配置信息，尤其是，它使得服务器能够在连接建立和地址验证时高效地恢复状态数据。<em><strong>必须不</strong></em>使用它们在终端间传递应用语义；客户端<em><strong>必须</strong></em>将它们视作为内容不透明的值。如果这些令牌有可能被重用，那么它们就需要更强的针对重放攻击的保护。</p>
 <p>在某条连接上接受0-RTT的服务器比不接受0-RTT的服务器要消耗更多的计算资源。服务器在接受0-RTT时需要考虑到重放的可能性以及其他相关资源的消耗。</p>
 <p>管理与0-RTT相关的重放攻击的风险，其最终的责任在于应用协议。使用QUIC的应用协议<em><strong>必须</strong></em>描述该协议会怎样使用0-RTT以及用于抵御重放攻击的手段。对于重放风险的分析需要考虑所有会传递应用语义的QUIC协议特性。</p>
@@ -1238,7 +1238,7 @@ if packet_type == Initial:
 </h2>
 <div class="content">
 <p>如果一条较小的<code>ClientHello</code>（客户端问候）能使得服务器响应巨大的握手消息，它就能被用于数据包放大攻击，放大攻击者生成的流量。</p>
-<p>QUIC针对此类攻击，拥有三种防御手段。首先，包含<code>ClientHello</code>的数据包<em><strong>必须</strong></em>被扩充至一个下限值。其次，在向未经验证的源地址响应时，服务器发送的字节数禁止超过它接收到的字节数的三倍（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>）。最后，因为对于握手数据包的确认是经认证的，所有对此一无所知的攻击者无法伪造它们。综合起来，这些防御手段限制了放大攻击的放大量级。</p>
+<p>QUIC针对此类攻击，拥有三种防御手段。首先，包含<code>ClientHello</code>的数据包<em><strong>必须</strong></em>被扩充至一个下限值。其次，在向未经验证的源地址响应时，服务器发送的字节数禁止超过它接收到的字节数的三倍（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>）。最后，因为对于握手数据包的确认是经认证的，所有对此一无所知的攻击者无法伪造它们。综合起来，这些防御手段限制了放大攻击的放大量级。</p>
 </div>
 </section>
 <section class="page" id="9.4_Header_Protection_Analysis">
@@ -1892,10 +1892,10 @@ header = 4cfe4189
 <a href="#Authors_Addresses">联系作者</a>
 </h1>
 <div class="content">
-<p><strong>Martin Thomson (编辑)</strong></p>
+<h5 id="martin-thomson-编辑">Martin Thomson (编辑)</h5>
 <p>Mozilla</p>
-<p>Email: <a href="mainto:mt@lowentropy.net">mt@lowentropy.net</a></p>
-<p><strong>Sean Turner (编辑)</strong></p>
+<p>Email: <a href="mailto:mt@lowentropy.net">mt@lowentropy.net</a></p>
+<h5 id="sean-turner-编辑">Sean Turner (编辑)</h5>
 <p>sn3rd</p>
 <p>Email: <a href="mailto:sean@sn3rd.com">sean@sn3rd.com</a></p>
 <h2 id="译">译</h2>

@@ -29,6 +29,35 @@
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
 </li>
+<li>
+<a href="#Intruduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Conventions_and_Terminology">1.1. 约定及术语</a></li>
+<li><a href="#1.2_Notational_Conventions">1.2. 符号约定</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_Compression_Process_Overview">2. 压缩过程概览</a>
+<ul>
+<li>
+<a href="#2.1_Encoder">2.1. 编码器</a>
+<ul>
+<li><a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">2.1.1. 动态表插入限制</a></li>
+<li><a href="#2.1.2_Blocked_Streams">2.1.2. 阻塞流</a></li>
+<li><a href="#2.1.3_Avoiding_Flow_Control_Deadlocks">2.1.3. 避免流控死锁</a></li>
+<li><a href="#2.1.4_Known_Received_Count">2.1.2. 阻塞流</a></li>
+</ul>
+</li>
+<li>
+<a href="#2.2_Decoder">2.2. 解码器</a>
+<ul>
+<li><a href="#2.2.1_Blocked_Decoding">2.1.2. 阻塞流</a></li>
+<li><a href="#2.2.2_State_Synchronization">2.2.2. 状态同步</a></li>
+<li><a href="#2.2.3_Invalid_References">2.2.3. 无效引用</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </nav>
 <nav class="external">
@@ -38,7 +67,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -124,6 +153,166 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="Intruduction">
+<h1>
+<a href="#Intruduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>QUIC传输协议（<a href="#QUIC-TRANSPORT">QUIC-TRANSPORT</a>）设计的目的就是为了支持HTTP语义，而且其设计将HTTP/2（<a href="#HTTP2">HTTP/2</a>）的许多特性也包括进去了。HTTP/2使用HPACK（<a href="#RFC7541">RFC7541</a>）压缩头部和挂载字段。如果将HPACK直接应用于HTTP/3（<a href="#HTTP3">HTTP/3</a>）的话，那么会引入头部字段的队头阻塞问题，因为其设计是基于所有帧的所有流都是有序的这一假设之上的。</p>
+<p>QPACK复用了HPACK的核心概念，但是在这之上做了重新设计以支持在乱序传递时的正确性，并在实现上保持灵活性以取得在队头阻塞与最佳压缩比之间的弹性平衡。设计目标是在相同的损耗情况下，尽可能接近HPACK的压缩效率的同时，大幅降低队头阻塞。</p>
+<p>TODO：</p>
+<ul>
+<li>representation如何翻译</li>
+<li>PUSH请求译为：下推请求</li>
+</ul>
+</div>
+</section>
+<section class="page" id="1.1_Conventions_and_Terminology">
+<h2>
+<a href="#1.1_Conventions_and_Terminology">1.1. 约定及术语</a>
+</h2>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文使用下述术语：</p>
+<p>HTTP字段（HTTP fields）：作为HTTP消息的一部分发送的元数据。本术语包括头部和挂载字段。通俗来讲，术语“头部（headers）”已常用于指代HTTP头部字段和挂载字段，本文一般采用“字段（fields）”。</p>
+<p>HTTP字段行（HTTP field line）：作为HTTP字段组的组成部分发送的一个名值对（name-value pair）。详见《<a href="">HTTP</a>》的第<a href="">6.3</a>和<a href="">6.5</a>章。</p>
+<p>HTTP字段值（HTTP field value）：与字段名关联的数据，由该字段组内所有的同一字段名下的字段行构成，并通过逗号拼接在一起。</p>
+<p>字段组（Field section）：一个HTTP消息的所有有关HTTP字段行组成的有序集合。在一个字段组内，可以包含多个字段名相同的字段行。也可以包含相同的字段行。一条HTTP消息可以同时包含头部和挂载组。</p>
+<p>表示（Representation）：一种表示一个字段行的指令，可能通过引用动态表和静态表来表示。</p>
+<p>编码器（Encoder）：一种编码字段组的实现。</p>
+<p>解码器（Decoder）：一种解码字段组的实现。</p>
+<p>绝对索引（Absolute Index）：动态表中每个条目的唯一索引。</p>
+<p>基点（Base）：一个用于相对索引和反向索引的参考点。引用了动态表条目的表示，其索引值都是相对于基点来计算的。</p>
+<p>插入计数（Insert Count）：动态表中插入的条目的总数。</p>
+<p>注意QPACK是一个名称而不是缩写。</p>
+</div>
+</section>
+<section class="page" id="1.2_Notational_Conventions">
+<h2>
+<a href="#1.2_Notational_Conventions">1.2. 符号约定</a>
+</h2>
+<div class="content">
+<p>本文使用的图表格式参照《<a href="">RFC2360</a>》<a href="">第3.1章</a>，并附加下述约定：</p>
+<p><code>x (A)</code>表示<code>x</code>是<code>A</code>字节长度。</p>
+<p><code>x (A+)</code>表示<code>x</code>使用<a href="">第4.1.1章</a>定义的前缀整型编码，并以一个<code>A</code>字节的前缀开始。</p>
+<p><code>x ...</code>表示<code>x</code>是可变长度且延伸到区间的末端。</p>
+</div>
+</section>
+<section class="page" id="2_Compression_Process_Overview">
+<h1>
+<a href="#2_Compression_Process_Overview">2. 压缩过程概览</a>
+</h1>
+<div class="content">
+<p>与HPACK一样，QPACK使用两张表将字段行（“头部”）与索引进行关联。静态表（详见<a href="">第3.1章</a>）是预定义的，其中包含着常用的头部字段行（其中部分字段行的值是空值）。动态表（详见<a href="">第3.2章</a>）是建立在连接过程中的，会被编码器在编码字段块时用于索引头部和挂载字段行。</p>
+<p>QPACK定义了两种单向流，一种用于从编码器向解码器发送指令，另一种则用于其反向。</p>
+</div>
+</section>
+<section class="page" id="2.1_Encoder">
+<h2>
+<a href="#2.1_Encoder">2.1. 编码器</a>
+</h2>
+<div class="content">
+<p>编码器通过给列表中的每个字段行发射一个带索引的或明文的表示，将头部或挂载块转换成一系列表示，详见<a href="">第4.5章</a>。索引表示通过将明文的名称或值替换为一个静态表或动态表的索引，从而取得高压缩率。引用静态表和明文表示不需要任何动态状态，也不存在队头阻塞的风险。若编码器尚未收到一个表明在解码器中可以访问该条目的确认回复，则此时引用动态表存在队头阻塞的风险。</p>
+<p>编码器<em><strong>可以</strong></em>向其选择的动态表插入任意条目，而不限于其正在压缩的字段行。</p>
+<p>QPACK会维持每个字段组内的字段行的顺序。编码器<em><strong>必须</strong></em>以在字段块中出现的顺序发射字段表示。</p>
+<p>对于可选的状态追踪特性，QPACK在设计上将此负担放在编码器中，使得解码器的实现相对简单。</p>
+</div>
+</section>
+<section class="page" id="2.1.1_Limits_on_Dynamic_Table_Insertions">
+<h3>
+<a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">2.1.1. 动态表插入限制</a>
+</h3>
+<div class="content">
+<p>若表中存在不能被驱逐的条目，则将条目插入动态表可能不会成功。</p>
+<p>动态表条目在插入后不能立即驱逐，即使其尚未被引用。一旦动态表条目的插入得到确认，且没有外部未被确认的表示引用到该条目，则该条目就变成可以被驱逐的了。注意，在编码器流上的引用从不妨碍条目的驱逐，因为会确保这些引用在指令驱逐条目之前得到处理。</p>
+<p>若动态表在不驱逐其他条目的前提下没有足够空间留给一条新的条目，且将被驱逐的条目是不可驱逐的，那么编码器<em><strong>必须不</strong></em>插入该条目到动态表中（包括复制已经存在的条目）。为了避免这种情况，使用了动态表的编码器必须对被每个字段组引用的每条动态表条目保持追踪，直到这些表示被解码器确认，详见<a href="">第4.4.1章</a>。</p>
+<h4 id="2111-避免非法插入">2.1.1.1. 避免非法插入</h4>
+<p>为了确保编码器不被阻止添加新的条目，编码器可以避免引用接近被驱逐的条目。相较于引用这样的条目，编码器可以发射复制指令（详见<a href="">第4.3.4章</a>）并转而引用该复制条目。</p>
+<p>确认哪些条目最接近被引用所驱逐，取决于编码器的决定。一种启发式方法是把一个动态表中的固定数量的空间锁定：不论未被使用的空间还是可以通过发射非阻塞条目而重用的空间。为了达到这个目标，编码器可以维持一个排空索引，它是将发射索引的动态表中最小的绝对索引（详见<a href="">第3.2.4章</a>）。随着新的条目的插入，编码器增加排空索引以维持其不会引用的表中的块。对那些绝对索引小于排空索引的条目，如果编码器没有对其创建新的引用，则其未确认的引用的数目将最终降为零，使之最终被驱逐。</p>
+<p>TODO：图1，排空动态表条目</p>
+</div>
+</section>
+<section class="page" id="2.1.2_Blocked_Streams">
+<h3>
+<a href="#2.1.2_Blocked_Streams">2.1.2. 阻塞流</a>
+</h3>
+<div class="content">
+<p>因为QUIC并不确保不同流之间的数据有序传输，解码器可能收到引用一个其尚未收到的动态表条目的表示。</p>
+<p>每个编码的字段组包含一个“插入计数下限”（Required Insert Count，详见<a href="">第4.5.1章</a>），即解码字段组所需的插入计数最低值。对于一个编码时引用了动态表的字段组，其插入计数下限为所有动态表中受引用条目的绝对索引的最大值加<code>1</code>。对于一个没有引用动态表的字段块，其必要插入计数是零。</p>
+<p>当解码器收到一个必要插入计数大于解码器的插入计数的编码字段块时，流不能被立即处理，并被认为是“被阻塞的”，详见<a href="">第2.2.1章</a>。</p>
+<p>解码器使用<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>（QPACK阻塞流数目）设置指定可以被阻塞的流数目的上限，详见<a href="">第5章</a>。编码器<em><strong>必须</strong></em>始终将可被阻塞的流的数目限制在<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>值内。如果编码器遇到被阻塞的流超过其承诺支持的数目时，其<em><strong>必须</strong></em>将之视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（解码失败）类型的连接错误。</p>
+<p>注意，解码器可能不会在每条有被阻塞风险的流上阻塞。</p>
+<p>编码器可以决定是否冒险让某个流变成阻塞状态。如果<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>的值允许，通常可以通过引用正在传输中的动态表条目提升压缩率，但是如果出现丢包或乱序，解码器侧的流可能变成阻塞状态。编码器可以通过只引用已经被确认的动态表条目规避阻塞风险，但是这可能意味着使用明文。由于明文会使得编码字段块更大，可能导致编码器被拥塞或流量控制限制所阻塞。</p>
+</div>
+</section>
+<section class="page" id="2.1.3_Avoiding_Flow_Control_Deadlocks">
+<h3>
+<a href="#2.1.3_Avoiding_Flow_Control_Deadlocks">2.1.3. 避免流控死锁</a>
+</h3>
+<div class="content">
+<p>在流上被流量控制所限制的写指令可能造成死锁。</p>
+<p>解码器可能阻止携带编码字段块的流确认流量控制额度，直到编码流收到必要的更新。如果编码流（或整个连接）的流量控制额度的确认取决于携带编码字段块的流上数据的消耗与释放，可能引发死锁。</p>
+<p>通常来说，如果编码器隐瞒流量控制额度直到完全收到指令，包含大指令的流可能会死锁。</p>
+<p>为了避免此类死锁，编码器<em><strong>不应该</strong></em>写入指令，除非流与连接的流量控制额度足够支持传输整条指令。</p>
+</div>
+</section>
+<section class="page" id="2.1.4_Known_Received_Count">
+<h3>
+<a href="#2.1.4_Known_Received_Count">2.1.2. 阻塞流</a>
+</h3>
+<div class="content">
+<p>因为QUIC不保证不同流上传输的数据之间顺序交付，解码器可能会出现表示引用了一个其尚未收到的动态表条目。</p>
+<p>TODO：representation译为“表示”不太妥当。</p>
+<p>每个编码的字段组包含一个插入计数下限（详见<a href="">第4.5.1章</a>），即能够解码字段组所必需的最小插入计数。对于一个使用动态表引用进行编码的字段组而言，插入计数下限大于所有被引用的动态表条目的最大绝对索引。对于一个没有使用动态表进行编码的字段组而言，插入计数下限是零。</p>
+<p>当解码器收到一个插入计数下限大于其插入计数的编码字段组时，流不可以立即处理，而应视为“阻塞”，详见<a href="">第2.2.1章</a>。</p>
+<p>解码器通过<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>（QPACK阻塞流数设置）设定可以被阻塞的流的条数上限，详见<a href="">第5章</a>。任何时候，编码器都<em><strong>必须</strong></em>将可以被阻塞的流的条数限制在<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>指定的限界内。如果编码器出现阻塞流数超过其声明可以支持条数的情况，<em><strong>必须</strong></em>将其视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（QPACK解压失败）类型连接错误。</p>
+<p>注意，解码器可能不会在每条有阻塞风险的流上阻塞。</p>
+<p>编码器可以决定是否冒险让一条流被阻塞。如果<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>值允许，压缩效率通常可以通过引用仍然在传输中的动态表条目而提高，但是一旦出现丢包或乱序，流可能在解码器端阻塞。编码器可以通过只引用那些已经被确认的动态表条目从而避免阻塞风险，但是这可能意味着使用明文。由于明文使得编码字段组变大，可能导致编码器被拥塞控制或流量控制限制所阻塞。</p>
+</div>
+</section>
+<section class="page" id="2.2_Decoder">
+<h2>
+<a href="#2.2_Decoder">2.2. 解码器</a>
+</h2>
+<div class="content">
+<p>正如在HPACK中，解码器处理一系列表示，并发射相关字段组。它也处理从编码流收到的涉及修改动态表的指令。注意，编码字段组和编码流指令分别从单独的流到达。HPACK则不同，其编码字段组（头部块）可以包含修改动态表的指令，且不存在专门的流用于传输HPACK指令。</p>
+<p>解码器<em><strong>必须</strong></em>依照它们的表示在编码字段组中的次序发射字段行。</p>
+</div>
+</section>
+<section class="page" id="2.2.1_Blocked_Decoding">
+<h3>
+<a href="#2.2.1_Blocked_Decoding">2.1.2. 阻塞流</a>
+</h3>
+<div class="content">
+<p>一旦收到编码字段组，解码器就验证其插入计数下限。当插入计数下限小于或等于解码器的插入计数时，可以立即处理该字段组。否则，收到该字段组的流被阻塞。</p>
+<p>当被阻塞时，编码字段组数据<em><strong>应该</strong></em>继续呆在阻塞流的流量控制窗口内。直到流解除阻塞为止数据都不可用，而且过早地释放流量控制会让解码器容易遭受内存耗尽攻击。当插入计数下限大于或等于全体编码器已经开始读取的编码字段组的总插入计数下限时，流退出阻塞状态。</p>
+<p>当处理编码字段组时，解码器预期插入计数下限等于字段组可以解码的最小可行插入计数，详见<a href="">第2.1.2章</a>。如果出现插入计数下限小于解码器所预期的值，<em><strong>必须</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（QPACK解压失败）类型连接错误，详见<a href="">第2.2.3章</a>；如果出现插入计数下限大于其所预期的值，<em><strong>可以</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>类型连接错误。</p>
+</div>
+</section>
+<section class="page" id="2.2.2_State_Synchronization">
+<h3>
+<a href="#2.2.2_State_Synchronization">2.2.2. 状态同步</a>
+</h3>
+<div class="content">
+<p>解码器通过从解码流发送解码指令（详见<a href="">第4.4章</a>）通知对端下述事件。</p>
+<h4 id="2221-字段组处理完成">2.2.2.1. 字段组处理完成</h4>
+<p>在解码器完成解码一个使用包含动态表引用的表示编码的字段块后，其<em><strong>必须</strong></em>发射一个“块确认（Section Acknowledgment）”指令（详见<a href="">第4.4.1章</a>）。一条流可能携带多个字段块用于中间回复、挂载以及下推请求。编码器通过确认流上最早的、包含动态表引用的未确认字段块解析每条块确认指令。</p>
+<h4 id="2222-放弃流">2.2.2.2. 放弃流</h4>
+<p>当终端在流结束或在处理完所有编码字段块前收到其流重置，或在其中止该流读取后，其下达一个“流取消（Stream Cancellation）”指令，详见<a href="">第4.4.2章</a>。这种信号适用于所有的动态表引用均已解决的流。最大动态表容量（详见<a href="">第3.2.3章</a>）为零的解码器<em><strong>可以</strong></em>省略发送流取消指令，因为此时编码器不能有任何动态表引用。编码器不能通过该指令推断出任何对动态表的更新是否均已被收到。</p>
+<p>块确认和流取消指令允许编码器删除对动态表中条目的引用。当绝对索引小于“已知接收计数（Known Received Count）”的条目没有引用，则其是可驱逐的，详见<a href="">第2.1.1章</a>。</p>
+<h4 id="2223-新表条目">2.2.2.3. 新表条目</h4>
+<p>编码流在收到新表条目后，编码器选择何时发射“插入计数额度（Insert Count Increment）”指令，详见<a href="">第4.4.3章</a>。在添加完每条新动态表条目后都发射一条该类指令，将会给编码器提供最及时的反馈，但是也可能会造成解码器的其余反馈变得冗余。通过延迟插入计数额度指令，可能使得解码器能够合并多条插入计数额度指令，甚至用块确认指令彻底取代，详见<a href="">第4.4.1章</a>。然而，拖延太长时间可能导致不能压缩，例如编码器正在等待一个条目被确认后再使用。</p>
+</div>
+</section>
+<section class="page" id="2.2.3_Invalid_References">
+<h3>
+<a href="#2.2.3_Invalid_References">2.2.3. 无效引用</a>
+</h3>
+<div class="content">
+<p>如果解码器碰到字段行表示中指向一条已被驱逐或其绝对索引大于等于声明的“插入计数下限（Required Insert Count，详见<a href="">第4.5.1章</a>）”的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK解压失败（<code>QPACK_DECOMPRESSION_FAILED</code>）”类型连接错误。</p>
+<p>如果解码器碰到编码器指令中指向一条已被驱逐的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK编码流错误（<code>QPACK_ENCODER_STREAM_ERROR</code>）”类型连接错误。</p>
 </div>
 </section>
 </div>

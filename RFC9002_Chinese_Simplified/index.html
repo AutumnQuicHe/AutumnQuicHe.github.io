@@ -180,7 +180,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -274,7 +274,7 @@
 <a href="#1_Introduction">1. 介绍</a>
 </h1>
 <div class="content">
-<p>正如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》中描述的那样，QUIC是一种安全、通用的传输层协议。本文档描述了QUIC的丢包检测和拥塞控制机制。</p>
+<p>正如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》中描述的那样，QUIC是一种安全、通用的传输层协议。本文档描述了QUIC的丢包检测和拥塞控制机制。</p>
 </div>
 </section>
 <section class="page" id="2_Conventions_and_Definitions">
@@ -305,7 +305,7 @@
 <a href="#3_Design_of_the_QUIC_Transmission_Machinery">3. QUIC传输机制的设计</a>
 </h1>
 <div class="content">
-<p>在QUIC中，每次传输都会发送数据包头部，它表明了密级并且包含着一个数据包序列号（就是下文中的数据包号）。密级表明了数据包号空间，正如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.3_Packet_Numbers">第12.3章</a>中所述。在一条连接的生命周期中，同一数据包号空间中的数据包号不会重复。同一数据包号空间中的数据包号以单调递增的方式发送以避免歧义。保留某些数据包号不去使用，故意留出一些空档，是被允许的。</p>
+<p>在QUIC中，每次传输都会发送数据包头部，它表明了密级并且包含着一个数据包序列号（就是下文中的数据包号）。密级表明了数据包号空间，正如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#12.3_Packet_Numbers">第12.3章</a>中所述。在一条连接的生命周期中，同一数据包号空间中的数据包号不会重复。同一数据包号空间中的数据包号以单调递增的方式发送以避免歧义。保留某些数据包号不去使用，故意留出一些空档，是被允许的。</p>
 <p>这种设计使得不再需要区分传输和重传；它从QUIC版的TCP丢包检测机制中消去了大量的复杂度。</p>
 <p>QUIC数据包可以包含不同类型的多种帧。恢复机制确保了要求可靠分发的数据和帧要么被确认，要么被认定为丢包，然后在需要时用新数据包重新发送。数据包中包含的帧类型会影响恢复与拥塞控制的逻辑：</p>
 <ul>
@@ -379,7 +379,7 @@
 <a href="#4.6_Explicit_Correction_for_Delayed_Acknowledgments">4.6. 显式纠正确认延迟</a>
 </h2>
 <div class="content">
-<p>QUIC终端会测量在接收到数据包时和在发送相应的确认时之间的延迟，使得对端能够维护更准确的RTT预估；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
+<p>QUIC终端会测量在接收到数据包时和在发送相应的确认时之间的延迟，使得对端能够维护更准确的RTT预估；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
 </div>
 </section>
 <section class="page" id="4.7_Probe_Timeout_Replaces_RTO_and_TLP">
@@ -414,7 +414,7 @@
 <a href="#5_Estimating_the_Round-Trip_Time">5. 预估往返时间</a>
 </h1>
 <div class="content">
-<p>终端在架构中更上层的位置测量从数据包发送的一刻起至它被确认为止所经历的时间，并将之作为RTT样本。终端使用RTT样本和由对端报告的主机延迟（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>）来以统计上的方法创建对于网络路径RTT的描述。终端为每条路径上观测到的RTT样本（<code>rttvar</code>）计算以下三个值：在一段时间内的最小值（<code>min_rtt</code>）、以指数形式加权的滑动平均值（<code>smoothed_rtt</code>）、以及平均差（在后文中称之为“偏差”）。</p>
+<p>终端在架构中更上层的位置测量从数据包发送的一刻起至它被确认为止所经历的时间，并将之作为RTT样本。终端使用RTT样本和由对端报告的主机延迟（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2_Generating_Acknowledgments">第13.2章</a>）来以统计上的方法创建对于网络路径RTT的描述。终端为每条路径上观测到的RTT样本（<code>rttvar</code>）计算以下三个值：在一段时间内的最小值（<code>min_rtt</code>）、以指数形式加权的滑动平均值（<code>smoothed_rtt</code>）、以及平均差（在后文中称之为“偏差”）。</p>
 </div>
 </section>
 <section class="page" id="5.1_Generating_RTT_Samples">
@@ -461,14 +461,14 @@
 </h2>
 <div class="content">
 <p><code>smoothed_rtt</code>是终端RTT样本的以指数形式加权的滑动平均值，而<code>rttvar</code>用平均差的方式预估了RTT样本间的偏差。</p>
-<p><code>smoothed_rtt</code>的计算需要用到经过确认延迟调整的RTT样本。这些延迟是按照《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#19.3_ACK_Frames">第19.3章</a>中所描述的那样，从<strong>ACK帧</strong>的ACK延迟字段中解码出来的。</p>
-<p>对端报告的确认延迟可能会比它在握手期间宣称的<code>max_ack_delay</code>（最大ACK延迟，详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）还大。为了解决这个问题，终端在握手确认前<em><strong>应该</strong></em>按照《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.1.2_Handshake_Confirmed">第4.1.2章</a>中描述的那样，忽略<code>max_ack_delay</code>。当这种情况发生时，这些巨大的确认延迟很有可能不会反复出现，并且仅限于在握手期间出现。因此终端可以使用它们而不受限于<code>max_ack_delay</code>，避免RTT预估不必要地膨胀。</p>
+<p><code>smoothed_rtt</code>的计算需要用到经过确认延迟调整的RTT样本。这些延迟是按照《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#19.3_ACK_Frames">第19.3章</a>中所描述的那样，从<strong>ACK帧</strong>的ACK延迟字段中解码出来的。</p>
+<p>对端报告的确认延迟可能会比它在握手期间宣称的<code>max_ack_delay</code>（最大ACK延迟，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）还大。为了解决这个问题，终端在握手确认前<em><strong>应该</strong></em>按照《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#4.1.2_Handshake_Confirmed">第4.1.2章</a>中描述的那样，忽略<code>max_ack_delay</code>。当这种情况发生时，这些巨大的确认延迟很有可能不会反复出现，并且仅限于在握手期间出现。因此终端可以使用它们而不受限于<code>max_ack_delay</code>，避免RTT预估不必要地膨胀。</p>
 <p>注意，如果在对端报告确认延迟或预估<code>min_rtt</code>的过程中出现错误，那么巨大的确认延迟会导致<code>smoothed_rtt</code>的显著膨胀。因此，在握手确认前，如果使用确认延迟调整后的RTT样本低于<code>min_rtt</code>，那么终端<em><strong>可以</strong></em>忽略这样的RTT样本。</p>
 <p>在握手确认后，对端报告的任何大于其<code>max_ack_delay</code>的确认延迟都可以被认为是无意中重复计量的延迟，例如对端的调度器延迟或因之前的确认遭遇丢包而产生的延迟。不遵守协议的接收方也有可能引入额外的延迟。因此，这些额外的延迟被认为是路径延迟的有效部分，并被计入RTT预估。</p>
 <p>因此，当使用由对端报告的确认延迟来调整RTT样本时：</p>
 <ul>
 <li>
-<p><em><strong>可以</strong></em>忽略对初始数据包的确认延迟，因为这些确认不是被对端延误的（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）；</p>
+<p><em><strong>可以</strong></em>忽略对初始数据包的确认延迟，因为这些确认不是被对端延误的（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>）；</p>
 </li>
 <li>
 <p>在握手确认前，<em><strong>应该</strong></em>忽略对端的<code>max_ack_delay</code>；</p>
@@ -482,14 +482,14 @@
 </ul>
 <p>除此之外，终端可能在相应的解密密钥尚未可用时推迟确认的处理。例如，客户端可能接收到一个对于0-RTT数据包的确认但它却无法解密，因为1-RTT数据包保护密钥尚未可用。在这种情况下，终端<em><strong>应该</strong></em>在握手确认前从它的RTT样本中减去这些由本机产生的延迟。</p>
 <p>与《<a href="https://www.rfc-editor.org/info/rfc6298">RFC6298</a>》类似，<code>smoothed_rtt</code>和<code>rttvar</code>的计算过程如下所述。</p>
-<p>终端在连接建立期间初始化RTT预估器，以及在连接迁移期间重置预估器时也会将它初始化；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>。在任何新路径的RTT样本可用前，或在预估器被重置后，预估器都会使用初始RTT来初始化；详见<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>。</p>
+<p>终端在连接建立期间初始化RTT预估器，以及在连接迁移期间重置预估器时也会将它初始化；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>。在任何新路径的RTT样本可用前，或在预估器被重置后，预估器都会使用初始RTT来初始化；详见<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>。</p>
 <p><code>smoothed_rtt</code>和<code>rttvar</code>会以这种方式初始化，其中<code>kInitialRtt</code>为初始RTT值：</p>
 <div class="block ref" id="Pseudocode_5_3_1">
 <pre tabindex="0"><code>smoothed_rtt = kInitialRtt
 rttvar = kInitialRtt / 2
 </code></pre><p><a href="#Pseudocode_5_3_1"></a></p>
 </div>
-<p>网络路径的RTT样本被记录在<code>latest_rtt</code>中；详见<a href="#5.1_Generating_RTT_Samples">第5.1章</a>。在初始化后得到首份RTT样本时，使用该样本来重置预估器。这确保了预估器中不留有过去样本的历史记录。在其他路径上发送的数据包并不会为当前路径的RTT样本做出贡献，如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述。</p>
+<p>网络路径的RTT样本被记录在<code>latest_rtt</code>中；详见<a href="#5.1_Generating_RTT_Samples">第5.1章</a>。在初始化后得到首份RTT样本时，使用该样本来重置预估器。这确保了预估器中不留有过去样本的历史记录。在其他路径上发送的数据包并不会为当前路径的RTT样本做出贡献，如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述。</p>
 <p>在初始化后得到首份RTT样本时，以这种方式设置<code>smoothed_rtt</code>和<code>rttvar</code>：</p>
 <div class="block ref" id="Pseudocode_5_3_2">
 <pre tabindex="0"><code>smoothed_rtt = latest_rtt
@@ -517,7 +517,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 </h1>
 <div class="content">
 <p>QUIC发送方使用确认来检测遭遇丢包的数据包，使用PTO来确保确认已被接收到；详见<a href="#6.2_Probe_Timeout">第6.2章</a>。本章描述了这些算法。</p>
-<p>如果某数据包遭遇丢包，那么QUIC传输需要从该丢包的状态中恢复，例如通过重传数据、发送更新后的帧或放弃传输该帧的的方式。更多信息详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.3_Retransmission_of_Information">第13.3章</a>。</p>
+<p>如果某数据包遭遇丢包，那么QUIC传输需要从该丢包的状态中恢复，例如通过重传数据、发送更新后的帧或放弃传输该帧的的方式。更多信息详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.3_Retransmission_of_Information">第13.3章</a>。</p>
 <p>不像RTT测量和拥塞控制那样，每个数据包号空间中的丢包检测是独立的，因为RTT和拥塞控制都是路径的某些属性，而丢包检测还依赖着密钥的可用性。</p>
 </div>
 </section>
@@ -598,11 +598,11 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 </code></pre><p><a href="#Pseudocode_6_2_1_1"></a></p>
 </div>
 <p>PTO就是发送方为某数据包的确认应该等待的时间量。该时间量包含了预估的网络RTT（<code>smoothed_rtt</code>）、预估的偏差量（<code>4*rttvar</code>）和<code>max_ack_delay</code>，包含<code>max_ack_delay</code>能将接收方可以在发送确认前延迟的最长时间考虑进来。</p>
-<p>当在初始数据包号空间或握手数据包号空间中使用PTO时，其计算式中的<code>max_ack_delay</code>要设为<code>0</code>，因为对端不应该有意推迟发送这些数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>。</p>
+<p>当在初始数据包号空间或握手数据包号空间中使用PTO时，其计算式中的<code>max_ack_delay</code>要设为<code>0</code>，因为对端不应该有意推迟发送这些数据包；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2.1_Sending_ACK_Frames">第13.2.1章</a>。</p>
 <p>PTO的值<em><strong>必须</strong></em>不小于<code>kGranularity</code>，以避免计时器立即超时。</p>
 <p>当多个数据包号空间中的ACK触发包均在途时，计时器<em><strong>必须</strong></em>被设置为在初始数据包号空间和握手数据包号空间中较早超时的那个值。</p>
 <p>终端在握手确认前<em><strong>必须不</strong></em>为应用数据数据包号空间设置其PTO计时器。这么做避免了终端在对端还没有用于处理的密钥或终端还没有用于处理确认的密钥时就重传信息。举例来说，这种情况可能在客户端向服务器发送0-RTT数据包时出现；它无需了解服务器是否会有能力解密就会发送它们。类似地，这种情况还可能在服务器未等到确认客户端已验证完服务器证书从而读取1-RTT数据包就发送这些数据包时出现。</p>
-<p>发送方<em><strong>应该</strong></em>在每次发送或确认ACK触发包时，或当启用初始密钥或握手密钥时（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9_Discarding_Unused_Keys">第4.9章</a>），重启自己的PTO计时器。这确保了计算出来的PTO总是基于最新的RTT预估的，并且针对的总是不同数据包号空间中的那个正确的数据包。</p>
+<p>发送方<em><strong>应该</strong></em>在每次发送或确认ACK触发包时，或当启用初始密钥或握手密钥时（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#4.9_Discarding_Unused_Keys">第4.9章</a>），重启自己的PTO计时器。这确保了计算出来的PTO总是基于最新的RTT预估的，并且针对的总是不同数据包号空间中的那个正确的数据包。</p>
 <p>当PTO计时器超时时，<em><strong>必须</strong></em>增加PTO补偿，使得PTO被设置为当前量的两倍。除非是下文所述的情况，否则PTO补偿因子会在接收到确认时被重置。服务器可能在握手期间花费比其他时候更长的时间来响应数据包。为了保护这样的服务器免于重复的客户端探测包，尚未确定服务器是否已验证完自身地址的客户端处的PTO补偿不会被重置。也就是说，客户端不会在接收到来自初始数据包中的确认的时候重置PTO补偿因子。</p>
 <p>发送方速率的指数级降低非常重要，因为严重的拥塞引发的数据包或确认的丢包可能连续导致PTO超时。即使多个数据包号空间中均有在途数据包，所有空间中PTO的指数级增加也能避免对网络施加额外的负载。举个例子，初始数据包号空间中的超时会使得握手数据包号空间中的超时时间翻倍。</p>
 <p>连续PTO超时的总时长会受到空闲超时时间的限制。</p>
@@ -624,9 +624,9 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <a href="#6.2.2.1_Before_Address_Validation">6.2.2.1. 在地址验证之前</a>
 </h4>
 <div class="content">
-<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所规定的那样，在服务器验证完客户端在路径上的地址前，它能发送的数据量被限制于它所接收到数据量的三倍。如果不能发送更多数据，那么服务器<em><strong>必须不</strong></em>启动PTO计时器，除非接收到了来自客户端的数据报，因为在PTO超时时发送的数据包会被计入抗放大上限。</p>
+<p>如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所规定的那样，在服务器验证完客户端在路径上的地址前，它能发送的数据量被限制于它所接收到数据量的三倍。如果不能发送更多数据，那么服务器<em><strong>必须不</strong></em>启动PTO计时器，除非接收到了来自客户端的数据报，因为在PTO超时时发送的数据包会被计入抗放大上限。</p>
 <p>当服务器接收到了来自客户端的数据报时，抗放大上限会被提升，服务器会重置PTO计时器。如果这时PTO计时器被设置为了一个已过去的时间，那么它会立即超时。这么做能避免在发送对完成握手至关重要的数据包前发送新的1-RTT数据包。这种情况尤其会在服务器接受了0-RTT但是没有成功验证客户端地址时发生。</p>
-<p>由于服务器在接收到来自客户端的更多数据报前处于禁言状态，发送数据包来解禁服务器就成了客户端的责任，除非它能确定服务器已经完成了对它的地址验证（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8_Address_Validation">第8章</a>）。也就是说，如果客户端没有接收到任何对于它的握手数据包的确认，并且握手尚未确认（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.1.2_Handshake_Confirmed">第4.1.2章</a>），那么它<em><strong>必须</strong></em>设置PTO计时器，哪怕没有在途数据包。当此PTO超时时，如果客户端持有握手密钥，那么它<em><strong>必须</strong></em>发送一个握手数据包，否则它<em><strong>必须</strong></em>用一个载荷至少长1200字节的UD数据报P来发送一个初始数据包。</p>
+<p>由于服务器在接收到来自客户端的更多数据报前处于禁言状态，发送数据包来解禁服务器就成了客户端的责任，除非它能确定服务器已经完成了对它的地址验证（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8_Address_Validation">第8章</a>）。也就是说，如果客户端没有接收到任何对于它的握手数据包的确认，并且握手尚未确认（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#4.1.2_Handshake_Confirmed">第4.1.2章</a>），那么它<em><strong>必须</strong></em>设置PTO计时器，哪怕没有在途数据包。当此PTO超时时，如果客户端持有握手密钥，那么它<em><strong>必须</strong></em>发送一个握手数据包，否则它<em><strong>必须</strong></em>用一个载荷至少长1200字节的UD数据报P来发送一个初始数据包。</p>
 </div>
 </section>
 <section class="page" id="6.2.3_Speeding_up_Handshake_Completion">
@@ -635,8 +635,8 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 </h3>
 <div class="content">
 <p>当服务器接收到了一个包含重复的<strong>加密帧</strong>数据的初始数据包时，它可以假定客户端没有接收到服务器用初始数据包发送的任何数据，或客户端的预估RTT过小。当客户端在取得握手密钥前就接收到了握手数据包或1-RTT数据包，那么它可以假定服务器的部分甚至全部初始数据包都遭遇了丢包。</p>
-<p>为了在这些条件下加速握手完成，终端<em><strong>可以</strong></em>，但在每条连接上仅尝试数次，在PTO超时前发送一个包含未经确认的<strong>加密帧</strong>数据的数据包，不过这仍受到《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>中的地址验证限制。在每条连接上至多一次这么做，非常适合快速地从单个数据包丢包的状态中恢复。总是用重传数据包来响应接收到了但无法处理的数据包的终端要承担无限交换数据包的风险。</p>
-<p>终端还可以使用合并数据包（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#12.2_Coalescing_Packets">第12.2章</a>）的方法来确保每份数据报都能触发至少一次确认。例如，客户端可以将包含<strong>Ping帧</strong>和<strong>填充帧</strong>的初始数据包与0-RTT数据包合并，服务器可以将包含<strong>Ping帧</strong>的初始数据包与一个或多个其他数据包合并到首次发送的数据报中。</p>
+<p>为了在这些条件下加速握手完成，终端<em><strong>可以</strong></em>，但在每条连接上仅尝试数次，在PTO超时前发送一个包含未经确认的<strong>加密帧</strong>数据的数据包，不过这仍受到《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>中的地址验证限制。在每条连接上至多一次这么做，非常适合快速地从单个数据包丢包的状态中恢复。总是用重传数据包来响应接收到了但无法处理的数据包的终端要承担无限交换数据包的风险。</p>
+<p>终端还可以使用合并数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#12.2_Coalescing_Packets">第12.2章</a>）的方法来确保每份数据报都能触发至少一次确认。例如，客户端可以将包含<strong>Ping帧</strong>和<strong>填充帧</strong>的初始数据包与0-RTT数据包合并，服务器可以将包含<strong>Ping帧</strong>的初始数据包与一个或多个其他数据包合并到首次发送的数据报中。</p>
 </div>
 </section>
 <section class="page" id="6.2.4_Sending_Probe_Packets">
@@ -660,7 +660,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 </h2>
 <div class="content">
 <p>重试数据包使得客户端再发送一个初始数据包，能有效地重启连接的过程。重试数据包表明了初始数据包已被接收到但是没有得到处理。重试数据包不能被当作确认来对待，因为它既不表明数据包得到了处理，也没有指明数据包号。</p>
-<p>接收到重试数据包的客户端会重置拥塞控制器和丢包恢复状态，包括重置任何进行中的计时器。其他连接状态，尤其是加密握手消息，会得到保留；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17.2.5_Retry_Packet">第17.2.5章</a>。</p>
+<p>接收到重试数据包的客户端会重置拥塞控制器和丢包恢复状态，包括重置任何进行中的计时器。其他连接状态，尤其是加密握手消息，会得到保留；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.5_Retry_Packet">第17.2.5章</a>。</p>
 <p>客户端<em><strong>可以</strong></em>为服务器计算一份RTT预估，该值从首个初始数据包被发送起，至接收到重试数据包或版本协商数据包为止。客户端<em><strong>可以</strong></em>使用该值来作为初始RTT预估的默认值。</p>
 </div>
 </section>
@@ -669,11 +669,11 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <a href="#6.4_Discarding_Keys_and_Packet_State">6.4. 弃用密钥和数据包状态</a>
 </h2>
 <div class="content">
-<p>当初始数据包保护密钥和握手数据包保护密钥被弃用时（详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9_Discarding_Unused_Keys">第4.9章</a>）所有用这些密钥发送的数据包都不再能被确认，因为对于这些数据包的确认无法得到处理。发送方<em><strong>必须</strong></em>丢弃所有于这些数据包相关的用于恢复的状态数据，并且<em><strong>必须</strong></em>将它们从在途字节计数中移除。</p>
-<p>终端一旦开始使用握手数据包通信，就会停止发送和接收初始数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#17.2.2.1_Abandoning_Initial_Packets">第17.2.2.1章</a>。在这时，所有在途初始数据包的用于恢复的状态数据都会被丢弃。</p>
+<p>当初始数据包保护密钥和握手数据包保护密钥被弃用时（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#4.9_Discarding_Unused_Keys">第4.9章</a>）所有用这些密钥发送的数据包都不再能被确认，因为对于这些数据包的确认无法得到处理。发送方<em><strong>必须</strong></em>丢弃所有于这些数据包相关的用于恢复的状态数据，并且<em><strong>必须</strong></em>将它们从在途字节计数中移除。</p>
+<p>终端一旦开始使用握手数据包通信，就会停止发送和接收初始数据包；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.2.1_Abandoning_Initial_Packets">第17.2.2.1章</a>。在这时，所有在途初始数据包的用于恢复的状态数据都会被丢弃。</p>
 <p>当0-RTT被拒绝时，所有在途0-RTT数据包的用于恢复的状态数据都会被丢弃。</p>
 <p>如果服务器接受0-RTT，但是没有缓存比初始数据包更早到达的0-RTT数据包，那么提前到达的0-RTT数据包会被认定为丢包，但是这种情况不太会频繁出现。</p>
-<p>在用某密钥加密的数据包得到确认或被认定为丢包后一段时间后，该密钥应该被弃用。然而，在握手密钥和1-RTT密钥被认为同时对客户端和服务器可用时，初始秘密值和握手秘密值就会被弃用；详见《<a href="../RFC9001_Chinese_Translation">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Translation/#4.9.1_Discarding_Initial_Keys">第4.9.1章</a>。</p>
+<p>在用某密钥加密的数据包得到确认或被认定为丢包后一段时间后，该密钥应该被弃用。然而，在握手密钥和1-RTT密钥被认为同时对客户端和服务器可用时，初始秘密值和握手秘密值就会被弃用；详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#4.9.1_Discarding_Initial_Keys">第4.9.1章</a>。</p>
 </div>
 </section>
 <section class="page" id="7_Congestion_Control">
@@ -685,7 +685,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <p>QUIC为拥塞控制提供一些通用的信号，它们被设计为能够支持各种位于发送方一侧的算法。发送方可以单方面地选择使用不同的算法，例如CUBIC（详见《<a href="https://www.rfc-editor.org/info/rfc8312">RFC8312</a>》）。</p>
 <p>如果发送方使用的控制器与本文档中定义的不同，那么所选的控制器<em><strong>必须</strong></em>遵循《<a href="https://www.rfc-editor.org/info/rfc8085">RFC8085</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8085.html#section-3.1">第3.1章</a>中规定的拥塞控制规范。</p>
 <p>与TCP类似，仅包含<strong>ACK帧</strong>的数据包不会被计入在途字节计数，也不会受到拥塞控制。与TCP不一样的是，QUIC能够检测到这些数据包的丢包情况，并且<em><strong>可以</strong></em>使用此信息来调整拥塞控制器或调整仅包含<strong>ACK帧</strong>的数据包的发送速率，但本文档中并没有描述如何进行此过程。</p>
-<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述，每条路径上的拥塞控制器是独立的，所以在其他路径上发送的数据包不会影响当前路径上的拥塞控制器。</p>
+<p>如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#9.4_Loss_Detection_and_Congestion_Control">第9.4章</a>所述，每条路径上的拥塞控制器是独立的，所以在其他路径上发送的数据包不会影响当前路径上的拥塞控制器。</p>
 <p>本文档中的算法以字节为单位指定和使用控制器的拥塞窗口。</p>
 <p>如果在途字节数（详见<a href="#B.2_Variables_of_Interest">附录B.2</a>）会超过拥塞窗口，那么终端<em><strong>必须不</strong></em>发送数据包，除非这个数据包是因为PTO超时而发送的（详见<a href="#6.2_Probe_Timeout">第6.2章</a>），或是因为进入了恢复期而发送的（详见<a href="#7.3.2_Recovery">第7.3.2章</a>）。</p>
 </div>
@@ -695,7 +695,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <a href="#7.1_Explicit_Congestion_Notification">7.1. 显式拥塞通知</a>
 </h2>
 <div class="content">
-<p>如果一条路径被验证为支持显式拥塞通知（ECN，详见《<a href="https://www.rfc-editor.org/info/rfc3168">RFC3168</a>》和《<a href="https://www.rfc-editor.org/info/rfc8311">RFC8311</a>》），那么QUIC会将IP头部中的拥塞预警（CE）码点识别为一次拥塞的信号。本文档规定了终端在由对端报告的<code>ECN-CE</code>计数增加时应该如何作出响应；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.4.2_ECN_Validation">第13.4.2章</a>。</p>
+<p>如果一条路径被验证为支持显式拥塞通知（ECN，详见《<a href="https://www.rfc-editor.org/info/rfc3168">RFC3168</a>》和《<a href="https://www.rfc-editor.org/info/rfc8311">RFC8311</a>》），那么QUIC会将IP头部中的拥塞预警（CE）码点识别为一次拥塞的信号。本文档规定了终端在由对端报告的<code>ECN-CE</code>计数增加时应该如何作出响应；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.4.2_ECN_Validation">第13.4.2章</a>。</p>
 </div>
 </section>
 <section class="page" id="7.2_Initial_and_Minimum_Congestion_Window">
@@ -705,7 +705,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <div class="content">
 <p>QUIC以慢启动的方式启动每条连接，并将拥塞窗口设置为初始值。终端<em><strong>应该</strong></em>将初始拥塞窗口设置为最大数据报尺寸（<code>max_datagram_size</code>）的十倍大小，并且限制窗口不小于14720字节与最大数据报尺寸的两倍大小中的较大值。这种做法遵循的是《<a href="https://www.rfc-editor.org/info/rfc6928">RFC6928</a>》中的分析与推荐，并且提高了字节数限制来适应UDP中较小的8字节头部，而不是TCP中的20字节头部。</p>
 <p>如果在连接过程中最大数据报尺寸发生了变化，那么初始拥塞窗口<em><strong>应该</strong></em>用新的尺寸值来计算。如果为了完成握手而降低了最大数据报尺寸，那么<em><strong>应该</strong></em>将拥塞窗口设置为新的值。</p>
-<p>如《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所述，在验证完客户端的地址前，服务器会被抗放大上限所限制。尽管抗放大上限会阻止拥塞窗口被完全利用，因而减缓拥塞窗口的尺寸增长，但是它并不会直接影响到拥塞窗口。</p>
+<p>如《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>所述，在验证完客户端的地址前，服务器会被抗放大上限所限制。尽管抗放大上限会阻止拥塞窗口被完全利用，因而减缓拥塞窗口的尺寸增长，但是它并不会直接影响到拥塞窗口。</p>
 <p>最小拥塞窗口是拥塞窗口在应对丢包、由对端报告的<code>ECN-CE</code>计数增加或持续拥塞时能达到的最小值。<em><strong>推荐</strong></em>将该值设置为<code>2 * max_datagram_size</code>。</p>
 </div>
 </section>
@@ -814,7 +814,7 @@ rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
 <p>在这两个数据包被发送前，存在RTT样本。</p>
 </li>
 </ul>
-<p>这两个数据包<em><strong>必须</strong></em>是触发ACK的，因为接收方仅被要求在其最大确认延迟之内确认触发ACK的数据包；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
+<p>这两个数据包<em><strong>必须</strong></em>是触发ACK的，因为接收方仅被要求在其最大确认延迟之内确认触发ACK的数据包；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2_Generating_Acknowledgments">第13.2章</a>。</p>
 <p><em><strong>不应该</strong></em>在没有RTT样本时就开始一段持续拥塞。在得到首份RTT样本前，发送方基于初始RTT（详见<a href="#6.2.2_Handshakes_and_New_Paths">第6.2.2章</a>）建立PTO计时器，它可能会比实际RTT要大。存在RTT样本的这项要求防止了发送方在几乎没有发送过探测包的情况下就开始识别持续拥塞。</p>
 <p>由于网络拥塞不会受到数据包号空间的影响，所以持续拥塞<em><strong>应该</strong></em>将在所有数据包号空间中发送的数据包都考虑进来。尚未为全部数据包号空间建立状态数据的发送方或无法在不同数据包号空间间比较发送时间的QUIC实现<em><strong>可以</strong></em>仅使用得到确认的数据包号空间的状态数据。这种做法可能导致错误地识别到持续拥塞，但它不会引发漏判。</p>
 <p>与TCP的发送方对RTO（详见《<a href="https://www.rfc-editor.org/info/rfc5681">RFC5681</a>》）作出的响应行为类似，当识别出持续拥塞时，发送方的拥塞窗口<em><strong>必须</strong></em>被缩小至拥塞窗口的最小值（<code>kMinimumWindow</code>）。</p>
@@ -1090,7 +1090,7 @@ kPersistentCongestionThreshold = 3
 </h2>
 <div class="content">
 <p>要准确实现拥塞控制，QUIC发送方得在每一个ACK触发包得到确认或遭遇丢包前保持对它们的追踪。QUIC实现应该有能力通过数据包号和加密上下文访问到该追踪信息，并将每个数据包的追踪字段（详见<a href="#A.1.1_Sent_Packet_Fields">附录A.1.1</a>）存储起来用于丢包恢复和拥塞控制。</p>
-<p>在数据包被认定为丢包后，终端仍可以将它的状态数据保留一段时间以允许数据包乱序的情况出现；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#13.3_Retransmission_of_Information">第13.3章</a>。这使得发送方能够检测到无效的重传。</p>
+<p>在数据包被认定为丢包后，终端仍可以将它的状态数据保留一段时间以允许数据包乱序的情况出现；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#13.3_Retransmission_of_Information">第13.3章</a>。这使得发送方能够检测到无效的重传。</p>
 <p>每个数据包号空间中的已发送数据包都会被追踪，而对<strong>ACK帧</strong>的处理则只适用于单个空间。</p>
 </div>
 </section>
@@ -1190,7 +1190,7 @@ kPersistentCongestionThreshold = 3
 </dd>
 <dt><code>max_ack_delay</code>：</dt>
 <dd>
-<p>接收方有意拖延对处于应用数据数据包号空间中的数据包的确认的最长时间，其定义与同名传输参数一致（详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#18.2_Transport_Parameter_Definitions">第18.2章</a>）。注意在接收到的<strong>ACK帧</strong>中的实际<code>ack_delay</code>可能会因为计时器延迟、数据包乱序或丢包的原因而超过该值。</p>
+<p>接收方有意拖延对处于应用数据数据包号空间中的数据包的确认的最长时间，其定义与同名传输参数一致（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#18.2_Transport_Parameter_Definitions">第18.2章</a>）。注意在接收到的<strong>ACK帧</strong>中的实际<code>ack_delay</code>可能会因为计时器延迟、数据包乱序或丢包的原因而超过该值。</p>
 </dd>
 <dt><code>loss_detection_timer</code>：</dt>
 <dd>
@@ -1594,7 +1594,7 @@ SetLossDetectionTimer():
 <dl>
 <dt><code>max_datagram_size</code>：</dt>
 <dd>
-<p>发送方当前的最大载荷尺寸。其中不包含UDP或IP头部。最大的数据包尺寸会被用于计算拥塞窗口。终端基于其路径最大传输单元（PMTU；详见《<a href="../RFC9000_Chinese_Translation">QUIC传输</a>》的<a href="../RFC9000_Chinese_Translation/#14.2_Path_Maximum_Transmission_Unit">第14.2章</a>）来设置该值，且不会低于1200字节。</p>
+<p>发送方当前的最大载荷尺寸。其中不包含UDP或IP头部。最大的数据包尺寸会被用于计算拥塞窗口。终端基于其路径最大传输单元（PMTU；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14.2_Path_Maximum_Transmission_Unit">第14.2章</a>）来设置该值，且不会低于1200字节。</p>
 </dd>
 <dt><code>ecn_ce_counters[kPacketNumberSpace]</code>：</dt>
 <dd>
@@ -1835,10 +1835,10 @@ OnPacketAcked(acked_packet):
 <a href="#Authors_Addresses">联系作者</a>
 </h1>
 <div class="content">
-<p><strong>Jana Iyengar (编辑)</strong></p>
+<h5 id="jana-iyengar-编辑">Jana Iyengar (编辑)</h5>
 <p>Fastly</p>
-<p>Email: <a href="mainto:jri.ietf@gmail.com">jri.ietf@gmail.com</a></p>
-<p><strong>Ian Swett (编辑)</strong></p>
+<p>Email: <a href="mailto:jri.ietf@gmail.com">jri.ietf@gmail.com</a></p>
+<h5 id="ian-swett-编辑">Ian Swett (编辑)</h5>
 <p>Google</p>
 <p>Email: <a href="mailto:ianswett@google.com">ianswett@google.com</a></p>
 <h2 id="译">译</h2>

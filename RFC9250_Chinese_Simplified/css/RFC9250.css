@@ -127,6 +127,9 @@ section.page table, section.page th, section.page td {
 .block.ref table, .block.ref th, .block.ref td {
   border: 1px solid #fbf2db;
 }
+.block.ref strong {
+  color: #f2f2f2;
+}
 .block.tip {
   background: #454849;
   border-top-color: #284750;

@@ -30,41 +30,191 @@
 </ul>
 </li>
 <li>
-<a href="#Intruduction">1. 引言</a>
+<a href="#1_Introduction">1. 引言</a>
 <ul>
-<li><a href="#1.1%c2%a0Prior%c2%a0Versions%c2%a0of%c2%a0HTTP">1.1. HTTP旧版本</a></li>
-<li><a href="#1.2_Delegation_to_QUIC">1.2. 访问QUIC方式</a></li>
+<li><a href="#1.1_Prior_Versions_of_HTTP">1.1. 先前版本的HTTP</a></li>
+<li><a href="#1.2_Delegation_to_QUIC">1.2. 委托给QUIC</a></li>
 </ul>
 </li>
 <li>
-<a href="#2%c2%a0HTTP%c2%a03%c2%a0Protocol%c2%a0Overview">2. 引言</a>
+<a href="#2_HTTP3_Protocol_Overview">2. HTTP/3协议概览</a>
 <ul>
-<li><a href="#2.1_Document_Organization">2.1. 文档组织</a></li>
+<li><a href="#2.1_Document_Organization">2.1. 文档结构</a></li>
 <li><a href="#2.2_Conventions_and_Terminology">2.2. 约定及术语</a></li>
 </ul>
 </li>
 <li>
-<a href="#3_Connection_Setup_and_Management">3. 连接设置与管理</a>
+<a href="#3_Connection_Setup_and_Management">3. 连接的建立与管理</a>
 <ul>
 <li>
 <a href="#3.1_Discovering_an_HTTP_3_Endpoint">3.1. 发现HTTP/3终端</a>
 <ul>
-<li><a href="#3.1.1_HTTP_Alternative_Services">3.1.1. HTTP可选服务</a></li>
+<li><a href="#3.1.1_HTTP_Alternative_Services">3.1.1. HTTP替代服务</a></li>
+<li><a href="#3.1.2_Other_Schemes">3.1.2. 其他协议</a></li>
+</ul>
+</li>
+<li><a href="#3.2_Connection%20Establishment">3.2. 连接的建立</a></li>
+<li><a href="#3.3_Connection_Reuse">3.3. 连接的复用</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Expressing_HTTP_Semantics_in_HTTP3">4. 用HTTP/3表达HTTP语义</a>
+<ul>
+<li>
+<a href="#4.1_HTTP_Message_Framing">4.1. HTTP消息分帧</a>
+<ul>
+<li><a href="#4.1.1_Request_Cancellation_and_Rejection">4.1.1. 请求的取消与拒绝</a></li>
+<li><a href="#4.1.2_Malformed_Requests_and_Responses">4.1.2. 畸形的请求与响应</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.2_HTTP_Fields">4.2. HTTP字段</a>
+<ul>
+<li><a href="#4.2.1_Field_Compression">4.2.1. 字段的压缩</a></li>
+<li><a href="#4.2.2_Header_Size_Constraints">4.2.2. 头部尺寸的约束</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.3_HTTP_Control_Data">4.3. HTTP控制数据</a>
+<ul>
+<li><a href="#4.3.1_Request_Pseudo_Header_Fields">4.3.1. 请求中的伪标头字段</a></li>
+<li><a href="#4.3.2_Response_Pseudo_Header_Fields">4.3.2. 响应中的伪标头字段</a></li>
+</ul>
+</li>
+<li><a href="#4.4_The_CONNECT_Method">4.4. CONNECT方法</a></li>
+<li><a href="#4.5_HTTP_Upgrade">4.5. HTTP升级</a></li>
+<li><a href="#4.6_Server_Push">4.6. 服务器推送</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_Connection_Closure">5. 连接的关闭</a>
+<ul>
+<li><a href="#5.1_Idle_Connections">5.1. 空闲的连接</a></li>
+<li><a href="#5.2_Connection_Shutdown">5.2. 连接的正常关闭</a></li>
+<li><a href="#5.3_Immediate_Application_Closure">5.3. 由应用发起的即刻关闭</a></li>
+<li><a href="#5.4_Transport_Closure">5.4. 由传输层造成的关闭</a></li>
+</ul>
+</li>
+<li>
+<a href="#6_Stream_Mapping_and_Usage">6. 流的映射与用法</a>
+<ul>
+<li><a href="#6.1_Bidirectional_Streams">6.1. 双向流</a></li>
+<li>
+<a href="#6.2_Unidirectional_Streams">6.2. 单向流</a>
+<ul>
+<li><a href="#6.2.1_Control_Streams">6.2.1. 控制流</a></li>
+<li><a href="#6.2.2_Push_Streams">6.2.2. 推送流</a></li>
+<li><a href="#6.2.3_Reserved_Stream_Types">6.2.3. 被保留使用的流类型</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<a href="#10_Security_Considerations">10. 安全考量</a>
+<a href="#7_HTTP_Framing_Layer">7. HTTP分帧层</a>
 <ul>
-<li><a href="#10.1_Server_Authority">10.1. 认证服务器</a></li>
+<li><a href="#7.1_Frame_Layout">7.1. 帧结构</a></li>
 <li>
-<a href="#10.5_Denial_of_Service_Considerations">10.5. 拒绝服务考量</a>
+<a href="#7.2_Frame_Definitions">7.2. 帧定义</a>
 <ul>
-<li><a href="#10.5.1_Limits_on_Field_Section_Size">10.5.1. 字段大小限制</a></li>
+<li><a href="#7.2.1_DATA">7.2.1. 数据帧</a></li>
+<li><a href="#7.2.2_HEADERS">7.2.2. 标头帧</a></li>
+<li><a href="#7.2.3_CANCEL_PUSH">7.2.3. 取消推送帧</a></li>
+<li>
+<a href="#7.2.4_SETTINGS">7.2.4. 设置帧</a>
+<ul>
+<li><a href="#7.2.4.1_Defined_SETTINGS_Parameters">7.2.4.1. 已定义的**设置帧**参数</a></li>
+<li><a href="#7.2.4.2_Initialization">7.2.4.2. 初始化</a></li>
+</ul>
+</li>
+<li><a href="#7.2.5_PUSH_PROMISE">7.2.5. 推送承诺帧</a></li>
+<li><a href="#7.2.6_GOAWAY">7.2.6. 关闭帧</a></li>
+<li><a href="#7.2.7_MAX_PUSH_ID">7.2.7. 最大推送ID帧</a></li>
+<li><a href="#7.2.8_Reserved_Frame_Types">7.2.8. 保留使用的帧类型</a></li>
 </ul>
 </li>
 </ul>
+</li>
+<li>
+<a href="#8_Error_Handling">8. 错误处理</a>
+<ul>
+<li><a href="#8.1_HTTP3_Error_Codes">8.1. HTTP/3错误码</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_Extensions_to_HTTP3">9. HTTP/3的扩展</a>
+</li>
+<li>
+<a href="#10_Security_Considerations">10. 关于安全性的考量</a>
+<ul>
+<li><a href="#10.1_Server_Authority">10.1. 服务器的权威性</a></li>
+<li><a href="#10.2_Cross_Protocol_Attacks">10.2. 跨协议攻击</a></li>
+<li><a href="#10.3_Intermediary_Encapsulation_Attacks">10.3. 中间设备封装攻击</a></li>
+<li><a href="#10.4_Cacheability_of_Pushed_Responses">10.4. 被推送的响应的可缓存性</a></li>
+<li>
+<a href="#10.5_Denial_of_Service_Considerations">10.5. 对拒绝服务攻击的考量</a>
+<ul>
+<li><a href="#10.5.1_Limits_on_Field_Section_Size">10.5.1. 对字段组尺寸的限制</a></li>
+<li><a href="#10.5.2_CONNECT_Issues">10.5.2. 与CONNECT相关的问题</a></li>
+</ul>
+</li>
+<li><a href="#10.6_Use_of_Compression">10.6. 压缩的使用</a></li>
+<li><a href="#10.7_Padding_and_Traffic_Analysis">10.7. 填充与流量分析</a></li>
+<li><a href="#10.8_Frame_Parsing">10.8. 帧的解析</a></li>
+<li><a href="#10.9_Early_Data">10.9. 早期数据</a></li>
+<li><a href="#10.10_Migration">10.10. 迁移</a></li>
+<li><a href="#10.11_Privacy_Considerations">10.11. 关于隐私的考量</a></li>
+</ul>
+</li>
+<li>
+<a href="#11_IANA_Considerations">11. 关于IANA的考量</a>
+<ul>
+<li><a href="#11.1_Registration_of_HTTP3_Identification_String">11.1. HTTP/3标识字符串的注册项</a></li>
+<li>
+<a href="#11.2_New_Registries">11.2. 新注册表</a>
+<ul>
+<li><a href="#11.2.1_Frame_Types">11.2.1. 帧类型</a></li>
+<li><a href="#11.2.2_Settings_Parameters">11.2.2. 设置参数</a></li>
+<li><a href="#11.2.3_Error_Codes">11.2.3. 错误码</a></li>
+<li><a href="#11.2.4_Stream_Types">11.2.4. 流类型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#12_References">12. 参考文献</a>
+<ul>
+<li><a href="#12.1_Normative_References">12.1. 规范性参考文献</a></li>
+<li><a href="#12.2_Informative_References">12.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_A_Considerations_for_Transitioning_from_HTTP2">附录A. 从HTTP/2过渡时的考量</a>
+<ul>
+<li><a href="#A.1_Streams">A.1. 流</a></li>
+<li>
+<a href="#A.2_HTTP_Frame_Types">A.2. HTTP帧类型</a>
+<ul>
+<li><a href="#A.2.1_Prioritization_Differences">A.2.1. 优先级的差异</a></li>
+<li><a href="#A.2.2_Field_Compression_Differences">A.2.2. 字段压缩的差异</a></li>
+<li><a href="#A.2.3_Flow_Control_Differences">A.2.3. 流量控制的差异</a></li>
+<li><a href="#A.2.4_Guidance_for_New_Frame_Type_Definitions">A.2.4. 关于如何定义新的帧类型的指引</a></li>
+<li><a href="#A.2.5_Comparison_of_HTTP2_and_HTTP3_Frame_Types">A.2.5. HTTP/2和HTTP/3帧类型的比较</a></li>
+</ul>
+</li>
+<li><a href="#A.3_HTTP2_SETTINGS_Parameters">A.3. HTTP/2的设置帧参数</a></li>
+<li>
+<a href="#A.4_HTTP2_Error_Codes">A.4. HTTP/2的错误码</a>
+<ul>
+<li><a href="#A.4.1_Mapping_between_HTTP2_and_HTTP3_Errors">A.4.1. HTTP/2和HTTP/3错误间的映射</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
 </li>
 </ul>
 </nav>
@@ -75,7 +225,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 28, 2022
+            generated on Nov 2, 2022
     </div>
 </div>
 <div class="content">
@@ -163,39 +313,85 @@
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
 </div>
 </section>
-<section class="page" id="Intruduction">
+<section class="page" id="1_Introduction">
 <h1>
-<a href="#Intruduction">1. 引言</a>
+<a href="#1_Introduction">1. 引言</a>
 </h1>
 <div class="content">
+<p>HTTP语义（详见《<a href="">HTTP</a>》）被广泛用于互联网上的各种服务。其中最常见的是将这些语义与HTTP/1.1或HTTP/2协议一起使用。HTTP/1.1的用途是基于各种传输层和会话层的，而HTTP/2主要与基于TCP的TLS一起使用。HTTP/3同样支持HTTP语义，但是它的根基是一种全新的传输协议：QUIC。</p>
 </div>
 </section>
-<section class="page" id="1.1 Prior Versions of HTTP">
+<section class="page" id="1.1_Prior_Versions_of_HTTP">
 <h2>
-<a href="#1.1%c2%a0Prior%c2%a0Versions%c2%a0of%c2%a0HTTP">1.1. HTTP旧版本</a>
+<a href="#1.1_Prior_Versions_of_HTTP">1.1. 先前版本的HTTP</a>
 </h2>
 <div class="content">
+<p>HTTP/1.1（详见《<a href="">HTTP/1.1</a>》）使用以空白字符分隔的纯文本字段来表达HTTP消息。尽管这些消息对人类是可读的，但是使用空白字符来组合消息会带来解析上的复杂度和对各种怪异行为的过度容忍。</p>
+<p>由于HTTP/1.1不包含多路复用层，所以为了并行处理网络请求，通常需要用到复数条TCP连接。然而，这对拥塞控制和网络效率会产生负面影响，因为TCP连接互相之间不会共享拥塞控制状态。</p>
+<p>HTTP/2（详见《<a href="">HTTP/2</a>》）引入了二进制分帧和多路复用层来提升延迟上的表现而不需要对传输层进行修改。然而，由于HTTP/2多路复用的天然特性对于TCP的丢包恢复机制是不可见的，某个数据包的丢包或乱序会引起所有活跃的事务都经历一次停顿，无论该事务是否会被该数据包直接影响到。</p>
 </div>
 </section>
 <section class="page" id="1.2_Delegation_to_QUIC">
 <h2>
-<a href="#1.2_Delegation_to_QUIC">1.2. 访问QUIC方式</a>
+<a href="#1.2_Delegation_to_QUIC">1.2. 委托给QUIC</a>
 </h2>
 <div class="content">
+<p>QUIC传输协议中包含着流的多路复用和每条流上的流量控制，这和HTTP/2分帧层提供的功能类似。通过在单条流层面上提供的可靠性和在整条连接层面上提供的拥塞控制机制，比起TCP映射，QUIC有着提升HTTP性能的能力。QUIC还在传输层使用了TLS 1.3（详见《<a href="">TLS</a>》），这能提供与基于TCP的TLS相近的可信度和完整性保证，而且建立连接所需的延迟比起TCP快速打开（详见《<a href="">TFO</a>》）有所提升。</p>
+<p>本文档定义了HTTP/3：一种基于QUIC传输协议的HTTP语义映射，它大量借鉴了HTTP/2的设计。HTTP/3依靠QUIC来提供对数据的可信度和完整性保护；对端验证；以及可靠的、有序的且可以区分不同流的数据交付。虽然将流的生命周期和流量控制问题委托给了QUIC，但是每条流上都使用了一种与HTTP/2分帧类似的二进制帧结构。部分HTTP/2特性被吸收进了QUIC，而其他特性则基于QUIC进行了实现。</p>
+<p>《<a href="">QUIC传输</a>》中描述了QUIC。要完整了解HTTP/2，详见《<a href="">HTTP/2</a>》。</p>
 </div>
 </section>
-<section class="page" id="2 HTTP 3 Protocol Overview">
+<section class="page" id="2_HTTP3_Protocol_Overview">
 <h1>
-<a href="#2%c2%a0HTTP%c2%a03%c2%a0Protocol%c2%a0Overview">2. 引言</a>
+<a href="#2_HTTP3_Protocol_Overview">2. HTTP/3协议概览</a>
 </h1>
 <div class="content">
+<p>HTTP/3提供了一种使用QUIC传输协议的HTTP语义传输方式，以及与HTTP/2类似的内部分帧层。</p>
+<p>一旦客户端了解到某个网络终端处存在HTTP/3服务器，它就会打开一条QUIC连接。QUIC提供了协议协商、基于流的多路复用和流量控制机制。<a href="">第3.1章</a>描述了如何发现HTTP/3终端。</p>
+<p>在每条流内，HTTP/3通信的基本单元是帧（详见<a href="">第7.2章</a>）。每种帧类型都具有其特定用途。例如，<strong>标头帧</strong>和<strong>数据帧</strong>构成了HTTP请求和响应的基础（详见<a href="">第4.1章</a>）。会对整条连接产生影响的帧是在一条单独的控制流中传递的。</p>
+<p>请求的多路复用是使用QUIC的流抽象来做到的，详见《<a href="">QUIC传输</a>》的<a href="">第2章</a>。每一对请求与响应都会消耗掉一条QUIC流。流与流彼此独立，所以一条流的阻塞或丢包事件不会干涉其他流的传输进度。</p>
+<p>服务器推送是一种由HTTP/2（详见《<a href="">HTTP/2</a>》）引入的交互模式，它允许服务器在预料到客户端会发送某个请求时向客户端主动推送一次请求与响应的通信。这会增加网络负载，但是有可能在延迟表现上得到提升。多种HTTP/3帧被用于管理服务器推送，例如<strong>推送承诺帧</strong>、<strong>最大推送ID帧</strong>和<strong>取消推送帧</strong>。</p>
+<p>就像在HTTP/2中的那样，请求和响应的字段在传输时是经过压缩的。由于HPACK（详见《<a href="">HPACK</a>》）要求经压缩字段组的传输是有序的（而QUIC无法提供这种保证），因此HTTP/3用QPACK（详见《<a href="">QPACK</a>》）代替了HPACK。QPACK使用独立的单向流来修改和跟踪字段查找表的状态，同时经压缩的字段组会引用查找表的状态而不会对它作出修改。</p>
 </div>
 </section>
 <section class="page" id="2.1_Document_Organization">
 <h2>
-<a href="#2.1_Document_Organization">2.1. 文档组织</a>
+<a href="#2.1_Document_Organization">2.1. 文档结构</a>
 </h2>
 <div class="content">
+<p>以下章节详细地介绍了一条HTTP/3连接的生命周期：</p>
+<ul>
+<li>
+<p>《连接的建立与管理》（详见<a href="">第3章</a>）涉及了怎样发现一个HTTP/3终端和怎样建立一条HTTP/3连接。</p>
+</li>
+<li>
+<p>《用HTTP/3表达HTTP语义》（详见<a href="">第4章</a>）描述了怎样使用帧来表达HTTP语义。</p>
+</li>
+<li>
+<p>《连接的关闭》（详见<a href="">第5章</a>）描述了怎样终止，包括优雅地关闭和粗暴地中止，HTTP/3的连接。</p>
+</li>
+</ul>
+<p>接下来的章节中描述了在数据格式方面的协议以及与传输层的交互：</p>
+<ul>
+<li>
+<p>《流的映射与用法》（详见<a href="">第6章</a>）描述了QUIC流的使用方法。</p>
+</li>
+<li>
+<p>《HTTP分帧层》（详见<a href="">第7章</a>）描述了适用于大多数流的那些帧类型。</p>
+</li>
+<li>
+<p>《错误处理》（详见<a href="">第8章</a>）描述了怎样处理和表达一些出现了错误的情况，包括某条特定流上发生的错误和出现于整条连接上的错误。</p>
+</li>
+</ul>
+<p>最后的几篇章节提供的是附加资料：</p>
+<ul>
+<li>
+<p>《HTTP/3的扩展》（详见<a href="">第9章</a>）描述了将来的文档该如何添加新功能。</p>
+</li>
+<li>
+<p><a href="">附录A</a>中有一份针对HTTP/2和HTTP/3的更加详细的比较。</p>
+</li>
+</ul>
 </div>
 </section>
 <section class="page" id="2.2_Conventions_and_Terminology">
@@ -203,11 +399,74 @@
 <a href="#2.2_Conventions_and_Terminology">2.2. 约定及术语</a>
 </h2>
 <div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文使用了在《<a href="">QUIC传输</a>》中描述的可变长度整型编码。</p>
+<p>本文使用了以下术语：</p>
+<dl>
+<dt>中止：</dt>
+<dd>
+<p>连接或流的突然终止，可能是因发生错误而引起的。</p>
+</dd>
+<dt>客户端：</dt>
+<dd>
+<p>发起HTTP/3连接的终端。客户端发送HTTP请求，并接收HTTP响应。</p>
+</dd>
+<dt>连接：</dt>
+<dd>
+<p>在两个终端间使用QUIC作为传输协议的一条传输层连接。</p>
+</dd>
+<dt>连接错误：</dt>
+<dd>
+<p>一种会影响整条HTTP/3连接的错误。</p>
+</dd>
+<dt>终端：</dt>
+<dd>
+<p>连接的客户端或服务器。</p>
+</dd>
+<dt>帧：</dt>
+<dd>
+<p>在HTTP/3的一条流上的最小传输单元，由标头和一个可变长度的字节序列构成，后者的结构取决于帧的类型。</p>
+</dd>
+<dd>
+<p>被称作“帧”的协议元素同时出现于本文档和《<a href="">QUIC传输</a>》中。当“帧”指代的是来自《<a href="">QUIC传输</a>》的帧时，帧的名称前会加上“QUIC”，例如，“QUIC<strong>连接关闭帧</strong>”。没有该前缀的帧名称指代的是<a href="">第7.2章</a>中描述的帧。</p>
+</dd>
+<dt>HTTP/3连接：</dt>
+<dd>
+<p>一条应用协议被协商为HTTP/3的QUIC连接。</p>
+</dd>
+<dt>对端：</dt>
+<dd>
+<p>某个终端。当在讨论某个特定终端时，“对端”指的是远离此次讨论主体的另一个终端。</p>
+</dd>
+<dt>接收方：</dt>
+<dd>
+<p>正在接收帧的终端。</p>
+</dd>
+<dt>发送方：</dt>
+<dd>
+<p>正在发送帧的终端。</p>
+</dd>
+<dt>服务器：</dt>
+<dd>
+<p>接受了HTTP/3连接的终端。服务器接收HTTP请求，并发送HTTP响应。</p>
+</dd>
+<dt>流：</dt>
+<dd>
+<p>由QUIC传输协议提供的一条单向或双向的字节流。HTTP/3连接的所有流都可以被看作“HTTP/3流”，但是在HTTP/3内部定义了多种流类型。</p>
+</dd>
+<dt>流错误：</dt>
+<dd>
+<p>在单条流上发生的应用层面的错误。</p>
+</dd>
+</dl>
+<p>有关术语“内容”的定义详见《<a href="">HTTP</a>》的<a href="">第6.4章</a>。</p>
+<p>最后，有关术语“资源”、“消息”、“用户代理”、“源服务器”、“网关”、“中间设备”、“代理”和“隧道”的定义详见《<a href="">HTTP</a>》的<a href="">第3章</a>。</p>
+<p>本文中的数据包示意图使用了在《<a href="">QUIC传输</a>》的<a href="">第1.3章</a>中定义的格式来表示字段的顺序和尺寸。</p>
 </div>
 </section>
 <section class="page" id="3_Connection_Setup_and_Management">
 <h1>
-<a href="#3_Connection_Setup_and_Management">3. 连接设置与管理</a>
+<a href="#3_Connection_Setup_and_Management">3. 连接的建立与管理</a>
 </h1>
 <div class="content">
 </div>
@@ -217,41 +476,1863 @@
 <a href="#3.1_Discovering_an_HTTP_3_Endpoint">3.1. 发现HTTP/3终端</a>
 </h2>
 <div class="content">
+<p>HTTP需要依靠一种名为权威响应的概念：对于某个请求和某给定的创建响应时的目标资源状态，具有目标URI的身份标识的源服务器所能创建的最合适的那份响应。有关如何为某HTTP URI定位其权威服务器，详见《<a href="">HTTP</a>》的<a href="">第4.3章</a>。</p>
+<p>“https”协议将权威性与证书的持有者关联起来，该证书需要能够让客户端认定这个由URI的授权机构部分辨识的主机是可信的。一旦在TLS握手中接收到了服务器证书，客户端就 <em><strong>必须</strong></em>使用《<a href="">HTTP</a>》的<a href="">第4.3.4章</a>中描述的过程来验证证书与URI的源服务器是否匹配。如果证书没有通过该验证，那么客户端<em><strong>必须不</strong></em>将此服务器认定为这个源的权威服务器。</p>
+<p>客户端<em><strong>可以</strong></em>尝试访问一项具有“https”URI的资源，方法是依次将主机标识符解析为IP地址，然后向该地址的默认端口发起和建立QUIC连接（包括验证服务器证书，如上文所述），最后经由这条安全的连接向着服务器发送指向该URI的HTTP/3请求消息。除非使用了其他机制来选择HTTP/3协议，否则就在TLS握手期间的应用层协议协商扩展（ALPN；详见《<a href="">RFC7301</a>》）中使用“h3”这个词。</p>
+<p>连接性问题（例如，UDP被禁用）将导致无法建立QUIC连接；在这种情况下，客户端<em><strong>应该</strong></em>尝试使用基于TCP的HTTP版本。</p>
+<p>服务器<em><strong>可以</strong></em>在任一UDP端口上提供HTTP/3服务；替代服务的对外宣告中总是明确包含着端口号，URI中总是要么显式包含着端口号，要么使用特定协议的默认端口号。</p>
 </div>
 </section>
 <section class="page" id="3.1.1_HTTP_Alternative_Services">
-<h2>
-<a href="#3.1.1_HTTP_Alternative_Services">3.1.1. HTTP可选服务</a>
-</h2>
+<h3>
+<a href="#3.1.1_HTTP_Alternative_Services">3.1.1. HTTP替代服务</a>
+</h3>
 <div class="content">
+<p>HTTP源（<code>Origin</code>，URI中协议、主机名和端口的组合）可以对外宣告某个与自身对等的HTTP/3终端的存在，方法是使用响应里的标头字段“Alt-Svc”或以“h3”作为ALPN的HTTP/2替代服务帧（详见《<a href="">ALTSVC</a>》）。</p>
+<p>例如，某源可以通过在HTTP响应中包含以下标头字段的方式来表明同一主机名的UDP端口<code>50781</code>可以提供HTTP/3服务。</p>
+<pre tabindex="0"><code>Alt-Svc: h3=":50781"
+</code></pre><p>当接收到一条表明了对HTTP/3的支持的<code>Alt-Svc</code>记录时，客户端<em><strong>可以</strong></em>尝试与记录中的主机和端口建立QUIC连接；如果成功建立连接，那么客户端就能够使用本文档定义的映射来发送HTTP请求。</p>
 </div>
 </section>
-<section class="page" id="10_Security_Considerations">
+<section class="page" id="3.1.2_Other_Schemes">
+<h3>
+<a href="#3.1.2_Other_Schemes">3.1.2. 其他协议</a>
+</h3>
+<div class="content">
+<p>尽管HTTP并不依赖具体的传输协议，但是“http”协议将权威性与是否具有在由URI的授权机构部分标识的任意主机的指定端口上接受TCP连接的能力关联在一起。因为HTTP/3并不使用TCP，所以HTTP/3不能被用于为了某由“http”URI标识的资源而直接访问权威服务器的情况。然而，《<a href="">ALTSVC</a>》等协议扩展允许权威服务器标识另一些同样具有权威性的，且可以通过HTTP/3来访问的服务。</p>
+<p>在向着协议部分并非“https”的源发送请求前，客户端 <em><strong>必须</strong></em>确保服务器愿意以那种协议来提供服务。对于协议部分是“http”的源，《<a href="">RFC8164</a>》提供了一种实验性的方法来判断。在将来，其他机制可能会因为各种协议而被制定出来。</p>
+</div>
+</section>
+<section class="page" id="3.2_Connection Establishment">
+<h2>
+<a href="#3.2_Connection%20Establishment">3.2. 连接的建立</a>
+</h2>
+<div class="content">
+<p>HTTP/3依靠第1版QUIC作为底层的传输协议。将来的规范可能允许HTTP/3使用其他版本的QUIC协议。</p>
+<p>第1版QUIC使用TLS 1.3或更高版本来作为其握手协议。HTTP/3客户端必须支持一种能在TLS握手期间向服务器表明目标主机的机制。如果服务器是使用域名（详见《<a href="">DNS-TERMS</a>》）来标识的，那么客户端 <em><strong>必须</strong></em>发送TLS扩展“服务器名称指示”（SNI；详见《<a href="">RFC6066</a>》），除非使用了其他机制来表明目标主机。</p>
+<p>QUIC连接的建立方法如《<a href="">QUIC传输</a>》所述。在连接建立期间，通过在TLS握手中使用“h3”作为ALPN的方式，可以表明对HTTP/3的支持。在此次握手中还<em><strong>可以</strong></em>表明对其他应用层协议的支持。</p>
+<p>尽管适用于作为核心的QUIC协议的连接级的选项是在一开始的加密握手中就被设置好的，但是特定于HTTP/3的设置是用<strong>设置帧</strong>来传递的。在QUIC连接建立完成后，各个终端 <em><strong>必须</strong></em>将<strong>设置帧</strong>作为各自的HTTP控制流中首个发送的帧。</p>
+</div>
+</section>
+<section class="page" id="3.3_Connection_Reuse">
+<h2>
+<a href="#3.3_Connection_Reuse">3.3. 连接的复用</a>
+</h2>
+<div class="content">
+<p>即使经过多次请求，HTTP/3连接也会保持开放。为了保持最佳性能，允许客户端将连接保持开放，直到它判断无需与服务器进行更多通信（例如，当用户从某网页跳转去了别的地方）或直到服务器关闭了连接。</p>
+<p>只要一条与某服务器终端的连接存在，该连接就<em><strong>可以</strong></em>被复用于具有不同的URI授权机构部分的其他请求。要为新的源使用一条现存的连接，客户端 <em><strong>必须</strong></em>使用在《<a href="">HTTP</a>》的<a href="">第4.3.4章</a>中描述的过程来验证由服务器提供的证书与新的源服务器是否匹配。这意味着客户端需要保留客户端证书及用于验证证书的附加信息；不这么做的客户端将无法为其他的源复用连接。</p>
+<p>只要证书因为任何理由不适用于新的源，那么连接<em><strong>必须不</strong></em>被复用，<em><strong>应该</strong></em>为这个新的源连理新的连接。如果使得证书无法通过验证的原因还适用于其他已经关联到此准备复用的连接上的源，那么客户端<em><strong>应该</strong></em>为这些源重新验证服务器证书。例如，如果某个证书的验证是因为证书已经过期或已被吊销而没有通过的，那么就能用这条理由来令所有正使用着该证书的源的权威性都无效。</p>
+<p>对于一对给定的IP地址和UDP端口，客户端<em><strong>不应该</strong></em>打开超过一条HTTP/3连接，无论这对IP地址和端口是由URI、所选的替代服务（详见《<a href="">ALTSVC</a>》）或代理配置给出的，还是由以上之一的名称解析而产生的。客户端<em><strong>可以</strong></em>使用不同的传输或TLS配置来向相同的IP地址和UDP端口对打开多条HTTP/3连接，但<em><strong>应该</strong></em>避免使用相同配置创建复数条连接。</p>
+<p>建议服务器尽可能久地将HTTP/3连接维持在开放状态，但是在有必要时允许服务器终止空闲的连接。当任一终端选择关闭HTTP/3连接时，正在关闭连接的终端<em><strong>应该</strong></em>首先发送一个<strong>关闭帧</strong>（详见<a href="">第5.2章</a>），从而让双方都能对先前发送的帧是否已得到处理做出可靠的判断，并且优雅地关闭或终止所有必要的且仍在运行的任务。</p>
+<p>不希望客户端为某个特定源复用HTTP/3连接的服务器可以通过发送状态码<code>421</code>（<code>Misdirected Request</code>，误定向的请求）来对请求作出响应的方式，表明自己对该请求不具有权威性；详见《<a href="">HTTP</a>》的<a href="">第7.4章</a>。</p>
+</div>
+</section>
+<section class="page" id="4_Expressing_HTTP_Semantics_in_HTTP3">
 <h1>
-<a href="#10_Security_Considerations">10. 安全考量</a>
+<a href="#4_Expressing_HTTP_Semantics_in_HTTP3">4. 用HTTP/3表达HTTP语义</a>
 </h1>
 <div class="content">
 </div>
 </section>
-<section class="page" id="10.1_Server_Authority">
+<section class="page" id="4.1_HTTP_Message_Framing">
 <h2>
-<a href="#10.1_Server_Authority">10.1. 认证服务器</a>
+<a href="#4.1_HTTP_Message_Framing">4.1. HTTP消息分帧</a>
 </h2>
 <div class="content">
+<p>客户端在请求流上发送HTTP请求，请求流是一条由客户端发起的QUIC双向流，详见<a href="">第6.1章</a>。在一条给定的流上，客户端 <em><strong>必须</strong></em>只能发送一次请求。在请求所在的流上，服务器可以发送任意数量的（或不发送）临时HTTP响应，接着再发送一个最终的HTTP响应，如下文所述。有关临时和最终HTTP响应的描述，详见《<a href="">HTTP</a>》的<a href="">第15章</a>。</p>
+<p>要推送的响应的是在一条由服务器发起的QUIC单向流上被发送的，详见<a href="">第6.2.2章</a>。就像标准的响应过程一样，服务器可以发送任意数量的（或不发送）临时HTTP响应，接着再发送一个最终的HTTP响应。<a href="">第4.6章</a>详细描述了服务器推送。</p>
+<p>在某条给定的流上，如果接收到多个请求，或者在最终的HTTP响应后又接收到了额外的HTTP响应，那么 <em><strong>必须</strong></em>将这类请求或响应视作为畸形的。</p>
+<p>一条HTTP消息（请求或响应）由以下部分构成：</p>
+<ol>
+<li>
+<p>头部，其中包括消息控制数据，它是用单个<strong>标头帧</strong>来发送的；</p>
+</li>
+<li>
+<p>可选的内容，它是用一系列<strong>数据帧</strong>来发送的（如果存在内容的话）；和</p>
+</li>
+<li>
+<p>可选的挂载，它是用单个<strong>标头帧</strong>来发送的（如果存在挂载的话）。</p>
+</li>
+</ol>
+<p>《<a href="">HTTP</a>》的<a href="">第6.3章</a>和<a href="">第6.5章</a>描述了头部和挂载；《<a href="">HTTP</a>》的<a href="">第6.4章</a>描述了内容。</p>
+<p>如果接收到的帧序列并非按照此顺序，那么 <em><strong>必须</strong></em>将这种情况视作类型为<code>H3_FRAME_UNEXPECTED</code>（意料外的帧）的连接错误。尤其是，在任何<strong>标头帧</strong>之前的<strong>数据帧</strong>，或在末尾的<strong>标头帧</strong>之后出现的<strong>标头帧</strong>或<strong>数据帧</strong>，均被视作非法。其他类型的帧，尤其是未知类型的帧，可能会按照它们自己的规则被批准出现在某处；详见<a href="">第9章</a>。</p>
+<p>服务器<em><strong>可以</strong></em>在响应消息的帧之前、之后、甚至是以穿插其中的方式，发送一个或多个<strong>推送承诺帧</strong>。这些<strong>推送承诺帧</strong>不是响应的一部分；有关更多细节详见<a href="">第4.6章</a>。<strong>推送承诺帧</strong>不被允许出现在推送流中；如果被推送的响应中包含着<strong>推送承诺帧</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>未知类型的帧（详见<a href="">第9章</a>），包括类型值被保留使用的帧（详见<a href="">第7.2.8章</a>），可以在本章描述的其他类型的帧之前、之后、甚至是以穿插其中的方式，被发送。</p>
+<p><strong>标头帧</strong>和<strong>推送承诺帧</strong>可能引用的是更新后的QPACK动态查找表。尽管这些对查找表的更新并不直接属于本次消息通信，但是只有接收并处理了这些更新，才能处理消息。有关更多细节，详见<a href="">第4.2章</a>。</p>
+<p>传输编码（详见《<a href="">HTTP/1.1</a>》的<a href="">第7章</a>）不是为HTTP/3定义的；<em><strong>必须不</strong></em>使用标头字段<code>Transfer-Encoding</code>。</p>
+<p>当且仅当在某个请求的最终响应前存在一个或多个临时响应（状态码为<code>1xx</code>；详见《<a href="">HTTP</a>》的<a href="">第15.2章</a>）时，此次响应才<em><strong>可以</strong></em>由多条消息组成。临时响应并不包含内容和挂载。</p>
+<p>一轮完整的HTTP请求与响应的通信正好消耗掉一条由客户端发起的QUIC双向流。在发送完请求后，客户端 <em><strong>必须</strong></em>关闭流的发送部分。除非使用的是<code>CONNECT</code>方法（详见<a href="">第4.4章</a>），否则客户端<em><strong>必须不</strong></em>将接收到请求的响应作为关闭流的前置条件。在发送完最终的响应后，服务器 <em><strong>必须</strong></em>关闭流的发送部分。此时，一条QUIC流就被完全关闭了。</p>
+<p>一条流的关闭意味着最后那条HTTP消息的结束。由于一些消息非常巨大，或没有设置边界，所以终端<em><strong>应该</strong></em>在消息接收到足以进行处理时就开始消耗部分HTTP消息。如果在由客户端发起的流上还没有接收到足以创建完整响应的HTTP消息，这条流就被终止了，那么服务器<em><strong>应该</strong></em>使用错误码<code>H3_REQUEST_INCOMPLETE</code>（不完整的请求）来中止其响应流。</p>
+<p>如果要创建的响应并不依赖于请求中尚未被发送或接收的部分，那么服务器可以在客户端发送出完整的请求前就发送回完整的响应。当服务器不需要接收请求的剩余部分时，它<em><strong>可以</strong></em>中止读取请求流，将完整的响应发送回去，然后再干净地关闭流的发送部分。当要求客户端停止在请求流上发送数据时，<em><strong>应该</strong></em>使用错误码<code>H3_NO_ERROR</code>（无错误）。尽管客户端总是可以出于其他理由自行决定要不要忽略响应，但是客户端<em><strong>必须不</strong></em>因为请求的发送过程被突然中止而将完整的响应忽略。如果服务器发送的响应并不完整，或发送了完整的响应但是没有中止读取请求，那么客户端<em><strong>应该</strong></em>继续发送请求的内容，然后将流正常关闭。</p>
+</div>
+</section>
+<section class="page" id="4.1.1_Request_Cancellation_and_Rejection">
+<h3>
+<a href="#4.1.1_Request_Cancellation_and_Rejection">4.1.1. 请求的取消与拒绝</a>
+</h3>
+<div class="content">
+<p>一旦打开了请求流，请求就<em><strong>可以</strong></em>被任一终端取消。当客户端不再需要响应的内容时，它们会取消请求；当服务器无法或主动停止响应时，它们会取消请求。比起取消一个已经开始处理的请求，更<em><strong>推荐</strong></em>服务器尽可能发送一个具有恰当状态码的HTTP响应。</p>
+<p>实现<em><strong>应该</strong></em>以中止所有方向上处于开放状态的的流的方式来取消请求。要做到这一点，实现要重置流的发送部分，然后中止在流上的读取；详见《<a href="">QUIC传输</a>》的<a href="">第2.4章</a>。</p>
+<p>当服务器尚未进行任何应用层处理就取消了请求，那么就认为该请求被“拒绝”了。服务器<em><strong>应该</strong></em>使用错误码<code>H3_REQUEST_REJECTED</code>（请求被拒绝）来中止其响应流。在该情况中，“处理”指的是流中的部分数据已经被传递给了软件的上层，并且可能已经产生了一些效果。客户端可以将请求被服务器拒绝的情况视作为它们从未发送过请求，因此允许稍后重发这些请求。</p>
+<p>服务器<em><strong>必须不</strong></em>将错误码<code>H3_REQUEST_REJECTED</code>用于请求已经被部分或完全处理的情况。如果服务器在部分处理了请求后决定不再响应，那么它<em><strong>应该</strong></em>使用错误码<code>H3_REQUEST_CANCELLED</code>（请求被取消）来中止其响应流。</p>
+<p>客户端<em><strong>应该</strong></em>使用错误码<code>H3_REQUEST_CANCELLED</code>来取消请求。当接收到该错误码时，如果尚未进行任何处理，那么服务器<em><strong>可以</strong></em>使用错误码<code>H3_REQUEST_REJECTED</code>来中止其响应流。客户端<em><strong>必须不</strong></em>使用错误码<code>H3_REQUEST_REJECTED</code>，除非服务器使用了该错误码来要求关闭请求流。</p>
+<p>如果流是在接收到完整的响应后才被取消的，那么客户端<em><strong>可以</strong></em>忽略取消信号并使用该响应。然而，如果流在接收到部分响应时就被取消了，那么<em><strong>不应该</strong></em>使用该响应。只有<code>GET</code>、<code>PUT</code>和<code>DELETE</code>等幂等操作可以被重试；客户端<em><strong>不应该</strong></em>自动重发使用了非幂等方法的请求，除非它有能力知道该请求的语义是幂等的，而无关其方法，或有能力检测到原始的请求完全没有产生任何效果。有关更多细节，详见《<a href="">HTTP</a>》的<a href="">第9.2.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.1.2_Malformed_Requests_and_Responses">
+<h3>
+<a href="#4.1.2_Malformed_Requests_and_Responses">4.1.2. 畸形的请求与响应</a>
+</h3>
+<div class="content">
+<p>畸形的请求或响应指的是帧类型顺序不合法的帧序列，造成这种情况的可能原因如下：</p>
+<ul>
+<li>
+<p>出现了禁止的字段或伪标头字段，</p>
+</li>
+<li>
+<p>缺失强制使用的伪标头字段，</p>
+</li>
+<li>
+<p>伪标头字段的值不合法，</p>
+</li>
+<li>
+<p>伪标头字段出现在普通字段之后，</p>
+</li>
+<li>
+<p>HTTP消息序列的顺序不合法，</p>
+</li>
+<li>
+<p>字段名称中包含大写字母，或</p>
+</li>
+<li>
+<p>字段名称或字段值中包含非法字符。</p>
+</li>
+</ul>
+<p>如果被定义为带有内容的请求或响应使用了标头字段<code>Content-Length</code>（详见《<a href="">HTTP</a>》的<a href="">第8.6章</a>），且该标头字段的值与接收到的<strong>数据帧</strong>的总长度不匹配，那么这类请求或响应就是畸形的。即使存在标头字段<code>Content-Length</code>，被定义为绝不会带有内容的响应，仍然可以为这个字段设置非零值，哪怕<strong>数据帧</strong>中没有包含任何内容。</p>
+<p>处理HTTP请求和响应的中间设备（也就是除去隧道设备之外的所有中间设备）<em><strong>必须不</strong></em>转发畸形的请求或响应。如果检测到了畸形的请求或响应，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_MESSAGE_ERROR</code>（消息错误）的流错误。</p>
+<p>对于畸形的请求，服务器<em><strong>可以</strong></em>在关闭或重置流之前发送一个HTTP响应来指出该错误。客户端<em><strong>必须不</strong></em>接受畸形的响应。注意，这些要求是为了保护实现免于各种常见类型的针对HTTP的攻击；这些要求有意被严格设置，因为此处的放任将使得实现变得易受攻击。</p>
+</div>
+</section>
+<section class="page" id="4.2_HTTP_Fields">
+<h2>
+<a href="#4.2_HTTP_Fields">4.2. HTTP字段</a>
+</h2>
+<div class="content">
+<p>HTTP消息以名为“HTTP字段”的一系列键值对的方式传递元数据，详见《<a href="">HTTP</a>》的<a href="">第6.3章</a>和<a href="">第6.5章</a>。在维护于<a href="https://www.iana.org/assignments/http-fields/">https://www.iana.org/assignments/http-fields/</a>的“超文本传输协议（HTTP）字段名注册表”中可以找到所有已注册的HTTP字段。就像HTTP/2一样，在可以用于字段名称的字符、标头字段<code>Connection</code>和伪标头字段方面，HTTP/3有着额外的考量。</p>
+<p>字段名称是以ASCII字符形成的字符串。《<a href="">HTTP</a>》的<a href="">第5.1章</a>详细讨论了HTTP字段名称及其值的各项属性。字段名称中的所有字母 <em><strong>必须</strong></em>在编码前被转换为其小写形式。在字段名称中处理大写字母的请求或响应 <em><strong>必须</strong></em>被视作为畸形的。</p>
+<p>HTTP/3并不使用标头字段<code>Connection</code>来标识与连接有关的字段；在本协议中，使用其他方式来传递与连接有关的元数据。终端创建的HTTP/3字段组中<em><strong>必须不</strong></em>包含与连接有关的字段；任何包含与连接有关的字段的消息都 <em><strong>必须</strong></em>被视作为畸形的。</p>
+<p>此项要求唯一的例外是标头字段<code>TE</code>，它可以出现在HTTP/3请求的标头中；在此情况下，它<em><strong>必须不</strong></em>使用除了<code>trailers</code>外的任何值。</p>
+<p>将HTTP/1.x消息转换为HTTP/3消息的中间设备 <em><strong>必须</strong></em>移除在《<a href="">HTTP</a>》的<a href="">第7.6.1章</a>中讨论的与连接有关的标头字段，否则这些消息会被其他HTTP/3终端视作畸形的。</p>
+</div>
+</section>
+<section class="page" id="4.2.1_Field_Compression">
+<h3>
+<a href="#4.2.1_Field_Compression">4.2.1. 字段的压缩</a>
+</h3>
+<div class="content">
+<p>《<a href="">QPACK</a>》描述了一种HPACK的变种，它能够给予编码器部分控制，控制压缩过程会引起多大程度的队列阻塞。这使得编码器能够在编码效率和延迟之间权衡。HTTP/3使用QPACK来压缩头部和挂载，包括出现在头部中的控制数据。</p>
+<p>为了取得更高的压缩效率，标头字段<code>Cookie</code>（详见《<a href="">COOKIES</a>》）<em><strong>可以</strong></em>在压缩前被划分至单独的字段行，每行中包含一对或多对cookie。如果某经解压缩的字段组包含着多行cookie字段，那么在将cookie传递到并非HTTP/2或HTTP/3的环境，例如HTTP/1.1连接和通用的HTTP服务器应用，前， <em><strong>必须</strong></em>使用双字节分隔符<code>;</code>（ASCII码为<code>0x3b</code>和<code>0x20</code>）来将它们连接为单条字符串。</p>
+</div>
+</section>
+<section class="page" id="4.2.2_Header_Size_Constraints">
+<h3>
+<a href="#4.2.2_Header_Size_Constraints">4.2.2. 头部尺寸的约束</a>
+</h3>
+<div class="content">
+<p>HTTP/3实现<em><strong>可以</strong></em>对它所接受的单条HTTP消息的头部尺寸最大值施加限制。如果服务器接收到的头部尺寸超过了它愿意处理的最大尺寸，那么它可以发送HTTP状态码<code>431</code>（请求标头字段过大，详见《<a href="">RFC6585</a>》）。若是客户端，则可以丢弃它无法处理的响应。所有字段的总尺寸是使用各个字段的未压缩尺寸来计算的，其中包含字段名称及其值以字节为单位的长度，再为每个字段加上<code>32</code>字节的开销。</p>
+<p>如果某实现想要将该上限值告知对端，那么它可以在参数<code>SETTINGS_MAX_FIELD_SECTION_SIZE</code>中以字节为单位将它传递给对端。接收到该参数的实现所发送的HTTP消息头部<em><strong>不应该</strong></em>超过该参数的值，因为对端很有可能会拒绝处理此消息。然而，一条HTTP消息可能在抵达源服务器前经过一台或多台中间设备，详见《<a href="">HTTP</a>》的<a href="">第3.7章</a>。由于该限制是由每个会将消息进行处理的实现单独施加的，所有不能保证头部小于此上限的消息一定会被接受。</p>
+</div>
+</section>
+<section class="page" id="4.3_HTTP_Control_Data">
+<h2>
+<a href="#4.3_HTTP_Control_Data">4.3. HTTP控制数据</a>
+</h2>
+<div class="content">
+<p>就像HTTP/2一样，HTTP/3也使用了一系列伪标头字段，这些字段的名称都以<code>:</code>（ASCII码为<code>0x3a</code>）开头。这些伪标头字段传递的是消息的控制数据，详见《<a href="">HTTP</a>》的<a href="">第6.2章</a>。</p>
+<p>伪标头字段不是HTTP字段。终端<em><strong>必须不</strong></em>创建在本文档列出的定义之外的伪标头字段。不过，将来的扩展可以对此条限制做出修改，详见<a href="">第9章</a>。</p>
+<p>伪标头字段仅在定义了它们的上下文中有效。定义于请求中的伪标头字段<em><strong>必须不</strong></em>出现在响应中；定义于响应中的伪标头字段<em><strong>必须不</strong></em>出现在请求中。伪标头字段<em><strong>必须不</strong></em>出现在挂载。终端 <em><strong>必须</strong></em>将包含未定义的或不合法的伪标头字段的请求或响应视作为畸形的。</p>
+<p>所有伪标头字段都 <em><strong>必须</strong></em>出现在头部的普通标头字段之前。任何包含着出现在头部的普通标头字段之后的伪标头字段的请求或响应都 <em><strong>必须</strong></em>视作为畸形的。</p>
+</div>
+</section>
+<section class="page" id="4.3.1_Request_Pseudo_Header_Fields">
+<h3>
+<a href="#4.3.1_Request_Pseudo_Header_Fields">4.3.1. 请求中的伪标头字段</a>
+</h3>
+<div class="content">
+<p>定义在请求中的伪标头字段如下：</p>
+<dl>
+<dt><code>:method</code></dt>
+<dd>
+<p>包含着HTTP方法（详见《<a href="">HTTP</a>》的<a href="">第9章</a>）。</p>
+</dd>
+<dt><code>:scheme</code></dt>
+<dd>
+<p>包含着目标URI的协议部分（详见《<a href="">URI</a>》的<a href="">第3.1章</a>）。</p>
+</dd>
+<dd>
+<p>伪标头<code>:scheme</code>的使用并不限于以<code>http</code>或<code>https</code>作为协议的URI。代理或网关可以转换非HTTP协议的请求，从而使用HTTP来与非HTTP服务进行交互。</p>
+</dd>
+<dd>
+<p>有关如何使用非<code>https</code>的协议，详见<a href="">第3.1.2章</a>。</p>
+</dd>
+<dt><code>:authority</code></dt>
+<dd>
+<p>包含着目标URI的授权机构部分（详见《<a href="">URI</a>》的<a href="">第3.2章</a>）。授权机构中<em><strong>必须不</strong></em>包含在<code>http</code>和<code>https</code>协议中被废弃了的URI”用户信息“子组件。</p>
+</dd>
+<dd>
+<p>为了确保HTTP/1.1的请求行可以被准确还原，在对一个以特定于方法的形式构建请求目标（详见《<a href="">HTTP</a>》的<a href="">第7.1章</a>）的HTTP/1.1请求进行转换时， <em><strong>必须</strong></em>省略伪标头字段。直接创建HTTP/3请求的客户端<em><strong>应该</strong></em>使用伪标头字段<code>:authority</code>，而不是标头字段<code>Host</code>。如果请求中不存在标头字段<code>Host</code>，那么将HTTP/3请求转换为HTTP/1.1请求的中间设备 <em><strong>必须</strong></em>拷贝伪标头字段<code>:authority</code>的值的方式创建一个<code>Host</code>字段。</p>
+</dd>
+<dt><code>:path</code></dt>
+<dd>
+<p>包含着目标URI的路径和查询部分（”绝对路径“部分和可选的”查询“部分，后者以字符<code>?</code>（ASCII码为<code>0x3f</code>）开头；详见《<a href="">URI</a>》的<a href="">第3.3章</a>和<a href="">第3.4章</a>）。</p>
+</dd>
+<dd>
+<p>对于以<code>http</code>或<code>https</code>为协议的URI，该伪标头字段的值<em><strong>必须不</strong></em>为空；如果某以<code>http</code>或<code>https</code>为协议的URI中并不包含路径部分，那么 <em><strong>必须</strong></em>使用值<code>/</code>（ASCII码为<code>0x2f</code>）。URI中并不包含路径部分但是方法是<code>OPTIONS</code>的请求，使用值<code>*</code>（ASCII码为<code>0x2a</code>）作为伪标头字段<code>:path</code>的值；详见《<a href="">HTTP</a>》的<a href="">第7.1章</a>。</p>
+</dd>
+</dl>
+<p>所有HTTP/3请求都 <em><strong>必须</strong></em>包含伪标头字段<code>:method</code>、<code>:scheme</code>和<code>:path</code>，且仅包含一次，除非这是一个方法为<code>CONNECT</code>的请求；详见<a href="">第4.4章</a>。</p>
+<p>如果伪标头字段<code>:scheme</code>所指定的协议具有强制的授权机构部分（包括<code>http</code>和<code>https</code>），那么请求 <em><strong>必须</strong></em>包含伪标头字段<code>:authority</code>或标头字段<code>Host</code>。这两个字段只要出现，就<em><strong>必须不</strong></em>为空。如果两个字段都存在，那么它们的值 <em><strong>必须</strong></em>一致。如果请求的协议和请求目标中都不包含强制的授权机构部分，那么该请求<em><strong>必须不</strong></em>包含伪标头字段<code>:authority</code>或标头字段<code>Host</code>。</p>
+<p>缺失了强制包含的伪标头字段或这些伪标头字段的的值不合法的HTTP请求被视作为畸形的。</p>
+<p>HTTP/3没有定义一种像HTTP/1.1的请求行那样传递版本标识符的方法。HTTP/3请求隐式地使用了协议版本<code>3.0</code>。</p>
+</div>
+</section>
+<section class="page" id="4.3.2_Response_Pseudo_Header_Fields">
+<h3>
+<a href="#4.3.2_Response_Pseudo_Header_Fields">4.3.2. 响应中的伪标头字段</a>
+</h3>
+<div class="content">
+<p>对于响应，只定义了一个伪标头字段<code>:status</code>，它传递的是HTTP状态码；详见《<a href="">HTTP</a>》的<a href="">第15章</a>。该伪标头字段 <em><strong>必须</strong></em>被包含在所有响应中；否则，该响应就是畸形的（详见<a href="">第4.1.2章</a>）。</p>
+<p>HTTP/3没有定义一种像HTTP/1.1的状态行那样传递版本或原因短语的方法。HTTP/3响应隐式地使用了协议版本<code>3.0</code>。</p>
+</div>
+</section>
+<section class="page" id="4.4_The_CONNECT_Method">
+<h2>
+<a href="#4.4_The_CONNECT_Method">4.4. CONNECT方法</a>
+</h2>
+<div class="content">
+<p><code>CONNECT</code>方法请求接收方建立一条隧道，通向具有本次请求目标的身份标识的源服务器；详见《<a href="">HTTP</a>》的<a href="">第9.3.6章</a>。它的主要用途是使得HTTP代理能与源服务器建立TLS会话，从而与<code>https</code>资源进行交互。</p>
+<p>在HTTP/1.x中，<code>CONNECT</code>被用于将整条HTTP连接转换为与远程主机间的隧道。在HTTP/2和HTTP/3中，<code>CONNECT</code>方法被用于建立基于单条流的隧道。</p>
+<p><code>CONNECT</code>请求 <em><strong>必须</strong></em>以此形式构建：</p>
+<ul>
+<li>
+<p>将伪标头字段<code>:method</code>设置为<code>CONNECT</code>；</p>
+</li>
+<li>
+<p>省略伪标头字段<code>:scheme</code>和<code>:path</code>；</p>
+</li>
+<li>
+<p>伪标头字段<code>:authority</code>中包含着想要连接的主机和端口（等价于<code>CONNECT</code>请求中请求目标的授权机构形式，详见《<a href="">HTTP</a>》的<a href="">第7.1章</a>）。</p>
+</li>
+</ul>
+<p>即使携带着数据的请求被传输完成，请求流也要保持开放状态。达不到此要求的<code>CONNECT</code>请求被视作为畸形的。</p>
+<p>支持<code>CONNECT</code>的代理将建立一条TCP连接（详见《<a href="">RFC0793</a>》），通向由伪标头字段<code>:authority</code>标识的服务器。一旦成功建立连接，代理就会向客户端发送一个包含<code>2xx</code>系列状态码的<strong>标头帧</strong>，详见《<a href="">HTTP</a>》的<a href="">第15.3章</a>。</p>
+<p>所有在流上传输的<strong>数据帧</strong>都相当于在TCP连接中发送出或接收到的数据。客户端发送的任何<strong>数据帧</strong>的载荷都被代理转发给TCP服务器；接收自TCP服务器的数据则被代理封装进<strong>数据帧</strong>中。注意，我们无法预见性地保证TCP分段的尺寸和数量能对应到HTTP<strong>数据帧</strong>或QUIC<strong>流帧</strong>的尺寸和数量上。</p>
+<p>一旦<code>CONNECT</code>方法完成，在这条流上就只允许发送<strong>数据帧</strong>。如果扩展的定义中专门批准了其使用，那么<em><strong>可以</strong></em>使用扩展的帧类型。如果接收到任何其他已知类型的帧，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>TCP连接可以被任一终端关闭。当客户端结束了请求流时（也就是代理的接收流进入了”接收完成“状态），代理将在通向TCP服务器的连接上设置<code>FIN</code>比特位。当代理接收到设置了<code>FIN</code>比特位的数据包时，它将关闭通向客户端的发送流。TCP连接处于单向关闭状态的情况是允许的，但是经常难以被服务器妥善处理，所以客户端<em><strong>不应该</strong></em>在仍期望从<code>CONNECT</code>目标处接收到数据时就关闭发送流。</p>
+<p>通过突然终止流的方式来发送有关TCP连接错误的信号。代理将TCP连接中的任何错误，包括接收到设置了<code>RST</code>比特位的TCP分段的情况，都视作类型为<code>H3_CONNECT_ERROR</code>（CONNECT错误）的流错误。</p>
+<p>相应地，如果代理检测到了流上或QUIC连接上的错误，那么它 <em><strong>必须</strong></em>关闭TCP连接。如果代理检测到客户端重置了流或中止了读取的情况，那么它 <em><strong>必须</strong></em>关闭TCP连接。如果流的重置或读取的中止是由客户端发起的，那么代理<em><strong>应该</strong></em>在流的另一方向上进行相同的操作，以确保流在两个方向上都被取消。在以上任一情况中，如果底层的TCP实现允许，那么代理<em><strong>应该</strong></em>发送一个设置了<code>RST</code>比特位的TCP分段。</p>
+<p>由于<code>CONNECT</code>能创建通向任意服务器的隧道，所以支持<code>CONNECT</code>的代理<em><strong>应该</strong></em>将其目标限制为一组已知的端口或一组安全的请求目标；详见《<a href="">HTTP</a>》的<a href="">第9.3.6章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.5_HTTP_Upgrade">
+<h2>
+<a href="#4.5_HTTP_Upgrade">4.5. HTTP升级</a>
+</h2>
+<div class="content">
+<p>HTTP/3不支持HTTP升级机制（详见《<a href="">HTTP</a>》的<a href="">第7.8章</a>）或信息性状态码<code>101</code>（切换协议，详见《<a href="">HTTP</a>》的<a href="">第15.2.2章</a>）。</p>
+</div>
+</section>
+<section class="page" id="4.6_Server_Push">
+<h2>
+<a href="#4.6_Server_Push">4.6. 服务器推送</a>
+</h2>
+<div class="content">
+<p>服务器推送是一种交互模式，它允许服务器在预料到客户端会发送某个请求时向客户端主动推送一次请求与响应的通信。这会增加网络负载，但是有可能在延迟表现上得到提升。HTTP/3的服务器推送与《<a href="">HTTP/2</a>》的<a href="">第8.2章</a>中的描述十分相似，但是它使用的是不同的机制。</p>
+<p>服务器为每一次推送分配唯一的推送ID。在一条HTTP/3连接的生命周期中，始终可以使用推送ID来作为对此推送的引用。</p>
+<p>推送ID的编号空间从零开始，不超过由<strong>最大推送ID帧</strong>设置的最大值。注意，服务器只有在客户端发送了<strong>最大推送ID帧</strong>之后才能进行推送。客户端使用<strong>最大推送ID帧</strong>来控制服务器可以承诺的推送数量。服务器<em><strong>应该</strong></em>从零开始按次序使用推送ID。如果客户端在尚未发送出<strong>最大推送ID帧</strong>时就接收到了推送流，或者该流引用了一个超过最大推送ID的推送ID，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>（ID错误）的连接错误。</p>
+<p>同一个推送ID可以在一个或多个<strong>推送承诺帧</strong>中被使用，后者传递的是请求消息的控制数据和标头字段。这些帧是在创建了推送的请求流上被发送的。这使得服务器推送能够被关联到某个客户端请求上。当多条请求流中承诺了相同的推送ID时，经解压缩的请求字段组中 <em><strong>必须</strong></em>包含相同字段，这些字段 <em><strong>必须</strong></em>出现顺序相同、名称一致，并且值也完全一致。</p>
+<p>随后，这个推送ID会出现在最终兑现了那些承诺的推送流中。推送流会以它兑现的承诺的推送ID为标识，并且包含着对被承诺的请求的响应，详见<a href="">第4.1章</a>。</p>
+<p>最后，推送ID可以被用于<strong>取消推送帧</strong>中；详见<a href="">第7.2.3章</a>。客户端使用这种帧来表明它们不想要接收到被承诺的资源。服务器使用这种帧来表明它们将不会兑现先前的承诺。</p>
+<p>并不是所有的请求都是可以被推送的。服务器<em><strong>可以</strong></em>推送具有以下属性的请求：</p>
+<ul>
+<li>
+<p>可缓存的；详见《<a href="">HTTP</a>》的<a href="">第9.2.3章</a></p>
+</li>
+<li>
+<p>安全的；详见《<a href="">HTTP</a>》的<a href="">第9.2.1章</a></p>
+</li>
+<li>
+<p>不包含请求内容和挂载</p>
+</li>
+</ul>
+<p>服务器 <em><strong>必须</strong></em>为伪标头字段<code>:authority</code>设置一个值，并且服务器对该值具有权威。如果客户端尚未验证过与被推送的请求的源之间的连接，那么它 <em><strong>必须</strong></em>宛如第一次向该源发送请求时一般对源进行验证；详见<a href="">第3.3章</a>。如果验证失败，那么客户端<em><strong>必须不</strong></em>认为该服务器对此源具有权威。</p>
+<p>如果客户端接收到的<strong>推送请求帧</strong>所携带的请求无法缓存、已知为不安全、存在请求内容或它不认为该服务器具有权威，那么它<em><strong>应该</strong></em>发送<strong>取消推送帧</strong>。同时，任何与此相关的响应都<em><strong>必须不</strong></em>被使用或被缓存。</p>
+<p>每份被推送的响应都被关联到一个或多个客户端请求上。每份推送都可以被关联到接收到了<strong>推送承诺帧</strong>的请求流上。此外，同一份服务器推送还可以被关联到其他请求流的客户端请求上，只要这些请求使用的<strong>推送承诺帧</strong>也使用了相同的推送ID。这些关联并不会破坏协议，但是用户代理在决定如何使用被推送的资源时<em><strong>可以</strong></em>将它们纳入考量。</p>
+<p><strong>推送承诺帧</strong>与响应的某些部分之间的顺序很重要。服务器<em><strong>应该</strong></em>先在发送<strong>推送承诺帧</strong>，再发送引用了将被推送的响应的<strong>标头帧</strong>或<strong>数据帧</strong>。这能降低客户端为一项将会由服务器推送的资源发出请求的可能性。</p>
+<p>由于数据包乱序的存在，推送流的数据可能先于相应的<strong>推送承诺帧</strong>抵达客户端。当客户端接收到了一条新的推送流且从未见过它的推送ID时，与其关联的客户端请求和被推送的请求标头字段还都是未知的。客户端可以将流数据缓存下来，并期待与之匹配的<strong>推送承诺帧</strong>。客户端能够使用流量控制机制（详见《<a href="">QUIC传输</a>》的<a href="">第4.1章</a>）来限制服务器可以使用在推送流上的数据量。如果经过一段合理的时间后，仍然没有处理到相应的<strong>推送承诺帧</strong>，那么客户端<em><strong>应该</strong></em>中止读取该推送流，并且丢弃所有已经从中读取的数据。</p>
+<p>推送流的数据也可能在客户端已经取消某次推送后才抵达。在这种情况下，客户端可以使用错误码<code>H3_REQUEST_CANCELLED</code>来中止对流的读取。这么做要求服务器不要继续传输数据，并表明剩余数据会在接收时被丢弃。</p>
+<p>如果客户端实现了HTTP缓存，那么可以将被推送的响应中的可缓存的那些（详见《<a href="">HTTP-CACHING</a>》的<a href="">第3章</a>）给存储起来。在接收被推送的响应的那一刻，就可以认为它们是成功经过了源服务器的认证的（就好像存在缓存响应指令<code>no-cache</code>一样；详见《<a href="">HTTP-CACHING</a>》的<a href="">第5.2.2.4章</a>）。</p>
+<p>被推送的响应中的不可缓存的那些<em><strong>必须不</strong></em>被任何HTTP缓存所存储。它们<em><strong>可以</strong></em>被单独交给应用。</p>
+</div>
+</section>
+<section class="page" id="5_Connection_Closure">
+<h1>
+<a href="#5_Connection_Closure">5. 连接的关闭</a>
+</h1>
+<div class="content">
+<p>一旦建立完成，一条HTTP/3连接可以在关闭前不断被用于许多请求和响应。连接的关闭可能以多种不同的方式发生。</p>
+</div>
+</section>
+<section class="page" id="5.1_Idle_Connections">
+<h2>
+<a href="#5.1_Idle_Connections">5.1. 空闲的连接</a>
+</h2>
+<div class="content">
+<p>每个QUIC终端都在握手过程中声明了空闲超时的时长。如果某QUIC连接保持空闲（没有接收到数据包）的时长超过了此值，那么对端将认为该连接已经被关闭。如果现存的连接已经保持空闲状态的时长超过了在QUIC握手期间协商的空闲超时值，那么HTTP/3实现就要为新请求打开新的HTTP/3连接，并且在空闲时长临近该上限时也<em><strong>应该</strong></em>这么做；详见《<a href="">QUIC传输</a>》的<a href="">第10.1章</a>。</p>
+<p>HTTP客户端应该在仍有未收到的响应或服务器推送时请求传输层将连接保持开放状态，详见《<a href="">QUIC传输</a>》的<a href="">第10.1.2章</a>。如果客户端并没有在等待来自服务器的响应，那么比起花费资源维持一条可能再也用不上的连接，更应该允许空闲的连接因超时而关闭。而网关则<em><strong>可以</strong></em>维持此连接，以防万一，而不是在将来重新建立连接时为服务器增添延迟上的负担。服务器<em><strong>不应该</strong></em>积极地维持开放的连接。</p>
+</div>
+</section>
+<section class="page" id="5.2_Connection_Shutdown">
+<h2>
+<a href="#5.2_Connection_Shutdown">5.2. 连接的正常关闭</a>
+</h2>
+<div class="content">
+<p>即使连接并不处于空闲状态，任一终端也可以决定要不要停止使用该连接，然后发起一次优雅的连接关闭。终端以发送<strong>关闭帧</strong>的形式对HTTP/3连接发起优雅关闭。<strong>关闭帧</strong>包含着一个标识符，它向接收方表明在此连接中已经或可能得到处理的请求或推送的数量。服务器发送的是某个由客户端创建的双向流ID；客户端发送的是某个推送ID。ID大于等于该标识符的请求或推送都会被<strong>关闭帧</strong>的发送方拒绝（详见<a href="">第4.1.1章</a>）。如果没有处理过任何请求或推送，那么该标识符<em><strong>可以</strong></em>为零。</p>
+<p><strong>关闭帧</strong>中的信息使得客户端和服务器在HTTP/3连接被关闭前就接受了哪些请求或推送达成共识。为了清理受影响的流的传输层状态，一旦发送了<strong>关闭帧</strong>，终端就<em><strong>应该</strong></em>主动取消（详见<a href="">第4.1.1章</a>和<a href="">第7.2.3章</a>）所有ID大于等于该帧中的标识符的请求或推送。哪怕之后抵达了新的请求或推送，终端也<em><strong>应该</strong></em>重复这种操作。</p>
+<p>终端在从对端接收到<strong>关闭帧</strong>后，<em><strong>必须不</strong></em>在该连接上发起新的请求或承诺新的推送。客户端<em><strong>可以</strong></em>建立新的连接来将额外的请求发送出去。</p>
+<p>某些请求或推送可能已经处于传输状态：</p>
+<ul>
+<li>
+<p>在接收到<strong>关闭帧</strong>时，如果客户端已经将流ID大于等于<strong>关闭帧</strong>中的标识符的请求发送出去了，那么这些请求将不会得到处理。客户端可以在另一条HTTP连接上安全地重发得不到处理的请求。没有能力重发请求的客户端则会在服务器关闭连接时丢失所有在途的请求。</p>
+<p>如果请求所在的流ID小于来自服务器的<strong>关闭帧</strong>中的标识符，那么它可能会得到处理；除非客户端接收到响应、流被单独重置、接收到另一个标识符更小的<strong>关闭帧</strong>或连接被终止，否则无从得知它们的状态。</p>
+<p>服务器<em><strong>可以</strong></em>拒绝ID小于标识符的流上的单个请求，只要不去处理这类请求。</p>
+</li>
+<li>
+<p>如果服务器接收到了<strong>关闭帧</strong>，但它已经承诺了ID大于等于<strong>关闭帧</strong>中的标识符的推送，那么这些推送不会被接受。</p>
+</li>
+</ul>
+<p>服务器<em><strong>应该</strong></em>在提前知晓了连接即将关闭的信息时就发送<strong>关闭帧</strong>，哪怕该提前通知微不足道，以使得对端能够知道某个请求有没有得到处理。例如，如果某HTTP客户端在服务器关闭QUIC连接的时候刚好发送了一个<code>POST</code>请求，那么客户端就无从得知服务器是否处理了该POST请求，除非服务器发送一个<strong>关闭帧</strong>来表明它的处理进度。</p>
+<p>终端<em><strong>可以</strong></em>多次发送<strong>关闭帧</strong>，并使用不同的标识符，但是每个帧中的标识符都<em><strong>必须不</strong></em>大于先前发送的帧中的标识符，因为客户端可能已经在另一条HTTP连接上重发了得不到处理的请求。如果终端接收到的<strong>关闭帧</strong>中的标识符大于先前所接收到的，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>（ID错误）的连接错误。</p>
+<p>正在尝试优雅关闭某条连接的终端可以发送一个标识符的值为最大允许值（对于服务器，这个值为<code>2<sup>62</sup>-4</code>；对于客户端则为<code>2<sup>62</sup>-1</code>）的<strong>关闭帧</strong>。这能确保对端不再创建新的请求或推送。在经过一段足够在途请求或推送抵达的时间后，终端可以再发送一个<strong>关闭帧</strong>，表明它在连接关闭前所接受的那个请求或推送。这确保了一条连接能够被干净地关闭，而不丢失请求。</p>
+<p>客户端在选择其发送的<strong>关闭帧</strong>的推送ID字段的值时，有着更多的自由。值<code>2<sup>62</sup>-1</code>表示服务器可以继续兑现已经承诺的推送。而小一点的值则表示客户端将拒绝ID大于等于该值的推送。就像服务器一样，只要使用的推送ID值不超过之前发送过的值，那么客户端就<em><strong>可以</strong></em>连续发送<strong>关闭帧</strong>。</p>
+<p>即便<strong>关闭帧</strong>表明了某些请求或推送不会在接收时得到处理或接受，但经过底层传输的资源仍然存在于接收方。为了清理传输层状态，发起这些请求的终端可以取消它们。</p>
+<p>一旦处理完所有已接受的请求和推送，终端就能批准连接进入空闲状态，或它<em><strong>可以</strong></em>对此连接发起即刻关闭。完成了优雅关闭的终端<em><strong>应该</strong></em>在关闭连接时使用错误码<code>H3_NO_ERROR</code>（无错误）。</p>
+<p>如果客户端已经为请求消耗完所有可用的双向流ID，那么服务器就不需要再发送<strong>关闭帧</strong>，因为客户端已经无法再发送更多请求。</p>
+</div>
+</section>
+<section class="page" id="5.3_Immediate_Application_Closure">
+<h2>
+<a href="#5.3_Immediate_Application_Closure">5.3. 由应用发起的即刻关闭</a>
+</h2>
+<div class="content">
+<p>HTTP/3实现可以随时对QUIC连接发起即刻关闭。这会使得QUIC向对端发送一个<strong>连接关闭帧</strong>，表明应用层已经终止了连接。该帧中的应用错误码向对端传达了连接被关闭的原因。有关在HTTP/3中关闭连接时可以使用的错误码，详见<a href="">第8章</a>。</p>
+<p>在关闭连接前，<em><strong>可以</strong></em>发送一个<strong>关闭帧</strong>从而允许客户端重发一些请求。将<strong>关闭帧</strong>放到QUIC<strong>连接关闭帧</strong>所在的数据包中能够提升前者被客户端接收到的可能性。</p>
+<p>如果存在尚未被主动关闭的开放流，那么它们就会在连接被关闭时被动地被关闭，详见《<a href="">QUIC传输</a>》的<a href="">第10.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="5.4_Transport_Closure">
+<h2>
+<a href="#5.4_Transport_Closure">5.4. 由传输层造成的关闭</a>
+</h2>
+<div class="content">
+<p>出于各种原因，QUIC传输可以向应用层告知连接已经被关闭的消息。这种情况可能是因为对端主动发起了关闭、某个传输层的错误或者网络拓扑上的变化打断了可连接性。</p>
+<p>如果一条连接在没有发送<strong>关闭帧</strong>的情况下就终止了，那么客户端 <em><strong>必须</strong></em>认为所有已经发送出去的请求，无论是已经完整地发送了还是只发送了一部分，都有可能得到了处理。</p>
+</div>
+</section>
+<section class="page" id="6_Stream_Mapping_and_Usage">
+<h1>
+<a href="#6_Stream_Mapping_and_Usage">6. 流的映射与用法</a>
+</h1>
+<div class="content">
+<p>QUIC流为数据提供了可靠且有序的交付，但是它并不保证不同流之间的数据交付顺序。在QUIC版本1中，包含HTTP帧的流数据是使用QUIC<strong>流帧</strong>来传递的，但是这种封装对于HTTP的分帧层是透明的。传输层缓存并整理接收到的流数据，从而向应用提供可靠且有序的字节流。尽管QUIC允许在单条流之中的数据乱序抵达，但是HTTP/3并没有利用该特性。</p>
+<p>QUIC流可以是单向的，从发送方向接收方传递数据，或双向的，在两个方向上都能传递数据。流可以由客户端或服务器中的任一一方发起。有关QUIC流的更多细节，详见《<a href="">QUIC传输</a>》的<a href="">第2章</a>。</p>
+<p>通过QUIC发送HTTP字段和数据时，QUIC层解决了绝大多数的流管理问题。只要使用了QUIC，HTTP就不需要再实现任何多路复用机制：通过QUIC流发送的任何数据都存在其归属的某个HTTP事务，或者整条HTTP/3连接的上下文。</p>
+</div>
+</section>
+<section class="page" id="6.1_Bidirectional_Streams">
+<h2>
+<a href="#6.1_Bidirectional_Streams">6.1. 双向流</a>
+</h2>
+<div class="content">
+<p>所有由客户端发起的双向流都是用于HTTP请求和响应的。双向流确保了响应能够被方便地关联到请求上。这类流被称作请求流。</p>
+<p>这种约定意味着客户端的首个请求会出现在序号为<code>0</code>的QUIC流上，后续请求则出现在序号<code>4</code>、序号<code>8</code>，以此类推。为了打开这些流，HTTP/3服务器<em><strong>应该</strong></em>将允许创建的流数量下限以及初始流量控制窗口大小设置为非零值。为了不阻碍并行的请求，<em><strong>应该</strong></em>允许同一时间存在至少100条请求流。</p>
+<p>HTTP/3没有使用由服务器发起的双向流，不过扩展可以为这类流定义一种用途。除非协商使用了这样的扩展，否则如果客户端接收到了一条由服务器发起的双向流，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_STREAM_CREATION_ERROR</code>（流创建错误）的连接错误。</p>
+</div>
+</section>
+<section class="page" id="6.2_Unidirectional_Streams">
+<h2>
+<a href="#6.2_Unidirectional_Streams">6.2. 单向流</a>
+</h2>
+<div class="content">
+<p>单向流，无论哪个方向，具有多种用途。单向流的具体的用途是由流类型决定的，它以可变长度整型的形式出现在流的起始处。跟在该整型值后方的数据的格式是由流类型决定的。</p>
+<div class="block ref" id="Figure_1_Unidirectional_Stream_Header">
+<pre tabindex="0"><code>单向流的头部 {
+  流类型 (i),
+}
+</code></pre><p><a href="#Figure_1_Unidirectional_Stream_Header">图1：单向流的头部</a></p>
+</div>
+<p>本文档定义了两种流类型：控制流（详见<a href="">第6.2.1章</a>）和推送流（详见<a href="">6.2.2章</a>）。《<a href="">QPACK</a>》定义了两种额外的帧类型。HTTP/3的扩展还可以定义其他流类型；详见<a href="">第9章</a>。某些流类型是被保留使用的（详见<a href="">第6.2.3章</a>）。</p>
+<p>在一条HTTP/3连接的生命周期的早期阶段，单向流上的数据创建与通信很容易影响到连接的性能。过度限制流的最大数量或这些流的流量控制窗口的终端将增大对端迅速抵达这些上限值并被阻塞的可能性。特别是，实现应该考虑到对端可能想要通过某些允许使用的单向流来利用被保留使用的流的行为（详见<a href="">第6.2.3章</a>）。</p>
+<p>每个终端都需要创建至少一条作为HTTP控制流的单向流。除此之外，QPACK需要两条单向流，并且其他扩展还可能需要更多流。因此，客户端和服务器发送的传输参数都 <em><strong>必须</strong></em>允许对端创建至少三条单向流。这些传输参数还<em><strong>应该</strong></em>为每条单向流提供至少1024字节的流量控制额度。</p>
+<p>注意，如果对端在创建关键的单向流前就用完了所有的初始额度，那么终端没有必要额外提供用于创建更多单向流的额度。终端<em><strong>应该</strong></em>首先创建HTTP控制流和强制使用的扩展（例如QPACK的编码器流和解码器流）所需的单向流，然后再在对端允许下创建额外的流。</p>
+<p>如果流的头部位置是一种不被接收方支持的流类型，那么就不能用已知的语义来使用流的剩余部分。未知类型的流的接收方 <em><strong>必须</strong></em>要么中止流的读取，要么丢弃传入数据且不进行任何处理。如果选择中止读取，那么接收方<em><strong>应该</strong></em>使用错误码<code>H3_STREAM_CREATION_ERROR</code>（流创建错误）或某被保留使用的错误码（详见<a href="">第8.1章</a>）。接收方<em><strong>必须不</strong></em>将接收到未知类型的流的情况视作为任何类型的连接错误。</p>
+<p>由于特定的流类型可以影响连接状态，因此接收方<em><strong>不应该</strong></em>在读取单向流的流类型前就丢弃传入的数据。</p>
+<p>实现<em><strong>可以</strong></em>在了解到对端是否支持某些流类型前就将它们发送出去。然而，在了解到对端支持与否之前，<em><strong>必须不</strong></em>发送会修改现存协议组件的状态或语义的流类型，包括QPACK或其他扩展。</p>
+<p>除非特别规定，否则发送方可以关闭或重置一条单向流。接收方 <em><strong>必须</strong></em>容忍在接收到单向流的头部前单向流就被关闭或重置的情况。</p>
+</div>
+</section>
+<section class="page" id="6.2.1_Control_Streams">
+<h3>
+<a href="#6.2.1_Control_Streams">6.2.1. 控制流</a>
+</h3>
+<div class="content">
+<p>控制流是用值为<code>0x00</code>的流类型来表示的。在这条流上发送的数据是HTTP/3的帧，如<a href="">第7.2章</a>所述。</p>
+<p>客户端和服务器 <em><strong>必须</strong></em>各自在连接起始时发起一条控制流，然后在该流上发送自己的<strong>设置帧</strong>并将其作为首个帧。如果控制流的首个帧是其他类型的，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_MISSING_SETTINGS</code>（缺失设置）的连接错误。每个终端仅被允许发起一条控制流；如果接收到第二条以控制流作为流类型出现的流，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_STREAM_CREATION_ERROR</code>的连接错误。发送方<em><strong>必须不</strong></em>关闭控制流，接收方<em><strong>必须不</strong></em>请求发送方关闭控制流。无论何时，如果某条控制流被关闭，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_CLOSED_CRITICAL_STREAM</code>（关键流遭关闭）的连接错误。<a href="">第8章</a>描述了连接错误。</p>
+<p>由于控制流的内容是用来管理其他流的行为的，因此终端<em><strong>应该</strong></em>持续提供足够的流量控制额度，从而确保对端的控制流免受阻塞。</p>
+<p>使用一对单向流而不是一条双向流使得任一终端都能在有需要时尽快发送数据。根据0-RTT在QUIC连接上是否启用，客户端或服务器的任一一方都有可能首先发送流数据。</p>
+</div>
+</section>
+<section class="page" id="6.2.2_Push_Streams">
+<h3>
+<a href="#6.2.2_Push_Streams">6.2.2. 推送流</a>
+</h3>
+<div class="content">
+<p>服务器推送是由HTTP/2引入的一种可选功能，它允许服务器在请求发出前就发起响应，详见<a href="">第4.6章</a>。</p>
+<p>推送流是用值为<code>0x01</code>的流类型来表示的，后方跟着它所兑现的推送ID，后者也被编码为一个可变长度整型。这条流的剩余数据由HTTP/3的帧组成，详见<a href="">第7.2章</a>。这些剩余数据数据通过任意数量的（或不发送）临时HTTP响应加上一个最终的HTTP响应的形式兑现曾经承诺过的服务器推送，详见<a href="">第4.1章</a>。<a href="">第4.6章</a>描述了服务器推送和推送ID。</p>
+<p>只有服务器可以推送；如果服务器接收到了一条由客户端发起的推送流，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_STREAM_CREATION_ERROR</code>的连接错误。</p>
+<div class="block ref" id="Figure_2_Push_Stream_Header">
+<pre tabindex="0"><code>推送流的头部 {
+  流类型 (i) = 0x01,
+  推送ID (i),
+}
+</code></pre><p><a href="#Figure_2_Push_Stream_Header">图2：推送流的头部</a></p>
+</div>
+<p>客户端<em><strong>不应该</strong></em>在读取推送流的头部前就中止读取推送流，因为这会使得客户端和服务器就哪些推送ID得到了处理产生认知差异。</p>
+<p>每个推送ID都 <em><strong>必须</strong></em>被一次性地用于推送流的头部。如果客户端检测到某条推送流的头部的推送ID已被用于另一条推送流的头部，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>（ID错误）的连接错误。</p>
+</div>
+</section>
+<section class="page" id="6.2.3_Reserved_Stream_Types">
+<h3>
+<a href="#6.2.3_Reserved_Stream_Types">6.2.3. 被保留使用的流类型</a>
+</h3>
+<div class="content">
+<p>值的形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，的流类型被保留使用，用于检查终端是否会忽略未知类型的帧。这些流没有任何语义，并且在需要应用层填充时可以被发送出去。还<em><strong>可以</strong></em>在没有传输数据的连接上发送它们。在接收到这些流时，终端<em><strong>必须不</strong></em>认为其中有什么含义。</p>
+<p>这类流的载荷和长度可以由正在发送的实现任意选择。在发送过程中，实现<em><strong>可以</strong></em>干净地关闭流或重置它。当重置它时，<em><strong>应该</strong></em>使用错误码<code>H3_NO_ERROR </code>（无错误）或某被保留使用的错误码（详见<a href="">第8.1章</a>）。</p>
+</div>
+</section>
+<section class="page" id="7_HTTP_Framing_Layer">
+<h1>
+<a href="#7_HTTP_Framing_Layer">7. HTTP分帧层</a>
+</h1>
+<div class="content">
+<p>HTTP帧是使用QUIC流来传递的，详见<a href="">第6章</a>。HTTP/3定义了三种流类型：控制流、请求流和推送流。本章描述了各种HTTP/3帧的结构以及在哪种流中可以使用它们：<a href="">表1</a>对此做了概述。<a href="">附录A.2</a>是一份针对HTTP/2和HTTP/3的更加详细的比较。</p>
+<div class="block ref" id="Table_1_HTTP3_Frames_and_Stream_Type_Overview">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">帧</th>
+<th style="text-align:left">控制流</th>
+<th style="text-align:left">请求流</th>
+<th style="text-align:left">推送流</th>
+<th style="text-align:left">章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>数据帧</strong></td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left"><a href="">第7.2.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>标头帧</strong></td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left"><a href="">第7.2.2章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>取消推送帧</strong></td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left"><a href="">第7.2.3章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>设置帧</strong></td>
+<td style="text-align:left">是（1）</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left"><a href="">第7.2.4章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>推送承诺帧</strong></td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left"><a href="">第7.2.5章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>关闭帧</strong></td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left"><a href="">第7.2.6章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>最大推送ID帧</strong></td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left"><a href="">第7.2.7章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><em>被保留使用的帧</em></td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left"><a href="">第7.2.8章</a></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_1_HTTP3_Frames_and_Stream_Type_Overview">表1：HTTP/3帧与流类型的概述</a></p>
+</div>
+<p><strong>设置帧</strong>只能作为一条控制流的首个帧出现；这一点在<a href="">表1</a>中使用”（1）“来表示。有关如何使用各个类型的帧，详见各自的章节。</p>
+<p>注意，与QUIC帧不同的是，HTTP/3帧可以横跨多个数据包。</p>
+</div>
+</section>
+<section class="page" id="7.1_Frame_Layout">
+<h2>
+<a href="#7.1_Frame_Layout">7.1. 帧结构</a>
+</h2>
+<div class="content">
+<p>所有帧都具有以下格式：</p>
+<div class="block ref" id="Figure_3_HTTP3_Frame_Format">
+<pre tabindex="0"><code>HTTP/3帧的格式 {
+  类型 (i),
+  长度 (i),
+  帧载荷 (..),
+}
+</code></pre><p><a href="#Figure_3_HTTP3_Frame_Format">图3：HTTP/3帧的格式</a></p>
+</div>
+<p>HTTP/3帧包含以下字段：</p>
+<dl>
+<dt>类型（Type）：</dt>
+<dd>
+<p>一个可变长度整型，标识着帧的类型。</p>
+</dd>
+<dt>长度（Length）：</dt>
+<dd>
+<p>一个可变长度整型，描述了帧载荷以字节为单位的长度。</p>
+</dd>
+<dt>帧载荷（Frame Payload）：</dt>
+<dd>
+<p>载荷，它的语义由类型字段决定。</p>
+</dd>
+</dl>
+<p>每个帧的载荷都 <em><strong>必须</strong></em>准确包含其帧类型所指定的字段。如果帧载荷在指定字段之后还包含着额外字节或者在指定字段的内容结束之前就中断了，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_ERROR</code>（帧错误）的连接错误。尤其是， <em><strong>必须</strong></em>验证所有长度字段及其总和是否自洽；详见<a href="">第10.8章</a>。</p>
+<p>当一条流被干净地关闭时，如果流上的最后一个帧被截断了，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_ERROR</code>的连接错误。突然中止的流可以在某个帧的任意位置处被重置。</p>
+</div>
+</section>
+<section class="page" id="7.2_Frame_Definitions">
+<h2>
+<a href="#7.2_Frame_Definitions">7.2. 帧定义</a>
+</h2>
+<div class="content">
+</div>
+</section>
+<section class="page" id="7.2.1_DATA">
+<h3>
+<a href="#7.2.1_DATA">7.2.1. 数据帧</a>
+</h3>
+<div class="content">
+<p><strong>数据帧</strong>（类型值为<code>0x00</code>）传递的是与HTTP请求或响应内容关联的任意字节序列。</p>
+<p><strong>数据帧 <em><strong>必须</strong></em>被关联到某HTTP请求或响应上。如果在一条控制流上接收到了</strong>数据帧**，那么接收方 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>（意料外的帧）的连接错误。</p>
+<div class="block ref" id="Figure_4_DATA_Frame">
+<pre tabindex="0"><code>数据帧 {
+  类型 (i) = 0x00,
+  长度 (i),
+  数据 (..),
+}
+</code></pre><p><a href="#Figure_4_DATA_Frame">图4：数据帧</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="7.2.2_HEADERS">
+<h3>
+<a href="#7.2.2_HEADERS">7.2.2. 标头帧</a>
+</h3>
+<div class="content">
+<p><strong>标头帧</strong>（类型值为<code>0x01</code>）被用于传递经过QPACK编码的HTTP字段组，详见《<a href="">QPACK</a>》。</p>
+<div class="block ref" id="Figure_5_HEADERS_Frame">
+<pre tabindex="0"><code>标头帧 {
+  类型 (i) = 0x01,
+  长度 (i),
+  经编码的字段组 (..),
+}
+</code></pre><p><a href="#Figure_5_HEADERS_Frame">图5：标头帧</a></p>
+</div>
+<p>仅允许在请求流和推送流上发送<strong>标头帧</strong>。如果在一条控制流上接收到了<strong>标头帧</strong>，那么接收方 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="7.2.3_CANCEL_PUSH">
+<h3>
+<a href="#7.2.3_CANCEL_PUSH">7.2.3. 取消推送帧</a>
+</h3>
+<div class="content">
+<p><strong>取消推送帧</strong>（类型值为<code>0x03</code>）的用途是在推送流被接收到前要求取消服务器推送。<strong>取消推送帧</strong>使用推送ID（详见<a href="">第4.6章</a>）来代表某服务器推送，它被编码为一个可变长度整型。</p>
+<p>当客户端发送<strong>取消推送帧</strong>时，它是在表明它不希望接收到被承诺的资源。这时服务器<em><strong>应该</strong></em>中止发送资源，但是该中止机制能否起效取决于相关推送流的状态。如果服务器尚未创建推送流，那么它就不会创建。如果推送流已经打开，那么服务器<em><strong>应该</strong></em>中止该流。如果推送流已经关闭，那么服务器<em><strong>可以</strong></em>中止该流，也<em><strong>可以</strong></em>什么都不做。</p>
+<p>当服务器发送<strong>取消推送帧</strong>时，它是在表明它将不会兑现某个曾经发送的承诺。客户端无法再期待相关承诺得到兑现，除非它已经接收到且处理了这项被承诺的资源。无论推送流是否已被打开，服务器都<em><strong>应该</strong></em>在决定不再兑现承诺时发送<strong>取消推送帧</strong>。如果已经打开了推送流，那么服务器可以用错误码<code>H3_REQUEST_CANCELLED</code>（请求被取消）来中止在流上的发送。</p>
+<p><strong>取消推送帧</strong>的请求对现存推送流的状态没有直接影响。客户端<em><strong>不应该</strong></em>在已经接收到相关推送流的情况下任然发送<strong>取消推送帧</strong>。在客户端发出<strong>取消推送帧</strong>后依然有可能接收到推送流，因为服务器可能没有处理到这个<strong>取消推送帧</strong>。客户端<em><strong>应该</strong></em>使用错误码<code>H3_REQUEST_CANCELLED</code>来中止在流上的读取。</p>
+<p><strong>取消推送流</strong>是在控制流上发送的。如果在并非控制流的某条流上接收到了<strong>取消推送流</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<div class="block ref" id="Figure_6_CANCEL_PUSH_Frame">
+<pre tabindex="0"><code>取消推送帧 {
+  类型 (i) = 0x03,
+  长度 (i),
+  推送ID (i),
+}
+</code></pre><p><a href="#Figure_6_CANCEL_PUSH_Frame">图6：取消推送帧</a></p>
+</div>
+<p><strong>取消推送帧</strong>携带着一个经过可变长度整形编码的推送ID。推送ID字段标识了将要取消的服务器推送，详见<a href="">第4.6章</a>。如果接收到的<strong>取消推送帧</strong>中使用的推送ID大于当前连接上所允许的最大推送ID，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>（ID错误）的连接错误。</p>
+<p>由于数据包乱序的存在，客户端接收到的<strong>取消推送帧</strong>可能使用了一个尚未被<strong>推送承诺帧</strong>提供过的推送ID。如果服务器接收到的<strong>取消推送帧</strong>使用了一个尚未用<strong>推送承诺帧</strong>提供过的推送ID，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="7.2.4_SETTINGS">
+<h3>
+<a href="#7.2.4_SETTINGS">7.2.4. 设置帧</a>
+</h3>
+<div class="content">
+<p><strong>设置帧</strong>（类型值为<code>0x04</code>）传递的是能影响终端的通信方式的配置参数，例如自身的偏好和对对端行为的限制。<strong>设置帧</strong>中的单个参数可以被称为”设置“；每个设置参数的标识符和值被称为”设置标识符“和”设置值“。</p>
+<p><strong>设置帧</strong>总是应用在整条HTTP/3连接上，而从不会是单条流。<strong>设置帧</strong> <em><strong>必须</strong></em>在每条控制流上（详见<a href="">第6.2.1章</a>）被各个终端作为首个帧来发送，而且<em><strong>必须不</strong></em>被连续发送。如果终端在控制流上接收到了第二个<strong>设置帧</strong>，那么终端 <em><strong>必须</strong></em>使用类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误来响应这种情况。</p>
+<p>在并非控制流的其他流上<em><strong>必须不</strong></em>发送设置帧。如果终端在另一条流上接收到了<strong>设置帧</strong>，那么终端 <em><strong>必须</strong></em>使用类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误来响应这种情况。</p>
+<p><strong>设置帧</strong>的参数不是由协商得到的；它们描述了接收方能够使用的发送方特性。不过，可以使用<strong>设置帧</strong>来隐式地协商：每个终端都使用<strong>设置帧</strong>来宣告一组支持的值。最终的设置就取决于各终端如何合并这两组设置。<strong>设置帧</strong>并没有提供一种分辨哪一方的设置最终起效的机制。</p>
+<p>终端间可以对相同的参数宣告不同的值。例如，客户端可能愿意接受一个非常大的响应字段组，而服务器对请求的尺寸更为敏感。</p>
+<p>同样的设置标识符<em><strong>必须不</strong></em>在同一<strong>设置帧</strong>中多次出现。接收方<em><strong>可以</strong></em>将接收到重复的设置标识符的情况视作类型为<code>H3_SETTINGS_ERROR</code>（设置错误）的连接错误。</p>
+<p><strong>设置帧</strong>的载荷由数个参数组成（可以为零）。每个参数由一个设置标识符和一个值组成，两者均被编码为QUIC可变长度整型。</p>
+<div class="block ref" id="Figure_7_SETTINGS_Frame">
+<pre tabindex="0"><code>设置 {
+  标识符 (i),
+  值 (i),
+}
+
+取消推送帧 {
+  类型 (i) = 0x04,
+  长度 (i),
+  设置 (..),
+}
+</code></pre><p><a href="#Figure_7_SETTINGS_Frame">图7：设置帧</a></p>
+</div>
+<p>如果实现不认识某个参数的标识符，那么实现 <em><strong>必须</strong></em>忽略这个参数。</p>
+</div>
+</section>
+<section class="page" id="7.2.4.1_Defined_SETTINGS_Parameters">
+<h4>
+<a href="#7.2.4.1_Defined_SETTINGS_Parameters">7.2.4.1. 已定义的**设置帧**参数</a>
+</h4>
+<div class="content">
+<p>HTTP/3中定义了以下设置：</p>
+<dl>
+<dt>SETTINGS_MAX_FIELD_SECTION_SIZE（值为<code>0x06</code>）：</dt>
+<dd>
+<p>默认值为无限大。有关其用法，详见<a href="">第4.2.2章</a>。</p>
+</dd>
+</dl>
+<p>值的形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，的设置标识符被保留使用，用于检查终端是否会忽略未知的标识符。没有为这类设置指定任何含义。终端<em><strong>应该</strong></em>在其<strong>设置帧</strong>中使用至少一个这样的设置。终端在接收到这类设置时<em><strong>必须不</strong></em>认为它们具有任何含义。</p>
+<p>因为没有为这类设置定义任何语义，所以这类设置的值可以由实现随意设置。</p>
+<p>在《<a href="">HTTP/2</a>》中定义过，但是在HTTP/3中找不到其对应，的设置标识符同样是被保留使用的（详见<a href="">第11.2.2章</a>）。<em><strong>必须不</strong></em>发送这些被保留使用的设置，如果接收到了它们，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_SETTINGS_ERROR</code>的连接错误。</p>
+<p>HTTP/3的扩展可以定义额外的设置，详见<a href="">第9章</a>。</p>
+</div>
+</section>
+<section class="page" id="7.2.4.2_Initialization">
+<h4>
+<a href="#7.2.4.2_Initialization">7.2.4.2. 初始化</a>
+</h4>
+<div class="content">
+<p>HTTP实现<em><strong>必须不</strong></em>发送明知道无法满足对端设置的帧或请求。</p>
+<p>所有设置在一开始均为其初始值。在对端的<strong>设置帧</strong>抵达前，各个终端<em><strong>应该</strong></em>使用这些初始值来发送消息，因为携带这些设置的数据包可能遭遇了丢包或延误。当<strong>设置帧</strong>抵达时，其中的设置值将覆盖初始值。</p>
+<p>这样就无需在发送消息前等待<strong>设置帧</strong>。终端<em><strong>必须不</strong></em>要求先从对端处接收到数据，再发送<strong>设置帧</strong>； <em><strong>必须</strong></em>在传输层准备好发送数据时就将设置发送出去。</p>
+<p>对于服务器，各项客户端设置的初始值就是其默认值。</p>
+<p>对于使用了1-RTT QUIC连接的客户端，各项服务器设置的初始值就是其默认值。即便服务器立即发送了<strong>设置帧</strong>，1-RTT密钥也总能在包含<strong>设置帧</strong>的数据包被QUIC处理到之前变为可用。客户端<em><strong>不应该</strong></em>在发送请求前等待<strong>设置帧</strong>抵达，而是<em><strong>应该</strong></em>主动处理接收到的数据报，以增加在发送首个请求前处理到<strong>数据帧</strong>的可能性。</p>
+<p>当使用了0-RTT QUIC连接时，各项服务器设置的初始值就是在上一次会话中使用的那些值。一旦得到了用于恢复HTTP/3连接的信息，客户端就<em><strong>应该</strong></em>将服务器提供的设置存储起来，但是在某些情况下，它们<em><strong>可以</strong></em>选择不存储设置（例如，在先接收到会话票据再接收到<strong>设置帧</strong>的情况下）。在尝试0-RTT时，客户端 <em><strong>必须</strong></em>遵从存储的设置值，并在没有存储设置值时遵从默认值。一旦服务器提供了新的设置，客户端就 <em><strong>必须</strong></em>遵从那些值。</p>
+<p>在接受0-RTT数据时，服务器能记住它宣告过的设置，或在会话票据中存储具有完整性保护的设置值副本。服务器可以使用HTTP/3设置值来决定是否接受0-RTT数据。如果服务器无法判断客户端所记忆的设置是否与服务器的当前设置相兼容，那么它<em><strong>必须不</strong></em>接受0-RTT数据。客户端所记忆的设置的兼容与否指的是遵从这些设置的客户端是否会与服务器的当前设置冲突。</p>
+<p>服务器<em><strong>可以</strong></em>接受0-RTT，然后在<strong>设置帧</strong>中提供不同的设置。如果服务器接受了0-RTT数据，那么其设置帧<em><strong>必须不</strong></em>降低任何上限值或更改任何可能与客户及其0-RTT数据冲突的值。服务器 <em><strong>必须</strong></em>在帧中包含所有未使用默认值的设置。如果服务器接受了0-RTT但是随后发送了与过去使用的设置不兼容的设置，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_SETTINGS_ERROR</code>的连接错误。如果服务器接受了0-RTT但是随后发送的<strong>设置帧</strong>中缺失了某个客户端能辨认出曾使用的是非默认值的设置值（被保留使用的设置标识符除外），那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_SETTINGS_ERROR</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="7.2.5_PUSH_PROMISE">
+<h3>
+<a href="#7.2.5_PUSH_PROMISE">7.2.5. 推送承诺帧</a>
+</h3>
+<div class="content">
+<p><strong>推送承诺帧</strong>（类型值为<code>0x05</code>）被用于在请求流上从服务器向客户端传递一份被承诺的请求标头字段组。</p>
+<div class="block ref" id="Figure_8_PUSH_PROMISE_Frame">
+<pre tabindex="0"><code>承诺推送帧 {
+  类型 (i) = 0x05,
+  长度 (i),
+  推送ID (i),
+  经编码的字段组 (..),
+}
+</code></pre><p><a href="#Figure_8_PUSH_PROMISE_Frame">图8：设置帧</a></p>
+</div>
+<p>载荷由以下字段组成：</p>
+<dl>
+<dt>推送ID（Push ID）：</dt>
+<dd>
+<p>一个可变长度整型，标识着服务器的推送操作。推送ID被用于推送流的头部（详见<a href="">第4.6章</a>）和<strong>取消推送帧</strong>中。</p>
+</dd>
+<dt>经编码的字段组（Encoded Field Section）：</dt>
+<dd>
+<p>被承诺的响应所对应的请求的标头字段，它经过了QPACK编码。有关细节详见《<a href="">QPACK</a>》。</p>
+</dd>
+</dl>
+<p>服务器使用的推送ID<em><strong>必须不</strong></em>超过客户端在<strong>最大推送ID帧</strong>（详见<a href="">第7.2.7章</a>）中提供的值。如果客户端接收到的<strong>推送承诺帧</strong>中的推送ID超过了它所宣告的最大值，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>的连接错误。</p>
+<p>服务器<em><strong>可以</strong></em>在多个<strong>推送承诺帧</strong>中使用相同的推送ID。如果要这么做，那么这些经解压缩的请求字段组中 <em><strong>必须</strong></em>包含相同字段，这些字段 <em><strong>必须</strong></em>出现顺序相同、名称一致，并且值也完全一致。客户端<em><strong>应该</strong></em>多次比较被承诺的资源的请求标头字段组。如果客户端接收到的推送ID已经被承诺过或出现类似的不匹配的情况，那么它 <em><strong>必须</strong></em>使用类型为<code>H3_GENERAL_PROTOCOL_ERROR</code>（通用协议错误）的连接错误来响应这种情况。如果经解压缩的字段组完全匹配，那么客户端<em><strong>应该</strong></em>将被推送的内容与接收到相应<strong>推送承诺帧</strong>的所有流都关联起来。</p>
+<p>允许推送ID重复出现，主要是为了减少由并发请求造成的重复。服务器<em><strong>应该</strong></em>在一段较长的期间内持续避免重用推送ID。客户端很有可能读取完服务器的推送响应后不会将它们留下并稍后重用。如果客户端发现<strong>推送承诺帧</strong>使用的推送ID是它们已经遇到过且使用完毕的，那么它们得忽略这些承诺。</p>
+<p>如果在控制流上接收到了<strong>推送承诺帧</strong>，那么客户端 <em><strong>必须</strong></em>使用类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误来响应这种情况。</p>
+<p>客户端<em><strong>必须不</strong></em>发送<strong>推送承诺帧</strong>。如果服务器接收到了<strong>推送承诺帧</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>有关服务器推送机制的介绍，详见<a href="">第4.6章</a>。</p>
+</div>
+</section>
+<section class="page" id="7.2.6_GOAWAY">
+<h3>
+<a href="#7.2.6_GOAWAY">7.2.6. 关闭帧</a>
+</h3>
+<div class="content">
+<p>任一终端都可以使用<strong>关闭帧</strong>（类型值为<code>0x07</code>）来对一条HTTP/3连接发起优雅关闭。<strong>关闭帧</strong>允许终端一边结束处理已接收到的请求和推送，一边停止接受新的请求和推送。这使得一些管理性的操作，例如服务器维护，变为可能。<strong>关闭帧</strong>本身并不会关闭一条连接。</p>
+<div class="block ref" id="Figure_9_GOAWAY_Frame">
+<pre tabindex="0"><code>关闭帧 {
+  类型 (i) = 0x07,
+  长度 (i),
+  流ID/推送ID (i),
+}
+</code></pre><p><a href="#Figure_9_GOAWAY_Frame">图9：关闭帧</a></p>
+</div>
+<p><strong>关闭帧</strong>总是在控制流上被发送的。在从服务器至客户端的方向上，它携带着一个QUIC的流ID，指向一个由客户端发起的双向流，并使用可变长度整型编码。如果客户端接收到的<strong>关闭帧</strong>中的流ID指向的是其他类型的流，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>的连接错误。</p>
+<p>在从客户端至服务器的方向，<strong>关闭帧</strong>携带的是一个推送ID，并使用可变长度整型编码。</p>
+<p><strong>关闭帧</strong>作用于整条连接，而不是某条特定流。如果客户端在非控制流的某条流上接收到了<strong>关闭帧</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>有关<strong>关闭帧</strong>用法的更多信息，详见<a href="">第5.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="7.2.7_MAX_PUSH_ID">
+<h3>
+<a href="#7.2.7_MAX_PUSH_ID">7.2.7. 最大推送ID帧</a>
+</h3>
+<div class="content">
+<p>客户端使用<strong>最大推送ID帧</strong>（类型值为<code>0x0d</code>）来控制服务器可以发起的服务器推送的数量。它为服务器可以在<strong>推送承诺帧</strong>和<strong>取消推送帧</strong>中使用的推送ID设置了最大值。因此，除了使用由QUIC传输维护的上限值之外，使用这种帧也可以限制服务器能够发起的推送流数量。</p>
+<p>总是在控制流上发送<strong>最大推送ID帧</strong>。如果在其他流上接收到了<strong>最大推送ID帧</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>服务器<em><strong>必须不</strong></em>发送<strong>最大推送ID帧</strong>。如果客户端接收到了<strong>最大推送ID帧</strong>，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+<p>在HTTP/3连接刚建立时，最大推送ID的值为空，这意味着服务器在接收到<strong>最大推送ID帧</strong>前不可以发起推送。愿意管理被服务器承诺的推送的客户端可以通过在服务器兑现或取消推送承诺时发送<strong>最大推送ID帧</strong>的方式提高最大推送ID。</p>
+<div class="block ref" id="Figure_10_MAX_PUSH_ID_Frame">
+<pre tabindex="0"><code>最大推送ID帧 {
+  类型 (i) = 0x0d,
+  长度 (i),
+  推送ID (i),
+}
+</code></pre><p><a href="#Figure_10_MAX_PUSH_ID_Frame">图10：最大推送ID帧</a></p>
+</div>
+<p><strong>最大推送ID帧</strong>携带着一个可变长度整型，它表示着服务器可以使用的推送ID的最大值；详见<a href="">第4.6章</a>。<strong>最大推送ID帧</strong>不能降低最大推送ID；如果接收到的<strong>最大推送ID帧</strong>中包含的值一个比某个曾经接收到的值还小，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_ID_ERROR</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="7.2.8_Reserved_Frame_Types">
+<h3>
+<a href="#7.2.8_Reserved_Frame_Types">7.2.8. 保留使用的帧类型</a>
+</h3>
+<div class="content">
+<p>值的形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，的帧类型被保留使用，用于检查终端是否会忽略未知的帧类型（详见<a href="">第9章</a>）。这些帧没有任何语义，并且<em><strong>可以</strong></em>在任何允许发送帧的流上发送它们。这使得它们可以被用于应用层填充。终端在接收到这类帧时<em><strong>必须不</strong></em>认为它们具有任何含义。</p>
+<p>这类帧的载荷和长度可以由实现随意指定。</p>
+<p>在<a href="">HTTP/2</a>中定义过，但是在HTTP/3中找不到其对应，的帧类型同样是被保留使用的（详见<a href="">第11.2.1章</a>）。<em><strong>必须不</strong></em>发送这些被保留使用的帧类型，如果接收到了它们，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_FRAME_UNEXPECTED</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="8_Error_Handling">
+<h1>
+<a href="#8_Error_Handling">8. 错误处理</a>
+</h1>
+<div class="content">
+<p>在无法成功结束一条流时，QUIC允许应用对一条流发起中止（重置）并将原因传递给对端，详见《<a href="">QUIC传输</a>》的<a href="">第2.4章</a>。这被称为“流错误”。HTTP/3实现可以决定要不要关掉一条QUIC流并将原因告知对端。<a href="">第8.1章</a>中定义了错误码的编码方式。同样是用于表达错误的HTTP状态码，流错误与之有一些区别。流错误表示发送方并没有传输或处理完整个请求或响应，而HTTP状态码表示的是对已成功接收到的请求的处理结果。</p>
+<p>如果需要终止一整条连接，QUIC也提供了一种传达关闭理由的机制，详见《<a href="">QUIC传输</a>》的<a href="">第5.3章</a>。这被称为“连接错误”。与流错误类似，HTTP/3实现可以决定要不要关闭一条QUIC连接并使用<a href="">第8.1章</a>中的错误码将理由告知对端。</p>
+<p>尽管关闭流或连接的理由被称作为“错误”，但是这些操作并不一定表示在连接上或实现中存在问题。例如，一条流可能在请求的资源不再被需要时被重置。</p>
+<p>在某些情况下，终端<em><strong>可以</strong></em>选择将流错误视作为连接错误，用关闭整条连接的方式来响应单条流上出现的流错误。实现在做出此决定前需要考虑这么做对于在途请求的影响。</p>
+<p>由于无需协商即可定义新的错误码（详见<a href="">第9章</a>），所以如果在意料外的上下文中使用了某错误码，或接收到了一个未知类型的错误码，那么 <em><strong>必须</strong></em>将该情况视作类型为<code>H3_NO_ERROR</code>（无错误）的错误。然而无论哪个错误码，关闭一条流总会带来其他影响，<a href="">第4.1章</a>中就有一个例子。</p>
+</div>
+</section>
+<section class="page" id="8.1_HTTP3_Error_Codes">
+<h2>
+<a href="#8.1_HTTP3_Error_Codes">8.1. HTTP/3错误码</a>
+</h2>
+<div class="content">
+<p>以下错误码可以在中止流、中止对流的读取，以及即刻关闭HTTP/3连接时使用。</p>
+<dl>
+<dt>H3_NO_ERROR（无错误，值为<code>0x0100</code>）：</dt>
+<dd>
+<p>没有发生错误。它被用于需要关闭流或连接，但是没有实际发生错误的情况。</p>
+</dd>
+<dt>H3_GENERAL_PROTOCOL_ERROR（通用协议错误，值为<code>0x0101</code>）：</dt>
+<dd>
+<p>对端违反了协议要求，并且终端拒绝使用或找不到一个更准确的错误码。</p>
+</dd>
+<dt>H3_INTERNAL_ERROR（内部错误，值为<code>0x0102</code>）：</dt>
+<dd>
+<p>HTTP栈中出现了内部错误。</p>
+</dd>
+<dt>H3_STREAM_CREATION_ERROR（流创建错误，值为<code>0x0103</code>）：</dt>
+<dd>
+<p>终端检测到对端创建了一条无法被其接受的流。</p>
+</dd>
+<dt>H3_CLOSED_CRITICAL_STREAM（关键流遭关闭，值为<code>0x0104</code>）：</dt>
+<dd>
+<p>HTTP/3连接所需的某条流遭到关闭或重置。</p>
+</dd>
+<dt>H3_FRAME_UNEXPECTED（意料外的帧，值为<code>0x0105</code>）：</dt>
+<dd>
+<p>接收到的帧不被允许在当前状态下或在当前流上出现。</p>
+</dd>
+<dt>H3_FRAME_ERROR（帧错误，值为<code>0x0106</code>）：</dt>
+<dd>
+<p>接收到的帧不满足帧结构上的要求或者其尺寸不合法。</p>
+</dd>
+<dt>H3_EXCESSIVE_LOAD（负载过量，值为<code>0x0107</code>）：</dt>
+<dd>
+<p>终端检测到对端可能正在对其施加过量的负载。</p>
+</dd>
+<dt>H3_ID_ERROR（ID错误，值为<code>0x0108</code>）：</dt>
+<dd>
+<p>错误地使用了某个流ID或推送ID，例如超过上限值、降低上限值，或重用ID的情况。</p>
+</dd>
+<dt>H3_SETTINGS_ERROR（设置错误，值为<code>0x0109</code>）：</dt>
+<dd>
+<p>终端在<strong>设置帧</strong>的载荷中检测到了错误。</p>
+</dd>
+<dt>H3_MISSING_SETTINGS（缺失设置，值为<code>0x010a</code>）：</dt>
+<dd>
+<p>在控制流的开头没有接收到<strong>设置帧</strong>。</p>
+</dd>
+<dt>H3_REQUEST_REJECTED（请求被拒绝，值为<code>0x010b</code>）：</dt>
+<dd>
+<p>服务器拒绝了某请求，且没有对其进行任何应用层处理。</p>
+</dd>
+<dt>H3_REQUEST_CANCELLED（请求被取消，值为<code>0x010c</code>）：</dt>
+<dd>
+<p>请求或响应（包括被推送的响应）被取消了。</p>
+</dd>
+<dt>H3_REQUEST_INCOMPLETE（不完整的请求，值为<code>0x010d</code>）：</dt>
+<dd>
+<p>客户端的流被终止，因此请求未被未完全发送。</p>
+</dd>
+<dt>H3_MESSAGE_ERROR（消息错误，值为<code>0x010e</code>）：</dt>
+<dd>
+<p>无法被处理的畸形HTTP消息。</p>
+</dd>
+<dt>H3_CONNECT_ERROR（CONNECT错误，值为<code>0x010f</code>）：</dt>
+<dd>
+<p>作为对<code>CONNECT</code>请求的响应而建立的TCP连接被重置或异常关闭。</p>
+</dd>
+<dt>H3_VERSION_FALLBACK（版本回退，值为<code>0x0110</code>）：</dt>
+<dd>
+<p>所请求的操作无法经由HTTP/3提供。对端应该使用HTTP/1.1重试。</p>
+</dd>
+</dl>
+<p>值的形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，的错误码被保留使用，用于检查终端是否会将未知类型的错误码（详见<a href="">第9章</a>）视作为错误码<code>H3_NO_ERROR</code>。实现<em><strong>应该</strong></em>在本应发送错误码<code>H3_NO_ERROR</code>时以一定概率从此值空间中选取一个错误码来发送。</p>
+</div>
+</section>
+<section class="page" id="9_Extensions_to_HTTP3">
+<h1>
+<a href="#9_Extensions_to_HTTP3">9. HTTP/3的扩展</a>
+</h1>
+<div class="content">
+<p>HTTP/3允许对协议进行扩展。只要不超过本章描述的限制，就能够使用协议的扩展来提供额外的服务或对协议的一部分进行更改。扩展仅在单条HTTP/3连接的范畴内有效。</p>
+<p>扩展适用于本文档定义的所有协议元素。扩展不会影响已有的扩展HTTP的各种形式，例如定义新的方法、状态码，或字段。</p>
+<p>扩展可以使用新的帧类型（详见<a href="">第7.2章</a>）、新的设置（详见<a href="">第7.2.4.1章</a>）、新的错误码（详见<a href="">第8章</a>），或新的单向流类型（详见<a href="">第6.2章</a>）。注册表的建立就是为了管理这些可扩展的点位：帧类型注册表（详见<a href="">第11.2.1章</a>）、设置注册表（详见<a href="">第11.2.2章</a>）、错误码注册表（详见<a href="">第11.2.3章</a>），以及流类型注册表（详见<a href="">第11.2.4章</a>）。</p>
+<p>实现 <em><strong>必须</strong></em>忽略所有可扩展的协议元素中未知的或不受支持的值。在未知的或不受支持的类型的单向流上，实现 <em><strong>必须</strong></em>丢弃所有数据或中止对其读取。这意味着扩展可以安全地使用以上所有扩展点位，而无需事先协商。然而，当在特定位置要求使用某已知的帧类型时，例如作为控制流首个帧的<strong>设置帧</strong>（详见<a href="">第6.2.1章</a>），如果接收到了不满足此要求的某未知类型的帧，那么<em><strong>应该</strong></em>将此情况视作为错误。</p>
+<p>在使用改变了已有协议部件的语义的扩展前， <em><strong>必须</strong></em>进行协商。举个例子，只有在对端发出了表明支持的信号后，才能使用改变了<strong>标头帧</strong>结构的扩展。事实上，要兼容这种修改过的结构会使得实现变得复杂。因此，为已有的协议元素的修改后的定义分配新的标识符可能更为有效。</p>
+<p>本文档没有指定某种特殊方法来协商要不要使用扩展，但提到了可以使用设置（详见<a href="">第7.2.4.1章</a>）来做到这一点。如果两端都用该设置表明其愿意使用某个扩展，那么就可以使用该扩展。如果要将某个设置用于扩展的协商，那么其默认值 <em><strong>必须</strong></em>使得此设置被省略时，扩展是被禁用的。</p>
+</div>
+</section>
+<section class="page" id="10_Security_Considerations">
+<h1>
+<a href="#10_Security_Considerations">10. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>HTTP/3的安全性应该与使用了TLS的HTTP/2的安全性相当。然而，《<a href="">HTTP/2</a>》的<a href="">第10章</a>中的许多考量都适用于《<a href="">QUIC传输</a>》，本文档对此进行了讨论。</p>
+</div>
+</section>
+<section class="page" id="10.1_Server_Authority">
+<h2>
+<a href="#10.1_Server_Authority">10.1. 服务器的权威性</a>
+</h2>
+<div class="content">
+<p>HTTP/3依赖于HTTP的对于权威性的定义。《<a href="">HTTP</a>》的<a href="">第17.1章</a>讨论了对于建立权威时的安全性的考量。</p>
+</div>
+</section>
+<section class="page" id="10.2_Cross_Protocol_Attacks">
+<h2>
+<a href="#10.2_Cross_Protocol_Attacks">10.2. 跨协议攻击</a>
+</h2>
+<div class="content">
+<p>在处理应用层的数据前，QUIC握手和在TLS中使用的ALPN就选择好了应用协议。这使得各终端能够确信对端正在使用相同的协议。</p>
+<p>这并不确保能够防护所有跨协议攻击。《<a href="">QUIC传输</a>》的<a href="">第21.5章</a>就描述了一些方法，它们使用QUIC数据包的明文部分来向没有对传输层进行的终端发起请求伪造攻击。</p>
+</div>
+</section>
+<section class="page" id="10.3_Intermediary_Encapsulation_Attacks">
+<h2>
+<a href="#10.3_Intermediary_Encapsulation_Attacks">10.3. 中间设备封装攻击</a>
+</h2>
+<div class="content">
+<p>HTTP/3的字段编码方式使得本来在HTTP的语法中不合法的字段名称（详见《<a href="">HTTP</a>》的<a href="">第5.1章</a>）也能够被顺利使用。包含不合法的字段名称的请求或响应 <em><strong>必须</strong></em>被视作为畸形的。因此，中间设备不可以将包含着非法的字段名称的HTTP/3请求或响应转换为HTTP/1.1消息。</p>
+<p>类似地，HTTP/3可以传递本应不合法的字段值。尽管绝大多数经过编码的值都不会改变字段的解析过程，但是如果回车符（ASCII码为<code>0x0d</code>）、换行符（ASCII码为<code>0x0a</code>）和空字符（ASCII码为<code>0x00</code>）被逐字转换，那么它们就可能被攻击者利用。包含着禁止作为字段值出现的字符的请求或响应 <em><strong>必须</strong></em>被视作为畸形的。《<a href="">HTTP</a>》的<a href="">第5.5章</a>中的ABNF规则“字段内容”定义了哪些字符是合法的。</p>
+</div>
+</section>
+<section class="page" id="10.4_Cacheability_of_Pushed_Responses">
+<h2>
+<a href="#10.4_Cacheability_of_Pushed_Responses">10.4. 被推送的响应的可缓存性</a>
+</h2>
+<div class="content">
+<p>被推送的响应并不具有来自客户端的主动请求；它所对应的请求是由服务器在<strong>推送承诺帧</strong>中提供的。</p>
+<p>根据源服务器在标头字段<code>Cache-Control</code>中提供的指导，被推送的响应有可能被缓存起来。然而，这在单台服务器提供多份服务时会产生问题。举个例子，一个服务器可能为数个用户提供服务，每个用户使用其URI空间的一部分。</p>
+<p>当多份服务共享同一台服务器上的空间时，服务器 <em><strong>必须</strong></em>确保这些服务无法将它们不具有权威的资源推送出去。不这么做会使得某个服务能够将一些资源从自己的缓存中提供出去，覆盖住真正具有权威的服务所提供的资源。</p>
+<p>客户端必须拒绝来自不具有权威的源服务器的响应；详见<a href="">第4.6章</a>。</p>
 </div>
 </section>
 <section class="page" id="10.5_Denial_of_Service_Considerations">
 <h2>
-<a href="#10.5_Denial_of_Service_Considerations">10.5. 拒绝服务考量</a>
+<a href="#10.5_Denial_of_Service_Considerations">10.5. 对拒绝服务攻击的考量</a>
 </h2>
 <div class="content">
+<p>比起HTTP/1.1或HTTP/2的连接，HTTP/3的连接可能需要占用更多的资源来保持运转。字段压缩和流量控制依赖于充足的资源以存储更多的状态数据。对于这些特性的设置确保了它们的内存占用量是严格受限的。</p>
+<p><strong>推送承诺帧</strong>的数量也以类似的方式得到限制。接受服务器推送的客户端<em><strong>应该</strong></em>为自身每次新批准的推送ID数量设置上限。</p>
+<p>计算处理所需的资源量没法像状态存储所需的资源量那样被有效地限制。</p>
+<p>向对端发送未知的且对端不得不忽略的协议元素的能力可能被滥用，使得对端花费额外的处理时间。这可以通过设置大量未定义的<strong>设置帧</strong>参数、未知的帧类型或未知的流类型来做到。不过要注意的是，未知协议元素的某些用法是完全合理的，例如某些可选支持的扩展和用填充来提高对流量分析的抵御能力。</p>
+<p>对字段组的压缩还提供了一些浪费对端处理资源的机会；有关潜在的滥用的更多细节，详见《<a href="">QPACK</a>》的<a href="">第7章</a>。</p>
+<p>所有以上特性——也就是服务器推送、未知的协议元素和字段压缩——均具有其合理的用途。只有在不必要地或过度地使用这些特性时，它们才会成为负担。</p>
+<p>没有对这些行为进行监控的终端会将自身暴露于拒绝服务攻击的风险之中。实现<em><strong>应该</strong></em>对这些特性的使用进行追踪，并对其使用设置限制。终端<em><strong>可以</strong></em>将可疑的活动视作类型为<code>H3_EXCESSIVE_LOAD</code>（负载过量）的连接错误，但是对情况产生的误判将导致合法的连接和请求被打断。</p>
 </div>
 </section>
 <section class="page" id="10.5.1_Limits_on_Field_Section_Size">
 <h3>
-<a href="#10.5.1_Limits_on_Field_Section_Size">10.5.1. 字段大小限制</a>
+<a href="#10.5.1_Limits_on_Field_Section_Size">10.5.1. 对字段组尺寸的限制</a>
 </h3>
 <div class="content">
+<p>巨大的字段组（详见<a href="">第4.1章</a>）会导致实现占用大量空间来存储状态数据。对路由来说很关键的标头字段可能出现在头部的末尾，这会阻碍头部数据被路由至其目的地。这种顺序上的问题和其他因素，如为了确保缓存的有效性，意味着终端可能需要将整个头部缓存下来。由于不存在对于字段组的硬性限制，一些终端可能不得不占用大量的可用内存来存储标头字段。</p>
+<p>终端可以使用设置<code>SETTINGS_MAX_FIELD_SECTION_SIZE</code>（详见<a href="">第4.2.2章</a>）来向对端提示它可能会对字段组尺寸施加的限制。这个设置只是提示性质的，所以终端<em><strong>可以</strong></em>选择发送超过此限制的字段组，并承担此请求或响应被视作畸形的风险。该设置是特定于某条HTTP/3连接的，所以任何请求或响应都可能在中转过程中遇到一个更低的且未知的限制。中间设备可以通过传递来自不同终端的值的方式来避免此问题，不过它们并没有义务这么做。</p>
+<p>如果终端接收到的字段组可能比它愿意处理的还要大，那么作为服务器时它可以发送HTTP状态码<code>431</code>（请求标头字段过大，详见《<a href="">RFC6585</a>》），而作为客户端时它可以丢弃无法处理的响应。</p>
+</div>
+</section>
+<section class="page" id="10.5.2_CONNECT_Issues">
+<h3>
+<a href="#10.5.2_CONNECT_Issues">10.5.2. 与CONNECT相关的问题</a>
+</h3>
+<div class="content">
+<p><code>CONNECT</code>方法可以被用来不成比例地向代理施加负载，因为创建一条流相比创建与维护一条TCP连接来说更为廉价。于是，支持<code>CONNECT</code>的代理可以在它所同时接受的请求数量上表现得保守一些。</p>
+<p>即便携带着<code>CONNECT</code>请求的流已经被关闭，代理可能还需要为TCP连接维护一些资源，因为这条连接仍处于<code>TIME_WAIT</code>状态。要处理该问题，代理可以在TCP连接终止的一段时间后再提高对QUIC流数量的限制。</p>
+</div>
+</section>
+<section class="page" id="10.6_Use_of_Compression">
+<h2>
+<a href="#10.6_Use_of_Compression">10.6. 压缩的使用</a>
+</h2>
+<div class="content">
+<p>当压缩机密数据的上下文还被用于压缩某些由攻击者控制的数据时，攻击者就有机会利用压缩来破解这些机密数据。HTTP/3启用了字段的压缩（详见<a href="">第4.2章</a>）；以下担忧还适用于启用了HTTP的压缩类内容编码方式的情况；详见《<a href="">HTTP</a>》的<a href="">第8.4.1章</a>。</p>
+<p>目前已经存在利用网络的特征来对压缩算法进行攻击的演示（例如《<a href="">BREACH</a>》）。攻击者使用数份包含着不同明文的请求，再分别观察密文的长度，对机密值猜测正确的那份会表现出更短的长度。</p>
+<p>在安全信道上通信的实现<em><strong>必须不</strong></em>一次性对既包含可信数据又包含受攻击者控制的数据进行压缩，除非这两类来源的数据是分别在单独的压缩上下文中操作的。如果无法可靠地判断数据的来源，那么<em><strong>必须不</strong></em>使用压缩。</p>
+<p>《<a href="">QPACK</a>》中进一步描述了有关字段组压缩的考量。</p>
+</div>
+</section>
+<section class="page" id="10.7_Padding_and_Traffic_Analysis">
+<h2>
+<a href="#10.7_Padding_and_Traffic_Analysis">10.7. 填充与流量分析</a>
+</h2>
+<div class="content">
+<p>填充可以被用来混淆帧内容的准确尺寸和抵御HTTP中特定类型的攻击，例如针对既包含由攻击者控制的明文又包含机密数据的压缩内容的攻击（如《<a href="">BREACH</a>》）。</p>
+<p>HTTP/2使用<strong>填充帧</strong>和在其他帧中的填充字段来使得一条连接更禁得住流量分析，而HTTP/3既可以依赖传输层填充，又可以使用<a href="">第7.2.8章</a>和<a href="">第6.2.3章</a>中讨论的被保留使用的帧类型和流类型。这些不同的填充方法在填充粒度、填充与受保护数据的交错形式、是否会在数据包遭遇丢包时使用填充，以及实现对填充的控制形式上都会产生不同的结果。</p>
+<p>即使连接处于空闲状态，也可以利用被保留使用的流类型来对传出流量进行伪装。因为HTTP流量经常以暴发的形式出现，所以可以使用伪装流量来混淆这类暴发的时机和时长，甚至伪装成总是存在稳定的数据流。然而，这类流量依然受到接收方的流量控制，若接收方没法迅速吸收完这些流的数据并提供额外的流量控制额度，发送方发送真实流量的能力就会受到限制。</p>
+<p>要抵御针对压缩的攻击，禁用或限制使用压缩可能比填充更适合作为缓解措施。</p>
+<p>填充的使用可能会降低保护效果。冗余的填充甚至可能适得其反。在最好的情况下，填充也仅会以提高攻击者需要观察的帧数量的方式使得攻击者更难推断长度信息。错误实现的填充策略会被轻易击破。特别是，具有可预测的分布的随机化填充几乎不具有保护效力；类似地，当攻击者能够控制明文时，将载荷填充至固定尺寸有可能在载荷尺寸超过该固定值时暴露信息。</p>
+</div>
+</section>
+<section class="page" id="10.8_Frame_Parsing">
+<h2>
+<a href="#10.8_Frame_Parsing">10.8. 帧的解析</a>
+</h2>
+<div class="content">
+<p>某些协议元素包含着嵌套的长度元素，它们通常以既存在显式的总长度值又包含数个可变长度整型值的形式出现。这会为不谨慎的实现者带来风险。实现 <em><strong>必须</strong></em>确保帧的长度字段与它包含的数个字段的总长度准确匹配、</p>
+</div>
+</section>
+<section class="page" id="10.9_Early_Data">
+<h2>
+<a href="#10.9_Early_Data">10.9. 早期数据</a>
+</h2>
+<div class="content">
+<p>与HTTP/3共同使用的0-RTT会带来受到重放攻击的风险。在与HTTP/3共同使用0-RTT时 <em><strong>必须</strong></em>应用在《<a href="">HTTP-REPLAY</a>》中提出的抗重放措施。在向HTTP/3应用《<a href="">HTTP-REPLAY</a>》时，“TLS层”指的是在QUIC中完成的握手，“应用数据”指的是流的内容。</p>
+</div>
+</section>
+<section class="page" id="10.10_Migration">
+<h2>
+<a href="#10.10_Migration">10.10. 迁移</a>
+</h2>
+<div class="content">
+<p>某些HTTP实现将客户端地址用于日志或访问控制。由于QUIC客户端的地址可能在连接过程中改变（并且将来的版本还可能支持客户端同时使用多个地址），所以这类实现就需要积极地追踪客户端的地址或相关的地址组，或接受原始地址可能发生变化的事实。</p>
+</div>
+</section>
+<section class="page" id="10.11_Privacy_Considerations">
+<h2>
+<a href="#10.11_Privacy_Considerations">10.11. 关于隐私的考量</a>
+</h2>
+<div class="content">
+<p>HTTP/3的一些特征使得观察者有机会将单个客户端或服务器在不同时期的活动互相关联起来。这些活动包括设置的值、对刺激作出反应的时间和对由设置控制的特性的处理方式。</p>
+<p>只要这些活动表现出行为上的差异，就可以将它们作为追踪某个特定客户端的基准。</p>
+<p>HTTP/3使用单条QUIC连接的倾向使得某用户在某网站上的活动能够被关联起来。为不同的源复用同一条连接使得这些源间的活动能够被关联起来。</p>
+<p>QUIC中一些会引发即时响应的特性会被终端用来测量与对端间的延迟；这在特定场景下可能会对隐私产生影响。</p>
+</div>
+</section>
+<section class="page" id="11_IANA_Considerations">
+<h1>
+<a href="#11_IANA_Considerations">11. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文档注册了一个新的ALPN协议ID（详见<a href="">第11.1章</a>）并创建了一些用于管理HTTP/3中码点分配的新注册表。</p>
+</div>
+</section>
+<section class="page" id="11.1_Registration_of_HTTP3_Identification_String">
+<h2>
+<a href="#11.1_Registration_of_HTTP3_Identification_String">11.1. HTTP/3标识字符串的注册项</a>
+</h2>
+<div class="content">
+<p>本文档在《<a href="">RFC7301</a>》建立的注册表“TLS应用层协议协商（ALPN）协议ID”中为HTTP/3的标识符创建了一条注册项。</p>
+<p>字符串“h3”标识着HTTP/3：</p>
+<dl>
+<dt>协议（Protocol）：</dt>
+<dd>
+<p>HTTP/3</p>
+</dd>
+<dt>标识序列（Identification Sequence）：</dt>
+<dd>
+<p><code>0x68 0x33</code>（“h3”）</p>
+</dd>
+<dt>规范（Specification）：</dt>
+<dd>
+<p>本文档</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="11.2_New_Registries">
+<h2>
+<a href="#11.2_New_Registries">11.2. 新注册表</a>
+</h2>
+<div class="content">
+<p>本文档中创建的新注册表按照《<a href="">QUIC传输</a>》的<a href="">第22.1章</a>中记述的QUIC注册表规范来执行。所有注册表均包含《<a href="">QUIC传输</a>》的<a href="">第22.1.1章</a>中列出的通用字段。这些注册表被集中在“超文本传输协议版本3（HTTP/3）”条目下。</p>
+<p>在这些注册表中，所有初始注册项的状态均为永久、更改责任人均为IETF，且联系方式均为HTTP工作组（<a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a>）。</p>
+</div>
+</section>
+<section class="page" id="11.2.1_Frame_Types">
+<h3>
+<a href="#11.2.1_Frame_Types">11.2.1. 帧类型</a>
+</h3>
+<div class="content">
+<p>本文档为HTTP/3的帧类型代码建立了一个注册表。注册表“HTTP/3帧类型”管理着62比特位长的空间。该注册表遵循QUIC注册表规范；详见<a href="">第11.2章</a>。该注册表中的永久注册项都是使用强制规范（<code>Specification Required</code>）流程（详见《<a href="">RFC8126</a>》）来指定的，但是介于<code>0x00</code>与<code>0x3f</code>间的值（以十六进制表示，包含两端）除外，它们是使用标准行为（<code>Standards Action</code>）流程或IESG批准指定的，遵循的是《<a href="">RFC8126</a>》的<a href="">第4.9章</a>和<a href="">第4.10章</a>中的定义。</p>
+<p>尽管该注册表与《<a href="">HTTP/2</a>》中定义的注册表“HTTP/2帧类型”相互独立，但是在向这两个注册表注册时最好保持同步。如果某个注册项仅出现在一侧的注册表中，那么<em><strong>应该</strong></em>尽可能避免在另一侧的注册表中将相同的值分配给不相关的操作。专家评审员<em><strong>可以</strong></em>对可能使得两个表中出现值相同但是含义冲突的情况的无关注册项做出拒绝。</p>
+<p>除了在<a href="">第11.2章</a>中描述的通用字段外，该注册表中的永久注册项还 <em><strong>必须</strong></em>包含以下字段：</p>
+<dl>
+<dt>帧类型（Frame Type）：</dt>
+<dd>
+<p>帧类型的名称或标签。</p>
+</dd>
+</dl>
+<p>帧类型的规范 <em><strong>必须</strong></em>包含对于帧结构及其语义的描述，包括帧中所有可选部分。</p>
+<p>本文档为<a href="">表2</a>中的注册项进行了注册。</p>
+<div class="block ref" id="Table_2_Initial_HTTP3_Frame_Types">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">帧类型</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">规范</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>数据帧</strong></td>
+<td style="text-align:left"><code>0x00</code></td>
+<td style="text-align:left"><a href="">第7.2.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>标头帧</strong></td>
+<td style="text-align:left"><code>0x01</code></td>
+<td style="text-align:left"><a href="">第7.2.2章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x02</code></td>
+<td style="text-align:left">本文档</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>取消推送帧</strong></td>
+<td style="text-align:left"><code>0x03</code></td>
+<td style="text-align:left"><a href="">第7.2.3章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>设置帧</strong></td>
+<td style="text-align:left"><code>0x04</code></td>
+<td style="text-align:left"><a href="">第7.2.4章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>推送承诺帧</strong></td>
+<td style="text-align:left"><code>0x05</code></td>
+<td style="text-align:left"><a href="">第7.2.5章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x06</code></td>
+<td style="text-align:left">本文档</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>关闭帧</strong></td>
+<td style="text-align:left"><code>0x07</code></td>
+<td style="text-align:left"><a href="">第7.2.6章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x08</code></td>
+<td style="text-align:left">本文档</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x09</code></td>
+<td style="text-align:left">本文档</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>最大推送ID帧</strong></td>
+<td style="text-align:left"><code>0x0d</code></td>
+<td style="text-align:left"><a href="">第7.2.7章</a></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_2_Initial_HTTP3_Frame_Types">表2：初始的HTTP/3帧类型</a></p>
+</div>
+<p>形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，（也就是<code>0x21</code>、<code>0x40</code>、…、直到<code>0x3ffffffffffffffe</code>）的代码 <em><strong>必须</strong></em>不被IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值之列。</p>
+</div>
+</section>
+<section class="page" id="11.2.2_Settings_Parameters">
+<h3>
+<a href="#11.2.2_Settings_Parameters">11.2.2. 设置参数</a>
+</h3>
+<div class="content">
+<p>本文档为HTTP/3的设置建立了一个注册表。注册表“HTTP/3设置”管理着62比特位长的空间。该注册表遵循QUIC注册表规范；详见<a href="">第11.2章</a>。该注册表中的永久注册项都是使用强制规范（<code>Specification Required</code>）流程（详见《<a href="">RFC8126</a>》）来指定的，但是介于<code>0x00</code>与<code>0x3f</code>间的值（以十六进制表示，包含两端）除外，它们是使用标准行为（<code>Standards Action</code>）流程或IESG批准指定的，遵循的是《<a href="">RFC8126</a>》的<a href="">第4.9章</a>和<a href="">第4.10章</a>中的定义。</p>
+<p>尽管该注册表与《<a href="">HTTP/2</a>》中定义的注册表“HTTP/2设置”相互独立，但是在向这两个注册表注册时最好保持同步。如果某个注册项仅出现在一侧的注册表中，那么<em><strong>应该</strong></em>尽可能避免在另一侧的注册表中将相同的值分配给不相关的操作。专家评审员<em><strong>可以</strong></em>对可能使得两个表中出现值相同但是含义冲突的情况的无关注册项做出拒绝。</p>
+<p>除了在<a href="">第11.2章</a>中描述的通用字段外，该注册表中的永久注册项还 <em><strong>必须</strong></em>包含以下字段：</p>
+<dl>
+<dt>设置名称（Setting Name）：</dt>
+<dd>
+<p>设置的符号名。设置名称的指定是可选的。</p>
+</dd>
+<dt>默认值（Default）：</dt>
+<dd>
+<p>设置在未另外指定时的值。默认值<em><strong>应该</strong></em>是在所有可能的值中最严格的那个。</p>
+</dd>
+</dl>
+<p>本文档为<a href="">表3</a>中的注册项进行了注册。</p>
+<div class="block ref" id="Table_3_Initial_HTTP3_Settings">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">设置名称</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">规范</th>
+<th style="text-align:left">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x00</code></td>
+<td style="text-align:left">本文档</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x02</code></td>
+<td style="text-align:left">本文档</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x03</code></td>
+<td style="text-align:left">本文档</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x04</code></td>
+<td style="text-align:left">本文档</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>保留使用</em></td>
+<td style="text-align:left"><code>0x05</code></td>
+<td style="text-align:left">本文档</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>MAX_FIELD_SECTION_SIZE</code></td>
+<td style="text-align:left"><code>0x06</code></td>
+<td style="text-align:left"><a href="">第7.2.4.1章</a>]</td>
+<td style="text-align:left">无限大</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_3_Initial_HTTP3_Settings">表3：初始的HTTP/3设置</a></p>
+</div>
+<p>出于格式上的原因，设置名称可以用移除前缀<code>SETTINGS_</code>的方法来简写。</p>
+<p>形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，（也就是<code>0x21</code>、<code>0x40</code>、…、直到<code>0x3ffffffffffffffe</code>）的代码 <em><strong>必须</strong></em>不被IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值之列。</p>
+</div>
+</section>
+<section class="page" id="11.2.3_Error_Codes">
+<h3>
+<a href="#11.2.3_Error_Codes">11.2.3. 错误码</a>
+</h3>
+<div class="content">
+<p>本文档为HTTP/3的错误码建立了一个注册表。注册表“HTTP/3错误码”管理着62比特位长的空间。该注册表遵循QUIC注册表规范；详见<a href="">第11.2章</a>。该注册表中的永久注册项都是使用强制规范（<code>Specification Required</code>）流程（详见《<a href="">RFC8126</a>》）来指定的，但是介于<code>0x00</code>与<code>0x3f</code>间的值（以十六进制表示，包含两端）除外，它们是使用标准行为（<code>Standards Action</code>）流程或IESG批准指定的，遵循的是《<a href="">RFC8126</a>》的<a href="">第4.9章</a>和<a href="">第4.10章</a>中的定义。</p>
+<p>在对错误码进行注册时要求包含一段对错误码的描述。建议专家评审员检查新的注册申请是否与现有错误码重复。推荐使用现有的注册项，但不强制。不建议使用在注册表“HTTP/2错误码”中注册的值来注册，专家评审员<em><strong>可以</strong></em>拒绝此类注册申请。</p>
+<p>除了在<a href="">第11.2章</a>中描述的通用字段外，该注册表中的永久注册项还 <em><strong>必须</strong></em>包含以下字段：</p>
+<dl>
+<dt>名称（Name）：</dt>
+<dd>
+<p>错误码的名称。</p>
+</dd>
+<dt>描述（Description）：</dt>
+<dd>
+<p>对错误码语义的简短描述。</p>
+</dd>
+</dl>
+<p>本文档为<a href="">表4</a>中的注册项进行了注册。这些错误码是遵循强制规范流程来选择的，以避免与HTTP/2错误码发生冲突。</p>
+<div class="block ref" id="Table_4_Initial_HTTP3_Error_Codes">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">规范</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>H3_NO_ERROR</code>（无错误）</td>
+<td style="text-align:left"><code>0x0100</code></td>
+<td style="text-align:left">没有错误发生</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_GENERAL_PROTOCOL_ERROR</code>（通用协议错误）</td>
+<td style="text-align:left"><code>0x0101</code></td>
+<td style="text-align:left">通用的协议错误</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_INTERNAL_ERROR</code>（内部错误）</td>
+<td style="text-align:left"><code>0x0102</code></td>
+<td style="text-align:left">发生了内部错误</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_STREAM_CREATION_ERROR</code>（流创建错误）</td>
+<td style="text-align:left"><code>0x0103</code></td>
+<td style="text-align:left">创建流时发生错误</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_CLOSED_CRITICAL_STREAM</code>（关键流遭关闭）</td>
+<td style="text-align:left"><code>0x0104</code></td>
+<td style="text-align:left">关键的流遭到了关闭</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_FRAME_UNEXPECTED</code>（意料外的帧）</td>
+<td style="text-align:left"><code>0x0105</code></td>
+<td style="text-align:left">接收到了在当前状态下不允许出现的帧</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_FRAME_ERROR</code>（帧错误）</td>
+<td style="text-align:left"><code>0x0106</code></td>
+<td style="text-align:left">帧的结构或尺寸违反了约定</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_EXCESSIVE_LOAD</code>（负载过量）</td>
+<td style="text-align:left"><code>0x0107</code></td>
+<td style="text-align:left">对端正在施加过量的负载</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_ID_ERROR</code>（ID错误）</td>
+<td style="text-align:left"><code>0x0108</code></td>
+<td style="text-align:left">某标识符被错误地使用了</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_SETTINGS_ERROR</code>（设置错误）</td>
+<td style="text-align:left"><code>0x0109</code></td>
+<td style="text-align:left"><strong>设置帧</strong>中存在不合法的值</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_MISSING_SETTINGS</code>（缺失设置）</td>
+<td style="text-align:left"><code>0x010a</code></td>
+<td style="text-align:left">没有接收到<strong>设置帧</strong></td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_REQUEST_REJECTED</code>（请求被拒绝）</td>
+<td style="text-align:left"><code>0x010b</code></td>
+<td style="text-align:left">没有处理请求</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_REQUEST_CANCELLED</code>（请求被取消）</td>
+<td style="text-align:left"><code>0x010c</code></td>
+<td style="text-align:left">不再需要数据</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_REQUEST_INCOMPLETE</code>（不完整的请求）</td>
+<td style="text-align:left"><code>0x010d</code></td>
+<td style="text-align:left">流被过早地终止</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_MESSAGE_ERROR</code>（消息错误）</td>
+<td style="text-align:left"><code>0x010e</code></td>
+<td style="text-align:left">畸形的请求</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_CONNECT_ERROR</code>（CONNECT错误）</td>
+<td style="text-align:left"><code>0x010f</code></td>
+<td style="text-align:left">为CONNECT请求创建的TCP连接遭到重置或发生错误</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>H3_VERSION_FALLBACK</code>（版本回退）</td>
+<td style="text-align:left"><code>0x0110</code></td>
+<td style="text-align:left">以HTTP/1.1重试</td>
+<td style="text-align:left"><a href="">第8.1章</a></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_4_Initial_HTTP3_Error_Codes">表4：初始的HTTP/3错误码</a></p>
+</div>
+<p>形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，（也就是<code>0x21</code>、<code>0x40</code>、…、直到<code>0x3ffffffffffffffe</code>）的代码 <em><strong>必须</strong></em>不被IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值之列。</p>
+</div>
+</section>
+<section class="page" id="11.2.4_Stream_Types">
+<h3>
+<a href="#11.2.4_Stream_Types">11.2.4. 流类型</a>
+</h3>
+<div class="content">
+<p>本文档为HTTP/3的单向流类型建立了一个注册表。注册表“HTTP/3流类型”管理着62比特位长的空间。该注册表遵循QUIC注册表规范；详见<a href="">第11.2章</a>。该注册表中的永久注册项都是使用强制规范（<code>Specification Required</code>）流程（详见《<a href="">RFC8126</a>》）来指定的，但是介于<code>0x00</code>与<code>0x3f</code>间的值（以十六进制表示，包含两端）除外，它们是使用标准行为（<code>Standards Action</code>）流程或IESG批准指定的，遵循的是《<a href="">RFC8126</a>》的<a href="">第4.9章</a>和<a href="">第4.10章</a>中的定义。</p>
+<p>除了在<a href="">第11.2章</a>中描述的通用字段外，该注册表中的永久注册项还 <em><strong>必须</strong></em>包含以下字段：</p>
+<dl>
+<dt>流类型（Stream Type）：</dt>
+<dd>
+<p>流类型的名称或标签。</p>
+</dd>
+<dt>发送方（Sender）：</dt>
+<dd>
+<p>HTTP/3连接的哪一方可以发起该类型的流。值可以是“客户端”、“服务器”或“双方”。</p>
+</dd>
+</dl>
+<p>永久注册项的规范中 <em><strong>必须</strong></em>包含对该流类型的一份描述，其中包括流内容的结构和语义。</p>
+<p>本文档为<a href="">表5</a>中的注册项进行了注册。</p>
+<div class="block ref" id="Table_5_Initial_HTTP3_Stream_Types">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">流类型</th>
+<th style="text-align:left">值</th>
+<th style="text-align:left">规范</th>
+<th style="text-align:left">发送方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">控制流</td>
+<td style="text-align:left"><code>0x00</code></td>
+<td style="text-align:left"><a href="">第6.2.1章</a></td>
+<td style="text-align:left">双方</td>
+</tr>
+<tr>
+<td style="text-align:left">推送流</td>
+<td style="text-align:left"><code>0x01</code></td>
+<td style="text-align:left"><a href="">第4.6章</a></td>
+<td style="text-align:left">服务器</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_5_Initial_HTTP3_Stream_Types">表5：初始的HTTP/3流类型</a></p>
+</div>
+<p>形式满足<code>0x1f * N + 0x21</code>，其中N为非负整数，（也就是<code>0x21</code>、<code>0x40</code>、…、直到<code>0x3ffffffffffffffe</code>）的代码 <em><strong>必须</strong></em>不被IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值之列。</p>
+</div>
+</section>
+<section class="page" id="12_References">
+<h1>
+<a href="#12_References">12. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="12.1_Normative_References">
+<h2>
+<a href="#12.1_Normative_References">12.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="ALTSVC">
+<p><a href="#ALTSVC"><strong>[ALTSVC]</strong></a> </p>
+<p>Nottingham, M., McManus, P., and J. Reschke, “HTTP Alternative Services”, RFC 7838, DOI 10.17487/RFC7838, April 2016, <a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>.</p>
+</div>
+<div class="out_ref" id="COOKIES">
+<p><a href="#COOKIES"><strong>[COOKIES]</strong></a> </p>
+<p>Barth, A., “HTTP State Management Mechanism”, RFC 6265, DOI 10.17487/RFC6265, April 2011, <a href="https://www.rfc-editor.org/info/rfc6265">https://www.rfc-editor.org/info/rfc6265</a>.</p>
+</div>
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> </p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP-CACHING">
+<p><a href="#HTTP-CACHING"><strong>[HTTP-CACHING]</strong></a> </p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Caching”, STD 98, RFC 9111, DOI 10.17487/RFC9111, June 2022, <a href="https://www.rfc-editor.org/info/rfc9111">https://www.rfc-editor.org/info/rfc9111</a>.</p>
+</div>
+<div class="out_ref" id="HTTP-REPLAY">
+<p><a href="#HTTP-REPLAY"><strong>[HTTP-REPLAY]</strong></a> </p>
+<p>Thomson, M., Nottingham, M., and W. Tarreau, “Using Early Data in HTTP”, RFC 8470, DOI 10.17487/RFC8470, September 2018, <a href="https://www.rfc-editor.org/info/rfc8470">https://www.rfc-editor.org/info/rfc8470</a>.</p>
+</div>
+<div class="out_ref" id="QPACK">
+<p><a href="#QPACK"><strong>[QPACK]</strong></a> </p>
+<p>Krasic, C., Bishop, M., and A. Frindell, Ed., “QPACK: Field Compression for HTTP/3”, RFC 9204, DOI 10.17487/RFC9204, June 2022, <a href="https://www.rfc-editor.org/info/rfc9204">https://www.rfc-editor.org/info/rfc9204</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TRANSPORT">
+<p><a href="#QUIC-TRANSPORT"><strong>[QUIC-TRANSPORT]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC0793">
+<p><a href="#RFC0793"><strong>[RFC0793]</strong></a> </p>
+<p>Postel, J., “Transmission Control Protocol”, STD 7, RFC 793, DOI 10.17487/RFC0793, September 1981, <a href="https://www.rfc-editor.org/info/rfc793">https://www.rfc-editor.org/info/rfc793</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC6066">
+<p><a href="#RFC6066"><strong>[RFC6066]</strong></a> </p>
+<p>Eastlake 3rd, D., “Transport Layer Security (TLS) Extensions: Extension Definitions”, RFC 6066, DOI 10.17487/RFC6066, January 2011, <a href="https://www.rfc-editor.org/info/rfc6066">https://www.rfc-editor.org/info/rfc6066</a>.</p>
+</div>
+<div class="out_ref" id="RFC7301">
+<p><a href="#RFC7301"><strong>[RFC7301]</strong></a> </p>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</div>
+<div class="out_ref" id="RFC8126">
+<p><a href="#RFC8126"><strong>[RFC8126]</strong></a> </p>
+<p>Cotton, M., Leiba, B., and T. Narten, “Guidelines for Writing an IANA Considerations Section in RFCs”, BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017, <a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> </p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="URI">
+<p><a href="#URI"><strong>[URI]</strong></a> </p>
+<p>Berners-Lee, T., Fielding, R., and L. Masinter, “Uniform Resource Identifier (URI): Generic Syntax”, STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005, <a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="12.2_Informative_References">
+<h2>
+<a href="#12.2_Informative_References">12.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="BREACH">
+<p><a href="#BREACH"><strong>[BREACH]</strong></a> </p>
+<p>Gluck, Y., Harris, N., and A. Prado, “BREACH: Reviving the CRIME Attack”, July 2013, <a href="http://breachattack.com/resources/BREACH%20-%20SSL,%20gone%20in%2030%20seconds.pdf">http://breachattack.com/resources/BREACH%20-%20SSL,%20gone%20in%2030%20seconds.pdf</a>.</p>
+</div>
+<div class="out_ref" id="DNS-TERMS">
+<p><a href="#DNS-TERMS"><strong>[DNS-TERMS]</strong></a> </p>
+<p>Hoffman, P., Sullivan, A., and K. Fujiwara, “DNS Terminology”, BCP 219, RFC 8499, DOI 10.17487/RFC8499, January 2019, <a href="https://www.rfc-editor.org/info/rfc8499">https://www.rfc-editor.org/info/rfc8499</a>.</p>
+</div>
+<div class="out_ref" id="HPACK">
+<p><a href="#HPACK"><strong>[HPACK]</strong></a> </p>
+<p>Peon, R. and H. Ruellan, “HPACK: Header Compression for HTTP/2”, RFC 7541, DOI 10.17487/RFC7541, May 2015, <a href="https://www.rfc-editor.org/info/rfc7541">https://www.rfc-editor.org/info/rfc7541</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/1.1">
+<p><a href="#HTTP%2f1.1"><strong>[HTTP/1.1]</strong></a> </p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP/1.1”, STD 99, RFC 9112, DOI 10.17487/RFC9112, June 2022, <a href="https://www.rfc-editor.org/info/rfc9112">https://www.rfc-editor.org/info/rfc9112</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> </p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="RFC6585">
+<p><a href="#RFC6585"><strong>[RFC6585]</strong></a> </p>
+<p>Nottingham, M. and R. Fielding, “Additional HTTP Status Codes”, RFC 6585, DOI 10.17487/RFC6585, April 2012, <a href="https://www.rfc-editor.org/info/rfc6585">https://www.rfc-editor.org/info/rfc6585</a>.</p>
+</div>
+<div class="out_ref" id="RFC8164">
+<p><a href="#RFC8164"><strong>[RFC8164]</strong></a> </p>
+<p>Nottingham, M. and M. Thomson, “Opportunistic Security for HTTP/2”, RFC 8164, DOI 10.17487/RFC8164, May 2017, <a href="https://www.rfc-editor.org/info/rfc8164">https://www.rfc-editor.org/info/rfc8164</a>.</p>
+</div>
+<div class="out_ref" id="TFO">
+<p><a href="#TFO"><strong>[TFO]</strong></a> </p>
+<p>Cheng, Y., Chu, J., Radhakrishnan, S., and A. Jain, “TCP Fast Open”, RFC 7413, DOI 10.17487/RFC7413, December 2014, <a href="https://www.rfc-editor.org/info/rfc7413">https://www.rfc-editor.org/info/rfc7413</a>.</p>
+</div>
+<div class="out_ref" id="TLS">
+<p><a href="#TLS"><strong>[TLS]</strong></a> </p>
+<p>Rescorla, E., “The Transport Layer Security (TLS) Protocol Version 1.3”, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_A_Considerations_for_Transitioning_from_HTTP2">
+<h1>
+<a href="#Appendix_A_Considerations_for_Transitioning_from_HTTP2">附录A. 从HTTP/2过渡时的考量</a>
+</h1>
+<div class="content">
+<p>HTTP/3强烈地受到了HTTP/2的启发，它们间存在许多相似性。本章介绍了设计HTTP/3时使用的方法，指出了它与HTTP/2间重要的区别，并描述了将HTTP/2扩展映射到HTTP/3的方式。</p>
+<p>HTTP/3的设计有意与HTTP/2相似，但这不是一条硬性限制。由于QUIC存在与TCP的不同之处，所以HTTP/3与HTTP/2也存在不同，这么做要么是为了利用QUIC的特性（比如流），要么是为了弥补一些关键的缺点（例如缺少全局的数据包排序）。尽管HTTP/3在一些关键方面与HTTP/2类似，例如请求和响应与流的关系，但是HTTP/3设计的细节部分与HTTP/2大不相同。</p>
+<p>本章还记录了一些重要的差异。</p>
+</div>
+</section>
+<section class="page" id="A.1_Streams">
+<h2>
+<a href="#A.1_Streams">A.1. 流</a>
+</h2>
+<div class="content">
+<p>比起HTTP/2，HTTP/3允许使用大量的流（<code>2<sup>62</sup>-1</code>）。关于流标识符耗尽的考量仍然适用，尽管该空间已经大到很有可能是QUIC的其他限制先被触及，例如对连接的流量控制窗口的限制。</p>
+<p>与HTTP/2不同，HTTP/3中的流并发是由QUIC管理的。当所有数据已经被接收完毕，且所有已发送的数据都得到了对端的确认时，QUIC才会将一条流认定为关闭状态。而当包含着“结束流（<code>END_STREAM</code>）”比特位的帧被交付到传输层时HTTP/2就会将一条流认定为关闭状态。因此，即便对于两份一致的通信内容，流也会在更长的一段时间内保持“活跃”状态。根据预想的并发场景模型，HTTP/3服务器可以在同一时间下允许更多由客户端发起的双向流来达到与HTTP/2相等的并发性能。</p>
+<p>在HTTP/2中，只有请求体和响应体（<strong>数据帧</strong>的载荷）受限于流量控制。而所有HTTP/3帧都是在QUIC流上发送的，所以在HTTP/3中，任何流上发送的任何帧均受到流量控制。</p>
+<p>由于其他类型的单向流的存在，HTTP/3并不完全依赖当前的活跃单向流数量来控制在途推送的并发数量。相反，HTTP/3客户端使用<strong>最大推送帧</strong>来控制从HTTP/3服务器接收到的推送数量。</p>
+</div>
+</section>
+<section class="page" id="A.2_HTTP_Frame_Types">
+<h2>
+<a href="#A.2_HTTP_Frame_Types">A.2. HTTP帧类型</a>
+</h2>
+<div class="content">
+<p>许多来自HTTP/2的帧概念都可以被舍弃了，因为QUIC会处理它们。帧都是在流上发送的，所以在帧中可以省略流编号。因为帧并不会阻塞多路复用（QUIC的多路复用运行于比分帧更低的层），还可以移除对可变最大长度数据包的支持。由于流的终止是由QUIC处理的，“结束流”标志位也不再被需要，从而可以将“标志（Flags）“字段从通用的帧结构中移除。</p>
+<p>帧的载荷结构与《<a href="">HTTP/2</a>》大致相似。不过，QUIC包含了许多出现在HTTP/2中的特性（例如，流量控制）。在这些情况下，HTTP映射没有对它们进行重新实现。因此，HTTP/3中不再需要一些HTTP/2的帧类型。尽管不再需要一些为HTTP/2定义的帧类型，其类型值仍被保留使用，为的是最大化HTTP/2和HTTP/3实现间的可移植性。然而，即便某些帧类型在两种映射中同时出现，它们的语义也并不一致，</p>
+<p>许多差异源自HTTP/2在多条流间提供帧的绝对顺序的事实，而QUIC仅在单条流上提供这种保证。因此，如果某种帧类型假定了不同流上的帧在被接受到时会保持其发送顺序，那么实际上HTTP/3会违背这种假设。</p>
+<p>下文介绍了一些将来的可能用得上的适配样例，以及一份通用的关于帧类型扩展的实现方如何将HTTP/2扩展转换为HTTP/3扩展的指引。</p>
+</div>
+</section>
+<section class="page" id="A.2.1_Prioritization_Differences">
+<h3>
+<a href="#A.2.1_Prioritization_Differences">A.2.1. 优先级的差异</a>
+</h3>
+<div class="content">
+<p>HTTP/2在<strong>优先级帧</strong>和（可选的）<strong>标头帧</strong>中指定优先级的分配。HTTP/3没有提供提示优先级的方式。</p>
+<p>注意，尽管没有显式地提示优先级的方式，这不意味着优先级对于达到优秀的性能并不重要。</p>
+</div>
+</section>
+<section class="page" id="A.2.2_Field_Compression_Differences">
+<h3>
+<a href="#A.2.2_Field_Compression_Differences">A.2.2. 字段压缩的差异</a>
+</h3>
+<div class="content">
+<p>HPACK是按照有序交付的前提来设计的。经编码的字段组序列必须以编码的顺序抵达终端（并依次解码）。这确保了两侧终端处动态的状态数据保持同步。</p>
+<p>由于QUIC并未提供这种全局的数据包排序，所以HTTP/3使用了HPACK的修改版本，称为QPACK。QPACK使用一条单向流来对动态查找表进行操作，确保所有更新在整体上是有序的。所有包含经编码字段的帧都只不过是在引用查找表在某个时刻的状态，而不会修改它。</p>
+<p>《<a href="">QPACK</a>》中还提供了其他细节。</p>
+</div>
+</section>
+<section class="page" id="A.2.3_Flow_Control_Differences">
+<h3>
+<a href="#A.2.3_Flow_Control_Differences">A.2.3. 流量控制的差异</a>
+</h3>
+<div class="content">
+<p>HTTP/2指定了一种针对流的流量控制机制。尽管所有HTTP/2的帧都是在流上传递的，但是只有<strong>数据帧</strong>的载荷受限于流量控制。QUIC为流数据提供了流量控制，且本文档中定义的所有类型的HTTP/3帧都是在流上发送的。因此，所有帧的头部和载荷都受限于流量控制。</p>
+</div>
+</section>
+<section class="page" id="A.2.4_Guidance_for_New_Frame_Type_Definitions">
+<h3>
+<a href="#A.2.4_Guidance_for_New_Frame_Type_Definitions">A.2.4. 关于如何定义新的帧类型的指引</a>
+</h3>
+<div class="content">
+<p>HTTP/3中的帧类型定义经常使用QUIC的可变长度整形编码。特别是，流ID也使用了这种编码方式，这使得比HTTP/2更大的取值范围变为可能。HTTP/3中的某些帧没有使用流ID作为标识符（例如使用推送ID）。如果要将流ID编码进来，那么可能需要重新定义扩展帧类型的编码方式。</p>
+<p>因为HTTP/3的通用帧结构中不存在”标志“字段，所以依赖标志的那些帧需要在帧载荷中为标志分配空间。</p>
+<p>注意了以上事项后，通常只要将HTTP/2中的流<code>0</code>替换为HTTP/3中的一条控制流，就能简单地将HTTP/2的扩展帧类型移植到QUIC上。HTTP/3扩展不会对数据包顺序做出假设，却也不会因为有序的数据包而受到损害，所以它们应该能被移植到HTTP/2中。</p>
+</div>
+</section>
+<section class="page" id="A.2.5_Comparison_of_HTTP2_and_HTTP3_Frame_Types">
+<h3>
+<a href="#A.2.5_Comparison_of_HTTP2_and_HTTP3_Frame_Types">A.2.5. HTTP/2和HTTP/3帧类型的比较</a>
+</h3>
+<div class="content">
+<dl>
+<dt>数据帧（值为<code>0x00</code>）：</dt>
+<dd>
+<p>HTTP/3的帧中没有定义”填充（Padding）“。详见<a href="">第7.2.1章</a>。</p>
+</dd>
+<dt>标头帧（值为<code>0x01</code>）：</dt>
+<dd>
+<p>HTTP/3的帧中没有定义<strong>标头帧</strong>的”优先级“部分。HTTP/3的帧中没有定义”填充“。详见<a href="">第7.2.2章</a>。</p>
+</dd>
+<dt>优先级帧（值为<code>0x02</code>）：</dt>
+<dd>
+<p>如<a href="">附录A.2.1</a>所述，HTTP/3没有提供一种提示优先级的方式。</p>
+</dd>
+<dt>流重置帧（值为<code>0x03</code>）：</dt>
+<dd>
+<p><strong>流重置帧</strong>不会出现在HTTP/3中，因为QUIC提供了流的生命周期管理。其码点被用于<strong>取消推送帧</strong>（详见<a href="">第7.2.3章</a>）。</p>
+</dd>
+<dt>设置帧（值为<code>0x04</code>）：</dt>
+<dd>
+<p><strong>设置帧</strong>仅会出现在连接的起始位置。详见<a href="">第7.2.4章</a>和<a href="">附录A.3</a>。</p>
+</dd>
+<dt>推送承诺帧（值为<code>0x05</code>）：</dt>
+<dd>
+<p><strong>推送承诺帧</strong>并不会指向一条流；取而代之的是，推送流使用推送ID来指向<strong>推送承诺帧</strong>。详见<a href="">第7.2.5章</a>。</p>
+</dd>
+<dt>Ping帧（值为<code>0x06</code>）：</dt>
+<dd>
+<p><strong>Ping帧</strong>不会出现在HTTP/3中，因为QUIC提供了等价的功能。</p>
+</dd>
+<dt>关闭帧（值为<code>0x07</code>）：</dt>
+<dd>
+<p><strong>关闭帧</strong>中并不包含错误码。在从客户端至服务器的方向上，它传递的是一个推送ID而不是一个由服务器发起的流的ID。详见<a href="">第7.2.6章</a>。</p>
+</dd>
+<dt>窗口更新帧（值为<code>0x08</code>）：</dt>
+<dd>
+<p><strong>窗口更新帧</strong>不会出现在HTTP/3中，因为QUIC提供了流量控制机制。</p>
+</dd>
+<dt>继续帧（值为<code>0x09</code>）：</dt>
+<dd>
+<p><strong>继续帧</strong>不会出现在HTTP/3中；取而代之的是，允许使用比HTTP/2中更大的<strong>标头帧</strong>和<strong>推送承诺帧</strong>。</p>
+</dd>
+</dl>
+<p>如果仍然适用，那么由HTTP/2扩展定义的帧类型需要在HTTP/3中被单独注册。出于复杂性的考虑，《<a href="">HTTP/2</a>》中定义的帧类型ID被保留使用。注意，HTTP/3中的帧类型值空间相当大（62比特位，而不是8比特位），所以许多HTTP/3帧类型不会有等价的HTTP/2码点。详见<a href="">第11.2.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="A.3_HTTP2_SETTINGS_Parameters">
+<h2>
+<a href="#A.3_HTTP2_SETTINGS_Parameters">A.3. HTTP/2的设置帧参数</a>
+</h2>
+<div class="content">
+<p>与HTTP/2的一个重要区别是设置只会被发送一次，也就是作为控制流的首个帧来发送，所以后续无法进行改变。这消除了许多有关设置同步的边界情况。</p>
+<p>HTTP/2通过<strong>设置帧</strong>定义的许多传输级选项都被HTTP/3中的QUIC传输参数取代了。HTTP/2中HTTP级的设置在HTTP/3中得以保留，并维持相同的值。被取代的设置是被保留使用的，接收到它们的情况会被视作为错误。有关被维持的和被保留使用的值的讨论，详见<a href="">第7.2.4.1章</a>。</p>
+<p>下文列出了映射各种HTTP/2<strong>设置帧</strong>参数的方法：</p>
+<dl>
+<dt><code>SETTINGS_HEADER_TABLE_SIZE</code>（值为<code>0x01</code>）：</dt>
+<dd>
+<p>详见《<a href="">QPACK</a>》。</p>
+</dd>
+<dt><code>SETTINGS_ENABLE_PUSH</code>（值为<code>0x02</code>）：</dt>
+<dd>
+<p>该设置被移除，请使用<strong>最大推送ID帧</strong>，后者能对服务器推送进行更细粒度的控制。在HTTP/3<strong>设置帧</strong>中出现标识符为<code>0x02</code>的设置（对应参数<code>SETTINGS_ENABLE_PUSH</code>）的情况会被视作为错误。</p>
+</dd>
+<dt><code>SETTINGS_MAX_CONCURRENT_STREAMS</code>（值为<code>0x03</code>）：</dt>
+<dd>
+<p>作为其流量控制逻辑的一部分，QUIC控制着开放流的最大ID。在HTTP/3<strong>设置帧</strong>中出现标识符为<code>0x03</code>的设置（对应参数<code>SETTINGS_MAX_CONCURRENT_STREAMS</code>）的情况会被视作为错误。</p>
+</dd>
+<dt><code>SETTINGS_INITIAL_WINDOW_SIZE</code>（值为<code>0x04</code>）：</dt>
+<dd>
+<p>QUIC在初始的传输层握手中要求同时指定流和连接的流量控制窗口尺寸。在HTTP/3<strong>设置帧</strong>中出现标识符为<code>0x04</code>的设置（对应参数<code>SETTINGS_INITIAL_WINDOW_SIZE</code>）的情况会被视作为错误。</p>
+</dd>
+<dt><code>SETTINGS_MAX_FRAME_SIZE</code>（值为<code>0x05</code>）：</dt>
+<dd>
+<p>该设置在HTTP/3中没有等价设置。在HTTP/3<strong>设置帧</strong>中出现标识符为<code>0x05</code>的设置（对应参数<code>SETTINGS_MAX_FRAME_SIZE</code>）的情况会被视作为错误。</p>
+</dd>
+<dt><code>SETTINGS_MAX_HEADER_LIST_SIZE</code>（值为<code>0x06</code>）：</dt>
+<dd>
+<p>该设置的标识符已被重命名为<code>SETTINGS_MAX_FIELD_SECTION_SIZE</code>。</p>
+</dd>
+</dl>
+<p>在HTTP/3中，设置的值是可变长度整型（6、14、30或62比特长），而不是HTTP/2中固定长度32比特的字段。这一方式通常能产生更短的编码结果，但也可能产生比完整使用了32比特长空间的设置还要长的编码结果。移植自HTTP/2的设置可以选择重新定义它们的值，从而将值高效地编码且将长度限制至30比特以下，或者在需要的长度大于30比特时将62比特长的空间利用起来。</p>
+<p>应该为HTTP/2和HTTP/3单独定义设置。出于复杂性的考虑，《<a href="">HTTP/2</a>》中定义的设置ID已经被移除。注意，HTTP/3中的设置标识符值空间相当大（62比特位，而不是16比特位），所以许多HTTP/3设置不会有等价的HTTP/2码点。详见<a href="">第11.2.2章</a>。</p>
+<p>由于QUIC的流可能乱序抵达，建议终端不要在对其他流做出响应前持续等待对端设置的抵达。详见<a href="">第7.2.4.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="A.4_HTTP2_Error_Codes">
+<h2>
+<a href="#A.4_HTTP2_Error_Codes">A.4. HTTP/2的错误码</a>
+</h2>
+<div class="content">
+<p>QUIC和HTTP/2提供的”流“错误与”连接“错误的概念是相同的。然而，HTTP/2与HTTP/3间的差异意味着不同HTTP版本间的错误码不能直接移植。</p>
+<p>《<a href="">HTTP/2</a>》的<a href="">第7章</a>中定义的HTTP/2错误码在逻辑上可以这样映射到HTTP/3的错误码：</p>
+<dl>
+<dt><code>NO_ERROR</code>（值为<code>0x00</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_NO_ERROR</code>。</p>
+</dd>
+<dt><code>PROTOCOL_ERROR</code>（值为<code>0x01</code>）：</dt>
+<dd>
+<p>除非是存在更准确的错误码的情况，否则可以映射为<code>H3_GENERAL_PROTOCOL_ERROR</code>。这些情况包括<a href="">第8.1章</a>中定义的<code>H3_FRAME_UNEXPECTED</code>、<code>H3_MESSAGE_ERROR</code>和<code>H3_CLOSED_CRITICAL_STREAM</code>。</p>
+</dd>
+<dt><code>INTERNAL_ERROR</code>（值为<code>0x02</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_INTERNAL_ERROR</code>。</p>
+</dd>
+<dt><code>FLOW_CONTROL_ERROR</code>（值为<code>0x03</code>）：</dt>
+<dd>
+<p>不适用，因为QUIC处理了流量控制。</p>
+</dd>
+<dt><code>SETTINGS_TIMEOUT</code>（值为<code>0x04</code>）：</dt>
+<dd>
+<p>不适用，因为没有定义对<strong>设置帧</strong>的确认。</p>
+</dd>
+<dt><code>STREAM_CLOSED</code>（值为<code>0x05</code>）：</dt>
+<dd>
+<p>不适用，因为QUIC处理了流的管理。</p>
+</dd>
+<dt><code>FRAME_SIZE_ERROR</code>（值为<code>0x06</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中定义的错误码<code>H3_FRAME_ERROR</code>。</p>
+</dd>
+<dt><code>REFUSED_STREAM</code>（值为<code>0x07</code>）：</dt>
+<dd>
+<p><code>H3_REQUEST_REJECTED</code>（<a href="">第8.1章</a>）被用于表明请求未得到处理的情况。否则，它不适用于HTTP/3，因为QUIC处理了流的管理。</p>
+</dd>
+<dt><code>CANCEL</code>（值为<code>0x08</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_REQUEST_CANCELLED</code>。</p>
+</dd>
+<dt><code>COMPRESSION_ERROR</code>（值为<code>0x09</code>）：</dt>
+<dd>
+<p>《<a href="">QPACK</a>》中定义了多种错误码。</p>
+</dd>
+<dt><code>CONNECT_ERROR</code>（值为<code>0x0a</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_CONNECT_ERROR</code>。</p>
+</dd>
+<dt><code>ENHANCE_YOUR_CALM</code>（值为<code>0x0b</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_EXCESSIVE_LOAD</code>。</p>
+</dd>
+<dt><code>INADEQUATE_SECURITY</code>（值为<code>0x0c</code>）：</dt>
+<dd>
+<p>不适用，因为假定了QUIC会在所有连接上都提供足够的安全性。</p>
+</dd>
+<dt><code>HTTP_1_1_REQUIRED</code>（值为<code>0x0d</code>）：</dt>
+<dd>
+<p><a href="">第8.1章</a>中的<code>H3_VERSION_FALLBACK</code>。</p>
+</dd>
+</dl>
+<p>应该为HTTP/2和HTTP/3单独定义错误码。详见<a href="">第11.2.3章</a>。</p>
+</div>
+</section>
+<section class="page" id="A.4.1_Mapping_between_HTTP2_and_HTTP3_Errors">
+<h3>
+<a href="#A.4.1_Mapping_between_HTTP2_and_HTTP3_Errors">A.4.1. HTTP/2和HTTP/3错误间的映射</a>
+</h3>
+<div class="content">
+<p>对HTTP/2和HTTP/3进行转换的中间设备可能遇到来自任一上游的错误。尽管将错误的出现告知下游的做法具有它的作用，但是错误码很大程度上反应的是当前连接所涉及的终端自身的问题，它一般不适合向外传播。</p>
+<p>如果某中间设备遇到了来自上游源服务器的错误，那么它可以通过发送HTTP状态码，如<code>502</code>（网关无响应）的方式来将此情况表达出来，它适用于多类错误。</p>
+<p>存在一些极少数的情况，适合通过将错误映射为含义最邻近的错误类型后再传播给接收者。例如，某中间设备从源服务器处接收到了类型为<code>REFUSED_STREAM</code>的HTTP/2流错误，同时它能明确知道请求未得到处理且可以被安全地重发。将该错误以类型为<code>H3_REQUEST_REJECTED</code>的HTTP/3流错误来传播可以使客户端采取它认为最合适的措施。在相反的方向上，中间设备可以认为最合适的操作是通过用<code>H3_REQUEST_CANCELLED</code>终止流的方式来传递客户端请求被取消的信息。</p>
+<p>上文逻辑上的映射描述了如何在错误间的转换。错误码被定义在互不重叠的空间中，以免发生意料外的转换，导致使用了在目标版本中不合适或未知的错误码。中间设备可以将流错误提升为连接错误，但是它们应该提防间歇性的错误为HTTP/3连接带来的负担。</p>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>Robbie Shade和Mike Warres是《draft-shade-quic-http2-mapping》，也就是本文档的前身，的作者。</p>
+<p>IETF QUIC工作组接收到了来自许多人员的大量支持。以下人员对本文档做出了重要贡献：</p>
+<ul>
+<li>
+<p>Bence Beky</p>
+</li>
+<li>
+<p>Daan De Meyer</p>
+</li>
+<li>
+<p>Martin Duke</p>
+</li>
+<li>
+<p>Roy Fielding</p>
+</li>
+<li>
+<p>Alan Frindell</p>
+</li>
+<li>
+<p>Alessandro Ghedini</p>
+</li>
+<li>
+<p>Nick Harper</p>
+</li>
+<li>
+<p>Ryan Hamilton</p>
+</li>
+<li>
+<p>Christian Huitema</p>
+</li>
+<li>
+<p>Subodh Iyengar</p>
+</li>
+<li>
+<p>Robin Marx</p>
+</li>
+<li>
+<p>Patrick McManus</p>
+</li>
+<li>
+<p>Luca Niccolini</p>
+</li>
+<li>
+<p>奥 一穂 (Kazuho Oku)</p>
+</li>
+<li>
+<p>Lucas Pardue</p>
+</li>
+<li>
+<p>Roberto Peon</p>
+</li>
+<li>
+<p>Julian Reschke</p>
+</li>
+<li>
+<p>Eric Rescorla</p>
+</li>
+<li>
+<p>Martin Seemann</p>
+</li>
+<li>
+<p>Ben Schwartz</p>
+</li>
+<li>
+<p>Ian Swett</p>
+</li>
+<li>
+<p>Willy Taureau</p>
+</li>
+<li>
+<p>Martin Thomson</p>
+</li>
+<li>
+<p>Dmitri Tikhonov</p>
+</li>
+<li>
+<p>Tatsuhiro Tsujikawa</p>
+</li>
+</ul>
+<p>Mike Bishop的部分贡献得到了其任职的微软公司的支持。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="mike-bishop-编辑">Mike Bishop (编辑)</h5>
+<p>Akamai</p>
+<p>Email: <a href="mailto:mbishop@evequefou.be">mbishop@evequefou.be</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>
