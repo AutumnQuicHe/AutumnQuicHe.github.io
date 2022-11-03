@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* Default values */
 /* Blocks*/
 /* 假发 */
 /* content */
@@ -73,6 +74,10 @@ section.page table, section.page th, section.page td {
   text-shadow: 0 0 2px #405d8c;
   color: #343434;
 }
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
 
 .block {
   margin: 1em 0em 1em 0em;
@@ -127,7 +132,8 @@ section.page table, section.page th, section.page td {
   border: 1px solid #d1d9e1;
 }
 .block.ref strong {
-  color: #d1d9e1;
+  color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
   background: #9cd4e7;

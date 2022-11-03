@@ -1,3 +1,4 @@
+/* Default values */
 /* Blocks*/
 /* venus */
 /* content */
@@ -72,6 +73,10 @@ section.page table, section.page th, section.page td {
   text-shadow: 0 0 2px #fbff81;
   color: #daa300;
 }
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
 
 .block {
   margin: 1em 0em 1em 0em;
@@ -126,7 +131,8 @@ section.page table, section.page th, section.page td {
   border: 1px solid #feeae6;
 }
 .block.ref strong {
-  color: #eef0ff;
+  color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
   background: #454849;

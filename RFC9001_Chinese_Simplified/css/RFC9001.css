@@ -1,3 +1,4 @@
+/* Default values */
 /* Blocks*/
 /* fubuki */
 /* old #299c69*/
@@ -73,6 +74,10 @@ section.page table, section.page th, section.page td {
   text-shadow: 0 0 2px #0f4731;
   color: #06271a;
 }
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
 
 .block {
   margin: 1em 0em 1em 0em;
@@ -128,6 +133,7 @@ section.page table, section.page th, section.page td {
 }
 .block.ref strong {
   color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
   background: #b2e9fc;

@@ -56,16 +56,21 @@ dt {
   }
 }
 
-.content code,
-.content em strong {
-  border-radius: 2px;
-  padding-right: 2px;
-}
-
 .content code {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
+  border-radius: 2px;
   padding-left: 2px;
+  padding-right: 2px;
+}
+
+.content .block code {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.content em strong {
+  padding-right: 2px;
 }
 
 /* Sidebar */
@@ -194,7 +199,6 @@ section.page h4 {
 }
 
 section.page blockquote {
-  border-left: 0.7em groove;
   margin-inline-start: 0em;
   padding-left: 0.3em;
 }

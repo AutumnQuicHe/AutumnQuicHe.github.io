@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* Default values */
 /* Blocks*/
 /* 谨以此配色“致敬”二柱子 */
 /* content */
@@ -74,6 +75,10 @@ section.page table, section.page th, section.page td {
   text-shadow: 0 0 7px #0d0d28;
   color: #030616;
 }
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
 
 .block {
   margin: 1em 0em 1em 0em;
@@ -129,6 +134,7 @@ section.page table, section.page th, section.page td {
 }
 .block.ref strong {
   color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
   background: #454849;

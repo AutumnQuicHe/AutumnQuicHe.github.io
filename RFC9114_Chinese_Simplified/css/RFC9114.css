@@ -1,3 +1,4 @@
+/* Default values */
 /* Blocks*/
 /* Shokuhou Misaki */
 /* old sidebar colour */
@@ -74,6 +75,10 @@ section.page table, section.page th, section.page td {
   text-shadow: 0 0 2px #f1e4b9;
   color: #cf9a61;
 }
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
 
 .block {
   margin: 1em 0em 1em 0em;
@@ -128,7 +133,8 @@ section.page table, section.page th, section.page td {
   border: 1px solid #cf9a61;
 }
 .block.ref strong {
-  color: #2f2f2f;
+  color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
   background: #454849;

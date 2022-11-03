@@ -1,18 +1,18 @@
+/* Default values */
 /* Blocks*/
-/* levi */
-/* old #299c69*/
+/* Trafalgar Law */
 /* content */
 /* block */
 html, body {
-  color: #111109;
-  background-color: #efe5cc;
+  color: white;
+  background-color: #303030;
   letter-spacing: 0.1px;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .sidebar.sidebar-quic {
-  color: #efe5cc;
-  background-color: #111109;
+  color: snow;
+  background-color: #020202;
 }
 
 .content {
@@ -21,24 +21,24 @@ html, body {
 
 body::-webkit-scrollbar,
 .sidebar::-webkit-scrollbar {
-  background: #281b0a;
+  background: #020202;
   width: 4px;
 }
 
 body::-webkit-scrollbar-thumb,
 .sidebar::-webkit-scrollbar-thumb {
-  background: #efe5cc;
+  background: darkgrey;
 }
 
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
-  background: #281b0a;
+  background: #020202;
 }
 
 /* Sidebar */
 .sidebar a, .sidebar a:hover, .sidebar a:visited {
   text-decoration: none;
-  color: #efe5cc;
+  color: snow;
 }
 .sidebar a:hover {
   text-decoration: none;
@@ -46,32 +46,36 @@ body::-webkit-scrollbar-track,
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
-  text-shadow: 2px 4px 5px snow;
-  border-color: #0a2c1f;
+  text-shadow: 2px 4px 5px #000000;
+  border-color: snow;
 }
 section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
-  color: #281b0a;
+  color: snow;
 }
 section.page a, section.page a:hover, section.page a:visited {
-  color: #281b0a;
+  color: snow;
 }
 section.page table, section.page th, section.page td {
-  border: 1px solid #281b0a;
+  border: solid snow;
 }
 
 .content code {
-  background: #efe5cc;
-  -webkit-box-shadow: inset 0 1px 10px rgba(182, 141, 158, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: #141414;
+  -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .content em strong {
-  text-shadow: 1px 1px 2px #281b0a;
-  color: #111109;
+  text-shadow: 2px 4px #020202;
+  color: ghostwhite;
 }
 .content strong {
-  text-shadow: 0 0 2px #281b0a;
-  color: #111109;
+  text-shadow: 0 0 7px #020202;
+  color: whitesmoke;
+}
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
 }
 
 .block {
@@ -83,14 +87,14 @@ section.page table, section.page th, section.page td {
   display: block;
   z-index: -1;
   /* to ensure under sidebar */
-  background-color: #fff2f8;
-  color: #281b0a;
+  background-color: grey;
+  color: white;
 }
 .block:before {
   position: absolute;
   top: -24px;
   left: 12px;
-  color: #281b0a;
+  color: white;
 }
 .block.ref {
   display: inline-block;
@@ -100,8 +104,8 @@ section.page table, section.page th, section.page td {
   position: relative;
   overflow-wrap: break-word;
   border-top: 0px solid;
-  background: #111109;
-  color: snow;
+  background: #121212;
+  color: white;
   border-radius: 2px;
 }
 .block.ref:before {
@@ -116,21 +120,22 @@ section.page table, section.page th, section.page td {
   margin: 10px 0 0 0;
 }
 .block.ref code {
-  background: #111109;
-  color: snow;
-  -webkit-box-shadow: inset 0 1px 10px rgba(224, 220, 220, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: #121212;
+  color: white;
+  -webkit-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
-  color: snow;
+  color: white;
 }
 .block.ref table, .block.ref th, .block.ref td {
-  border: 1px solid snow;
+  border: 2px solid snow;
 }
 .block.ref strong {
   color: snow;
+  text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
-  background: #9cd4e7;
+  background: #454849;
   border-top-color: #284750;
 }
 .block.tip:before {
@@ -138,7 +143,7 @@ section.page table, section.page th, section.page td {
   color: snow;
 }
 .block.note {
-  background: #a0b2ec;
+  background: #454b5e;
   border-top-color: #070d1d;
 }
 .block.note:before {
@@ -146,7 +151,7 @@ section.page table, section.page th, section.page td {
   color: snow;
 }
 .block.info {
-  background: #f3b07a;
+  background: #2b2520;
   border-top-color: #271200;
 }
 .block.info:before {
@@ -154,7 +159,7 @@ section.page table, section.page th, section.page td {
   color: snow;
 }
 .block.warn {
-  background: #dd9b9b;
+  background: #533f3f;
   border-top-color: #270000;
 }
 .block.warn:before {
@@ -163,8 +168,8 @@ section.page table, section.page th, section.page td {
 }
 
 .sidebar.sidebar-rfc9002 {
-  color: #efe5cc;
-  background-color: #111109;
+  color: snow;
+  background-color: #020202;
 }
 
 /*# sourceMappingURL=RFC9002.css.map */
