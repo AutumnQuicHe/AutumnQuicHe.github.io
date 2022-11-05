@@ -22,6 +22,12 @@ SASS_TASKS = (
         "DES_PATH": "content/RFC9221_Chinese_Simplified/css/RFC9221.css"},
     {"SRC_PATH": "content/RFC9250_Chinese_Simplified/sass/RFC9250.scss",
         "DES_PATH": "content/RFC9250_Chinese_Simplified/css/RFC9250.css"},
+    {"SRC_PATH": "content/RFC9287_Chinese_Simplified/sass/RFC9287.scss",
+        "DES_PATH": "content/RFC9287_Chinese_Simplified/css/RFC9287.css"},
+    {"SRC_PATH": "content/RFC9308_Chinese_Simplified/sass/RFC9308.scss",
+        "DES_PATH": "content/RFC9308_Chinese_Simplified/css/RFC9308.css"},
+    {"SRC_PATH": "content/RFC9312_Chinese_Simplified/sass/RFC9312.scss",
+        "DES_PATH": "content/RFC9312_Chinese_Simplified/css/RFC9312.css"},
 )
 
 if __name__ == "__main__":
