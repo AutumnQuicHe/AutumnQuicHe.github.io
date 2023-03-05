@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9001中文：QUIC-TLS</title>
@@ -183,7 +183,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
@@ -976,7 +976,7 @@ if packet_type == Initial:
 <a href="#5.8_Retry_Packet_Integrity">5.8. 重试数据包的完整性</a>
 </h2>
 <div class="content">
-<p>重试数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.5_Retry_Packet">第17.2.5章</a>）携带着重试完整性标签，该标签具有两项属性：它使得被网络意外破坏的数据包可以被丢弃，同时只有观测到初始数据包的实体才能发送合法的重试数据包。</p>
+<p>重试数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.5_Retry_Packet">第17.2.5章</a>）携带着重试完整性标签，该标签具有两项属性：它使得被网络意外破坏的数据包可以被丢弃，同时只有观察到初始数据包的实体才能发送合法的重试数据包。</p>
 <p>重试完整性标签是一个长度为128位的字段，它是将以下参数作为<code>AEAD_AES_128_GCM</code>（详见《<a href="https://www.rfc-editor.org/info/rfc5116">AEAD</a>》）的输入而计算出的结果。</p>
 <ul>
 <li>
@@ -1018,7 +1018,7 @@ if packet_type == Initial:
 </dd>
 <dt>原始目标连接ID（Original Destination Connection ID）：</dt>
 <dd>
-<p>原始目标连接ID包含了这个重试数据包正在响应的初始数据包中目标连接ID字段的值。这个字段的长度在原始目标连接ID长度字段中给出。这个字段的存在确保了合法的重试数据包只能由观测到初始数据包的实体构造出来。</p>
+<p>原始目标连接ID包含了这个重试数据包正在响应的初始数据包中目标连接ID字段的值。这个字段的长度在原始目标连接ID长度字段中给出。这个字段的存在确保了合法的重试数据包只能由观察到初始数据包的实体构造出来。</p>
 </dd>
 </dl>
 </div>
@@ -1137,7 +1137,7 @@ if packet_type == Initial:
 <a href="#7_Security_of_Initial_Messages">7. 初始消息的安全性</a>
 </h1>
 <div class="content">
-<p>初始数据包并不受密钥的保护，因此它们可能会被攻击者篡改。QUIC提供的保护可以阻挡无法读取数据包的攻击者，但此保护并不足以抵御来自有能力观测和注入数据包的攻击者的攻击。部分形式的篡改——例如对TLS消息的修改——能被检测出来，但是另一些——例如对<strong>ACK帧</strong>的修改——则不能。</p>
+<p>初始数据包并不受密钥的保护，因此它们可能会被攻击者篡改。QUIC提供的保护可以阻挡无法读取数据包的攻击者，但此保护并不足以抵御来自有能力观察和注入数据包的攻击者的攻击。部分形式的篡改——例如对TLS消息的修改——能被检测出来，但是另一些——例如对<strong>ACK帧</strong>的修改——则不能。</p>
 <p>举例来说，攻击者可以注入一个包含虚假<strong>ACK帧</strong>的数据包，以使得某个数据包貌似还没被接收到，或者使得终端对连接的状态建立起错误印象（可以通过修改ACK延迟的方法）。注意，这样的数据包会使得本应合法的数据包被终端认定为重复而丢弃它们。对于初始数据包中包含的未经其他途径验证的数据，QUIC实现<em><strong>应该</strong></em>谨慎地使用它们。</p>
 <p>攻击者还有可能篡改使用握手数据包传递的数据，但由于这类篡改依赖于对TLS握手消息的修改，所以它们会使得TLS握手失败。</p>
 </div>

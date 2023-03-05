@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9204中文：QPACK</title>
@@ -21,7 +21,7 @@
 <nav class="internal">
 <ul>
 <li>
-<a href="#RFC9204_QPACK_Field_Compression_for_HTTP_3">RFC9204 QPACK：HTTP/3头部字段压缩</a>
+<a href="#RFC9204_QPACK_Field_Compression_for_HTTP_3">RFC9204 QPACK：HTTP/3字段压缩</a>
 <ul>
 <li><a href="#Forword">前言</a></li>
 <li><a href="#Abstract">摘要</a></li>
@@ -42,7 +42,12 @@
 <li>
 <a href="#2.1_Encoder">2.1. 编码器</a>
 <ul>
-<li><a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">2.1.1. 动态表插入限制</a></li>
+<li>
+<a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">2.1.1. 动态表插入限制</a>
+<ul>
+<li><a href="#2.1.1.1_Avoiding_Prohibited_Insertions">2.1.1.1. 避免非法插入</a></li>
+</ul>
+</li>
 <li><a href="#2.1.2_Blocked_Streams">2.1.2. 流阻塞</a></li>
 <li><a href="#2.1.3_Avoiding_Flow_Control_Deadlocks">2.1.3. 避免流控死锁</a></li>
 <li><a href="#2.1.4_Known_Received_Count">2.1.4. 已知接收计数</a></li>
@@ -52,11 +57,141 @@
 <a href="#2.2_Decoder">2.2. 解码器</a>
 <ul>
 <li><a href="#2.2.1_Blocked_Decoding">2.2.1. 解码阻塞</a></li>
-<li><a href="#2.2.2_State_Synchronization">2.2.2. 状态同步</a></li>
+<li>
+<a href="#2.2.2_State_Synchronization">2.2.2. 状态同步</a>
+<ul>
+<li><a href="#2.2.2.1_Completed_Processing_of_a_Field_Section">2.2.2.1. 字段组处理完成</a></li>
+<li><a href="#2.2.2.2_Abandonment_of_a_Stream">2.2.2.2. 放弃流</a></li>
+<li><a href="#2.2.2.3_New_Table_Entries">2.2.2.3. 新表条目</a></li>
+</ul>
+</li>
 <li><a href="#2.2.3_Invalid_References">2.2.3. 无效引用</a></li>
 </ul>
 </li>
 </ul>
+</li>
+<li>
+<a href="#3_Reference_Tables">3. 引用表</a>
+<ul>
+<li><a href="#3.1_Static_Table">3.1. 静态表</a></li>
+<li>
+<a href="#3.2_Dynamic_Table">3.2. 动态表</a>
+<ul>
+<li><a href="#3.2.1_Dynamic_Table_Size">3.2.1. 动态表尺寸</a></li>
+<li><a href="#3.2.2_Dynamic_Table_Capacity_and_Eviction">3.2.2. 动态表容量与驱逐</a></li>
+<li><a href="#3.2.3_Maximum_Dynamic_Table_Capacity">3.2.3. 动态表容量上限</a></li>
+<li><a href="#3.2.4_Absolute_Indexing">3.2.4. 绝对索引</a></li>
+<li><a href="#3.2.5_Relative_Indexing">3.2.5. 相对索引</a></li>
+<li><a href="#3.2.6_Post_Base_Indexing">3.2.6. 反向索引</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#4_Wire_Format">4. 数据通信格式</a>
+<ul>
+<li>
+<a href="#4.1_Primitives">4.1. 基本数据类型</a>
+<ul>
+<li><a href="#4.1.1_Prefixed_Integers">4.1.1. 前缀整型</a></li>
+<li><a href="#4.1.2_String_Literals">4.1.2. 明文字符串</a></li>
+</ul>
+</li>
+<li><a href="#4.2_Encoder_and_Decoder_Streams">4.2. 编码流与解码流</a></li>
+<li>
+<a href="#4.3_Encoder_Instructions">4.3. 编码指令</a>
+<ul>
+<li><a href="#4.3.1_Set_Dynamic_Table_Capacity">4.3.1. 设置动态表容量</a></li>
+<li><a href="#4.3.2_Insert_with_Name_Reference">4.3.2. 插入引用名称的条目</a></li>
+<li><a href="#4.3.3_Insert_with_Literal_Name">4.3.3. 插入明文名称的条目</a></li>
+<li><a href="#4.3.4_Duplicate">4.3.4. 复制条目</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.4_Decoder_Instructions">4.4. 解码指令</a>
+<ul>
+<li><a href="#4.4.1_Section_Acknowledgment">4.4.1. 组确认</a></li>
+<li><a href="#4.4.2_Stream_Cancellation">4.4.2. 流取消</a></li>
+<li><a href="#4.4.3_Insert_Count_Increment">4.4.3. 插入计数提升</a></li>
+</ul>
+</li>
+<li>
+<a href="#4.5_Field_Line_Representations">4.5. 字段行的指称</a>
+<ul>
+<li>
+<a href="#4.5.1_Encoded_Field_Section_Prefix">4.5.1. 编码字段组的前缀</a>
+<ul>
+<li><a href="#4.5.1.1_Required_Insert_Count">4.5.1.1. 插入计数下限</a></li>
+<li><a href="#4.5.1.2_Base">4.5.1.2. 基点</a></li>
+</ul>
+</li>
+<li><a href="#4.5.2_Indexed_Field_Line">4.5.2. 索引字段行</a></li>
+<li><a href="#4.5.3_Indexed_Field_Line_with_Post_Base_Index">4.5.3. 使用反向索引的索引字段行</a></li>
+<li><a href="#4.5.4_Literal_Field_Line_with_Name_Reference">4.5.4. 使用索引名称的明文字段行</a></li>
+<li><a href="#4.5.5_Literal_Field_Line_with_Post_Base_Name_Reference">4.5.5. 使用反向索引名称的明文字段行</a></li>
+<li><a href="#4.5.6_Literal_Field_Line_with_Literal_Name">4.5.6. 使用明文名称的明文字段行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#5_Configuration">5. 配置</a>
+</li>
+<li>
+<a href="#6_Error_Handling">6. 错误处理</a>
+</li>
+<li>
+<a href="#7_Security_Considerations">7. 关于安全性的考量</a>
+<ul>
+<li>
+<a href="#7.1_Probing_Dynamic_Table_State">7.1. 探测动态表的状态</a>
+<ul>
+<li><a href="#7.1.1_Applicability_to_QPACK_and_HTTP">7.1.1. 对QPACK和HTTP的适用性</a></li>
+<li><a href="#7.1.2_Mitigation">7.1.2. 缓解措施</a></li>
+<li><a href="#7.1.3_Never_Indexed_Literals">7.1.3. 请勿索引明文</a></li>
+</ul>
+</li>
+<li><a href="#7.2_Static_Huffman_Encoding">7.2. 静态哈夫曼编码</a></li>
+<li><a href="#7.3_Memory_Consumption">7.3. 内存消耗</a></li>
+<li><a href="#7.4_Implementation_Limits">7.4. 对实现的限制</a></li>
+</ul>
+</li>
+<li>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+<ul>
+<li><a href="#8.1_Settings_Registration">8.1. 设置注册项</a></li>
+<li><a href="#8.2_Stream_Type_Registration">8.2. 流类型注册项</a></li>
+<li><a href="#8.3_Error_Code_Registration">8.3. 错误码注册项</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_References">9. 参考文献</a>
+<ul>
+<li><a href="#9.1_Normative_References">9.1. 规范性参考文献</a></li>
+<li><a href="#9.2_Informative_References">9.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_A_Static_Table">附录A. 静态表</a>
+</li>
+<li>
+<a href="#Appendix_B_Encoding_and_Decoding_Examples">附录B. 编码和解码样例</a>
+<ul>
+<li><a href="#B.1_Literal_Field_Line_with_Name_Reference">B.1. 使用索引名称的明文字段行</a></li>
+<li><a href="#B.2_Dynamic_Table">B.2. 动态表</a></li>
+<li><a href="#B.3_Speculative_Insert">B.3. 试探插入</a></li>
+<li><a href="#B.4_Duplicate_Instruction_Stream_Cancellation">B.4. 复制指令与流的取消</a></li>
+<li><a href="#B.5_Dynamic_Table_Insert_Eviction">B.5. 动态表的插入与驱逐</a></li>
+</ul>
+</li>
+<li>
+<a href="#Appendix_C_Sample_Single_Pass_Encoding_Algorithm">附录C. 单通编码算法样例</a>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
 </li>
 </ul>
 </nav>
@@ -67,13 +202,13 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
 <section class="page" id="RFC9204_QPACK_Field_Compression_for_HTTP_3">
 <h1>
-<a href="#RFC9204_QPACK_Field_Compression_for_HTTP_3">RFC9204 QPACK：HTTP/3头部字段压缩</a>
+<a href="#RFC9204_QPACK_Field_Compression_for_HTTP_3">RFC9204 QPACK：HTTP/3字段压缩</a>
 </h1>
 <div class="content">
 <br/>
@@ -160,7 +295,7 @@
 <a href="#Intruduction">1. 引言</a>
 </h1>
 <div class="content">
-<p>QUIC传输协议（<a href="#QUIC-TRANSPORT">QUIC-TRANSPORT</a>）设计的目的就是为了支持HTTP语义，而且其设计将HTTP/2（<a href="#HTTP2">HTTP/2</a>）的许多特性也包括进去了。HTTP/2使用HPACK（<a href="#RFC7541">RFC7541</a>）压缩头部和挂载字段。如果将HPACK直接应用于HTTP/3（<a href="#HTTP3">HTTP/3</a>）的话，那么会引入头部字段的队头阻塞问题，因为其设计是基于所有帧的所有流都是有序的这一假设之上的。</p>
+<p>QUIC传输协议（<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>）设计的目的就是为了支持HTTP语义，而且其设计将HTTP/2（<a href="https://www.rfc-editor.org/info/rfc9113">HTTP/2</a>）的许多特性也包括进去了。HTTP/2使用HPACK（<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>）压缩头部和挂载字段。如果将HPACK直接应用于HTTP/3（<a href="../RFC9114_Chinese_Simplified">HTTP/3</a>）的话，那么会引入头部字段的队头阻塞问题，因为其设计是基于所有帧的所有流都是有序的这一假设之上的。</p>
 <p>QPACK复用了HPACK的核心概念，但是在这之上做了重新设计以支持在乱序传递时的正确性，并在实现上保持灵活性以取得在队头阻塞与最佳压缩比之间的弹性平衡。设计目标是在相同的损耗情况下，尽可能接近HPACK的压缩效率的同时，大幅降低队头阻塞。</p>
 </div>
 </section>
@@ -172,7 +307,7 @@
 <p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
 <p>本文使用下述术语：</p>
 <p>HTTP字段（HTTP fields）：作为HTTP消息的一部分发送的元数据。本术语包括头部和挂载字段。通俗来讲，术语“头部（headers）”已常用于指代HTTP头部字段和挂载字段，本文一般采用“字段（fields）”。</p>
-<p>HTTP字段行（HTTP field line）：作为HTTP字段组的组成部分发送的一个名值对（name-value pair）。详见《<a href="">HTTP</a>》的第<a href="">6.3</a>和<a href="">6.5</a>章。</p>
+<p>HTTP字段行（HTTP field line）：作为HTTP字段组的组成部分发送的一个名值对（name-value pair）。详见《<a href="https://www.rfc-editor.org/info/rfc9110">HTTP</a>》的<a href="https://www.rfc-editor.org/rfc/rfc9110#section-6.3">第6.3章</a>和<a href="https://www.rfc-editor.org/rfc/rfc9110#section-6.5">第6.5章</a>。</p>
 <p>HTTP字段值（HTTP field value）：与字段名关联的数据，由该字段组内所有的同一字段名下的字段行构成，并通过逗号拼接在一起。</p>
 <p>字段组（Field section）：一个HTTP消息的所有有关HTTP字段行组成的有序集合。在一个字段组内，可以包含多个字段名相同的字段行。也可以包含相同的字段行。一条HTTP消息可以同时包含头部和挂载组。</p>
 <p>指称（Representation）：一种指称一个字段行的指令，可能通过引用动态表和静态表来表示。</p>
@@ -189,9 +324,9 @@
 <a href="#1.2_Notational_Conventions">1.2. 符号约定</a>
 </h2>
 <div class="content">
-<p>本文使用的图表格式参照《<a href="">RFC2360</a>》<a href="">第3.1章</a>，并附加下述约定：</p>
+<p>本文使用的图表格式参照《<a href="https://www.rfc-editor.org/info/rfc2360">RFC2360</a>》<a href="https://www.rfc-editor.org/rfc/rfc2360#section-3.1">第3.1章</a>，并附加下述约定：</p>
 <p><code>x (A)</code>表示<code>x</code>是<code>A</code>字节长度。</p>
-<p><code>x (A+)</code>表示<code>x</code>使用<a href="">第4.1.1章</a>定义的前缀整型编码，并以一个<code>A</code>字节的前缀开始。</p>
+<p><code>x (A+)</code>表示<code>x</code>使用<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>定义的前缀整型编码，并以一个<code>A</code>字节的前缀开始。</p>
 <p><code>x ...</code>表示<code>x</code>是可变长度且延伸到区间的末端。</p>
 </div>
 </section>
@@ -200,7 +335,7 @@
 <a href="#2_Compression_Process_Overview">2. 压缩过程概览</a>
 </h1>
 <div class="content">
-<p>与HPACK一样，QPACK使用两张表将字段行（“头部”）与索引进行关联。静态表（详见<a href="">第3.1章</a>）是预定义的，其中包含着常用的头部字段行（其中部分字段行的值是空值）。动态表（详见<a href="">第3.2章</a>）是建立在连接过程中的，会被编码器在编码字段组时用于索引头部和挂载字段行。</p>
+<p>与HPACK一样，QPACK使用两张表将字段行（“头部”）与索引进行关联。静态表（详见<a href="#3.1_Static_Table">第3.1章</a>）是预定义的，其中包含着常用的头部字段行（其中部分字段行的值是空值）。动态表（详见<a href="#3.2_Dynamic_Table">第3.2章</a>）是建立在连接过程中的，会被编码器在编码字段组时用于索引头部和挂载字段行。</p>
 <p>QPACK定义了两种单向流，一种用于从编码器向解码器发送指令，另一种则用于其反向。</p>
 </div>
 </section>
@@ -209,7 +344,7 @@
 <a href="#2.1_Encoder">2.1. 编码器</a>
 </h2>
 <div class="content">
-<p>编码器通过为字段组中的每条字段行创建一条索引指称或内联指称的方法，将头部或挂载转换成一系列指称，详见<a href="">第4.5章</a>。索引指称通过将明文的名称或值替换为一个静态表或动态表的索引，从而取得高压缩率。引用静态表和明文指称不需要任何动态状态，也不存在队头阻塞的风险。若编码器尚未收到一个表明在解码器中可以访问该条目的确认回复，则此时引用动态表存在队头阻塞的风险。</p>
+<p>编码器通过为字段组中的每条字段行创建一条索引指称或内联指称的方法，将头部或挂载转换成一系列指称，详见<a href="#4.5_Field_Line_Representations">第4.5章</a>。索引指称通过将明文的名称或值替换为一个静态表或动态表的索引，从而取得高压缩率。引用静态表和明文指称不需要任何动态状态，也不存在队头阻塞的风险。若编码器尚未收到一个表明在解码器中可以访问该条目的确认回复，则此时引用动态表存在队头阻塞的风险。</p>
 <p>编码器<em><strong>可以</strong></em>向其选择的动态表插入任意条目，而不限于其正在压缩的字段行。</p>
 <p>QPACK会维持每个字段组内的字段行的顺序。编码器<em><strong>必须</strong></em>以在字段组中出现的顺序发射字段指称。</p>
 <p>对于可选的状态追踪特性，QPACK在设计上将此负担放在编码器中，使得解码器的实现相对简单。</p>
@@ -222,11 +357,20 @@
 <div class="content">
 <p>若表中存在不能被驱逐的条目，则将条目插入动态表可能不会成功。</p>
 <p>动态表条目在插入后不能立即驱逐，即使其尚未被引用。一旦动态表条目的插入得到确认，且没有外部未被确认的指称引用到该条目，则该条目就变成可以被驱逐的了。注意，在编码器流上的引用从不妨碍条目的驱逐，因为会确保这些引用在指令驱逐条目之前得到处理。</p>
-<p>若动态表在不驱逐其他条目的前提下没有足够空间留给一条新的条目，且将被驱逐的条目是不可驱逐的，那么编码器<em><strong>必须不</strong></em>插入该条目到动态表中（包括复制已经存在的条目）。为了避免这种情况，使用了动态表的编码器必须对被每个字段组引用的每条动态表条目保持追踪，直到这些指称被解码器确认，详见<a href="">第4.4.1章</a>。</p>
-<h4 id="2111-避免非法插入">2.1.1.1. 避免非法插入</h4>
-<p>为了确保编码器不被阻止添加新的条目，编码器可以避免引用接近被驱逐的条目。相较于引用这样的条目，编码器可以发射复制指令（详见<a href="">第4.3.4章</a>）并转而引用该复制条目。</p>
-<p>确认哪些条目最接近被引用所驱逐，取决于编码器的决定。一种启发式方法是把一个动态表中的固定数量的空间锁定：不论未被使用的空间还是可以通过发射非阻塞条目而重用的空间。为了达到这个目标，编码器可以维持一个排空索引，它是将发射索引的动态表中最小的绝对索引（详见<a href="">第3.2.4章</a>）。随着新的条目的插入，编码器增加排空索引以维持其不会引用的表中的块。对那些绝对索引小于排空索引的条目，如果编码器没有对其创建新的引用，则其未确认的引用的数目将最终降为零，使之最终被驱逐。</p>
-<p>TODO：图1，排空动态表条目</p>
+<p>若动态表在不驱逐其他条目的前提下没有足够空间留给一条新的条目，且将被驱逐的条目是不可驱逐的，那么编码器<em><strong>必须不</strong></em>插入该条目到动态表中（包括复制已经存在的条目）。为了避免这种情况，使用了动态表的编码器必须对被每个字段组引用的每条动态表条目保持追踪，直到这些指称被解码器确认，详见<a href="#4.4.1_Section_Acknowledgment">第4.4.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="2.1.1.1_Avoiding_Prohibited_Insertions">
+<h4>
+<a href="#2.1.1.1_Avoiding_Prohibited_Insertions">2.1.1.1. 避免非法插入</a>
+</h4>
+<div class="content">
+<p>为了确保编码器不被阻止添加新的条目，编码器可以避免引用接近被驱逐的条目。相较于引用这样的条目，编码器可以发射复制指令（详见<a href="#4.3.4_Duplicate">第4.3.4章</a>）并转而引用该复制条目。</p>
+<p>确认哪些条目最接近被引用所驱逐，取决于编码器的决定。一种启发式方法是把一个动态表中的固定数量的空间锁定：不论未被使用的空间还是可以通过发射非阻塞条目而重用的空间。为了达到这个目标，编码器可以维持一个排空索引，它是将发射索引的动态表中最小的绝对索引（详见<a href="#3.2.4_Absolute_Indexing">第3.2.4章</a>）。随着新的条目的插入，编码器增加排空索引以维持其不会引用的表中的块。对那些绝对索引小于排空索引的条目，如果编码器没有对其创建新的引用，则其未确认的引用的数目将最终降为零，使之最终被驱逐。</p>
+<div class="block ref" id="Figure_1_Draining_Dynamic_Table_Entries">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_1_Draining_Dynamic_Table_Entries.svg"/>
+<p><a href="#Figure_1_Draining_Dynamic_Table_Entries">图1：排空动态表条目</a></p>
+</div>
 </div>
 </section>
 <section class="page" id="2.1.2_Blocked_Streams">
@@ -235,9 +379,9 @@
 </h3>
 <div class="content">
 <p>因为QUIC并不确保不同流之间的数据有序传输，解码器可能收到引用一个其尚未收到的动态表条目的指称。</p>
-<p>每个编码的字段组包含一个“插入计数下限”（Required Insert Count，详见<a href="">第4.5.1章</a>），即解码字段组所需的插入计数最低值。对于一个编码时引用了动态表的字段组，其插入计数下限为所有动态表中受引用条目的绝对索引的最大值加<code>1</code>。对于一个没有引用动态表的字段组，其插入计数下限是零。</p>
-<p>当解码器收到一个插入计数下限大于解码器的插入计数的编码字段组时，流不能被立即处理，并被认为是“被阻塞的”，详见<a href="">第2.2.1章</a>。</p>
-<p>解码器使用<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>（QPACK阻塞流数目）设置指定可以被阻塞的流数目的上限，详见<a href="">第5章</a>。编码器<em><strong>必须</strong></em>始终将可被阻塞的流的数目限制在<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>值内。如果编码器遇到被阻塞的流超过其承诺支持的数目时，其<em><strong>必须</strong></em>将之视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（解码失败）类型的连接错误。</p>
+<p>每个编码的字段组包含一个“插入计数下限”（Required Insert Count，详见<a href="#4.5.1_Encoded_Field_Section_Prefix">第4.5.1章</a>），即解码字段组所需的插入计数最低值。对于一个编码时引用了动态表的字段组，其插入计数下限为所有动态表中受引用条目的绝对索引的最大值加<code>1</code>。对于一个没有引用动态表的字段组，其插入计数下限是零。</p>
+<p>当解码器收到一个插入计数下限大于解码器的插入计数的编码字段组时，流不能被立即处理，并被认为是“被阻塞的”，详见<a href="#2.2.1_Blocked_Decoding">第2.2.1章</a>。</p>
+<p>解码器使用<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>（QPACK阻塞流数目）设置指定可以被阻塞的流数目的上限，详见<a href="#5_Configuration">第5章</a>。编码器<em><strong>必须</strong></em>始终将可被阻塞的流的数目限制在<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>值内。如果编码器遇到被阻塞的流超过其承诺支持的数目时，其<em><strong>必须</strong></em>将之视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（解压失败）类型的连接错误。</p>
 <p>注意，解码器可能不会在每条有被阻塞风险的流上阻塞。</p>
 <p>编码器可以决定是否冒险让某个流变成阻塞状态。如果<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>的值允许，通常可以通过引用正在传输中的动态表条目提升压缩率，但是如果出现丢包或乱序，解码器侧的流可能变成阻塞状态。编码器可以通过只引用已经被确认的动态表条目规避阻塞风险，但是这可能意味着使用明文。由于明文会使得编码字段组更大，可能导致编码器被拥塞或流量控制限制所阻塞。</p>
 </div>
@@ -259,8 +403,8 @@
 </h3>
 <div class="content">
 <p>已知接收计数（Known Received Count）是被解码器确认的动态表插入指令和复制指令总数。编码器追踪已知接收计数，从而鉴别哪些动态表条目没有阻塞流的风险，可以引用。解码器追踪已知接收计数，从而得以发送插入计数提升（Insert Count Increment）指令。</p>
-<p>组确认（Section Acknowledgment）指令（详见<a href="">第4.4.1章</a>）意味着解码器已经收到所有解码字段组所必需的动态表状态。如果确认字段组的插入计数下限大于当前已知接收计数，则已知接收计数更新到该插入计数下限值。</p>
-<p>插入计数提升指令（详见<a href="">第4.4.3章</a>）通过其递增参数提升已知接收计数，参考<a href="">第2.2.2.3章</a>。</p>
+<p>组确认（Section Acknowledgment）指令（详见<a href="#4.4.1_Section_Acknowledgment">第4.4.1章</a>）意味着解码器已经收到所有解码字段组所必需的动态表状态。如果确认字段组的插入计数下限大于当前已知接收计数，则已知接收计数更新到该插入计数下限值。</p>
+<p>插入计数提升指令（详见<a href="#4.4.3_Insert_Count_Increment">第4.4.3章</a>）通过其参数提升已知接收计数，参考<a href="#2.2.2.3_New_Table_Entries">第2.2.2.3章</a>。</p>
 </div>
 </section>
 <section class="page" id="2.2_Decoder">
@@ -279,7 +423,7 @@
 <div class="content">
 <p>一旦收到编码字段组，解码器就验证其插入计数下限。当插入计数下限小于或等于解码器的插入计数时，可以立即处理该字段组。否则，收到该字段组的流被阻塞。</p>
 <p>当被阻塞时，编码字段组数据<em><strong>应该</strong></em>继续呆在阻塞流的流量控制窗口内。直到流解除阻塞为止数据都不可用，而且过早地释放流量控制会让解码器容易遭受内存耗尽攻击。当插入计数大于或等于编码器已经开始读取的所有编码字段组的插入计数下限时，流退出阻塞状态。</p>
-<p>正如<a href="">第2.1.2章</a>所规定的那样，当处理编码字段组时，解码器预期插入计数下限的值为解码字段组所需的插入计数的所有可能值中最小的那个。如果出现插入计数下限小于解码器所预期的值，<em><strong>必须</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（QPACK解压失败）类型连接错误，详见<a href="">第2.2.3章</a>；如果出现插入计数下限大于其所预期的值，<em><strong>可以</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>类型连接错误。</p>
+<p>正如<a href="#2.1.2_Blocked_Streams">第2.1.2章</a>所规定的那样，当处理编码字段组时，解码器预期插入计数下限的值为解码字段组所需的插入计数的所有可能值中最小的那个。如果出现插入计数下限小于解码器所预期的值，<em><strong>必须</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>（QPACK解压失败）类型连接错误，详见<a href="#2.2.3_Invalid_References">第2.2.3章</a>；如果出现插入计数下限大于其所预期的值，<em><strong>可以</strong></em>视为一个<code>QPACK_DECOMPRESSION_FAILED</code>类型连接错误。</p>
 </div>
 </section>
 <section class="page" id="2.2.2_State_Synchronization">
@@ -287,14 +431,32 @@
 <a href="#2.2.2_State_Synchronization">2.2.2. 状态同步</a>
 </h3>
 <div class="content">
-<p>解码器通过向解码流发送解码指令（详见<a href="">第4.4章</a>）通知对端下述事件。</p>
-<h4 id="2221-字段组处理完成">2.2.2.1. 字段组处理完成</h4>
-<p>在解码器完成解码一个使用包含动态表引用的指称编码的字段组后，其<em><strong>必须</strong></em>发射一个“组确认（Section Acknowledgment）”指令（详见<a href="">第4.4.1章</a>）。一条流可能携带多个字段组用于临时响应、挂载以及推送请求。编码器将组确认指令解释为一条对给定流上包含动态表引用且未得到确认的字段组中最先发送的字段组的确认。</p>
-<h4 id="2222-放弃流">2.2.2.2. 放弃流</h4>
-<p>当终端在流结束或在处理完所有编码字段组前收到其流重置，或在其中止该流读取后，其下达一个“流取消（Stream Cancellation）”指令，详见<a href="">第4.4.2章</a>。它向编码器发出信号，表明所有在那条流上的对动态表的引用都不再有效。最大动态表容量（详见<a href="">第3.2.3章</a>）为零的解码器<em><strong>可以</strong></em>省略发送流取消指令，因为此时编码器不能有任何动态表引用。编码器不可以使用该指令来推断某些对动态表的更新是否已被接收到。</p>
-<p>组确认和流取消指令允许编码器删除对动态表中条目的引用。当绝对索引小于“已知接收计数（Known Received Count）”的条目没有引用，则其是可驱逐的，详见<a href="">第2.1.1章</a>。</p>
-<h4 id="2223-新表条目">2.2.2.3. 新表条目</h4>
-<p>在编码流上接收到新表条目后，编码器自行决定何时发射“插入计数上升（Insert Count Increment）”指令，详见<a href="">第4.4.3章</a>。在添加完每条新动态表条目后都发射一条该类指令，将会给编码器提供最及时的反馈，但是也可能与解码器的其余反馈产生重复。通过延迟插入计数额度指令，可能使得解码器能够合并多条插入计数额度指令，甚至用组确认指令彻底取代，详见<a href="">第4.4.1章</a>。然而，拖延太长时间的做法，例如编码器等待某条目被确认后再使用它，可能降低压缩效率。</p>
+<p>解码器通过向解码流发送解码指令（详见<a href="#4.4_Decoder_Instructions">第4.4章</a>）通知对端下述事件。</p>
+</div>
+</section>
+<section class="page" id="2.2.2.1_Completed_Processing_of_a_Field_Section">
+<h4>
+<a href="#2.2.2.1_Completed_Processing_of_a_Field_Section">2.2.2.1. 字段组处理完成</a>
+</h4>
+<div class="content">
+<p>在解码器完成解码一个使用包含动态表引用的指称编码的字段组后，其<em><strong>必须</strong></em>发射一个“组确认（Section Acknowledgment）”指令（详见<a href="#4.4.1_Section_Acknowledgment">第4.4.1章</a>）。一条流可能携带多个字段组用于临时响应、挂载以及推送请求。编码器将组确认指令解释为一条对给定流上包含动态表引用且未得到确认的字段组中最先发送的字段组的确认。</p>
+</div>
+</section>
+<section class="page" id="2.2.2.2_Abandonment_of_a_Stream">
+<h4>
+<a href="#2.2.2.2_Abandonment_of_a_Stream">2.2.2.2. 放弃流</a>
+</h4>
+<div class="content">
+<p>当终端在流结束或在处理完所有编码字段组前收到其流重置，或在其中止该流读取后，其下达一个“流取消（Stream Cancellation）”指令，详见<a href="#4.4.2_Stream_Cancellation">第4.4.2章</a>。它向编码器发出信号，表明所有在那条流上的对动态表的引用都不再有效。最大动态表容量（详见<a href="#3.2.3_Maximum_Dynamic_Table_Capacity">第3.2.3章</a>）为零的解码器<em><strong>可以</strong></em>省略发送流取消指令，因为此时编码器不能有任何动态表引用。编码器不可以使用该指令来推断某些对动态表的更新是否已被接收到。</p>
+<p>组确认和流取消指令允许编码器删除对动态表中条目的引用。当绝对索引小于“已知接收计数（Known Received Count）”的条目没有引用，则其是可驱逐的，详见<a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">第2.1.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="2.2.2.3_New_Table_Entries">
+<h4>
+<a href="#2.2.2.3_New_Table_Entries">2.2.2.3. 新表条目</a>
+</h4>
+<div class="content">
+<p>在编码流上接收到新表条目后，编码器自行决定何时发射“插入计数上升（Insert Count Increment）”指令，详见<a href="#4.4.3_Insert_Count_Increment">第4.4.3章</a>。在添加完每条新动态表条目后都发射一条该类指令，将会给编码器提供最及时的反馈，但是也可能与解码器的其余反馈产生重复。通过延迟插入计数额度指令，可能使得解码器能够合并多条插入计数额度指令，甚至用组确认指令彻底取代，详见<a href="#4.4.1_Section_Acknowledgment">第4.4.1章</a>。然而，拖延太长时间的做法，例如编码器等待某条目被确认后再使用它，可能降低压缩效率。</p>
 </div>
 </section>
 <section class="page" id="2.2.3_Invalid_References">
@@ -302,8 +464,1558 @@
 <a href="#2.2.3_Invalid_References">2.2.3. 无效引用</a>
 </h3>
 <div class="content">
-<p>如果解码器碰到字段行指称中指向一条已被驱逐或其绝对索引大于等于声明的“插入计数下限（Required Insert Count，详见<a href="">第4.5.1章</a>）”的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK解压失败（<code>QPACK_DECOMPRESSION_FAILED</code>）”类型连接错误。</p>
-<p>如果解码器碰到编码器指令中指向一条已被驱逐的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK编码流错误（<code>QPACK_ENCODER_STREAM_ERROR</code>）”类型连接错误。</p>
+<p>如果解码器碰到字段行指称中指向一条已被驱逐或其绝对索引大于等于声明的“插入计数下限（Required Insert Count，详见<a href="#4.5.1_Encoded_Field_Section_Prefix">第4.5.1章</a>）”的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK解压失败（<code>QPACK_DECOMPRESSION_FAILED</code>）”类型连接错误。</p>
+<p>如果解码器碰到编码指令中指向一条已被驱逐的动态表条目的引用时，<em><strong>必须</strong></em>视为一个“QPACK编码流错误（<code>QPACK_ENCODER_STREAM_ERROR</code>）”类型连接错误。</p>
+</div>
+</section>
+<section class="page" id="3_Reference_Tables">
+<h1>
+<a href="#3_Reference_Tables">3. 引用表</a>
+</h1>
+<div class="content">
+<p>与HPACK不同，QPACK静态表和动态表中的条目地址是单独分配的。接下来的章节描述了如何为这两张表中的条目分配地址。</p>
+</div>
+</section>
+<section class="page" id="3.1_Static_Table">
+<h2>
+<a href="#3.1_Static_Table">3.1. 静态表</a>
+</h2>
+<div class="content">
+<p>静态表由一组预定义的字段行组成，所有字段行的索引都是固定的。<a href="#Appendix_A_Static_Table">附录A</a>中定义了静态表的条目。</p>
+<p>静态表中的所有条目都具有一个名称和一个值。不过，值可以为空（也就是长度为<code>0</code>）.每个条目都用一个唯一的索引来识别。</p>
+<p>注意，QPACK静态表的索引从<code>0</code>开始，而HPACK静态表的索引从<code>1</code>开始。</p>
+<p>当解码器在某字段行指称中遇到一个无法识别的静态表索引时，它<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_DECOMPRESSION_FAILED</code>（解压失败）的连接错误。如果这样的索引是从编码器流中接收到的，那么<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_ENCODER_STREAM_ERROR</code>（编码流错误）的连接错误。</p>
+</div>
+</section>
+<section class="page" id="3.2_Dynamic_Table">
+<h2>
+<a href="#3.2_Dynamic_Table">3.2. 动态表</a>
+</h2>
+<div class="content">
+<p>动态表由一组按照先进先出顺序维护的字段行组成。QPACK编码器和解码器共享一张动态表，该表初始为空。编码器项动态表添加条目，并在编码流上通过指令向解码器发送这些条目；详见<a href="#4.3_Encoder_Instructions">第4.3章</a>。</p>
+<p>动态表中可以包含重复的条目（也就是具有相同名称和相同值的条目）。因此，条目重复的情况<em><strong>必须不</strong></em>被解码器视作错误。</p>
+<p>动态表条目的值可以为空。</p>
+</div>
+</section>
+<section class="page" id="3.2.1_Dynamic_Table_Size">
+<h3>
+<a href="#3.2.1_Dynamic_Table_Size">3.2.1. 动态表尺寸</a>
+</h3>
+<div class="content">
+<p>动态表的尺寸为其所有条目尺寸的总和。</p>
+<p>某条目的尺寸为其名称以字节为单位的长度、其值以字节为单位的长度，和额外的32字节之和。计算条目尺寸时使用的是未经过哈夫曼编码的名称和值的长度。</p>
+</div>
+</section>
+<section class="page" id="3.2.2_Dynamic_Table_Capacity_and_Eviction">
+<h3>
+<a href="#3.2.2_Dynamic_Table_Capacity_and_Eviction">3.2.2. 动态表容量与驱逐</a>
+</h3>
+<div class="content">
+<p>动态表的容量是由编码器设置的，它的意义是动态表尺寸的上限。动态表的初始容量为零。编码器想要使用动态表，就要发送一条容量值非零的“设置动态表容量”（Set Dynamic Table Capacity，详见<a href="#4.3.1_Set_Dynamic_Table_Capacity">第4.3.1章</a>）指令。</p>
+<p>在向动态表添加条目前，先要从动态表的末尾开始驱逐条目，直到动态表的尺寸小于等于动态表容量与新条目尺寸的差。除非某条目是可驱逐的，否则编码器<em><strong>必须不</strong></em>驱逐它；详见<a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">第2.1.1章</a>。随后，就可以向动态表添加新条目。如果编码器试图添加一条尺寸大于动态表容量的条目，那么会产生错误；解码器<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_ENCODER_STREAM_ERROR</code>的连接错误。</p>
+<p>正在向动态表添加的新条目可以引用动态表中即将被驱逐的条目。如果被引用的条目在插入新条目前就被已经驱逐，那么实现要注意确保被引用的名称和值仍存在于表中。</p>
+<p>一旦动态表的容量被编码器缩减（详见[第4.3.1章]（）），那么就要从动态表的末尾开始驱逐条目，直到动态表的尺寸小于等于新的表容量。通过将容量设置为<code>0</code>，随后恢复容量的方式，可以利用这项机制来完全清除动态表中的条目。</p>
+</div>
+</section>
+<section class="page" id="3.2.3_Maximum_Dynamic_Table_Capacity">
+<h3>
+<a href="#3.2.3_Maximum_Dynamic_Table_Capacity">3.2.3. 动态表容量上限</a>
+</h3>
+<div class="content">
+<p>为了约束自身的内存用量，解码器可以限制编码器能够设置的动态表容量的上限值。在HTTP/3中，该限制由解码器发送的参数<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>的值来控制；详见<a href="#5_Configuration">第5章</a>。编码器设置的动态表容量<em><strong>必须不</strong></em>超过该上限，但可以选择使用更低的动态表容量；详见<a href="#4.3.1_Set_Dynamic_Table_Capacity">第4.3.1章</a>。</p>
+<p>对于要使用HTTP/3中0-RTT数据的客户端来说，服务器的动态表容量上限是该设置的记忆值，若服务器未曾发送过该值，则为零。如果客户端在0-RTT的<strong>设置帧</strong>中发送的该参数值为零，那么服务器<em><strong>可以</strong></em>在其<strong>设置帧</strong>中将它设置为非零值。如果记忆值非零，那么服务器<em><strong>必须</strong></em>在其<strong>设置帧</strong>中使用这个非零值。如果服务器指定的是其他值，或在<strong>设置帧</strong>中省略了<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>，那么编码器必须将这种情况视作类型为<code>QPACK_DECODER_STREAM_ERROR</code>（解码流错误）的连接错误。</p>
+<p>对于没有使用0-RTT数据的客户端（无论是没有主动使用0-RTT，还是0-RTT被拒绝）和所有HTTP/3服务器，直到编码器处理到<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>值非零的<strong>设置帧</strong>前，动态表容量上限始终为<code>0</code>。</p>
+<p>当动态表容量上限为零时，编码器<em><strong>必须不</strong></em>向动态表插入条目，且<em><strong>必须不</strong></em>在编码流上发送任何编码指令。</p>
+</div>
+</section>
+<section class="page" id="3.2.4_Absolute_Indexing">
+<h3>
+<a href="#3.2.4_Absolute_Indexing">3.2.4. 绝对索引</a>
+</h3>
+<div class="content">
+<p>每个条目在其生存期内都拥有一个固定的绝对索引。首个被插入的条目，其绝对索引值为<code>0</code>；索引会随每一次插入而上升<code>1</code>。</p>
+</div>
+</section>
+<section class="page" id="3.2.5_Relative_Indexing">
+<h3>
+<a href="#3.2.5_Relative_Indexing">3.2.5. 相对索引</a>
+</h3>
+<div class="content">
+<p>相对索引从零开始，并向着与绝对索引相反的方向上升。哪个条目的相对索引为<code>0</code>取决于引用的上下文。</p>
+<p>在编码指令中（详见<a href="#4.3_Encoder_Instructions">第4.3章</a>），相对索引<code>0</code>指向的是在动态表中最近插入的那个条目。注意，这意味着对于给定的相对索引值，其指向的条目将随着编码流上正在解释的指令不同而不同。</p>
+<div class="block ref" id="Figure_2_Example_Dynamic_Table_Indexing_Encoder_Stream">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_2_Example_Dynamic_Table_Indexing_Encoder_Stream.svg"/>
+<p><a href="#Figure_2_Example_Dynamic_Table_Indexing_Encoder_Stream">图2：动态表索引样例——编码流</a></p>
+</div>
+<p>与编码指令中的不同，字段行指称中的相对索引的基准是其所在的编码字段组的起始基点值；详见<a href="#4.5.1_Encoded_Field_Section_Prefix">第4.5.1章</a>。这确保了即便编码字段组和动态表的更新未按照顺序处理，这些索引的指向也是稳定的。</p>
+<p>在字段行指称中，相对索引<code>0</code>指向的是绝对索引比基点小1的条目。</p>
+<div class="block ref" id="Figure_3_Example_Dynamic_Table_Indexing_Relative_Index_in_Representation">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_3_Example_Dynamic_Table_Indexing_Relative_Index_in_Representation.svg"/>
+<p><a href="#Figure_3_Example_Dynamic_Table_Indexing_Relative_Index_in_Representation">图3：动态表索引样例——指称中的相对索引</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="3.2.6_Post_Base_Indexing">
+<h3>
+<a href="#3.2.6_Post_Base_Indexing">3.2.6. 反向索引</a>
+</h3>
+<div class="content">
+<p>反向索引被用于字段行指称中，指向绝对索引大于等于基点的条目。反向索引<code>0</code>指向的是绝对索引等于基点的条目。反向索引的上升方向与绝对索引一致。</p>
+<p>反向索引使得编码器能够单向地按顺序处理字段组（即“单通”），并使用指向在处理该（或其他）字段组时添加的条目的引用。</p>
+<div class="block ref" id="Figure_4_Example_Dynamic_Table_Indexing_Post_Base_Index_in_Representation">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_4_Example_Dynamic_Table_Indexing_Post_Base_Index_in_Representation.svg"/>
+<p><a href="#Figure_4_Example_Dynamic_Table_Indexing_Post_Base_Index_in_Representation">图4：动态表索引样例——指称中的反向索引</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="4_Wire_Format">
+<h1>
+<a href="#4_Wire_Format">4. 数据通信格式</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="4.1_Primitives">
+<h2>
+<a href="#4.1_Primitives">4.1. 基本数据类型</a>
+</h2>
+<div class="content">
+</div>
+</section>
+<section class="page" id="4.1.1_Prefixed_Integers">
+<h3>
+<a href="#4.1.1_Prefixed_Integers">4.1.1. 前缀整型</a>
+</h3>
+<div class="content">
+<p>本文档通篇频繁使用了来自《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7541#section-5.1">第5.1章</a>的前缀整型，且未对该格式作出修改。不过注意，QPACK使用了一些没有在HPACK中用到的前缀尺寸。</p>
+<p>QPACK实现<em><strong>必须</strong></em>有能力解码长达62位（包含62位）的整型。</p>
+</div>
+</section>
+<section class="page" id="4.1.2_String_Literals">
+<h3>
+<a href="#4.1.2_String_Literals">4.1.2. 明文字符串</a>
+</h3>
+<div class="content">
+<p>《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7541#section-5.2">第5.2章</a>中的明文字符串也得到大量使用。该字符串格式中包含可选的哈夫曼编码。</p>
+<p>HPACK中定义的每个明文字符串的开头是一个前缀字节。前缀字节以一个信号比特位起始，本文称之为<code>H</code>（它表明字符串是否经过哈夫曼编码），后面跟着被编码为7位前缀整型的以字节为单位的字符串长度，最后是与此长度一致的数据部分。当启用哈夫曼编码时，使用的是《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7541#appendix-B">附录B</a>中的哈夫曼表，且未经修改，同时前缀字节中的长度是字符串经过编码后的尺寸。</p>
+<p>本文档扩展了明文字符串的定义，允许它们以不止一个字节长的前缀开始。“N位前缀的明文字符串”起始于某个字节的中间，在起始处之前的<code>8 - N</code>位被分配给前一个字段。这样的字符串使用一个比特位，用于哈夫曼信号，后面跟着被编码为<code>N - 1</code>位前缀整型的字符串长度。前缀尺寸<code>N</code>的取值范围为<code>2</code>至<code>8</code>，包含两端。明文字符串定义的其余部分未作修改。</p>
+<p>没有标记前缀长度的明文字符串就是8位前缀的明文字符串，严格遵守《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》中的定义。</p>
+</div>
+</section>
+<section class="page" id="4.2_Encoder_and_Decoder_Streams">
+<h2>
+<a href="#4.2_Encoder_and_Decoder_Streams">4.2. 编码流与解码流</a>
+</h2>
+<div class="content">
+<p>QPACK定义了两种单向流类型：</p>
+<ul>
+<li>
+<p>编码流是类型为<code>0x02</code>的单向流。它从编码器向解码器传递没有帧结构的编码指令序列。</p>
+</li>
+<li>
+<p>解码流是类型为<code>0x03</code>的单向流，它从解码器向编码器传递没有帧结构的解码指令序列。</p>
+</li>
+</ul>
+<p>每个HTTP/3终端都具备一组QPACK编码器和解码器。每个终端<em><strong>必须</strong></em>发起至多一个编码流和至多一个解码流。同一种流类型，接收到第二条流的情况<em><strong>必须</strong></em>被视作类型为<code>H3_STREAM_CREATION_ERROR</code>（流创建错误）的连接错误。</p>
+<p>发送方<em><strong>必须不</strong></em>关闭这些流中的任意一条，且接收方<em><strong>必须不</strong></em>请求发送方关闭这些流中的任意一条。无论流类型，流被关闭的情况<em><strong>必须</strong></em>被视作类型为<code>H3_CLOSED_CRITICAL_STREAM</code>（关键流遭关闭）的连接错误。</p>
+<p>如果不会用到编码流，那么终端<em><strong>可以</strong></em>不创建它（例如，当编码器不希望使用动态表或对端允许的动态表容量上限为零时）。</p>
+<p>如果终端的解码器将动态表的容量上限设置为零，那么终端<em><strong>可以</strong></em>不创建解码流。</p>
+<p>即使连接的设置阻止终端使用编解码流，终端也<em><strong>必须</strong></em>允许其对端能够创建一条编码流和一条解码流。</p>
+</div>
+</section>
+<section class="page" id="4.3_Encoder_Instructions">
+<h2>
+<a href="#4.3_Encoder_Instructions">4.3. 编码指令</a>
+</h2>
+<div class="content">
+<p>编码器在编码流上发送编码指令，从而设置动态表容量，以及添加动态表条目。添加条目的指令中可以使用现有条目，以避免传输冗余信息。名称可以使用引用静态表或动态表中已有条目的方式传输，或者以明文字符串的方式传输。对于已经出现在动态表中的条目，还可以对其进行完整引用，创建出重复的条目。</p>
+</div>
+</section>
+<section class="page" id="4.3.1_Set_Dynamic_Table_Capacity">
+<h3>
+<a href="#4.3.1_Set_Dynamic_Table_Capacity">4.3.1. 设置动态表容量</a>
+</h3>
+<div class="content">
+<p>编码器使用以<code>001</code>这3个比特位起始的指令来告知解码器动态表的容量发生了变化。这3位后面跟着以5位前缀整型表示的动态表新容量值；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。</p>
+<div class="block ref" id="Figure_5_Set_Dynamic_Table_Capacity">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_5_Set_Dynamic_Table_Capacity.svg"/>
+<p><a href="#Figure_5_Set_Dynamic_Table_Capacity">图5：设置动态表容量</a></p>
+</div>
+<p>新的容量<em><strong>必须</strong></em>小于等于<a href="#3.2.3_Maximum_Dynamic_Table_Capacity">第3.2.3章</a>中描述的上限。在HTTP/3中，这个上限就是从解码器接收到的参数<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>的值（详见<a href="#5_Configuration">第5章</a>）。解码器<em><strong>必须</strong></em>将动态表新容量值超过该上限的情况视作类型为<code>QPACK_ENCODER_STREAM_ERROR</code>（编码流错误）的连接错误。</p>
+<p>缩减动态表容量会造成条目被驱逐；详见<a href="#3.2.2_Dynamic_Table_Capacity_and_Eviction">第3.2.2章</a>。这<em><strong>必须不</strong></em>造成不可驱逐的条目被驱逐；详见<a href="#2.1.1_Limits_on_Dynamic_Table_Insertions">第2.1.1章</a>。动态表容量的改变不会得到确认，因为这条指令并没有插入条目。</p>
+</div>
+</section>
+<section class="page" id="4.3.2_Insert_with_Name_Reference">
+<h3>
+<a href="#4.3.2_Insert_with_Name_Reference">4.3.2. 插入引用名称的条目</a>
+</h3>
+<div class="content">
+<p>当字段名称与存储在静态表或动态表中的某条目的字段名称一致时，编码器会使用以<code>1</code>这1个比特位起始的指令来向动态表添加条目。指令的第二个比特位（称为<code>T</code>）表明引用指向的是静态表还是动态表。后面跟着的6位前缀整型（详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>）被用来为字段名称定位表中的条目。当<code>T</code>为<code>1</code>时，该前缀整型表示的是静态表中的索引，当<code>T</code>为<code>0</code>时，该前缀整型表示的是动态表中条目的相对索引。</p>
+<p>字段名称引用的后面跟着以明文字符串表示的字段值；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。</p>
+<div class="block ref" id="Figure_6_Insert_Field_Line_Indexed_Name">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_6_Insert_Field_Line_Indexed_Name.svg"/>
+<p><a href="#Figure_6_Insert_Field_Line_Indexed_Name">图6：插入字段行——引用名称</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="4.3.3_Insert_with_Literal_Name">
+<h3>
+<a href="#4.3.3_Insert_with_Literal_Name">4.3.3. 插入明文名称的条目</a>
+</h3>
+<div class="content">
+<p>当字段的名称和值都以明文字符串来表示时，编码器会使用以<code>01</code>这2个比特位起始的指令来向动态表添加条目。</p>
+<p>这2个比特位后面跟着的是以6位前缀的明文字符串表示的名称和以8位前缀的明文字符串表示的值；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。</p>
+<div class="block ref" id="Figure_7_Insert_Field_Line_New_Name">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_7_Insert_Field_Line_New_Name.svg"/>
+<p><a href="#Figure_7_Insert_Field_Line_New_Name">图7：插入字段行——新名称</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="4.3.4_Duplicate">
+<h3>
+<a href="#4.3.4_Duplicate">4.3.4. 复制条目</a>
+</h3>
+<div class="content">
+<p>编码器使用以<code>000</code>这3个比特位起始的指令来复制动态表中的某个条目。这3个比特位后面跟着该条目以5位前缀整型表示的相对索引；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。</p>
+<div class="block ref" id="Figure_8_Duplicate">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_8_Duplicate.svg"/>
+<p><a href="#Figure_8_Duplicate">图8：复制</a></p>
+</div>
+<p>需要复制的条目会被重新插入到动态表中，它的名称或值不会被再次发送。这么做对有助于添加对某早期条目的引用，否则可能妨碍插入新的条目。</p>
+</div>
+</section>
+<section class="page" id="4.4_Decoder_Instructions">
+<h2>
+<a href="#4.4_Decoder_Instructions">4.4. 解码指令</a>
+</h2>
+<div class="content">
+<p>解码器在解码流上发送解码指令，从而告知编码器有关字段组处理和表更新的信息，以确保动态表的一致性。</p>
+</div>
+</section>
+<section class="page" id="4.4.1_Section_Acknowledgment">
+<h3>
+<a href="#4.4.1_Section_Acknowledgment">4.4.1. 组确认</a>
+</h3>
+<div class="content">
+<p>在处理完一个插入计数下限非零的编码字段组后，解码器会发射一个“组确认（Section Acknowledgment）”指令。该指令以<code>1</code>这1个比特位起始，后面跟着与该字段组关联的流ID，以7位前缀整型编码；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。</p>
+<p><a href="#2.1.4_Known_Received_Count">第2.1.4章</a>和<a href="#2.2.2_State_Synchronization">第2.2.2章</a>中介绍了该指令的用法。</p>
+<div class="block ref" id="Figure_9_Section_Acknowledgment">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_9_Section_Acknowledgment.svg"/>
+<p><a href="#Figure_9_Section_Acknowledgment">图9：组确认</a></p>
+</div>
+<p>如果编码器接收到的组确认指令所指向的流上所有插入计数下限非零的字段组均已得到确认，那么它<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_DECODER_STREAM_ERROR</code>（解码流错误）的连接错误。</p>
+<p>组确认指令可能造成已知接收计数上升；详见<a href="#2.1.4_Known_Received_Count">第2.1.4章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.4.2_Stream_Cancellation">
+<h3>
+<a href="#4.4.2_Stream_Cancellation">4.4.2. 流取消</a>
+</h3>
+<div class="content">
+<p>当一条流被重置或被放弃时，解码器会发射一个“流取消（Stream Cancellation）”指令。该指令以<code>01</code>这2个比特位起始，后面跟着这个流以6位前缀整型编码的流ID。</p>
+<p><a href="#2.2.2_State_Synchronization">第2.2.2章</a>中介绍了该指令的用法。</p>
+<div class="block ref" id="Figure_10_Stream_Cancellation">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_10_Stream_Cancellation.svg"/>
+<p><a href="#Figure_10_Stream_Cancellation">图10：流取消</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="4.4.3_Insert_Count_Increment">
+<h3>
+<a href="#4.4.3_Insert_Count_Increment">4.4.3. 插入计数提升</a>
+</h3>
+<div class="content">
+<p>“插入计数提升（Insert Count Increment）“指令以<code>00</code>这2个比特位起始，后面跟着以6位前缀整型编码的提升量。该指令使得已知接收计数（详见<a href="#2.1.4_Known_Received_Count">第2.1.4章</a>）提升其参数所指示的量。解码器发送的提升量应该将已知接收计数提升至目前已处理的动态表插入与复制操作总数。</p>
+<div class="block ref" id="Figure_11_Insert_Count_Increment">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_11_Insert_Count_Increment.svg"/>
+<p><a href="#Figure_11_Insert_Count_Increment">图11：插入计数提升</a></p>
+</div>
+<p>如果编码器接收到的提升量字段值为零，或使得已知接收计数超过了编码器已发送的数量，那么它<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_DECODER_STREAM_ERROR</code>的连接错误。</p>
+</div>
+</section>
+<section class="page" id="4.5_Field_Line_Representations">
+<h2>
+<a href="#4.5_Field_Line_Representations">4.5. 字段行的指称</a>
+</h2>
+<div class="content">
+<p>编码字段组由一个前缀和一些定义在该组中的指称序列（可以是空序列）组成。每条指称都对应着一条字段行。这些指称会引用静态表或特定状态下的动态表，但它们不会修改动态表的状态。</p>
+<p>编码字段组是在由封装协议定义的流上，用帧结构来传递的。</p>
+</div>
+</section>
+<section class="page" id="4.5.1_Encoded_Field_Section_Prefix">
+<h3>
+<a href="#4.5.1_Encoded_Field_Section_Prefix">4.5.1. 编码字段组的前缀</a>
+</h3>
+<div class="content">
+<p>每个编码字段组都以两个整型作为前缀。使用<a href="#4.5.1.1_Required_Insert_Count">第4.5.1.1章</a>中的编码方法，插入计数下限被编码为一个8位前缀整型。基点被编码为一个信号比特位（<code>S</code>）和一个7位前缀整型的“基点差值”；详见<a href="#4.5.1.2_Base">第4.5.1.2章</a>。</p>
+<div class="block ref" id="Figure_12_Encoded_Field_Section">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_12_Encoded_Field_Section.svg"/>
+<p><a href="#Figure_12_Encoded_Field_Section">图12：编码字段组</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="4.5.1.1_Required_Insert_Count">
+<h4>
+<a href="#4.5.1.1_Required_Insert_Count">4.5.1.1. 插入计数下限</a>
+</h4>
+<div class="content">
+<p>插入计数下限标识着处理编码字段组所需的动态表状态。处于阻塞状态的解码器使用插入计数下限来判断何时可以安全处理字段组的剩余部分。</p>
+<p>编码器在编码前以这种方式转换插入计数下限：</p>
+<div class="block ref" id="Pseudocode_4_5_1_1_1">
+<pre tabindex="0"><code>if ReqInsertCount == 0:
+   EncInsertCount = 0
+else:
+   EncInsertCount = (ReqInsertCount mod (2 * MaxEntries)) + 1
+</code></pre><p><a href="#Pseudocode_4_5_1_1_1"></a></p>
+</div>
+<p>其中<code>MaxEntries</code>是动态表中可能出现的条目数量最大值。最小的条目是名称和值均为空字符串的条目，其尺寸为<code>32</code>字节。因此，<code>MaxEntries</code>的计算方法为：</p>
+<div class="block ref" id="Pseudocode_4_5_1_1_2">
+<pre tabindex="0"><code>MaxEntries = floor( MaxTableCapacity / 32 )
+</code></pre><p><a href="#Pseudocode_4_5_1_1_2"></a></p>
+</div>
+<p><code>MaxTableCapacity</code>就是解码器指定的动态表容量上限；详见<a href="#3.2.3_Maximum_Dynamic_Table_Capacity">第3.2.3章</a>。</p>
+<p>这种编码方式能够限制前缀在持久连接中的长度。</p>
+<p>解码器可以使用形如下文所述的算法来重建插入计数下限。如果解码器遇到的<code>EncodedInsertCount</code>值不可能由对端的编码器产生出来，那么它<em><strong>必须</strong></em>将此情况视作类型为<code>QPACK_DECOMPRESSION_FAILED</code>（解压失败）的连接错误。</p>
+<p><code>TotalNumberOfInserts</code>为解码器动态表的总插入次数。</p>
+<div class="block ref" id="Pseudocode_4_5_1_1_3">
+<pre tabindex="0"><code>FullRange = 2 * MaxEntries
+if EncodedInsertCount == 0:
+   ReqInsertCount = 0
+else:
+   if EncodedInsertCount &gt; FullRange:
+      Error
+   MaxValue = TotalNumberOfInserts + MaxEntries
+
+   # `MaxWrapped`为`ReqInsertCount`的最大可能值，
+   # 也就是`0 mod 2 * MaxEntries`
+   MaxWrapped = floor(MaxValue / FullRange) * FullRange
+   ReqInsertCount = MaxWrapped + EncodedInsertCount - 1
+
+   # 如果`ReqInsertCount`超过了`MaxValue`，
+   # 那么编码器的值一定被少包裹了一次
+   if ReqInsertCount &gt; MaxValue:
+      if ReqInsertCount &lt;= FullRange:
+         Error
+      ReqInsertCount -= FullRange
+
+   # 值`0`一定会被编码为`0`
+   if ReqInsertCount == 0:
+      Error
+</code></pre><p><a href="#Pseudocode_4_5_1_1_3"></a></p>
+</div>
+<p>举例来说，如果动态表容量为100字节，那么插入计数下限将用<code>mod 6</code>来编码。如果解码器已接收到了10次插入，那么编码值<code>4</code>就表示该字段组的插入计数下限为<code>9</code>。</p>
+</div>
+</section>
+<section class="page" id="4.5.1.2_Base">
+<h4>
+<a href="#4.5.1.2_Base">4.5.1.2. 基点</a>
+</h4>
+<div class="content">
+<p>基点被用来在动态表中解析引用，<a href="#3.2.5_Relative_Indexing">第3.2.5章</a>介绍了解析过程。</p>
+<p>为了节省空间，基点按照插入计数下限的值被编码为一个信号比特位（<a href="#Figure_12_Encoded_Field_Section">图12</a>中的<code>S</code>）和基点差值。信号位<code>0</code>表示基点大于等于插入计数下限的值；解码器将基点差值与插入计数下限相加，得到基点的值。信号位<code>1</code>表示基点钓鱼插入计数下限；解码器从插入计数下限中减去基点差值，再减去1，得到基点的值。也就是说：</p>
+<div class="block ref" id="Pseudocode_4_5_1_2_1">
+<pre tabindex="0"><code>if Sign == 0:
+   Base = ReqInsertCount + DeltaBase
+else:
+   Base = ReqInsertCount - DeltaBase - 1
+</code></pre><p><a href="#Pseudocode_4_5_1_2_1"></a></p>
+</div>
+<p>单通的编码器在对字段组编码前就要算出基点的值。如果编码器在编码字段组时会向动态表插入条目并引用它们，那么插入计数下限将大于基点，所以编码出来的差值为负数，信号位被设置为<code>1</code>。如果编码字段组时使用的指称没有引用最近插入动态表的条目，也没有插入任何新条目，那么基点就会大于插入计数下限，所以编码出来的插值为正数，信号位被设置为<code>0</code>。</p>
+<p>基点的值<em><strong>必须不</strong></em>为负数。尽管协议基点为负数时也能正确处理反向索引，但这是不必要且低效的。如果插入计数下限小于等于基点差值，那么终端<em><strong>必须</strong></em>将信号位为<code>1</code>的字段块视作非法。</p>
+<p>在对字段组编码前先对表进行更新的编码器可以将基点的值设置为插入计数下限的值。在这种情况下，信号位和基点差值均被设置为零。</p>
+<p>如果编码字段组时没有引用动态表，那么基点可以是任意值；将基点差值设置为零是最高效的编码方式之一。</p>
+<p>举例来说，当插入计数下限为<code>9</code>时，解码器接收到了信号位<code>1</code>和基点差值<code>2</code>。它会将基点设置为<code>6</code>，并为三个条目启用反向索引。在这个例子中，相对索引<code>1</code>指向的是第五个被添加进表的条目；反向索引<code>1</code>则指向的是第八个。</p>
+</div>
+</section>
+<section class="page" id="4.5.2_Indexed_Field_Line">
+<h3>
+<a href="#4.5.2_Indexed_Field_Line">4.5.2. 索引字段行</a>
+</h3>
+<div class="content">
+<p>索引字段行的指称标识着静态表中的一个条目，或动态表中一个绝对索引小于基点值的条目。</p>
+<div class="block ref" id="Figure_13_Indexed_Field_Line">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_13_Indexed_Field_Line.svg"/>
+<p><a href="#Figure_13_Indexed_Field_Line">图13：索引字段行</a></p>
+</div>
+<p>这种指称以<code>1</code>这1个比特位起始，后面跟着比特位<code>T</code>，它表示引用指向的是静态表还是动态表。后面跟着的6位前缀整型（详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>）被用来为字段行定位表中的条目。当<code>T</code>为<code>1</code>时，该整型表示的是静态表中的索引；当<code>T</code>为<code>0</code>时，该整型表示的是动态表中某条目的相对索引。</p>
+</div>
+</section>
+<section class="page" id="4.5.3_Indexed_Field_Line_with_Post_Base_Index">
+<h3>
+<a href="#4.5.3_Indexed_Field_Line_with_Post_Base_Index">4.5.3. 使用反向索引的索引字段行</a>
+</h3>
+<div class="content">
+<p>使用反向索引的索引字段行的指称标识的是动态表中一个绝对索引大于等于基点值的条目。</p>
+<div class="block ref" id="Figure_14_Indexed_Field_Line_with_Post_Base_Index">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_14_Indexed_Field_Line_with_Post_Base_Index.svg"/>
+<p><a href="#Figure_14_Indexed_Field_Line_with_Post_Base_Index">图14：使用反向索引的索引字段行</a></p>
+</div>
+<p>这种指称以<code>0001</code>这4个比特位起始。后面跟着的是对应字段行的反向索引（详见<a href="#3.2.6_Post_Base_Indexing">第3.2.6章</a>），以4位前缀整型表示；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.5.4_Literal_Field_Line_with_Name_Reference">
+<h3>
+<a href="#4.5.4_Literal_Field_Line_with_Name_Reference">4.5.4. 使用索引名称的明文字段行</a>
+</h3>
+<div class="content">
+<p>使用索引名称的明文字段行的指称所编码的字段行，其字段名称要么与静态表中某条目的字段名称一致，要么与动态表中某个绝对索引小于基点值的条目的字段名称一致。</p>
+<div class="block ref" id="Figure_15_Literal_Field_Line_with_Name_Reference">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_15_Literal_Field_Line_with_Name_Reference.svg"/>
+<p><a href="#Figure_15_Literal_Field_Line_with_Name_Reference">图15：使用索引名称的明文字段行</a></p>
+</div>
+<p>这种指称以<code>01</code>这2个比特位起始。后面跟着比特位<code>N</code>，它表示是否允许后续跃点的中间设备将该字段行加入动态表中。当设置了比特位<code>N</code>时，<em><strong>必须</strong></em>始终用明文指称来编码字段行。特别是，当中间设备从对端接收到的字段行是用设置了比特位<code>N</code>的明文字段行来表示的时，它<em><strong>必须</strong></em>使用明文指称来转发该字段行。该比特位的目的是保护字段值不会因压缩而处于风险之中；有关细节详见<a href="#7.1_Probing_Dynamic_Table_State">第7.1章</a>。</p>
+<p>第四个比特位<code>T</code>表示引用指向的是静态表还是动态表。后面跟着的4位前缀整型（详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>）被用来为字段名称定位表中条目。当<code>T</code>为<code>1</code>时，该整型表示的是静态表中的索引；当<code>T</code>为<code>0</code>时，该整型表示的是动态表中某条目的相对索引。</p>
+<p>只有字段名称取自动态表中的条目；字段的值使用8位前缀的明文字符串来编码；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.5.5_Literal_Field_Line_with_Post_Base_Name_Reference">
+<h3>
+<a href="#4.5.5_Literal_Field_Line_with_Post_Base_Name_Reference">4.5.5. 使用反向索引名称的明文字段行</a>
+</h3>
+<div class="content">
+<p>使用反向索引名称的明文字段行的指称所编码的字段行，其字段名称与动态表中某个绝对索引大于等于基点值的条目的字段名称一致。</p>
+<div class="block ref" id="Figure_16_Literal_Field_Line_with_Post_Base_Name_Reference">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_16_Literal_Field_Line_with_Post_Base_Name_Reference.svg"/>
+<p><a href="#Figure_16_Literal_Field_Line_with_Post_Base_Name_Reference">图16：使用反向索引名称的明文字段行</a></p>
+</div>
+<p>这种指称以<code>0000</code>这4个比特位起始。第五个比特位<code>N</code>的介绍详见<a href="#4.5.4_Literal_Field_Line_with_Name_Reference">第4.5.4章</a>。后面跟着的是某动态表条目被编码为3位前缀整型的反向索引（详见<a href="#3.2.6_Post_Base_Indexing">第3.2.6章</a>）；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。</p>
+<p>只有字段名称取自动态表中的条目；字段的值使用8位前缀的明文字符串来编码；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="4.5.6_Literal_Field_Line_with_Literal_Name">
+<h3>
+<a href="#4.5.6_Literal_Field_Line_with_Literal_Name">4.5.6. 使用明文名称的明文字段行</a>
+</h3>
+<div class="content">
+<p>使用明文名称的明文字段行的指称将字段名称和字段值编码为明文字符串。</p>
+<div class="block ref" id="Figure_17_Literal_Field_Line_with_Literal_Name">
+<img src="/RFC9204_Chinese_Simplified/images/Figure_17_Literal_Field_Line_with_Literal_Name.svg"/>
+<p><a href="#Figure_17_Literal_Field_Line_with_Literal_Name">图17：使用明文名称的明文字段行</a></p>
+</div>
+<p>这种指称以<code>001</code>这3个比特位起始。第四个比特位<code>N</code>的介绍详见<a href="#4.5.4_Literal_Field_Line_with_Name_Reference">第4.5.4章</a>。后面跟着的是被编码为4位前缀整型的明文字符串的名称和被编码为8位前缀整型的明文字符串的值；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="5_Configuration">
+<h1>
+<a href="#5_Configuration">5. 配置</a>
+</h1>
+<div class="content">
+<p>QPACK为HTTP/3的<strong>设置帧</strong>定义了以下设置：</p>
+<dl>
+<dt>SETTINGS_QPACK_MAX_TABLE_CAPACITY（值为<code>0x01</code>）：</dt>
+<dd>
+<p>默认值为零。有关用法详见<a href="#3.2_Dynamic_Table">第3.2章</a>。该设置与HTTP/2的<code>SETTINGS_HEADER_TABLE_SIZE</code>等价。</p>
+</dd>
+<dt>SETTINGS_QPACK_BLOCKED_STREAMS（值为<code>0x07</code>）：</dt>
+<dd>
+<p>默认值为零。详见<a href="#2.1.2_Blocked_Streams">第2.1.2章</a>。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="6_Error_Handling">
+<h1>
+<a href="#6_Error_Handling">6. 错误处理</a>
+</h1>
+<div class="content">
+<p>为HTTP/3定义的以下错误码是为了指出QPACK中使得流或连接无法继续维持的错误。</p>
+<dl>
+<dt>QPACK_DECOMPRESSION_FAILED（值为<code>0x0200</code>）：</dt>
+<dd>
+<p>解码器无法解释编码字段组，且无法继续解码该字段组。</p>
+</dd>
+<dt>QPACK_ENCODER_STREAM_ERROR（值为<code>0x0201</code>）：</dt>
+<dd>
+<p>解码器无法解释在编码流上接收到的某条编码指令。</p>
+</dd>
+<dt>QPACK_DECODER_STREAM_ERROR（值为<code>0x0202</code>）：</dt>
+<dd>
+<p>编码器无法解释在解码流上接收到的某条解码指令。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="7_Security_Considerations">
+<h1>
+<a href="#7_Security_Considerations">7. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>本章介绍了有关QPACK安全性的几个担忧：</p>
+<ul>
+<li>
+<p>利用压缩后的数据长度验证秘密值是否位于共享压缩上下文中的猜想。</p>
+</li>
+<li>
+<p>通过耗尽解码器处理资源或内存容量的拒绝服务攻击。</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="7.1_Probing_Dynamic_Table_State">
+<h2>
+<a href="#7.1_Probing_Dynamic_Table_State">7.1. 探测动态表的状态</a>
+</h2>
+<div class="content">
+<p>QPACK通过利用HTTP等协议中固有的冗余来降低字段组经过编码后的尺寸。这么做的终极目标是降低发送HTTP请求或响应所需的数据量。</p>
+<p>只要攻击者既有能力定义编码和传输的字段，又能够观测这些字段经过编码后的长度，用于编码头部和挂载字段的压缩上下文就可能被攻击者探测。这样的攻击者可以适当修改请求，从而确信关于动态表状态的猜测。如果某个猜测被压缩为了更短的长度，那么攻击者就能够观测编码后的长度并且推断出该猜测是正确的。</p>
+<p>即便底层是传输层安全协议（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS</a>》）和QUIC传输协议（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》），这种做法也是可行的，因为尽管TLS和QUIC为其内容提供可信度保护，但是它们为内容的长度信息提供的保护却有限。</p>
+<blockquote>
+<p>注意：面对具有上述能力的攻击者，填充的策略只能提供有限的保护，最多就是增加攻击者为了判断某次猜测所对应的长度所需的尝试次数。填充还会因为增加传输数据量而与压缩的目的背道而驰。</p>
+</blockquote>
+<p>形如CRIME（详见《<a href="http://en.wikipedia.org/w/index.php?title=CRIME&amp;oldid=660948120">CRIME</a>》）的攻击说明了此类常见的攻击能力的可行性。特定的攻击还会利用DEFLATE（详见《<a href="https://www.rfc-editor.org/info/rfc1951">RFC1951</a>》)基于前缀匹配来降低冗余的事实。这使得攻击者能够一次验证对一个字符的猜测，将需要指数时间的攻击降低为线性时间。</p>
+</div>
+</section>
+<section class="page" id="7.1.1_Applicability_to_QPACK_and_HTTP">
+<h3>
+<a href="#7.1.1_Applicability_to_QPACK_and_HTTP">7.1.1. 对QPACK和HTTP的适用性</a>
+</h3>
+<div class="content">
+<p>通过强制猜测必须与整个字段行，而不是单个字符，匹配的方法，QPACK能够缓解，但不能完全阻挡，基于CRIME（详见《<a href="http://en.wikipedia.org/w/index.php?title=CRIME&amp;oldid=660948120">CRIME</a>》）模型的攻击。攻击者只能够学习到猜测的正确与否，于是攻击者被限制为只能对给定的字段名称暴力猜测其字段值。</p>
+<p>因此，破解特定字段值的可行性取决于值的熵。从而，具有高熵的值不太可能被成功破解。不过，具有底墒的值仍易受攻击。</p>
+<p>无论何时，只要两个互不信任实体的请求或响应被放置在同一条HTTP/3连接上，那么这类攻击就是可行的。如果共享的QPACK压缩器允许某个实体向动态表添加条目，且允许另一个实体在编码所选的字段行时引用那些条目，那么攻击者（即“另一个实体”）就能够通过观测编码输出长度的方式学习到表的状态。</p>
+<p>举例来说，请求和响应来自互不信任的实体的情况可能出现在某中间设备：</p>
+<ul>
+<li>
+<p>在同一条连接上向某源服务器发送来自多个客户端的请求时，或</p>
+</li>
+<li>
+<p>从多个源服务器获取响应，再将它们放到通向同一个客户端的共享连接上时。</p>
+</li>
+</ul>
+<p>网络浏览器还应该假设在同一条连接上的不同网络源（详见《<a href="https://www.rfc-editor.org/info/rfc6454">RFC6454</a>》）的请求是由互不信任的实体产生的。还可能存在其他包含互不信任实体的场景。</p>
+</div>
+</section>
+<section class="page" id="7.1.2_Mitigation">
+<h3>
+<a href="#7.1.2_Mitigation">7.1.2. 缓解措施</a>
+</h3>
+<div class="content">
+<p>对头部和挂载字段要求可信度的HTTP用户可以使用具有足够的熵的值来使其无法被猜测到。然而，实际上不可能将此作为通用的解决方案，因为这要求所有HTTP用户都采取措施来缓解攻击。这会向HTTP的使用方式施加新的限制。</p>
+<p>不同于向HTTP用户施加限制，QPACK的实现可以约束压缩的使用方式，从而限制动态表探测的潜在危害。</p>
+<p>一项理想的解决方案是基于构造消息的实体来隔离对动态表的访问。将添加进表的字段值归属至某实体所有，只有创建某个值的实体才能访问该值。</p>
+<p>为了提高该方案的压缩性能，某些实体可以被指定为公开。例如，网络服务器可以使得标头字段<code>Accept-Encoding</code>的值在所有请求中都可用。</p>
+<p>不了解字段值出处的编码器会受到惩罚，创建出许多字段名称相同但是字段值不同的字段行。该惩罚能够引发大量对字段值的猜测，使得该字段不会在将来的消息中与动态表条目相比较，从而有效地阻止更多的猜测。</p>
+<p>该惩罚可能会在较短的字段值上更快到来。相比较长的值，对动态表中某字段名称的访问禁用可能在较短的值上更早出现，或有着更高的出现可能。</p>
+<p>这项缓解措施在两个终端间最为有效。如果消息被不了解哪个实体构造了给定消息的中间设备重新编码，那么该中间设备可能不经意间合并了原始编码器有意隔离的压缩上下文。</p>
+<blockquote>
+<p>注意：如果攻击者拥有可靠的方式使得值被重新设置，那么简单地将与字段相关的条目从动态表中移除的做法会变得徒劳无功。比如，在网络浏览器中加载图像的请求一般会包含标头<code>Cookie</code>（它对此类攻击来说是个潜在的高价值目标），且网站很容易强制某个图像得到加载，从而刷新动态表中的条目。</p>
+</blockquote>
+</div>
+</section>
+<section class="page" id="7.1.3_Never_Indexed_Literals">
+<h3>
+<a href="#7.1.3_Never_Indexed_Literals">7.1.3. 请勿索引明文</a>
+</h3>
+<div class="content">
+<p>实现还可以选择不压缩敏感字段，而是将它们的值编码为明文，来保护这些字段。</p>
+<p>拒绝向动态表插入字段行的做法只有在所有跃点都采用它时才有效。可以使用比特位“请勿索引明文”（详见<a href="#4.5.4_Literal_Field_Line_with_Name_Reference">第4.5.4章</a>）来向中间设备发出信号，告知它们某个值是有意以明文发送的。</p>
+<p>如果某个值的明文指称上设置了比特位<code>N</code>，那么中间设备<em><strong>必须不</strong></em>将它重编码为一个会引用该值的索引的指称。如果使用QPACK来重编码，那么<em><strong>必须</strong></em>使用设置了比特位<code>N</code>的明文指称。如果使用HPACK来重编码，那么<em><strong>必须</strong></em>使用“请勿索引明文”指称（详见《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7541#section-6.2.3">第6.2.3章</a>）。</p>
+<p>要不要选择将字段值标记为“请勿索引”取决于多项因素。由于QPACK并没有针对猜测整个字段值的攻击进行保护，较短的或低熵的值会更轻易地被攻击者破解。因此，编码器可以选择不对低熵的值进行索引。</p>
+<p>编码器还可以选择不对它认为高度易受攻击或它认为对破解敏感的字段值进行索引，例如标头<code>Cookie</code>和<code>Authorization</code>。</p>
+<p>相反地，编码器可能倾向于对破解后价值较低或无价值的字段值进行索引。例如，标头<code>User-Agent</code>并不会因不同请求而经常变化，且会被发送给任意服务器。在这种情况下，即便攻击者确信请求中使用了特定的<code>User-Agent</code>值，这也没什么价值。</p>
+<p>注意，随着新型攻击的发现，这些用于决定要不要使用“请勿索引明文”指称的原则也会更新。</p>
+</div>
+</section>
+<section class="page" id="7.2_Static_Huffman_Encoding">
+<h2>
+<a href="#7.2_Static_Huffman_Encoding">7.2. 静态哈夫曼编码</a>
+</h2>
+<div class="content">
+<p>针对静态哈夫曼编码，目前没有已知的攻击手段。研究表明，使用静态哈夫曼编码表会产生信息泄漏；然而，该研究的结论中也表示攻击者无法利用该信息来恢复出任何有意义的信息（详见《<a href="http://www.pdl.cmu.edu/PDL-FTP/associated/CMU-PDL-13-106.pdf">PETAL</a>》）。</p>
+</div>
+</section>
+<section class="page" id="7.3_Memory_Consumption">
+<h2>
+<a href="#7.3_Memory_Consumption">7.3. 内存消耗</a>
+</h2>
+<div class="content">
+<p>攻击者可以试图令终端耗尽其内存。QPACK的设计能够限制终端所需的内存量，无论是峰值还是平时。</p>
+<p>QPACK通过指定动态表最大尺寸和阻塞流最大数目来限制编码器能够驱使解码器消耗的内存量。在HTTP/3中，这些值由解码器分别通过设置参数<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>和<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>（详见<a href="#3.2.3_Maximum_Dynamic_Table_Capacity">第3.2.3章</a>和<a href="#2.1.2_Blocked_Streams">第2.1.2章</a>）来控制。对于动态表尺寸的限制考虑了存储在动态表中的数据尺寸，还为开销额外加上了少量的容许值。对于阻塞流数目的限制仅仅代表解码器所需的最大内存。实际的最大内存用量取决于解码去使用多少内存来追踪每条阻塞流。</p>
+<p>解码器可以通过为动态表的最大尺寸设置合适的值的方式，限制用于动态表的状态数据所需的内存量。在HTTP/3中，这是通过为参数<code>SETTINGS_QPACK_MAX_TABLE_CAPACITY</code>设置合适的值的方式来做到的。编码器可以通过选择一个比解码器允许的更小的动态表尺寸，再将它告知解码器的方式来限制状态数据所需的内存量（详见<a href="#4.3.1_Set_Dynamic_Table_Capacity">第4.3.1章</a>）。</p>
+<p>解码器可以通过为阻塞流的最大数目设置合适的值的方式，限制用于阻塞流的状态数据所需的内存量。在HTTP/3中，这是通过为参数<code>SETTINGS_QPACK_BLOCKED_STREAMS</code>设置合适的值的方式来做到的。有可能被阻塞的流不会在编码器一侧消耗额外的内存。</p>
+<p>编码器分配内存来追踪所有未得到确认的字段组中的动态表引用。实现可以通过只使用它希望追踪的动态表引用数量的方式，直接限制状态数据所需的内存用量；这不需要向解码器发出信号。不过，限制对动态表的引用会降低压缩效率。</p>
+<p>编码器或解码器临时占用的内存量可以通过按序处理字段行的方式限制。解码器实现不需要在解码某个字段组时维护一份完整的字段行列表。编码器实现如果使用的是单通算法，那么它不需要在编码某个字段组时维护一份完整的字段行列表。注意，应用可能不得不出于其他理由维护一份完整的字段行列表；即便QPACK不要求这么做，应用自身的限制也可能强制该行为。</p>
+<p>尽管经过协商的动态表尺寸限制占用了大量QPACK实现能够消耗的内存，不过因为流量控制而无法被立即发送出去的数据不会受此限制的影响。实现应该限制未发送数据的尺寸，特别是在不能自由发送数据的解码流上。对过量的未发送数据的应对做法包括限制对端打开新流的能力、使得编码流变为只读，或关闭整条连接。</p>
+</div>
+</section>
+<section class="page" id="7.4_Implementation_Limits">
+<h2>
+<a href="#7.4_Implementation_Limits">7.4. 对实现的限制</a>
+</h2>
+<div class="content">
+<p>QPACK的实现应该确保大值的整型、整型的长编码和长明文字符串不会产生安全性上的弱点。</p>
+<p>实现必须为它作为整型或编码长度而接受的值设置限制；详见<a href="#4.1.1_Prefixed_Integers">第4.1.1章</a>。同样地，它必须为它接受的明文字符串长度设置限制；详见<a href="#4.1.2_String_Literals">第4.1.2章</a>。这些限制<em><strong>应该</strong></em>大到足以处理HTTP实现允许配置的最大的单个字段。</p>
+<p>如果实现遇到的值超过了它的解码范围，那么它<em><strong>必须</strong></em>将这种情况视作类型为<code>QPACK_DECOMPRESSION_FAILED</code>（解压失败）的流错误（当在请求的流上遇到时），或合适类型的连接错误（当在编码流或解码流上遇到时）。</p>
+</div>
+</section>
+<section class="page" id="8_IANA_Considerations">
+<h1>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文档在《<a href="../RFC9114_Chinese_Simplified">HTTP/3</a>》定义的注册表中添加了多条注册项。本文档创建的注册项均具有“永久”状态、列出了一位来自IETF的变更责任人，且留下了HTTP工作组的联系方式（ietf-http-wg@w3.org）。</p>
+</div>
+</section>
+<section class="page" id="8.1_Settings_Registration">
+<h2>
+<a href="#8.1_Settings_Registration">8.1. 设置注册项</a>
+</h2>
+<div class="content">
+<p>本文档定义了两条设置，且已在《<a href="../RFC9114_Chinese_Simplified">HTTP/3</a>》建立的注册表“HTTP/3设置”中为下表中的条目进行了注册。</p>
+<div class="block ref" id="Table_1_Additions_to_the_HTTP_3_Settings_Registry">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">设置名称</th>
+<th style="text-align:left">代码</th>
+<th style="text-align:left">规范</th>
+<th style="text-align:left">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>QPACK_MAX_TABLE_CAPACITY</code></td>
+<td style="text-align:left"><code>0x01</code></td>
+<td style="text-align:left"><a href="#5_Configuration">第5章</a></td>
+<td style="text-align:left">0</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>QPACK_BLOCKED_STREAMS</code></td>
+<td style="text-align:left"><code>0x07</code></td>
+<td style="text-align:left"><a href="#5_Configuration">第5章</a></td>
+<td style="text-align:left">0</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_1_Additions_to_the_HTTP_3_Settings_Registry">表1：HTTP/3设置注册表的增补</a></p>
+</div>
+<p>出于格式上的原因，此处的设置名称省略了前缀<code>SETTINGS_</code>。</p>
+</div>
+</section>
+<section class="page" id="8.2_Stream_Type_Registration">
+<h2>
+<a href="#8.2_Stream_Type_Registration">8.2. 流类型注册项</a>
+</h2>
+<div class="content">
+<p>本文档定义了两种流类型，且已在《<a href="../RFC9114_Chinese_Simplified">HTTP/3</a>》建立的注册表“HTTP/3流类型”中为下表中的条目进行了注册。</p>
+<div class="block ref" id="Table_2_Additions_to_the_HTTP_3_Stream_Types_Registry">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">流类型</th>
+<th style="text-align:left">代码</th>
+<th style="text-align:left">规范</th>
+<th style="text-align:left">发送方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">QPACK编码流</td>
+<td style="text-align:left"><code>0x02</code></td>
+<td style="text-align:left"><a href="#4.2_Encoder_and_Decoder_Streams">第4.2章</a></td>
+<td style="text-align:left">双方</td>
+</tr>
+<tr>
+<td style="text-align:left">QPACK解码流</td>
+<td style="text-align:left"><code>0x03</code></td>
+<td style="text-align:left"><a href="#4.2_Encoder_and_Decoder_Streams">第4.2章</a></td>
+<td style="text-align:left">双方</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_2_Additions_to_the_HTTP_3_Stream_Types_Registry">表2：HTTP/3流类型注册表的增补</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="8.3_Error_Code_Registration">
+<h2>
+<a href="#8.3_Error_Code_Registration">8.3. 错误码注册项</a>
+</h2>
+<div class="content">
+<p>本文档定义了三种错误码，且已在《<a href="../RFC9114_Chinese_Simplified">HTTP/3</a>》建立的注册表“HTTP/3错误码”中为下表中的条目进行了注册。</p>
+<div class="block ref" id="Table_3_Additions_to_the_HTTP_3_Error_Codes_Registry">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">代码</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">规范</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>QPACK_DECOMPRESSION_FAILED</code></td>
+<td style="text-align:left"><code>0x0200</code></td>
+<td style="text-align:left">无法解码某字段组</td>
+<td style="text-align:left"><a href="#6_Error_Handling">第6章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>QPACK_ENCODER_STREAM_ERROR</code></td>
+<td style="text-align:left"><code>0x0201</code></td>
+<td style="text-align:left">编码流上发生错误</td>
+<td style="text-align:left"><a href="#6_Error_Handling">第6章</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>QPACK_DECODER_STREAM_ERROR</code></td>
+<td style="text-align:left"><code>0x0202</code></td>
+<td style="text-align:left">解码流上发生错误</td>
+<td style="text-align:left"><a href="#6_Error_Handling">第6章</a></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_3_Additions_to_the_HTTP_3_Error_Codes_Registry">表3：HTTP/3错误码注册表的增补</a></p>
+</div>
+</div>
+</section>
+<section class="page" id="9_References">
+<h1>
+<a href="#9_References">9. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="9.1_Normative_References">
+<h2>
+<a href="#9.1_Normative_References">9.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> </p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> </p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TRANSPORT">
+<p><a href="#QUIC-TRANSPORT"><strong>[QUIC-TRANSPORT]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC2360">
+<p><a href="#RFC2360"><strong>[RFC2360]</strong></a> </p>
+<p>Scott, G., “Guide for Internet Standards Writers”, BCP 22, RFC 2360, DOI 10.17487/RFC2360, June 1998, <a href="https://www.rfc-editor.org/info/rfc2360">https://www.rfc-editor.org/info/rfc2360</a>.</p>
+</div>
+<div class="out_ref" id="RFC7541">
+<p><a href="#RFC7541"><strong>[RFC7541]</strong></a> </p>
+<p>Peon, R. and H. Ruellan, “HPACK: Header Compression for HTTP/2”, RFC 7541, DOI 10.17487/RFC7541, May 2015, <a href="https://www.rfc-editor.org/info/rfc7541">https://www.rfc-editor.org/info/rfc7541</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> </p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="9.2_Informative_References">
+<h2>
+<a href="#9.2_Informative_References">9.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="CRIME">
+<p><a href="#CRIME"><strong>[CRIME]</strong></a> </p>
+<p>Wikipedia, “CRIME”, May 2015, <a href="http://en.wikipedia.org/w/index.php?title=CRIME&amp;oldid=660948120">http://en.wikipedia.org/w/index.php?title=CRIME&amp;oldid=660948120</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> </p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="PETAL">
+<p><a href="#PETAL"><strong>[PETAL]</strong></a> </p>
+<p>Tan, J. and J. Nahata, “PETAL: Preset Encoding Table Information Leakage”, April 2013, <a href="http://www.pdl.cmu.edu/PDL-FTP/associated/CMU-PDL-13-106.pdf">http://www.pdl.cmu.edu/PDL-FTP/associated/CMU-PDL-13-106.pdf</a>.</p>
+</div>
+<div class="out_ref" id="RFC1951">
+<p><a href="#RFC1951"><strong>[RFC1951]</strong></a> </p>
+<p>Deutsch, P., “DEFLATE Compressed Data Format Specification version 1.3”, RFC 1951, DOI 10.17487/RFC1951, May 1996, <a href="https://www.rfc-editor.org/info/rfc1951">https://www.rfc-editor.org/info/rfc1951</a>.</p>
+</div>
+<div class="out_ref" id="RFC6454">
+<p><a href="#RFC6454"><strong>[RFC6454]</strong></a> </p>
+<p>Barth, A., “The Web Origin Concept”, RFC 6454, DOI 10.17487/RFC6454, December 2011, <a href="https://www.rfc-editor.org/info/rfc6454">https://www.rfc-editor.org/info/rfc6454</a>.</p>
+</div>
+<div class="out_ref" id="TLS">
+<p><a href="#TLS"><strong>[TLS]</strong></a> </p>
+<p>Rescorla, E., “The Transport Layer Security (TLS) Protocol Version 1.3”, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_A_Static_Table">
+<h1>
+<a href="#Appendix_A_Static_Table">附录A. 静态表</a>
+</h1>
+<div class="content">
+<p>本表是通过分析2018年实际的互联网流量，过滤掉一些不受支持的和非标准的值，最后提取出最常见的头部字段来创建的。受限于该创建方法，部分条目间可能出现矛盾，或存在相似但不完全一致的条目。条目的顺序是经过优化的，这是为了将最常用的标头字段编码至最少的字节中。</p>
+<div class="block ref" id="Table_4_Static_Table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">索引</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left"><code>:authority</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left"><code>:path</code></td>
+<td style="text-align:left"><code>/</code></td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left"><code>age</code></td>
+<td style="text-align:left"><code>0</code></td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left"><code>content-disposition</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left"><code>content-length</code></td>
+<td style="text-align:left"><code>0</code></td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left"><code>cookie</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left"><code>date</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left"><code>etag</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left"><code>if-modified-since</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left"><code>if-none-match</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left"><code>last-modified</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:left"><code>link</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">12</td>
+<td style="text-align:left"><code>location</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">13</td>
+<td style="text-align:left"><code>referer</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">14</td>
+<td style="text-align:left"><code>set-cookie</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">15</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>CONNECT</code></td>
+</tr>
+<tr>
+<td style="text-align:left">16</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>DELETE</code></td>
+</tr>
+<tr>
+<td style="text-align:left">17</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>GET</code></td>
+</tr>
+<tr>
+<td style="text-align:left">18</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>HEAD</code></td>
+</tr>
+<tr>
+<td style="text-align:left">19</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>OPTIONS</code></td>
+</tr>
+<tr>
+<td style="text-align:left">20</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>POST</code></td>
+</tr>
+<tr>
+<td style="text-align:left">21</td>
+<td style="text-align:left"><code>:method</code></td>
+<td style="text-align:left"><code>PUT</code></td>
+</tr>
+<tr>
+<td style="text-align:left">22</td>
+<td style="text-align:left"><code>:scheme</code></td>
+<td style="text-align:left"><code>http</code></td>
+</tr>
+<tr>
+<td style="text-align:left">23</td>
+<td style="text-align:left"><code>:scheme</code></td>
+<td style="text-align:left"><code>https</code></td>
+</tr>
+<tr>
+<td style="text-align:left">24</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>103</code></td>
+</tr>
+<tr>
+<td style="text-align:left">25</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>200</code></td>
+</tr>
+<tr>
+<td style="text-align:left">26</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>304</code></td>
+</tr>
+<tr>
+<td style="text-align:left">27</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>404</code></td>
+</tr>
+<tr>
+<td style="text-align:left">28</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>503</code></td>
+</tr>
+<tr>
+<td style="text-align:left">29</td>
+<td style="text-align:left"><code>accept</code></td>
+<td style="text-align:left"><code>*/*</code></td>
+</tr>
+<tr>
+<td style="text-align:left">30</td>
+<td style="text-align:left"><code>accept</code></td>
+<td style="text-align:left"><code>application/dns-message</code></td>
+</tr>
+<tr>
+<td style="text-align:left">31</td>
+<td style="text-align:left"><code>accept-encoding</code></td>
+<td style="text-align:left"><code>gzip, deflate, br</code></td>
+</tr>
+<tr>
+<td style="text-align:left">32</td>
+<td style="text-align:left"><code>accept-ranges</code></td>
+<td style="text-align:left"><code>bytes</code></td>
+</tr>
+<tr>
+<td style="text-align:left">33</td>
+<td style="text-align:left"><code>access-control-allow-headers</code></td>
+<td style="text-align:left"><code>cache-control</code></td>
+</tr>
+<tr>
+<td style="text-align:left">34</td>
+<td style="text-align:left"><code>access-control-allow-headers</code></td>
+<td style="text-align:left"><code>content-type</code></td>
+</tr>
+<tr>
+<td style="text-align:left">35</td>
+<td style="text-align:left"><code>access-control-allow-origin</code></td>
+<td style="text-align:left"><code>*</code></td>
+</tr>
+<tr>
+<td style="text-align:left">36</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>max-age=0</code></td>
+</tr>
+<tr>
+<td style="text-align:left">37</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>max-age=2592000</code></td>
+</tr>
+<tr>
+<td style="text-align:left">38</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>max-age=604800</code></td>
+</tr>
+<tr>
+<td style="text-align:left">39</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>no-cache</code></td>
+</tr>
+<tr>
+<td style="text-align:left">40</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>no-store</code></td>
+</tr>
+<tr>
+<td style="text-align:left">41</td>
+<td style="text-align:left"><code>cache-control</code></td>
+<td style="text-align:left"><code>public, max-age=31536000</code></td>
+</tr>
+<tr>
+<td style="text-align:left">42</td>
+<td style="text-align:left"><code>content-encoding</code></td>
+<td style="text-align:left"><code>br</code></td>
+</tr>
+<tr>
+<td style="text-align:left">43</td>
+<td style="text-align:left"><code>content-encoding</code></td>
+<td style="text-align:left"><code>gzip</code></td>
+</tr>
+<tr>
+<td style="text-align:left">44</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>application/dns-message</code></td>
+</tr>
+<tr>
+<td style="text-align:left">45</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>application/javascript</code></td>
+</tr>
+<tr>
+<td style="text-align:left">46</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>application/json</code></td>
+</tr>
+<tr>
+<td style="text-align:left">47</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>application/x-www-form-urlencoded</code></td>
+</tr>
+<tr>
+<td style="text-align:left">48</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>image/gif</code></td>
+</tr>
+<tr>
+<td style="text-align:left">49</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>image/jpeg</code></td>
+</tr>
+<tr>
+<td style="text-align:left">50</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>image/png</code></td>
+</tr>
+<tr>
+<td style="text-align:left">51</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>text/css</code></td>
+</tr>
+<tr>
+<td style="text-align:left">52</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>text/html; charset=utf-8</code></td>
+</tr>
+<tr>
+<td style="text-align:left">53</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>text/plain</code></td>
+</tr>
+<tr>
+<td style="text-align:left">54</td>
+<td style="text-align:left"><code>content-type</code></td>
+<td style="text-align:left"><code>text/plain;charset=utf-8</code></td>
+</tr>
+<tr>
+<td style="text-align:left">55</td>
+<td style="text-align:left"><code>range</code></td>
+<td style="text-align:left"><code>bytes=0-</code></td>
+</tr>
+<tr>
+<td style="text-align:left">56</td>
+<td style="text-align:left"><code>strict-transport-security</code></td>
+<td style="text-align:left"><code>max-age=31536000</code></td>
+</tr>
+<tr>
+<td style="text-align:left">57</td>
+<td style="text-align:left"><code>strict-transport-security</code></td>
+<td style="text-align:left"><code>max-age=31536000; includesubdomains</code></td>
+</tr>
+<tr>
+<td style="text-align:left">58</td>
+<td style="text-align:left"><code>strict-transport-security</code></td>
+<td style="text-align:left"><code>max-age=31536000; includesubdomains; preload</code></td>
+</tr>
+<tr>
+<td style="text-align:left">59</td>
+<td style="text-align:left"><code>vary</code></td>
+<td style="text-align:left"><code>accept-encoding</code></td>
+</tr>
+<tr>
+<td style="text-align:left">60</td>
+<td style="text-align:left"><code>vary</code></td>
+<td style="text-align:left"><code>origin</code></td>
+</tr>
+<tr>
+<td style="text-align:left">61</td>
+<td style="text-align:left"><code>x-content-type-options</code></td>
+<td style="text-align:left"><code>nosniff</code></td>
+</tr>
+<tr>
+<td style="text-align:left">62</td>
+<td style="text-align:left"><code>x-xss-protection</code></td>
+<td style="text-align:left"><code>1; mode=block</code></td>
+</tr>
+<tr>
+<td style="text-align:left">63</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>100</code></td>
+</tr>
+<tr>
+<td style="text-align:left">64</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>204</code></td>
+</tr>
+<tr>
+<td style="text-align:left">65</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>206</code></td>
+</tr>
+<tr>
+<td style="text-align:left">66</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>302</code></td>
+</tr>
+<tr>
+<td style="text-align:left">67</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>400</code></td>
+</tr>
+<tr>
+<td style="text-align:left">68</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>403</code></td>
+</tr>
+<tr>
+<td style="text-align:left">69</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>421</code></td>
+</tr>
+<tr>
+<td style="text-align:left">70</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>425</code></td>
+</tr>
+<tr>
+<td style="text-align:left">71</td>
+<td style="text-align:left"><code>:status</code></td>
+<td style="text-align:left"><code>500</code></td>
+</tr>
+<tr>
+<td style="text-align:left">72</td>
+<td style="text-align:left"><code>accept-language</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">73</td>
+<td style="text-align:left"><code>access-control-allow-credentials</code></td>
+<td style="text-align:left"><code>FALSE</code></td>
+</tr>
+<tr>
+<td style="text-align:left">74</td>
+<td style="text-align:left"><code>access-control-allow-credentials</code></td>
+<td style="text-align:left"><code>TRUE</code></td>
+</tr>
+<tr>
+<td style="text-align:left">75</td>
+<td style="text-align:left"><code>access-control-allow-headers</code></td>
+<td style="text-align:left"><code>*</code></td>
+</tr>
+<tr>
+<td style="text-align:left">76</td>
+<td style="text-align:left"><code>access-control-allow-methods</code></td>
+<td style="text-align:left"><code>get</code></td>
+</tr>
+<tr>
+<td style="text-align:left">77</td>
+<td style="text-align:left"><code>access-control-allow-methods</code></td>
+<td style="text-align:left"><code>get, post, options</code></td>
+</tr>
+<tr>
+<td style="text-align:left">78</td>
+<td style="text-align:left"><code>access-control-allow-methods</code></td>
+<td style="text-align:left"><code>options</code></td>
+</tr>
+<tr>
+<td style="text-align:left">79</td>
+<td style="text-align:left"><code>access-control-expose-headers</code></td>
+<td style="text-align:left"><code>content-length</code></td>
+</tr>
+<tr>
+<td style="text-align:left">80</td>
+<td style="text-align:left"><code>access-control-request-headers</code></td>
+<td style="text-align:left"><code>content-type</code></td>
+</tr>
+<tr>
+<td style="text-align:left">81</td>
+<td style="text-align:left"><code>access-control-request-method</code></td>
+<td style="text-align:left"><code>get</code></td>
+</tr>
+<tr>
+<td style="text-align:left">82</td>
+<td style="text-align:left"><code>access-control-request-method</code></td>
+<td style="text-align:left"><code>post</code></td>
+</tr>
+<tr>
+<td style="text-align:left">83</td>
+<td style="text-align:left"><code>alt-svc</code></td>
+<td style="text-align:left"><code>clear</code></td>
+</tr>
+<tr>
+<td style="text-align:left">84</td>
+<td style="text-align:left"><code>authorization</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">85</td>
+<td style="text-align:left"><code>content-security-policy</code></td>
+<td style="text-align:left"><code>script-src 'none'; object-src 'none'; base-uri 'none'</code></td>
+</tr>
+<tr>
+<td style="text-align:left">86</td>
+<td style="text-align:left"><code>early-data</code></td>
+<td style="text-align:left"><code>1</code></td>
+</tr>
+<tr>
+<td style="text-align:left">87</td>
+<td style="text-align:left"><code>expect-ct</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">88</td>
+<td style="text-align:left"><code>forwarded</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">89</td>
+<td style="text-align:left"><code>if-range</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">90</td>
+<td style="text-align:left"><code>origin</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">91</td>
+<td style="text-align:left"><code>purpose</code></td>
+<td style="text-align:left"><code>prefetch</code></td>
+</tr>
+<tr>
+<td style="text-align:left">92</td>
+<td style="text-align:left"><code>server</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">93</td>
+<td style="text-align:left"><code>timing-allow-origin</code></td>
+<td style="text-align:left"><code>*</code></td>
+</tr>
+<tr>
+<td style="text-align:left">94</td>
+<td style="text-align:left"><code>upgrade-insecure-requests</code></td>
+<td style="text-align:left"><code>1</code></td>
+</tr>
+<tr>
+<td style="text-align:left">95</td>
+<td style="text-align:left"><code>user-agent</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">96</td>
+<td style="text-align:left"><code>x-forwarded-for</code></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">97</td>
+<td style="text-align:left"><code>x-frame-options</code></td>
+<td style="text-align:left"><code>deny</code></td>
+</tr>
+<tr>
+<td style="text-align:left">98</td>
+<td style="text-align:left"><code>x-frame-options</code></td>
+<td style="text-align:left"><code>sameorigin</code></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#Table_4_Static_Table">表4：静态表</a></p>
+</div>
+<p>在字段名称或字段值内部出现的所有换行符都是由于格式限制而产生的。</p>
+</div>
+</section>
+<section class="page" id="Appendix_B_Encoding_and_Decoding_Examples">
+<h1>
+<a href="#Appendix_B_Encoding_and_Decoding_Examples">附录B. 编码和解码样例</a>
+</h1>
+<div class="content">
+<p>在接下来的例子中，展现了一系列编码器与解码器间的通信。设计这些通信的目的是将大多数QPACK指令运用起来，并强调也许会很常见的一些模式及其对动态表状态的影响。编码器发送了三个编码字段组，其中每个字段组中包含一条字段行，还试探性地发送了两次没有得到引用的插入。</p>
+<p>编码器的动态表状态及其当前尺寸如图所示。图示中为每个条目指明了该条目的绝对索引（索引）、引用了该条目且在途的编码字段组数（引用）、该条目的名称，以及该条目的值。在“已确认”一行上方的条目已经得到了解码器的确认。</p>
+</div>
+</section>
+<section class="page" id="B.1_Literal_Field_Line_with_Name_Reference">
+<h2>
+<a href="#B.1_Literal_Field_Line_with_Name_Reference">B.1. 使用索引名称的明文字段行</a>
+</h2>
+<div class="content">
+<p>编码器发送了一个编码字段组，其中包含着使用了静态索引名称的明文字段行。</p>
+<div class="block ref" id="Pseudocode_b_1">
+<img src="/RFC9204_Chinese_Simplified/images/Pseudocode_b_1.svg"/>
+<p><a href="#Pseudocode_b_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.2_Dynamic_Table">
+<h2>
+<a href="#B.2_Dynamic_Table">B.2. 动态表</a>
+</h2>
+<div class="content">
+<p>编码器设置动态表容量，插入一条使用了动态索引名称的标头，再发送了一个指向该新条目的编码字段组（其解码可能受到阻塞）。解码器对编码字段组的处理进行确认，这隐式地确认了截至插入计数下限的所有动态表插入均已完成。</p>
+<div class="block ref" id="Pseudocode_b_2">
+<img src="/RFC9204_Chinese_Simplified/images/Pseudocode_b_2.svg"/>
+<p><a href="#Pseudocode_b_2"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.3_Speculative_Insert">
+<h2>
+<a href="#B.3_Speculative_Insert">B.3. 试探插入</a>
+</h2>
+<div class="content">
+<p>编码器向动态表插入了一条使用明文名称的标头。解码器确认接收到该条目。编码器没有发送任何编码字段组。</p>
+<div class="block ref" id="Pseudocode_b_3">
+<img src="/RFC9204_Chinese_Simplified/images/Pseudocode_b_3.svg"/>
+<p><a href="#Pseudocode_b_3"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.4_Duplicate_Instruction_Stream_Cancellation">
+<h2>
+<a href="#B.4_Duplicate_Instruction_Stream_Cancellation">B.4. 复制指令与流的取消</a>
+</h2>
+<div class="content">
+<p>编码器在动态表中对某条目进行复制，随后发送的编码字段组引用了一些动态表条目，其中包含复制出来的那个条目。携带着编码流数据的数据包受到延误。在送达该数据包前，解码器取消了流，并通知编码器它没有对编码字段组进行处理。</p>
+<div class="block ref" id="Pseudocode_b_4">
+<img src="/RFC9204_Chinese_Simplified/images/Pseudocode_b_4.svg"/>
+<p><a href="#Pseudocode_b_4"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="B.5_Dynamic_Table_Insert_Eviction">
+<h2>
+<a href="#B.5_Dynamic_Table_Insert_Eviction">B.5. 动态表的插入与驱逐</a>
+</h2>
+<div class="content">
+<p>编码器向动态表插入了另一个标头，这么做会驱逐最先被插入的那个条目。编码器没有发送任何编码字段组。</p>
+<div class="block ref" id="Pseudocode_b_5">
+<img src="/RFC9204_Chinese_Simplified/images/Pseudocode_b_5.svg"/>
+<p><a href="#Pseudocode_b_5"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_C_Sample_Single_Pass_Encoding_Algorithm">
+<h1>
+<a href="#Appendix_C_Sample_Single_Pass_Encoding_Algorithm">附录C. 单通编码算法样例</a>
+</h1>
+<div class="content">
+<p>单通编码的伪代码，其中不包含对复制、非阻塞模式、编码器流的流量控制，以及引用追踪的处理。</p>
+<div class="block ref" id="Pseudocode_c_1">
+<pre tabindex="0"><code># 辅助函数：
+# ====
+# 编码出一个指定前缀和长度的整型
+# Encode an integer with the specified prefix and length
+encodeInteger(buffer, prefix, value, prefixLength)
+
+# 编码出一个可选静态索引名称还是动态索引名称的动态表插入指令（只能选择其一）
+# Encode a dynamic table insert instruction with optional static
+# or dynamic name index (but not both)
+encodeInsert(buffer, staticNameIndex, dynamicNameIndex, fieldLine)
+
+# 编码出一个使用静态索引的引用
+# Encode a static index reference
+encodeStaticIndexReference(buffer, staticIndex)
+
+# 编码出一个使用相对于基点的动态索引的引用
+# Encode a dynamic index reference relative to Base
+encodeDynamicIndexReference(buffer, dynamicIndex, base)
+
+# 编码出一个可选使用静态索引名称的明文
+# Encode a literal with an optional static name index
+encodeLiteral(buffer, staticNameIndex, fieldLine)
+
+# 编码出一个使用相对于基点的动态索引名称的明文
+# Encode a literal with a dynamic name index relative to Base
+encodeDynamicLiteral(buffer, dynamicNameIndex, base, fieldLine)
+
+# 编码算法
+# Encoding Algorithm
+# ====
+base = dynamicTable.getInsertCount()
+requiredInsertCount = 0
+for line in fieldLines:
+  staticIndex = staticTable.findIndex(line)
+  if staticIndex is not None:
+    encodeStaticIndexReference(streamBuffer, staticIndex)
+    continue
+
+  dynamicIndex = dynamicTable.findIndex(line)
+  if dynamicIndex is None:
+    # 没有匹配的条目，要么插入条目并引用索引，要么编码为明文
+    # No matching entry.  Either insert+index or encode literal
+    staticNameIndex = staticTable.findName(line.name)
+    if staticNameIndex is None:
+       dynamicNameIndex = dynamicTable.findName(line.name)
+
+    if shouldIndex(line) and dynamicTable.canIndex(line):
+      encodeInsert(encoderBuffer, staticNameIndex,
+                   dynamicNameIndex, line)
+      dynamicIndex = dynamicTable.add(line)
+
+  if dynamicIndex is None:
+    # 无法为它建立索引，使用明文
+    # Could not index it, literal
+    if dynamicNameIndex is not None:
+      # 编码为使用动态索引名称的明文，可能超过基点
+      # Encode literal with dynamic name, possibly above Base
+      encodeDynamicLiteral(streamBuffer, dynamicNameIndex,
+                           base, line)
+      requiredInsertCount = max(requiredInsertCount,
+                                dynamicNameIndex)
+    else:
+      # 编码出一个使用静态名称或明文名称的明文
+      # Encodes a literal with a static name or literal name
+      encodeLiteral(streamBuffer, staticNameIndex, line)
+  else:
+    # 对动态索引的引用
+    # Dynamic index reference
+    assert(dynamicIndex is not None)
+    requiredInsertCount = max(requiredInsertCount, dynamicIndex)
+    # 对`dynamicIndex`编码，可能超过基点
+    # Encode dynamicIndex, possibly above Base
+    encodeDynamicIndexReference(streamBuffer, dynamicIndex, base)
+
+# 对前缀编码
+# encode the prefix
+if requiredInsertCount == 0:
+  encodeInteger(prefixBuffer, 0x00, 0, 8)
+  encodeInteger(prefixBuffer, 0x00, 0, 7)
+else:
+  wireRIC = (
+    requiredInsertCount
+    % (2 * getMaxEntries(maxTableCapacity))
+  ) + 1;
+  encodeInteger(prefixBuffer, 0x00, wireRIC, 8)
+  if base &gt;= requiredInsertCount:
+    encodeInteger(prefixBuffer, 0x00,
+                  base - requiredInsertCount, 7)
+  else:
+    encodeInteger(prefixBuffer, 0x80,
+                  requiredInsertCount - base - 1, 7)
+
+return encoderBuffer, prefixBuffer + streamBuffer
+</code></pre><p><a href="#Pseudocode_c_1"></a></p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>IETF QUIC工作组接收到了来自许多人员的大量支持。</p>
+<p>压缩设计团队在探索问题和影响本文档的初版草案方面进行了大量工作。在此郑重致谢设计团队成员Roberto Peon、Martin Thomson和Dmitri Tikhonov的贡献。</p>
+<p>以下人员对本文档做出了重要贡献：</p>
+<ul>
+<li>
+<p>Bence Beky</p>
+</li>
+<li>
+<p>Alessandro Ghedini</p>
+</li>
+<li>
+<p>Ryan Hamilton</p>
+</li>
+<li>
+<p>Robin Marx</p>
+</li>
+<li>
+<p>Patrick McManus</p>
+</li>
+<li>
+<p>奥 一穂 (Kazuho Oku)</p>
+</li>
+<li>
+<p>Lucas Pardue</p>
+</li>
+<li>
+<p>Biren Roy</p>
+</li>
+<li>
+<p>Ian Swett</p>
+</li>
+</ul>
+<p>本文档大量借鉴了《<a href="https://www.rfc-editor.org/info/rfc7541">RFC7541</a>》的内容。郑重致谢其作者的间接贡献。</p>
+<p>Buck Krasic的贡献得到了其任职的谷歌公司的支持。</p>
+<p>Mike Bishop的部分贡献得到了其任职的微软公司的支持。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="christian-huitema">Christian Huitema</h5>
+<p>Private Octopus Inc.</p>
+<p>427 Golfcourse Rd</p>
+<p>Friday Harbor, WA 98250</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:huitema@huitema.net">huitema@huitema.net</a></p>
+<h5 id="sara-dickinson">Sara Dickinson</h5>
+<p>Sinodun IT</p>
+<p>Oxford Science Park</p>
+<p>Oxford</p>
+<p>OX4 4GA</p>
+<p>United Kingdom</p>
+<p>Email: <a href="mailto:sara@sinodun.com">sara@sinodun.com</a></p>
+<h5 id="allison-mankin">Allison Mankin</h5>
+<p>Salesforce</p>
+<p>Email: <a href="mailto:allison.mankin@gmail.com">allison.mankin@gmail.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/ruokeqx">ruokeqx</a></p>
+<ul>
+<li>Email: <a href="mailto:ruokeqx@163.com">ruokeqx@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>

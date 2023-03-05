@@ -3,21 +3,21 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
-<title>RFC9312中文：QUIC协议的适用性</title>
+<title>RFC9312中文：QUIC协议的可管理性</title>
 <link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC9312_Chinese_Simplified/css/RFC9312.css" rel="stylesheet"/>
-<link href="/RFC9312_Chinese_Simplified/index.xml" rel="alternate" title="RFC9312中文：QUIC协议的适用性" type="application/rss+xml">
+<link href="/RFC9312_Chinese_Simplified/index.xml" rel="alternate" title="RFC9312中文：QUIC协议的可管理性" type="application/rss+xml">
 </link></head>
 <body>
 <div class="sidebar sidebar-rfc9312">
 <div class="navigation">
 <div><a href="/">秋愧遲</a></div>
-<h1 class="site-title"><a href="/RFC9312_Chinese_Simplified/">RFC9312中文：QUIC协议的适用性</a></h1>
+<h1 class="site-title"><a href="/RFC9312_Chinese_Simplified/">RFC9312中文：QUIC协议的可管理性</a></h1>
 <nav class="internal">
 <ul>
 <li>
@@ -29,6 +29,89 @@
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
 </li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Features_of_the_QUIC_Wire_Image">2. QUIC通信线路图象的特征</a>
+<ul>
+<li><a href="#2.1_QUIC_Packet_Header_Structure">2.1. QUIC数据包头部结构</a></li>
+<li><a href="#2.2_Coalesced_Packets">2.2. 数据包合并</a></li>
+<li><a href="#2.3_Use_of_Port_Numbers">2.3. 端口号的使用</a></li>
+<li><a href="#2.4_The_QUIC_Handshake">2.4. QUIC的握手过程</a></li>
+<li><a href="#2.5_Integrity_Protection_of_the_Wire_Image">2.5. 通信线路图象的完整性保护</a></li>
+<li><a href="#2.6_Connection_ID_and_Rebinding">2.6. 连接ID与重绑定</a></li>
+<li><a href="#2.7_Packet_Numbers">2.7. 数据包号</a></li>
+<li><a href="#2.8_Version_Negotiation_and_Greasing">2.8. 版本协商与位转义</a></li>
+</ul>
+</li>
+<li>
+<a href="#3_Network_Visible_Information_about_QUIC_Flows">3. 对网络可见的QUIC流量信息</a>
+<ul>
+<li>
+<a href="#3.1_Identifying_QUIC_Traffic">3.1. 识别QUIC流量</a>
+<ul>
+<li><a href="#3.1.1_Identifying_Negotiated_Version">3.1.1. 识别协商的版本</a></li>
+<li><a href="#3.1.2_First_Packet_Identification_for_Garbage_Rejection">3.1.2. 用于垃圾过滤的首包识别</a></li>
+</ul>
+</li>
+<li><a href="#3.2_Connection_Confirmation">3.2. 连接的确认</a></li>
+<li><a href="#3.3_Distinguishing_Acknowledgment_Traffic">3.3. 分辨确认流量</a></li>
+<li>
+<a href="#3.4_Server_Name_Indication_SNI">3.4. 服务器名称指示（SNI）</a>
+<ul>
+<li><a href="#3.4.1_Extracting_Server_Name_Indication_SNI_Information">3.4.1. 提取服务器名称（SNI）信息</a></li>
+</ul>
+</li>
+<li><a href="#3.5_Flow_Association">3.5. 流量关联</a></li>
+<li><a href="#3.6_Flow_Teardown">3.6. 流量停止</a></li>
+<li><a href="#3.7_Flow_Symmetry_Measurement">3.7. 流量的对称性测量</a></li>
+<li>
+<a href="#3.8_Round_Trip_Time_RTT_Measurement">3.8. 往返时间（RTT）的测量</a>
+<ul>
+<li><a href="#3.8.1_Measuring_Initial_RTT">3.8.1. 测量初始RTT</a></li>
+<li><a href="#3.8.2_Using_the_Spin_Bit_for_Passive_RTT_Measurement">3.8.2. 将自旋比特位用于被动RTT测量</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#4_Specific_Network_Management_Tasks">4. 特定的网络管理任务</a>
+<ul>
+<li><a href="#4.1_Passive_Network_Performance_Measurement_and_Troubleshooting">4.1. 被动的网络性能测量与故障排查</a></li>
+<li><a href="#4.2_Stateful_Treatment_of_QUIC_Traffic">4.2. 有状态的QUIC流量处理</a></li>
+<li><a href="#4.3_Address_Rewriting_to_Ensure_Routing_Stability">4.3. 地址改写以确保路由稳定性</a></li>
+<li><a href="#4.4_Server_Cooperation_with_Load_Balancers">4.4. 服务器与负载均衡器的协作</a></li>
+<li><a href="#4.5_Filtering_Behavior">4.5. 过滤行为</a></li>
+<li><a href="#4.6_UDP_Blocking_Throttling_and_NAT_Binding">4.6. UDP拦截、限流，以及NAT重绑定</a></li>
+<li><a href="#4.7_DDoS_Detection_and_Mitigation">4.7. DDoS的检测与缓解</a></li>
+<li><a href="#4.8_Quality_of_Service_Handling_and_ECMP_Routing">4.8. QoS处理与ECMP路由</a></li>
+<li><a href="#4.9_Handling_ICMP_Messages">4.9. ICMP消息处理</a></li>
+<li><a href="#4.10_Guiding_Path_MTU">4.10. PMTU指导</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+</li>
+<li>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</li>
+<li>
+<a href="#7_References">7. 参考文献</a>
+<ul>
+<li><a href="#7.1_Normative_References">7.1. 规范性参考文献</a></li>
+<li><a href="#7.2_Informative_References">7.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgements">致谢</a>
+</li>
+<li>
+<a href="#Contributors">贡献者</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
+</li>
 </ul>
 </nav>
 <nav class="external">
@@ -38,7 +121,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
@@ -105,7 +188,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>This document discusses manageability of the QUIC transport protocol and focuses on the implications of QUIC’s design and wire image on network operations involving QUIC traffic. It is intended as a “user’s manual” for the wire image to provide guidance for network operators and equipment vendors who rely on the use of transport-aware network functions.</p>
+<p>本文档讨论了QUIC传输协议的可管理性，着重于QUIC的设计及其通信线路图象可能对涉及QUIC流量的网络操作所产生的影响。本文档的意图是作为一份通信线路图象的“用户手册”，为依赖于对传输协议敏感的网络功能的设备提供商和网络运营商提供指导。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -125,6 +208,742 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>QUIC（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》）是一种封装在UDP中的全新的传输协议。QUIC集成了TLS（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》)，从而加密所有载荷数据与绝大多数控制信息。QUIC版本1主要是作为HTTP的传输方式来设计的，作为其成果的协议被称为HTTP/3（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》）。</p>
+<p>本文档为管理QUIC流量的网络操作提供了指导。这些指导内容中包含如何解释和利用QUIC向网络暴露的信息、QUIC设计关于网络条件待遇的要求和假设，以及一份QUIC将如何影响常见网络管理实践的说明。</p>
+<p>QUIC是一份端到端的传输协议；因此，协议头部中的所有信息都不得被网络修改。这项属性是通过对通信线路图象的完整性保护来做到的（详见《<a href="https://www.rfc-editor.org/info/rfc8546">WIRE-IMAGE</a>》）。对绝大多数传输层控制信号的加密意味着比起TCP，对网络可见的信息更少。</p>
+<p>完整性保护还可以简化终端处的故障排查，因为网络路径上的所有节点都无法修改传输层信息。不过，这意味着一旦缺少QUIC终端的配合，就无法实施基于数据修改（作为例子，详见《<a href="https://www.rfc-editor.org/info/rfc9065">RFC9065</a>》）的网络内操作。通过引入被当成是终端的代理，或许可以实施这类操作。代理操作不在本文档的讨论范畴之内。</p>
+<p>网络管理不是一刀切的工作；例如，在具有某些合规性要求的企业网络中被认为是必要甚至是强制的做法在没有这些要求的其他网络中是不被允许的。因此，本文档中某些做法实践的提及不应该被理解为对它们的推荐。对于每一种实践，本文档都会介绍QUIC传输协议能够做到什么和不能够做到什么。</p>
+<p>本文档主要着重于能够观察线路上的流量的网络管理实践。因此，举个例子，使用主动测量技术来代替基于观察的故障排查的做法不在讨论范畴之内。《<a href="https://www.rfc-editor.org/info/rfc9065">RFC9065</a>》中针对加密传输协议给出了一份更加通用的的网络管理操作方法。</p>
+<p>有关本文档中使用的QUIC相关术语定义，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》。</p>
+</div>
+</section>
+<section class="page" id="2_Features_of_the_QUIC_Wire_Image">
+<h1>
+<a href="#2_Features_of_the_QUIC_Wire_Image">2. QUIC通信线路图象的特征</a>
+</h1>
+<div class="content">
+<p>本章讨论的是QUIC传输协议能够影响转发QUIC数据包的设备的设计及操作的一些方面。因此，本章主要考虑的是QUIC通信线路图象（详见《<a href="https://www.rfc-editor.org/info/rfc8546">WIRE-IMAGE</a>》）的未加密部分，也就是每个QUIC数据包头部中的信息及其变化规律。由于QUIC是一份版本化的协议，因此其头部格式的通信线路图象还可能随版本变化而变化。不过，部分数据包中用于标识QUIC版本的字段和版本协商数据包的格式都是可检视且不变的（详见《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》）。</p>
+<p>本文档的对象是QUIC协议版本1，《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》和《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》中定义了其完整的通信线路图象。除非是指定为不变量的（详见《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》）和无法被用来辨识QUIC协议或用来推断将来版本的QUIC行为的那些，本文中介绍的通信线路图象特征都可能在将来版本的协议中发生变化。</p>
+</div>
+</section>
+<section class="page" id="2.1_QUIC_Packet_Header_Structure">
+<h2>
+<a href="#2.1_QUIC_Packet_Header_Structure">2.1. QUIC数据包头部结构</a>
+</h2>
+<div class="content">
+<p>QUIC的数据包要么使用长包头，要么使用短包头。QUIC数据包头部的首个比特位是包头形式比特位，表示当前的头部类型。该比特位的作用不会随QUIC版本变化而改变。</p>
+<p>长包头暴露了更多信息。它包含着一个版本号，以及用于将数据包与QUIC连接关联起来的源连接ID和目标连接ID。这些字段在QUIC长包头中的位置及其定义即便在将来版本的QUIC中，也是一致的，不过将来版本的QUIC或许会在长包头中提供额外字段（详见《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》）。</p>
+<p>在QUIC版本1中，长包头被用于在连接建立期间传输<strong>加密帧</strong>握手数据、进行版本协商、重试，以及发送0-RTT数据。</p>
+<p>在QUIC版本1中，短包头被用于连接建立完成后，并且仅暴露了可选的目标连接ID字段，以及初始的信号量字节，其中包括用于RTT测量的自旋比特位。</p>
+<p>在所有版本的QUIC中，QUIC数据包头部都会暴露以下信息（由《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》规定）：</p>
+<dl>
+<dt>版本号：</dt>
+<dd>
+<p>版本号出现在长包头中，标识着适用于该数据包的版本。在版本协商期间（详见<a href="#2.8_Version_Negotiation_and_Greasing">第2.8章</a>和《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.1_Version_Negotiation_Packet">第17.2.1章</a>），版本字段适用特殊值（<code>0x00000000</code>），它将数据包标识为版本协商数据包。QUIC版本1使用版本号<code>0x00000001</code>。作为各种互联网实验、将来的标准，以及位转义（详见《<a href="https://www.rfc-editor.org/info/rfc7801">RFC7801</a>》）的结果，运营商应该期望观察到具有其他版本号的数据包。有一个IANA注册表专门管理着所有标准化QUIC版本的值其中也可能出现一些专有值（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#22.2_QUIC_Versions_Registry">第22.2章</a>）。不过，在互联网中应该能随时见到其他版本的QUIC。</p>
+</dd>
+<dt>源和目标连接ID：</dt>
+<dd>
+<p>短包头和长包头中均存在目标连接ID，它是一个可变长度的字段。如果目标连接ID并非零长度，那么就能利用它来辨识与QUIC数据包关联着的连接，从而满足负载均衡和NAT重绑定的需要；详见<a href="#4.4_Server_Cooperation_with_Load_Balancers">第4.4章</a>和<a href="#2.6_Connection_ID_and_Rebinding">第2.6章</a>。长包头额外携带着源连接ID。源连接ID仅在长包头上出现，表示的是另一终端在发送数据包时应该使用的目标连接ID值。在长包头中，还会出现连接ID的长度字段。在短包头中，没有表明目标连接ID的长度，因为可以从前序的长包头数据包中知道该值。</p>
+</dd>
+</dl>
+<p>在QUIC版本1中，额外暴露了以下信息：</p>
+<dl>
+<dt>固定比特位：</dt>
+<dd>
+<p>在QUIC版本1中，首个字节的第二最高有效位被设置位<code>1</code>，除非该数据包是一个版本协商数据包，或使用了修改此比特位作用的扩展。如果该比特位被设置为<code>1</code>，就能使得终端能够轻松地为它与其他用UDP封装的协议数据包解除多路复用。尽管该比特位在版本1的规范中是固定值，但是终端仍可以使用修改此比特位的扩展（详见《<a href="../RFC9287_Chinese_Simplified">QUIC位转义</a>》）。因此，运营商无法将它用作可靠的QUIC标识符。</p>
+</dd>
+<dt>延迟自选比特位：</dt>
+<dd>
+<p>版本1的短包头中，首个字节的第三最高有效位。自旋比特位由终端设置，以便用跟踪边缘转换的方式被动地观察终端间的RTT。有关细节，详见<a href="#3.8.2_Using_the_Spin_Bit_for_Passive_RTT_Measurement">第3.8.2章</a>。</p>
+</dd>
+<dt>头部类型：</dt>
+<dd>
+<p>长包头中，包头形式和固定比特位的后面跟着一个2比特位长的数据包类型字段。头部类型与握手阶段对应；有关细节，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2_Long_Header_Packets">第17.2章</a>。</p>
+</dd>
+<dt>长度：</dt>
+<dd>
+<p>长包头中，该QUIC数据包跟在长度字段后面的剩余部分的长度。该字段的作用是在握手期间实现数据包合并（详见<a href="#2.2_Coalesced_Packets">第2.2章</a>）。</p>
+</dd>
+<dt>令牌：</dt>
+<dd>
+<p>初始数据包可以包含一个令牌，它是一个客户端可选地发向服务器的可变长度不透明值，作用是验证客户端地址。重试数据包也可以包含一个令牌，客户端可以在后续连接尝试的初始数据包中使用该令牌。无论哪种情况，令牌的长度都是明确的。</p>
+</dd>
+</dl>
+<p>重试数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.5_Retry_Packet">第17.2.5章</a>）和版本协商数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2.1_Version_Negotiation_Packet">第17.2.1章</a>）未受到加密保护。重试数据包受到完整性保护。重试数据包的内容是通过在后续的握手中使用传输参数的放肆来验证的。对于其他类型的数据包，QUIC版本1在数据包头部中为其他信息提供加密保护：</p>
+<dl>
+<dt>数据包号：</dt>
+<dd>
+<p>除了版本协商数据包和重试数据包外的所有数据包都具有其关联的数据包号；不过，该数据包号受到加密，因此对路径上的观察者来说无法使用。数据包号在长包头中的偏移位置可以被解码得到，而在短包头中则是隐式的（取决于目标连接ID的长度）。数据包号的长度受到加密保护。</p>
+</dd>
+<dt>密钥阶段：</dt>
+<dd>
+<p>密钥阶段比特位（存在于短包头中）指定了用于加密数据包的密钥组，从而支持密钥轮换。密钥阶段比特位受到加密保护。</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="2.2_Coalesced_Packets">
+<h2>
+<a href="#2.2_Coalesced_Packets">2.2. 数据包合并</a>
+</h2>
+<div class="content">
+<p>可以将多个QUIC数据包合并至同一个UDP数据报中，变为一个携带着一个或多个长包头数据包，后面跟着零个或一个短包头数据包的单个数据报。当数据包被合并时，使用长包头中的长度字段来分离QUIC数据包；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#12.2_Coalescing_Packets">第12.2章</a>。长度字段是一个可变长度的字段，它在头部中的位置还会随着源和目标连接ID长度的变化而改变；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2_Long_Header_Packets">第17.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="2.3_Use_of_Port_Numbers">
+<h2>
+<a href="#2.3_Use_of_Port_Numbers">2.3. 端口号的使用</a>
+</h2>
+<div class="content">
+<p>具有TCP和QUIC映射的应用应该为两项服务使用相同的端口号。然而，就像对于其他IETF传输协议（详见《<a href="https://www.rfc-editor.org/info/rfc7605">RFC7605</a>》）那样，并不保证某个特定应用会使用其已注册的端口号，也不保证某个端口上的流量一定归属于为它进行过注册的服务，特别是在应用层信息受到加密时。举个例子，《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》规定了将HTTP替代服务机制（详见《<a href="https://www.rfc-editor.org/info/rfc7838">RFC7838</a>》）用于指向其他端口的HTTP/3服务发现。</p>
+<p>除此之外，由于QUIC使用了连接ID，所以基于相同的五元组（协议、源和目标IP地址，以及源和目标端口）来维护多条QUIC连接的做法是可行的。不过，一旦连接ID为零长度，那么五元组相同的所有数据包就很有可能归属于同一条QUIC连接。</p>
+</div>
+</section>
+<section class="page" id="2.4_The_QUIC_Handshake">
+<h2>
+<a href="#2.4_The_QUIC_Handshake">2.4. QUIC的握手过程</a>
+</h2>
+<div class="content">
+<p>新的QUIC连接是通过使用一套能够在通信线路上分辨出来的握手过程来建立的，其中包含着一些可以受到被动观测的信息。</p>
+<p>为了说明在握手期间的QUIC通信线路图象中可观察到的信息，我们首先展示的是在包含QUIC握手的UDP数据报中可见的一般通信模式。随后，我们再详细地检视每一个数据报。</p>
+<p>如<a href="#Figure_1_General_Communication_Pattern_Visible_in_the_QUIC_Handshake">图1</a>所示，通常可以通过通信线路上的四程数据报来辨识QUIC的握手过程，它们分别被标记为“客户端初始”、“服务器初始”、“客户端完成”，和“服务器完成”。</p>
+<p>握手过程以客户端发送一份或多份携带着初始数据包的数据报（详见<a href="#Figure_2_Example_Client_Initial_Datagram_Without_0_RTT">图2</a>）的方式发起，这会引发标记为“服务器初始”的响应（详见<a href="#Figure_3_Coalesced_Server_Initial_Datagram_Pattern">图3</a>），其中通常包含三种类型的数据包：带有服务器一侧的TLS握手过程起始部分的初始数据包（一个或多个）、包含着服务器一侧的TLS握手过程剩余部分的握手数据包（一个或多个），还有，如果存在的话，1-RTT数据包（一个或多个）。</p>
+<div class="block ref" id="Figure_1_General_Communication_Pattern_Visible_in_the_QUIC_Handshake">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_1_General_Communication_Pattern_Visible_in_the_QUIC_Handshake.svg"/>
+<p><a href="#Figure_1_General_Communication_Pattern_Visible_in_the_QUIC_Handshake">图1：QUIC的握手过程中可见的一般通信模式</a></p>
+</div>
+<p>如图所示，一旦客户端发送完<code>ClientHello</code>（客户端问候），它就能够发送0-RTT数据；一旦服务器发送完<code>ServerHello</code>（服务器问候），它就能够发送1-RTT数据。“客户端完成”中包含着至少一个握手数据包，此外还可以包含一个初始数据包。在握手期间，不同上下文中的QUIC数据包可以被合并（详见<a href="#2.2_Coalesced_Packets">第2.2章</a>），从而将此握手期间发送的UDP数据报数量。</p>
+<p>哪怕出现了数据包乱序的情况，只要数据包没有被过分延误以至于触发了探测包超时（详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》的<a href="../RFC9002_Chinese_Simplified/#6.2_Probe_Timeout">第6.2章</a>），乱序抵达的握手数据包就不会影响握手。尽管因为任意一程数据包都依赖于对端发出的前一程数据包所以这几程数据包的顺序不会发生变化，但是如果某个QUIC数据包遭遇丢包或乱序，那么就不太可能在其邻近的时间段内观察到属于同一程的其他数据包。</p>
+<p>包含着初始数据包的数据报（“客户端初始”、“服务器初始”，以及部分“客户端完成”），其UDP载荷长度至少为1200字节。这能够抵御放大攻击，并验证网络路径是否满足能够发送封装着QUIC的最小尺寸IP数据包的要求；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14_Datagram_Size">第14章</a>。这可以通过在初始数据包内部添加<strong>填充帧</strong>、将初始数据包与其他数据包合并，或在初始数据包后方的UDP载荷中放置未使用的内容的方式来做到。所有支持QUIC的网络路径都应该有能力转发尺寸至少为该值的数据包。</p>
+<p>初始数据包中的内容是使用初始秘密值来加密的，该秘密值由特定于版本的常量与客户端的目标连接ID衍生而来。因此该内容对路径上所有知道该特定于版本的常量的设备来说都是可观察的，因此在图示中被视为可见。QUIC握手数据包的内容受到加密，因此被视作不可见，加密时使用的密钥是在初始握手通信时建立的。</p>
+<p>初始数据包、握手数据包和1-RTT数据包属于不同的加密和传输上下文。“客户端完成”（详见<a href="#Figure_4_Coalesced_Client_Completion_Datagram_Pattern">图4</a>）和“服务器完成”（详见<a href="#Figure_5_Coalesced_Server_Completion_Datagram_Pattern">图5</a>）这两程通过发送最终确认和<strong>加密帧</strong>的方式终止了初始和握手上下文。</p>
+<div class="block ref" id="Figure_2_Example_Client_Initial_Datagram_Without_0_RTT">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_2_Example_Client_Initial_Datagram_Without_0_RTT.svg"/>
+<p><a href="#Figure_2_Example_Client_Initial_Datagram_Without_0_RTT">图2：无0-RTT的“客户端初始”数据报样例</a></p>
+</div>
+<p>”客户端初始“数据报暴露了未经加密的版本、源连接ID和目标连接ID字段。初始数据包的载荷受到初始秘密值的保护。带有TLS服务器名称指示（SNI）的完整TLS <code>ClientHello</code>，是通过使用一个或多个<strong>加密帧</strong>，在一个或多个QUIC初始数据包中发送的。</p>
+<div class="block ref" id="Figure_3_Coalesced_Server_Initial_Datagram_Pattern">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_3_Coalesced_Server_Initial_Datagram_Pattern.svg"/>
+<p><a href="#Figure_3_Coalesced_Server_Initial_Datagram_Pattern">图3：含有合并数据包的“服务器初始”数据报模式</a></p>
+</div>
+<p>”服务器初始“数据报也暴露了明文的版本、源连接ID和目标连接ID字段；初始数据包的载荷受到初始秘密值的保护。</p>
+<div class="block ref" id="Figure_4_Coalesced_Client_Completion_Datagram_Pattern">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_4_Coalesced_Client_Completion_Datagram_Pattern.svg"/>
+<p><a href="#Figure_4_Coalesced_Client_Completion_Datagram_Pattern">图4：含有合并数据包的“客户端完成”数据报模式</a></p>
+</div>
+<p>”客户端完成“这一程没有暴露任何额外信息；不过，由于目标连接ID是由服务器选择的，因此它通常与客户端在”客户端初始“中发送的ID不一致。”客户端完成“这一程包含着一个表示客户端一侧的握手过程已完成的1-RTT数据包（详见<a href="#3.2_Connection_Confirmation">第3.2章</a>），它被用于三向握手RTT预估，详见<a href="#3.8_Round_Trip_Time_RTT_Measurement">第3.8章</a>。</p>
+<div class="block ref" id="Figure_5_Coalesced_Server_Completion_Datagram_Pattern">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_5_Coalesced_Server_Completion_Datagram_Pattern.svg"/>
+<p><a href="#Figure_5_Coalesced_Server_Completion_Datagram_Pattern">图5：含有合并数据包的“服务器完成”数据报模式</a></p>
+</div>
+<p>与”客户端完成“类似，”服务器完成“没有暴露额外信息；对它的观察结果仅可用于判断握手是否已完成。</p>
+<p>如<a href="#Figure_6_Coalesced_0_RTT_Client_Initial_Datagram">图6</a>所示，当客户端使用0-RTT数据时，”客户端初始“这一程中还可以包含一个或多个0-RTT数据包。</p>
+<div class="block ref" id="Figure_6_Coalesced_0_RTT_Client_Initial_Datagram">
+<img src="/RFC9312_Chinese_Simplified/images/Figure_6_Coalesced_0_RTT_Client_Initial_Datagram.svg"/>
+<p><a href="#Figure_6_Coalesced_0_RTT_Client_Initial_Datagram">图6：含有合并数据包和0-RTT的“客户端初始”数据报</a></p>
+</div>
+<p>当某0-RTT数据包与某初始数据包合并时，数据报将被填充至1200字节。可以在发送完客户端初始数据包后发送仅包含长包头0-RTT数据包的额外数据报，在其中包含更多0-RTT数据。可以在首程中发送的受0-RTT密钥保护的数据量受限于初始拥塞窗口，一般约为10个数据包的大小（详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》的<a href="../RFC9002_Chinese_Simplified/#7.2_Initial_and_Minimum_Congestion_Window">第7.2章</a>）。</p>
+</div>
+</section>
+<section class="page" id="2.5_Integrity_Protection_of_the_Wire_Image">
+<h2>
+<a href="#2.5_Integrity_Protection_of_the_Wire_Image">2.5. 通信线路图象的完整性保护</a>
+</h2>
+<div class="content">
+<p>一旦建立起加密上下文，QUIC头部中的所有信息，包括暴露出来的那些，就都会受到完整性保护。此外，在加密上下文建立前发送的数据包中暴露的信息会在加密握手过程中得到验证。因此，在路径上的设备无法篡改QUIC数据包中的任何信息或比特位。这类篡改将无法通过完整性检查，导致接收方丢弃数据包。可以通过移除或重新应用认证加密的方法修改初始数据包中的某些部分而不会导致接收方立即丢弃数据包。然而，加密握手会对绝大多数字段进行验证，对这些字段的任何篡改都将造成稍后的连接建立过程失败。</p>
+</div>
+</section>
+<section class="page" id="2.6_Connection_ID_and_Rebinding">
+<h2>
+<a href="#2.6_Connection_ID_and_Rebinding">2.6. 连接ID与重绑定</a>
+</h2>
+<div class="content">
+<p>QUIC数据包头部中的连接ID使得能够使用独立于五元组的信息来关联数据包。这允许某一终端（通常是客户端）在经历地址变化后能够重绑定到连接上。此外，网络内的设备可以利用它来确保相互联系的五元组流量被恰当地均衡至同一目标（详见<a href="#4.4_Server_Cooperation_with_Load_Balancers">第4.4章</a>）。</p>
+<p>客户端和服务器在握手期间各自选择一个连接ID；例如，服务器可能要求客户端使用服务器所选的某个连接ID，而客户端可能选择零长度的值。任一终端的连接ID都可能在连接的生命周期中发生改变，新的连接ID是通过经加密的帧来提供的（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#5.1_Connection_ID">第5.1章</a>）。因此，观测到新的连接ID并不意味着它就是一条新的连接。</p>
+<p>《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">QUIC-LB</a>》中定义了用于将服务器映射编码至连接ID中的算法，从而将此信息与所选的路径上设备共享，例如负载均衡器。服务器映射应该仅被暴露给指定的实体。如果服务器支持的迁移行为实际上是指向特定服务器或服务器池的攻击，那么不受控制的暴露将带来复数IP地址与同一主机的关联性。掩盖该编码行为的最佳方式是向其他观察者表现出随机性，通过加密就可以严格地做到。作为其结果，任何从连接ID的特定部分推断信息的企图都不太可能有所收获。</p>
+</div>
+</section>
+<section class="page" id="2.7_Packet_Numbers">
+<h2>
+<a href="#2.7_Packet_Numbers">2.7. 数据包号</a>
+</h2>
+<div class="content">
+<p>数据包号字段总是出现在QUIC版本1的数据包头部中；然而，它总是受到加密的。在初始数据包（发送于加密上下文建立前）中用于数据包号保护的加密密钥是特定于QUIC版本的，但是后续数据包中的数据包号保护使用的是衍生自端到端加密上下文的秘密值。因此数据包号不是通信线路图象中对路径上观察者可见的部分。</p>
+</div>
+</section>
+<section class="page" id="2.8_Version_Negotiation_and_Greasing">
+<h2>
+<a href="#2.8_Version_Negotiation_and_Greasing">2.8. 版本协商与位转义</a>
+</h2>
+<div class="content">
+<p>服务器使用版本协商数据包来表明客户端所请求的版本不受支持（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#6_Version_Negotiation">第6章</a>）。本质上版本协商数据包并不受保护，但是将来的QUIC版本可以使用后续的加密消息来验证其内容的真实性。于是，对数据包中的支持版本字段的任何篡改都能够被检测出来，且使得终端终止连接企图。</p>
+<p>还要注意的是，版本协商数据包中列出的版本中可能出现被保留使用的版本。这项机制是为了避免版本选择机制的实现趋于僵化。此外，客户端可以发送一个带有被保留使用的版本号的初始数据包，来触发版本协商。在版本协商数据包中，对客户端初始数据包中的连接ID的回显能够证明回程路径的路由可达性。</p>
+<p>QUIC的版本有望快速迭代。因此，新的版本（既包括实验性的版本，也包含符合IETF标准的版本）将在互联网上比其他常见的互联网和传输层协议得到更频繁的部署。因此将版本字段用于流量识别的做法在QUIC上会与在那些协议上的行为大不相同。使用某特定的版本号来识别合法QUIC流量的做法很有可能永久地错失一部分QUIC流量，且在不久的将来完全失效。依赖版本字段来进行出入控制也很有可能导致意外的故障。无关版本地对QUIC流量放行能够避免此类故障、避免不必要的部署延迟，并支持连续的基于版本的传输协议迭代。</p>
+</div>
+</section>
+<section class="page" id="3_Network_Visible_Information_about_QUIC_Flows">
+<h1>
+<a href="#3_Network_Visible_Information_about_QUIC_Flows">3. 对网络可见的QUIC流量信息</a>
+</h1>
+<div class="content">
+<p>本章讨论了在网络内的被动观察者能够基于<a href="#2_Features_of_the_QUIC_Wire_Image">第2章</a>介绍的通信线路图象对QUIC流量进行的不同种类的观察和介入方法。除非特别指出，否则我们在这里假设的观察者都是双向的（在两个方向上都能看到线路上的数据包序列），但一般无法访问任何关键信息。</p>
+</div>
+</section>
+<section class="page" id="3.1_Identifying_QUIC_Traffic">
+<h2>
+<a href="#3.1_Identifying_QUIC_Traffic">3.1. 识别QUIC流量</a>
+</h2>
+<div class="content">
+<p>QUIC的通信线路图象并没有被专门设计成对网络内的被动观察者来说可以与其他UDP流量相互区分的样子。尽管有可能用启发式的方法一个个识别出QUIC应用的流量，但是不存在将QUIC流量从给定链路上的所有未分类UDP流量中挑选出来的方法。因此，任何未归类的UDP流量都可能是QUIC流量。</p>
+<p>在本文写作之时，IETF已经出版或采纳了两种对QUIC的应用绑定：HTTP/3（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》）和DNS专用QUIC连接（详见《<a href="../RFC9250_Chinese_Simplified">RFC9250</a>》）。这两者均已知存在活跃的互联网部署，因此所有QUIC流量都是HTTP/3流量的假设是不成立的。按照约定，HTTP/3使用UDP端口<code>443</code>，但是可以使用各种各样的方法来指定替代端口号。其他应用（例如，微软的基于QUIC的SMB）也默认使用UDP端口<code>443</code>。因此，简单地基于某个UDP端口号来判断给定流量是否使用了QUIC（或实际上是哪个应用在使用QUIC）的做法也是站不住脚的；详见《<a href="https://www.rfc-editor.org/info/rfc7605">RFC7605</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7605#section-5">第5章</a>。</p>
+<p>尽管首个字节的第二最高有效位（掩码为<code>0x40</code>）在绝大多数当前版本的QUIC数据包中被设置为<code>1</code>（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#2.1_Stream_Types_and_Identifiers">第2.1章</a>和<a href="../RFC9000_Chinese_Simplified/#17_Packet_Formats">第17章</a>），但是这种识别QUIC流量的方法是不可靠的。首先，它仅仅提供了一个比特位的信息，并且很容易与除了《<a href="https://www.rfc-editor.org/info/rfc7983">RFC7983</a>》中讨论的那些之外的基于UDP的协议冲突。第二，通信线路图象的该特征并不是一成不变的（详见《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》），它在将来版本的协议中可能发生变化，甚至在握手期间通过使用扩展来协商（详见《<a href="../RFC9287_Chinese_Simplified">QUIC位转义</a>》）。</p>
+<p>即便在客户端初始数据包中传递的传输参数可以被网络观测到，但是网络无法在不引发连接失败的情况下篡改它们。此外，来自服务器的回复内容无法被观察到，所以网络上的观察者无法知道实际使用了哪些参数。</p>
+</div>
+</section>
+<section class="page" id="3.1.1_Identifying_Negotiated_Version">
+<h3>
+<a href="#3.1.1_Identifying_Negotiated_Version">3.1.1. 识别协商的版本</a>
+</h3>
+<div class="content">
+<p>将一组数据包假定为归属同一QUIC流的网络内观察者通过观察握手过程或许能够推断出正在使用的版本号。如果客户端响应的某个初始数据包中的版本号后续出现在了发自客户端的数据包中，那么该版本就会被两侧终端接受并用于连接的其余阶段（详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10">QUIC-VERSION-NEGOTIATION</a>》的<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10#section-2">第2章</a>）。</p>
+<p>在观察不到握手过程的流中，无法识别出协商商定的版本，连接迁移的场景就是一个例子。不过，将某个流关联到已识别到版本的流上的做法或许是可行的；详见<a href="#3.5_Flow_Association">第3.5章</a>。</p>
+</div>
+</section>
+<section class="page" id="3.1.2_First_Packet_Identification_for_Garbage_Rejection">
+<h3>
+<a href="#3.1.2_First_Packet_Identification_for_Garbage_Rejection">3.1.2. 用于垃圾过滤的首包识别</a>
+</h3>
+<div class="content">
+<p>有一个与此相关的疑问是，在某已知与QUIC有所关联的端口上的给定流中，其首个数据包是否为合法的QUIC数据包。该判断是支持在网络内对垃圾UDP数据包（反射攻击、随机散射，等等）进行过滤的前提。尽管可以使用基于数据包首个字节（数据包类型）的启发式方法来将有效的数据包类型从无效的数据包类型中分离，但是不推荐部署这样的启发式方法，因为在将来版本的协议中，首个字节中的比特位可能具有不同的含义。</p>
+</div>
+</section>
+<section class="page" id="3.2_Connection_Confirmation">
+<h2>
+<a href="#3.2_Connection_Confirmation">3.2. 连接的确认</a>
+</h2>
+<div class="content">
+<p>本文档着重于QUIC版本1，本章《连接的确认》仅适用于归属至QUIC版本1的流的数据包；出于在路径上观察的目的，假设这些数据包已经通过上述版本号通信观察的方法被识别出来。</p>
+<p>连接的建立使用的是包含着TLS握手的初始数据包和握手数据包，以及不包含任何握手内容的重试数据包。因此可以使用与检测基于TCP的TLS时所用的类似的启发式方法来检测连接的建立。发起连接的客户端或许还会在发送完含有TLS <code>ClientHello</code>的初始数据包后立即使用0-RTT数据包发送数据。由于数据包可能在网络中遭遇丢包或乱序，所以可能在初始数据包出现前就观察到0-RTT数据包。</p>
+<p>注意，在此版本QUIC中，客户端在服务器之前发送初始数据包，服务器在客户端之前发送握手数据包，且只有客户端会发送带有令牌的初始数据包。因此，在路径上的观察者可以将某终端识别为客户端或服务器。通过将重试数据包的内容与新的初始数据包中的令牌和目标连接ID字段对照的方式，可以将接收到重试数据包后发起的新连接检测出来。</p>
+</div>
+</section>
+<section class="page" id="3.3_Distinguishing_Acknowledgment_Traffic">
+<h2>
+<a href="#3.3_Distinguishing_Acknowledgment_Traffic">3.3. 分辨确认流量</a>
+</h2>
+<div class="content">
+<p>某些部署在网络内的功能可以将仅传递确认信息（仅ACK）的数据包与传递更上层数据的数据包区分开来，从而尝试提高性能（例如，通过调整ACK的队列或操纵ACK信号的方式，详见《<a href="https://www.rfc-editor.org/info/rfc3449">RFC3449</a>》）。在TCP中，ACK数据包的分辨是可行的，但是在QUIC中却做不到，因为确认信号是在QUIC的加密载荷中传递的，无法操纵ACK。特别是，启发式地基于数据包尺寸来区分仅ACK的数据包与携带载荷的数据包的企图很有可能失败，不推荐使用此方法来推测QUIC的内部操作，因为这些机制可能会发生变化，例如，在使用了扩展时。</p>
+</div>
+</section>
+<section class="page" id="3.4_Server_Name_Indication_SNI">
+<h2>
+<a href="#3.4_Server_Name_Indication_SNI">3.4. 服务器名称指示（SNI）</a>
+</h2>
+<div class="content">
+<p>客户端的TLS <code>ClientHello</code>中可能含有服务器名称指示（SNI）扩展（详见《<a href="https://www.rfc-editor.org/info/rfc6066">RFC6066</a>》），客户端通过它来表明想要连接的服务器的名称，以使得服务器能够基于该名称来提供证书。如果使用了该扩展，那么在由客户端至服务器的路径上的单向观察者就能看到SNI信息。</p>
+<p>TLS <code>ClientHello</code>中还可能含有应用层协议协商（ALPN）扩展（详见《<a href="https://www.rfc-editor.org/info/rfc7301">RFC7301</a>》），客户端通过它来宣告它支持的应用层协议名称列表；观察者可以推断出这些协议中的一个会在后续连接中得到使用。</p>
+<p>TLS工作组正在进行为TLS 1.3中的<code>ClientHello</code>内容加密的工作（详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14">TLS-ECH</a>》）。这将消除通过在路径上观察QUIC和其他使用TLS的协议来基于SNI识别应用的可能性。</p>
+</div>
+</section>
+<section class="page" id="3.4.1_Extracting_Server_Name_Indication_SNI_Information">
+<h3>
+<a href="#3.4.1_Extracting_Server_Name_Indication_SNI_Information">3.4.1. 提取服务器名称（SNI）信息</a>
+</h3>
+<div class="content">
+<p>如果<code>ClientHello</code>未受到加密，那么就能够通过计算初始秘密值，解密数据包载荷，再解析包含着TLS <code>ClientHello</code>的QUIC<strong>加密帧</strong>的方式，分离出SNI。</p>
+<p>由于初始秘密值的衍生和初始数据包本身的结构都是特定于版本的，因此第一步永远是解析版本号（长包头的第二至第五个字节）。注意，只有长包头中带有版本号，所以有必要QUIC数据包的首个比特位是否被设置为<code>1</code>，它表示这是一个长包头。</p>
+<p>注意，在标准化前部署的专有QUIC版本可能没有在QUIC长包头中将首个比特位设置为<code>1</code>。不过，这些版本应该会随着时间逐渐消失，因此不需要任何特别考虑或特殊对待。</p>
+<p>当版本被识别为QUIC版本1时，需要通过检查头部的第三个和第四个比特位是否均被设置为<code>0</code>的方式验证数据包类型是否为初始数据包。随后，需要从数据包中提取目标连接ID。初始秘密值的计算使用的是在《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.2_Initial_Secrets">第5.2章</a>中介绍的特定于版本的初始盐值。头部的第6个字节表明了连接ID的长度，后面跟着连接ID。</p>
+<p>注意，在后续的初始数据包中出现的目标连接ID可能不是用来创建初始秘密值的那个。因此，尝试使用以上步骤来解密这些数据包的做法可能会失败，除非观察者一直保留着初始秘密值。</p>
+<p>为了判断数据包头部的结束位置和载荷的起始位置，需要提取数据包号长度、源连接ID长度，还有令牌长度。数据包号长度被定义为头部的第七个和第八个比特位，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.2_Long_Header_Packets">第17.2章</a>，但它受到《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.4_Header_Protection">第5.4章</a>中所述的保护。源连接ID长度是在目标连接ID后的那个字节中指定的。令牌长度，它跟在源连接ID后面，是一个可变长度整型值，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#16_Variable-Length_Integer_Encoding">第16章</a>。</p>
+<p>经过解密，就能够解析客户端的初始数据包，从而检测含有TLS <code>ClientHello</code>的<strong>加密帧</strong>，可以像基于TCP的TLS连接的解析方法一样去解析它。注意，可能有多个<strong>加密帧</strong>散布在一个或多个初始数据包中，并且它们可能不按顺序出现，所以需要解析偏移和长度以重新组装<strong>加密帧</strong>的流。此外，客户端的初始数据包中好可能含有其他帧，所以需要检查每个帧的首个字节以识别帧类型，判断是否可以跳过该帧，注意，帧的长度取决于帧的类型；详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#18_Transport_Parameter_Encoding">第18章</a>。例如，<strong>填充帧</strong>可能出现在<strong>加密帧</strong>的前面、后面，或夹在中间。然而，扩展或许会定义额外的帧类型。如果遇到了某个未知类型的帧，那么就不可能知道帧的长度，导致无法跳过该帧；因此，解析失败。</p>
+</div>
+</section>
+<section class="page" id="3.5_Flow_Association">
+<h2>
+<a href="#3.5_Flow_Association">3.5. 流量关联</a>
+</h2>
+<div class="content">
+<p>QUIC连接ID的设计（详见<a href="#2.6_Connection_ID_and_Rebinding">第2.6章</a>）允许在路径上的协作设备，例如负载均衡器，当某个终端的地址发生变化时将变化前后的两路流量关联起来。这种变化可能是由于NAT重绑定或地址迁移。</p>
+<p>终端必须在有意改变地址时更换连接ID，连接ID的协商是受到加密的；因此，被动的观察者无法使用连接ID来将主动改变前后的地址关联起来。</p>
+<p>当某个终端的地址无意间发生变化时，NAT重绑定就属于这种情况，在路径上的观察者或许就有能力使用连接ID来将新地址上的流量与旧地址上的流量关联起来。</p>
+<p>尝试使用连接ID来关联流量的网络功能必须对功能无法准确运行的情况具有健壮性。由于连接ID可能在一条连接的生命周期中多次发生变化，具有相同五元组但是连接ID不同的数据包可能属于，也有可能不属于，同一条连接。类似地，具有相同连接ID但是五元组不同的数据包有可能不属于同一条连接。</p>
+<p>连接ID应该被当成是不透明的；有关服务器选择连接ID时的警告，详见<a href="#4.4_Server_Cooperation_with_Load_Balancers">第4.4章</a>。</p>
+</div>
+</section>
+<section class="page" id="3.6_Flow_Teardown">
+<h2>
+<a href="#3.6_Flow_Teardown">3.6. 流量停止</a>
+</h2>
+<div class="content">
+<p>QUIC并未暴露连接的终止时机；对在路径上的设备来说唯一能够表明流量已停止的信号是不再观察到数据包这一现象。因此，NAT和防火墙等在路径上的有状态设备必须使用超时机制来判断何时移除为QUIC流量维护的状态数据；详见<a href="#4.2_Stateful_Treatment_of_QUIC_Traffic">第4.2章</a>。</p>
+</div>
+</section>
+<section class="page" id="3.7_Flow_Symmetry_Measurement">
+<h2>
+<a href="#3.7_Flow_Symmetry_Measurement">3.7. 流量的对称性测量</a>
+</h2>
+<div class="content">
+<p>QUIC在握手期间明确地暴露了连接的哪一端是客户端，哪一端是服务器。此外，能够通过对各方向上的流量测量其数据传输速率来推断出流量的对称性（流量主要自客户端至服务器、流量主要自服务器至客户端，还是大致上双向均等，并将它作为流量基本归类技术的输入）。注意，仅包含控制帧的QUIC数据包（例如仅ACK的数据包）可能得到填充。填充，尽管是可选的，或许能够混淆终端在连接中的身份和流量的对称性信息。</p>
+</div>
+</section>
+<section class="page" id="3.8_Round_Trip_Time_RTT_Measurement">
+<h2>
+<a href="#3.8_Round_Trip_Time_RTT_Measurement">3.8. 往返时间（RTT）的测量</a>
+</h2>
+<div class="content">
+<p>通过在握手期间用被动TCP测量的方法为每路流量进行一次性的观察，可以推断出QUIC流量的往返时间（RTT）；该方法需要解析QUIC数据包的头部，并识别出握手过程，如<a href="#2.4_The_QUIC_Handshake">第2.4章</a>所示。如果终端使用了下文和《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.3.1_1-RTT_Packet">第17.3.1章</a>所述的自旋比特位特性，那么还可以在流量存续时推断出往返时间。当自旋比特位被启用时，即使是单向的观察者也可以进行RTT测量。</p>
+</div>
+</section>
+<section class="page" id="3.8.1_Measuring_Initial_RTT">
+<h3>
+<a href="#3.8.1_Measuring_Initial_RTT">3.8.1. 测量初始RTT</a>
+</h3>
+<div class="content">
+<p>在通常情况下，客户端的初始数据包（含有TLS <code>ClientHello</code>）与服务器的初始数据包（含有TLS <code>ServerHello</code>）之间的延迟就代表着观察者与服务器间路径的RTT分量。服务器的首个握手数据包与客户端发送的首个握手数据包间的延迟代表着观察者与客户端间路径的RTT分量。尽管在连接的重新建立期间，客户端可能在初始数据包后发送0-RTT数据包，但是出于RTT测量的目的，可以忽略它们。</p>
+<p>可以通过将客户端至观察者的RTT分量与观察者至服务器的RTT分量相加的方式得到握手RTT。该测量结果中必定包含了两侧终端上的所有传输层延迟和应用层延迟。</p>
+</div>
+</section>
+<section class="page" id="3.8.2_Using_the_Spin_Bit_for_Passive_RTT_Measurement">
+<h3>
+<a href="#3.8.2_Using_the_Spin_Bit_for_Passive_RTT_Measurement">3.8.2. 将自旋比特位用于被动RTT测量</a>
+</h3>
+<div class="content">
+<p>自旋比特位提供了一种依赖于版本的方法，在连接的持续期间从网络路径上的观察点测量每路流量的的RTT。有关QUIC版本1中的自旋比特位定义，详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#17.4_Latency_Spin_Bit">第17.4章</a>。终端对自旋信号机制的参与是可选的。尽管在该QUIC版本中的自旋比特位位置是固定的，但是终端可以单方面地决定不支持“旋转”该比特位。</p>
+<p>只有当终端启用自旋比特位时，在路径上的设备才有可能将它用于RTT测量。某些终端可能默认禁用自旋比特位，某些可能仅在特定部署场景下禁用，例如，当RTT将暴露客户端和服务器使用了VPN或代理时。为了避免因为使用了自旋比特位而使得这类连接被识别出来，所有终端都会为至少八分之一的连接随机地禁用“旋转”，即便在其他情况下会默认启用。未在给定连接上参与自旋信号机制的终端可以在连接持续期间使用固定的自旋值，或可以为每个发送出去的数据包随机地设置自旋值。</p>
+<p>当启用时，只要两个端点都在持续发送数据包，那么每个方向上的延迟自旋比特位每经过一个RTT就会改变一次值。在路径上的观察者可以观察在某个方向上的两次自旋比特位信号变化（从<code>1</code>变为<code>0</code>或从<code>0</code>变为<code>1</code>）之间的时间差，从而得到端到端RTT的一份样本。这项机制遵循着《<a href="https://arxiv.org/abs/1612.02902">IPIM</a>》中列出的有关协议可测量性的原则。</p>
+<p>注意，该测量结果，和适用于TCP的被动RTT测量结果一样，含有所有协议层延迟（例如，确认的延迟发送）和/或应用层延迟（例如，等待创建响应）。因此它为路径上的设备提供了良好的即时RTT预估，这与应用能够感受到RTT的一致。</p>
+<p>不过，受到应用限制或受到流量控制限制的发送方可能分别出现远大于网络RTT的应用层或传输层延迟。例如，如果发送方仅间歇性地发送少量应用流量，且间隔时长大于RTT，那么自旋比特位的测量结果提供的信息主要是针对应用数据间隔的，而不是网络RTT。</p>
+<p>由于各个终端处的自旋比特位逻辑只会考虑来自能够提高自身最大数据包号的数据包样本，信号的创建本身是不受数据包乱序影响的。然而，如果乱序引发了流中自旋比特位的翻转，那么乱序可能在观察者处产生问题，使它错误地检测到信号的变化，造成不准确的（也就是更低的）RTT预估。</p>
+<p>可以使用基于在每路流量上观察到的数据传输速率或RTT序列变化的简单的启发式方法，来过滤掉因为自旋信号的翻转遭遇丢包或乱序，以及应用或流量控制的限制而产生的RTT不良样本；例如，在QoF（详见《<a href="https://link.springer.com/chapter/10.1007/978-3-642-54999-1_2">TMA-QOF</a>》)中会过滤掉显著高于流量历史RTT的RTT分量。这些启发式方法可能将握手RTT用作给定流量的初始RTT预估。通常这类启发式方法还会检测某条连接上的自旋是固定值还是随机值。</p>
+<p>在路径上可以观察到双向流量（从客户端到服务器和从服务器到客户端）的观察者还可以使用自旋比特位来测量“上行”和“下行”RTT分量；也就是观察者与服务器间和观察者与客户端间，这两条路径各自分别在两个方向上的端到端RTT分量。它是通过测量在上行方向观察到的自旋变化与在下行方向上观察到的自旋变化之间的延迟，及其反向，的方式来实现测量的。</p>
+<p>使用以上技术创建的原始RTT样本可以用各种方式来处理，从而创建出实用的网络性能指标。可以对RTT样本序列应用简单的线性平滑或移动平均滤波器，以得到更稳定的应用体感RTT。测量自自旋比特位的RTT样本还可以被用于生成RTT的分布信息，其中包括平均RTT（近似于较长的时间窗口内的网络RTT）和RTT方差（近似于应用终端观察到的单向数据包延迟方差）。</p>
+</div>
+</section>
+<section class="page" id="4_Specific_Network_Management_Tasks">
+<h1>
+<a href="#4_Specific_Network_Management_Tasks">4. 特定的网络管理任务</a>
+</h1>
+<div class="content">
+<p>在本章中，我们将回顾特定的网络管理与测量技术，以及QUIC的设计如何影响它们。</p>
+</div>
+</section>
+<section class="page" id="4.1_Passive_Network_Performance_Measurement_and_Troubleshooting">
+<h2>
+<a href="#4.1_Passive_Network_Performance_Measurement_and_Troubleshooting">4.1. 被动的网络性能测量与故障排查</a>
+</h2>
+<div class="content">
+<p>通过被动地观察QUIC流量，可以做到受限的RTT测量；详见<a href="#3.8_Round_Trip_Time_RTT_Measurement">第3.8章</a>。按照当前的通信线路图象，不可能做到被动的丢包率测量。在启用了ECN的QUIC流量上，通过观察IP头部的拥塞预警（CE）标记，或许可以做到受限的上游拥塞观察。</p>
+<p>在路径上的设备还可以做到对RTT和丢包率的测量，以及其他性能指标，只要这些指标的信息被携带于额外的网络层数据包头部（《<a href="https://www.rfc-editor.org/info/rfc9065">RFC9065</a>》的<a href="https://www.rfc-editor.org/rfc/rfc9065#section-6">第6章</a>描述了操作、管理与控制（OAM）信息的使用方式）。使用网络层的方法还具有一项好处，那就是常见的观察和分析工具可以被统一用于多种传输协议；然而，这些技术通常仅限于一个或多个协作域中的测量。</p>
+</div>
+</section>
+<section class="page" id="4.2_Stateful_Treatment_of_QUIC_Traffic">
+<h2>
+<a href="#4.2_Stateful_Treatment_of_QUIC_Traffic">4.2. 有状态的QUIC流量处理</a>
+</h2>
+<div class="content">
+<p>通过识别QUIC流量与版本（详见<a href="#3.1_Identifying_QUIC_Traffic">第3.1章</a>），并观察用于确认连接建立的握手过程（详见<a href="#3.2_Connection_Confirmation">第3.2章</a>），可以做到针对QUIC流量的有状态处理（例如，在防火墙或NAT中间设备处）。缺少提示流量终止的可见信号（详见<a href="#3.6_Flow_Teardown">第3.6章</a>）的这一特点意味着为了清除状态数据，要么依靠计时器，要么依靠LRU算法，这取决于应用的需要。</p>
+<p>QUIC没有明确的对网络来说可见的流量终止信号，所以状态数据的清除需要基于定时器，但是QUIC的握手过程表明了双端均已确认双向传输的有效性。只要握手完成，就应该将计时器设置得足够长，以容许正常传输过程中的短暂空闲。</p>
+<p>《<a href="https://www.rfc-editor.org/info/rfc4787">RFC4787</a>》中对绝大多数UDP流量的网络状态超时时长的要求是不少于2分钟。然而，实际上，QUIC终端体验到的超时时长可能更短，大约30秒至60秒（详见《<a href="https://www.ietf.org/proceedings/88/slides/slides-88-tsvarea-10.pdf">QUIC-TIMEOUT</a>》）。</p>
+<p>作为对照，《<a href="https://www.rfc-editor.org/info/rfc5382">RFC5382</a>》对TCP网络状态超时时长的推荐为超过2小时的值，因为TCP是一份面向连接的协议，具有定义良好的完整语义。尽管QUIC被有意设计为能够经受NAT重绑定，但是并不推荐降低NAT上的超时时长，因为这可能对应用性能产生负面影响，或刺激终端非常频繁地发送<code>keep-alive</code>数据包。</p>
+<p>因此，推荐为QUIC流量设置至少两分钟的状态超时时长，即便为其他UDP流量设置了更低的超时时长。</p>
+<p>如果过早地清除了状态数据，那么这可能导致短暂空闲期后的传入数据包遭遇黑洞。想要检测出这种情况，客户端处的计时器就要在连接发生重建前（如果有的话）就被触发，这将导致原本正常可以工作的连接中出现不必要的高延迟。</p>
+<p>此外，并不是所有终端都使用了能够使连接经得住端口或地址变化的路由设施。即便客户端重建了连接，NAT重绑定也会引发路由上的不匹配，使得数据包没有被送达或许能够支持地址迁移的那台服务器。出于这些原因，《<a href="https://www.rfc-editor.org/info/rfc4787">RFC4787</a>》中的限制对于避免数据包黑洞是极其重要的（从而避免中断发向客户端的数据流量），尤其是在设备有能力将QUIC流量与其他UDP载荷区分开来时。</p>
+<p>部分QUIC头部中存在连接ID，它在五元组之外提供了额外的熵。为了了解连接ID是否存在以及连接ID的长度，需要观察到QUIC握手。然而，连接ID可能是在握手过程结束之后才协商的，且该协商过程对路径上的设备来说不可见。因此，不推荐将连接ID用作对流量进行有状态处理时的关键字段，因为连接ID的变化将导致状态数据在连接尚未终止时就遭到无法检测且无法恢复的丢失。特别是，为了使用状态数据来做出前向决策的功能使用连接ID的做法是不可行的，因为它会破坏可连接性或，至少，在终端发现问题并重建连接前造成源自超时时长的高延迟现象。</p>
+<p>特别劝阻将连接ID用于NAT应用的做法。如果NAT上存在操作限制，那么推荐做法是牺牲流量起始位置的几个数据包（详见<a href="#4.5_Filtering_Behavior">第4.5章</a>），这或许能触发TCP回退。使用连接ID来令多条连接复用同一组IP地址/端口的做法不是一项可行的解决方案，因为它需要在连接ID变化时承担可连接性被破坏的风险。</p>
+</div>
+</section>
+<section class="page" id="4.3_Address_Rewriting_to_Ensure_Routing_Stability">
+<h2>
+<a href="#4.3_Address_Rewriting_to_Ensure_Routing_Stability">4.3. 地址改写以确保路由稳定性</a>
+</h2>
+<div class="content">
+<p>尽管QUIC的连接迁移机制使得连接有可能经受客户端地址的变化，但是一旦服务器基础设施中的路由器或交换机使用地址与端口组成的四元组来进行路由，它就无法工作了。如果基础设置只按照地址进行路由，那么NAT重绑定或地址迁移将造成数据包被送达至错误的服务器。《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">QUIC-LB</a>》中描述了解决该问题的一种方法，它是通过令负载均衡器与服务器在选择和使用连接ID时相互配合的方式来做到的。</p>
+<p>在某个中间设备处应用地址转换来基于连接ID地为流量维持稳定的地址与端口映射的做法或许看起来像是一种解决方案。然而，隐藏有关IP地址或端口发生变化的信息的做法同时也会掩盖来自QUIC终端的与安全性有关的重要信息，以致于助长放大攻击（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#8_Address_Validation">第8章</a>）。隐藏对端地址变化的NAT功能会阻止对端对攻击进行检测和缓解，因为终端无法使用QUIC的<strong>通道挑战帧</strong>和<strong>回复通道帧</strong>来验证其新地址的可连接性。</p>
+<p>此外，IP地址或端口的变化还是QUIC中其他内部机制的输入信号。当检测到路径的变化时，拥塞控制参数等依赖路径的变量将被重置，防止新路径遭受过载。</p>
+</div>
+</section>
+<section class="page" id="4.4_Server_Cooperation_with_Load_Balancers">
+<h2>
+<a href="#4.4_Server_Cooperation_with_Load_Balancers">4.4. 服务器与负载均衡器的协作</a>
+</h2>
+<div class="content">
+<p>在搭建包含负载均衡器的网络时，可以将连接ID用作服务器向负载均衡器发出信号，提示它期望对流量进行的处理。《<a href="https://www.rfc-editor.org/info/rfc9308">QUIC-APPLICABILITY</a>》中给出了关于分配连接ID的指导。《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">QUIC-LB</a>》中介绍了一种负载均衡器与服务器在选择和使用连接ID时相互配合的系统。</p>
+</div>
+</section>
+<section class="page" id="4.5_Filtering_Behavior">
+<h2>
+<a href="#4.5_Filtering_Behavior">4.5. 过滤行为</a>
+</h2>
+<div class="content">
+<p>《<a href="https://www.rfc-editor.org/info/rfc4787">RFC4787</a>》中描述了一些可操作的数据包过滤行为，它们与NAT有关，却被经常用于需要过滤数据包的其他场景。尽管其中的指导认同先放行少量UDP数据包再决定要不要过滤同一连接中的后续数据包的做法，但是这是一种特别不明智的行为。如果早期阶段的数据包没有抵达其目的地，那么使用QUIC的应用被鼓励使用回退至TCP的做法（详见《QUIC适用范围》），因为QUIC是基于UDP的，且已知存在针对UDP流量的拦截（详见<a href="#4.6_UDP_Blocking_Throttling_and_NAT_Binding">第4.6章</a>）。放行的少量数据包足以使得QUIC终端得出该路径支持QUIC的结论。突然过滤掉后来的数据包的做法将使得连接在最终被放弃前经历缓慢且代价高昂的超时。</p>
+</div>
+</section>
+<section class="page" id="4.6_UDP_Blocking_Throttling_and_NAT_Binding">
+<h2>
+<a href="#4.6_UDP_Blocking_Throttling_and_NAT_Binding">4.6. UDP拦截、限流，以及NAT重绑定</a>
+</h2>
+<div class="content">
+<p>如今，UDP是最流行的DDoS手段，因为很容易利用权限宽松的应用来发送大量巨大UDP数据包（而在TCP的情况下，攻击者会受到拥塞控制器的限制），或构造反射与放大攻击；因此，某些网络中会拦截UDP流量。随着QUIC部署的推广，逐渐需要允许来自QUIC所用端口的UDP流量。不过，如果在这些端口上广泛支持UDP，那么UDP泛洪攻击或许会来使用同样的端口。对此威胁的一种可行的响应是在网络上对UDP流量限流，为UDP分配固定的网络承载量，拦截溢出该限制的UDP数据报。相比于TCP流量，由于QUIC流量的比例也应该会随着时间流逝而上升，所以不推荐使用这样的固定限制值；如果确实这么做了，那么或许需要动态地调整限制值。</p>
+<p>此外，如果希望对UDP流量限流，那么推荐完全拦截某几路QUIC流量，而不是随意地丢弃数据包。当握手被拦截时，使用QUIC的应用还能回退至TCP。但是，随机拦截一部分不同四元组的QUIC数据包的做法将使得许多QUIC握手得到完成，阻止了其TCP回退，但是这些连接上将发生严重的数据包丢包现象（详见<a href="#4.5_Filtering_Behavior">第4.5章</a>）。因此，应该以按照以流量为单位的策略而不是按照以数据包为单位的策略来对UDP限流。注意，这种按照以流量为单位的策略应该是无状态的，从而避免QUIC流量受到有状态的处理（详见<a href="#4.2_Stateful_Treatment_of_QUIC_Traffic">第4.2章</a>），例如基于使用UDP数据报中的地址和端口的哈希值来决定要不要拦截流量。尽管QUIC终端常常经得住地址变化，例如因为地址重绑定，时，但是基于使用五元组的哈希值来拦截流量就会提高活跃连接在地址变化时遭遇黑洞的风险。</p>
+<p>注意，某些源端口被部分服务器认定为反射攻击源；详见《<a href="../RFC9308_Chinese_Simplified">QUIC适用范围</a>》的<a href="../RFC9308_Chinese_Simplified/#8.1_Source_Port_Selection">第8.1章</a>。于是，绑定至这些端口的NAT将使其流量受到拦截。</p>
+</div>
+</section>
+<section class="page" id="4.7_DDoS_Detection_and_Mitigation">
+<h2>
+<a href="#4.7_DDoS_Detection_and_Mitigation">4.7. DDoS的检测与缓解</a>
+</h2>
+<div class="content">
+<p>在路径上对于数据包传输层协议头部的观察结果可以被用于各种安全功能。例如，可以通过拾取流量异常特征的方式来检测和缓解针对基础设施或终端的拒绝服务（DoS）与分布式拒绝服务（DDoS）攻击。其他用途还包括对安全审计、客户端与应用指纹收集、网络入侵检测以及下一代防火墙功能的支持。</p>
+<p>目前对于检测和缓解DDoS攻击的实践中通常包含将传入流量（例如数据包、流量，或其他合计量）分类为“好”（有益的）流量和“坏”（DDoS）流量，再差异化流量待遇，仅转发“好”流量的步骤。该操作经常是在专用于缓解攻击的独立环境中进行的，所有流量都会在其中得到过滤；《<a href="https://www.rfc-editor.org/info/rfc8811">DOTS-ARCH</a>》中给出了一种架构，它能够将缓解过程中的关注点分离。</p>
+<p>在这种缓解环境中能否对DDoS流量进行高效的分类是该方法能否成功的关键。在分类过程中，如<a href="#3.1.2_First_Packet_Identification_for_Garbage_Rejection">第3.1.2章</a>中所述的受限的首包识别和如<a href="#4.2_Stateful_Treatment_of_QUIC_Traffic">第4.2章</a>中所述的针对QUIC流量的有状态跟踪或许能派上用场。</p>
+<p>注意，使用连接ID来支持连接迁移的做法会使得基于五元组的过滤变得不足以应对有效流量检测，且在需要支持QUIC流量迁移时令DDoS防御系统维护更多状态。对于NAT重绑定的常见情况，也就是客户端在不知情的状态下发生了地址变化，DDoS防御系统可以通过基于服务器的连接ID来关联流量的方法来检测客户端地址的变化。不过，QUIC的可关联性抑制机制确保了主动的连接迁移一定伴随着连接ID的变化。在这种情况下，连接ID就不能被用来将有效的迁移后流量与新的攻击流量区分开来。</p>
+<p>终端有可能直接支持DoS归类及缓解等安全功能。终端可以通过共享连接ID信息等方式直接与网络内的设备协作。</p>
+<p>相较于对观察到的头部信息进行处理，另一个潜在的方法是使用在路径上的依靠流量模式推断和启发式方法甚至机器学习来运作的网络设备。</p>
+<p>不过，要不要在DDoS攻击期间支持连接迁移这一问题还没有定论。尽管要支持不带连接ID变化的不经意迁移并不困难，但是如果某条活跃的QUIC连接发生了迁移，但是它对于检测DDoS的网络功能来说不可见，那么放弃支持这类迁移的做法也是可以接受的。只要连接的拦截行为被客户端检测到，客户端或许就有能力改用QUIC提供的0-RTT数据机制。当客户端迁移至新路径时，它们应该做好迁移失败的准备，并快速尝试重连。</p>
+<p>在网络内的DDoS保护机制之外，TCP SYN cookie（详见《<a href="https://www.rfc-editor.org/info/rfc4987">RFC4987</a>》）也是一种广泛使用的用于缓解部分TCP DDoS攻击的方法。QUIC的重试数据包与SYN cookie在功能上是等价的，它能够强制客户端在改变服务器状态前提供其IP地址真实性的证明。只不过，QUIC中有一些保护措施，能够防止未经服务器同意的中间设备主动注入这类数据包。有关中间设备如何在已获批准时代表服务器发送重试数据包的标准做法，详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00">QUIC-RETRY</a>》。</p>
+</div>
+</section>
+<section class="page" id="4.8_Quality_of_Service_Handling_and_ECMP_Routing">
+<h2>
+<a href="#4.8_Quality_of_Service_Handling_and_ECMP_Routing">4.8. QoS处理与ECMP路由</a>
+</h2>
+<div class="content">
+<p>网络中的所有QoS处理，例如基于差分服务码点（DSCPs，详见《<a href="https://www.rfc-editor.org/info/rfc2475">RFC2475</a>》）和等价多路径（ECMP）路由，都应该是以流量为单位来起效的，因此所有属于同一条活跃QUIC连接的数据包都能得到统一的待遇。</p>
+<p>使用ECMP经由多条网络路径或其他无法为同一连接的数据包提供均等待遇的途径来分发同一路流量中的数据包，会造成顺序、送达率和丢包率的浮动。由于各个数据包的丢包和延误反馈都会被用作拥塞控制器的输入，所以这些浮动会严重影响性能。根据所实现的丢包恢复机制，QUIC或许会比传统的TCP流量更能容忍数据包乱序（详见<a href="#2.7_Packet_Numbers">第2.7章</a>）。可是，为某路流量所用的恢复机制无法被网络侦知，因此对乱序的容忍度应该被视作未知。</p>
+<p>注意，一条QUIC连接的五元组可能因为迁移而发生变化。在这种情况下，在路径上会观察到多路流量，它们或许会被区别对待，而拥塞控制器通常会因迁移而被重置状态（详见<a href="#3.5_Flow_Association">第3.5章</a>）。</p>
+</div>
+</section>
+<section class="page" id="4.9_Handling_ICMP_Messages">
+<h2>
+<a href="#4.9_Handling_ICMP_Messages">4.9. ICMP消息处理</a>
+</h2>
+<div class="content">
+<p>QUIC可以使用数据报分包层PMTU发现（DPLPMTUD）来探测受支持的PMTU。DPLPMTUD可选使用ICMP消息（例如IPv6数据包过大（PTB）消息）。在已知存在利用ICP消息的攻击的前提下，QUIC中的DPLPMTUD用法被设计为即便不依赖ICMP反馈的接收也能够安全地运行（详见《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14.2.1_Handling_of_ICMP_Messages_by_PMTUD">第14.2.1章</a>）。</p>
+<p>推荐网络转发这些ICMP消息，并在不超过当前IP版本规定的最低MTU的条件下尽可能以保持原始数据包的内容的方式来创建ICMP消息，有关推荐做法详见《<a href="https://www.rfc-editor.org/info/rfc1812">RFC1812</a>》和《<a href="https://www.rfc-editor.org/info/rfc4443">RFC4443</a>》。</p>
+</div>
+</section>
+<section class="page" id="4.10_Guiding_Path_MTU">
+<h2>
+<a href="#4.10_Guiding_Path_MTU">4.10. PMTU指导</a>
+</h2>
+<div class="content">
+<p>部分网段支持1500字节的数据包，但是在网段内部存在MTU更小的网段时只能通过分段再重组的方式来兑现其支持。即便IP层是IPv6或设置了不要分段（DF）比特位的IPv4，这么做也是允许的，因为分段发生在IP层以下。不过，该过程会提高计算和内存成本，加速网络承载能力到达瓶颈。在这类网络中，出现了一项需求，它希望绝大多数发送方都能尽可能使用较小的数据包，以避免超过网络有限的重组能力。</p>
+<p>在TCP中，经常使用最大报文段长度（MSS）裁切的方法来修改发送方的TCP最大报文段的尺寸，但是QUIC并不能用此方式来实现。《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14_Datagram_Size">第14章</a>建议发送方使用DPLPMTUD（详见《<a href="https://www.rfc-editor.org/info/rfc88995">DPLPMTUD</a>》）或路径最大传输单元发现（PMTUD，详见《<a href="https://www.rfc-editor.org/info/rfc1191">RFC1191</a>》和《<a href="https://www.rfc-editor.org/info/rfc8201">RFC8201</a>》）来探测是否可以发送更大尺寸的数据报。这项机制鼓励发送方尽可能逼近最大数据包尺寸，却会在某些网段中引起无法被发送方获知的分段行为。</p>
+<p>如果在逐渐转发更大的数据包的过程中，路径性能到达了瓶颈，那么在路径上的设备应该支持为特定的传输流量设置最大数据包尺寸，随后持续丢弃尺寸超过该配置值，且使用了IPv6或者IPv4头部设置了DF，的数据包的功能。</p>
+<p>如果某网段内的网络配置将使得大型数据包被分段，那么应该丢弃这类数据包，而不是将它们分段。计划实施更具选择性的策略的网络运营商可以先从关注它对QUIC上的影响做起。</p>
+<p>并不总是能轻易地区分QUIC流量与其他流量，但是我们假设至少一部分的QUIC流量是可被识别的（详见<a href="#3.1_Identifying_QUIC_Traffic">第3.1章</a>）。对于支持QUIC的网络，推荐丢弃所有大于分段尺寸的数据包。当QUIC终端使用了DPLPMTUD时，它将使用QUIC探测数据包来发现PMTU。即便该探测包遭遇丢包，也不会影响QUIC数据的流量。</p>
+<p>IPv4路由器在数据包因超过链路MTU而被丢弃时会创建一条ICMP消息。《<a href="https://www.rfc-editor.org/info/rfc8504">RFC8504</a>》中规定了在这类情况下的IPv6节点应该如何创建ICMPv6的PTB消息。PMTUD依靠终端接收到这类PTB消息的能力（详见《<a href="https://www.rfc-editor.org/info/rfc8201">RFC8201</a>》），而DPLPMTUD并不依赖于这些消息，不过它能可选地利用这类消息来提高性能，详见《<a href="https://www.rfc-editor.org/info/rfc88995">DPLPMTUD</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8899#section-4.6">第4.6章</a>。</p>
+<p>网络无法提前得知QUIC终端所使用的发现算法，因此它应该在丢弃过大的数据包时发送一条PTB消息。它所创建的PTB消息应该符合《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#14.2.1_Handling_of_ICMP_Messages_by_PMTUD">第14.2.1章</a>中的验证要求，否则它会被PMTU发现所忽略。它能向终端发出信号，防止数据包尺寸变得过大，并为该路流量完全避免网段的分段行为。</p>
+<p>终端可以在IP层缓存中为PMTU信息建立缓存。不同流量的PMTU在短时间内保持一致，能够帮助终端回避低效的PMTU。IP缓存还能够影响使用同一路径的其他IP流量的PMTU值（详见《<a href="https://www.rfc-editor.org/info/rfc8201">RFC8201</a>》和《<a href="https://www.rfc-editor.org/info/rfc88995">DPLPMTUD</a>》），其中包括内部并非QUIC协议的IP数据包。如何表示一条IP路径的相关数据则由实现决定（详见《<a href="https://www.rfc-editor.org/info/rfc8201">RFC8201</a>》）。</p>
+</div>
+</section>
+<section class="page" id="5_IANA_Considerations">
+<h1>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文档没有与IANA相关的操作。</p>
+</div>
+</section>
+<section class="page" id="6_Security_Considerations">
+<h1>
+<a href="#6_Security_Considerations">6. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>QUIC是一份受加密且经认证的传输协议。这意味着一旦加密握手完成，QUIC终端就会丢弃绝大多数未经认证的数据包，极大地限制了攻击者介入已建立的连接的能力。</p>
+<p>然而，仍然可以观察到一些信息，因为对QUIC流量可管理性的支持，其本质涉及到对QUIC控制信息机密性的权衡；因此通篇文档的内容都是关于安全性的。</p>
+<p>《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》和《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》中对QUIC的安全性进行了更多的讨论，其中一般化地考虑了网络中的主动攻击者与被动攻击者，以及针对特定QUIC机制的攻击。</p>
+<p>版本协商数据包中并不包含任何防止版本降级攻击的机制。但是，将来的使用版本协商数据包的QUIC版本必须定义一项机制，使其面对版本降级攻击的表现足够健壮。因此，网络节点不应该试图影响版本的选择过程，因为版本降级可能造成连接失败。</p>
+</div>
+</section>
+<section class="page" id="7_References">
+<h1>
+<a href="#7_References">7. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="7.1_Normative_References">
+<h2>
+<a href="#7.1_Normative_References">7.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="QUIC-TLS">
+<p><a href="#QUIC-TLS"><strong>[QUIC-TLS]</strong></a> </p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TRANSPORT">
+<p><a href="#QUIC-TRANSPORT"><strong>[QUIC-TRANSPORT]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="7.2_Informative_References">
+<h2>
+<a href="#7.2_Informative_References">7.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="DOTS-ARCH">
+<p><a href="#DOTS-ARCH"><strong>[DOTS-ARCH]</strong></a> </p>
+<p>Mortensen, A., Ed., Reddy.K, T., Ed., Andreasen, F., Teague, N., and R. Compton, “DDoS Open Threat Signaling (DOTS) Architecture”, RFC 8811, DOI 10.17487/RFC8811, August 2020, <a href="https://www.rfc-editor.org/info/rfc8811">https://www.rfc-editor.org/info/rfc8811</a>.</p>
+</div>
+<div class="out_ref" id="DPLPMTUD">
+<p><a href="#DPLPMTUD"><strong>[DPLPMTUD]</strong></a> </p>
+<p>Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, “Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
+</div>
+<div class="out_ref" id="IPIM">
+<p><a href="#IPIM"><strong>[IPIM]</strong></a> </p>
+<p>Allman, M., Beverly, R., and B. Trammell, “Principles for Measurability in Protocol Design”, 9 December 2016, <a href="https://arxiv.org/abs/1612.02902">https://arxiv.org/abs/1612.02902</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-APPLICABILITY">
+<p><a href="#QUIC-APPLICABILITY"><strong>[QUIC-APPLICABILITY]</strong></a> </p>
+<p>Kühlewind, M. and B. Trammell, “Applicability of the QUIC Transport Protocol”, RFC 9308, DOI 10.17487/RFC9308, September 2022, <a href="https://www.rfc-editor.org/info/rfc9308">https://www.rfc-editor.org/info/rfc9308</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-GREASE">
+<p><a href="#QUIC-GREASE"><strong>[QUIC-GREASE]</strong></a> </p>
+<p>Thomson, M., “Greasing the QUIC Bit”, RFC 9287, DOI 10.17487/RFC9287, August 2022, <a href="https://www.rfc-editor.org/info/rfc9287">https://www.rfc-editor.org/info/rfc9287</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-HTTP">
+<p><a href="#QUIC-HTTP"><strong>[QUIC-HTTP]</strong></a> </p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-INVARIANTS">
+<p><a href="#QUIC-INVARIANTS"><strong>[QUIC-INVARIANTS]</strong></a> </p>
+<p>Thomson, M., “Version-Independent Properties of QUIC”, RFC 8999, DOI 10.17487/RFC8999, May 2021, <a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-LB">
+<p><a href="#QUIC-LB"><strong>[QUIC-LB]</strong></a> </p>
+<p>Duke, M., Banks, N., and C. Huitema, “QUIC-LB: Generating Routable QUIC Connection IDs”, Work in Progress, Internet-Draft, draft-ietf-quic-load-balancers-14, 11 July 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-RECOVERY">
+<p><a href="#QUIC-RECOVERY"><strong>[QUIC-RECOVERY]</strong></a> </p>
+<p>Iyengar, J., Ed. and I. Swett, Ed., “QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-RETRY">
+<p><a href="#QUIC-RETRY"><strong>[QUIC-RETRY]</strong></a> </p>
+<p>Duke, M. and N. Banks, “QUIC Retry Offload”, Work in Progress, Internet-Draft, draft-ietf-quic-retry-offload-00, 25 May 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00">https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TIMEOUT">
+<p><a href="#QUIC-TIMEOUT"><strong>[QUIC-TIMEOUT]</strong></a> </p>
+<p>Roskind, J., “QUIC”, IETF-88 TSV Area Presentation, 7 November 2013, <a href="https://www.ietf.org/proceedings/88/slides/slides-88-tsvarea-10.pdf">https://www.ietf.org/proceedings/88/slides/slides-88-tsvarea-10.pdf</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-VERSION-NEGOTIATION">
+<p><a href="#QUIC-VERSION-NEGOTIATION"><strong>[QUIC-VERSION-NEGOTIATION]</strong></a> </p>
+<p>Schinazi, D. and E. Rescorla, “Compatible Version Negotiation for QUIC”, Work in Progress, Internet-Draft, draft-ietf-quic-version-negotiation-10, 27 September 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10">https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10</a>.</p>
+</div>
+<div class="out_ref" id="RFC1191">
+<p><a href="#RFC1191"><strong>[RFC1191]</strong></a> </p>
+<p>Mogul, J. and S. Deering, “Path MTU discovery”, RFC 1191, DOI 10.17487/RFC1191, November 1990, <a href="https://www.rfc-editor.org/info/rfc1191">https://www.rfc-editor.org/info/rfc1191</a>.</p>
+</div>
+<div class="out_ref" id="RFC1812">
+<p><a href="#RFC1812"><strong>[RFC1812]</strong></a> </p>
+<p>Baker, F., Ed., “Requirements for IP Version 4 Routers”, RFC 1812, DOI 10.17487/RFC1812, June 1995, <a href="https://www.rfc-editor.org/info/rfc1812">https://www.rfc-editor.org/info/rfc1812</a>.</p>
+</div>
+<div class="out_ref" id="RFC2475">
+<p><a href="#RFC2475"><strong>[RFC2475]</strong></a> </p>
+<p>Blake, S., Black, D., Carlson, M., Davies, E., Wang, Z., and W. Weiss, “An Architecture for Differentiated Services”, RFC 2475, DOI 10.17487/RFC2475, December 1998, <a href="https://www.rfc-editor.org/info/rfc2475">https://www.rfc-editor.org/info/rfc2475</a>.</p>
+</div>
+<div class="out_ref" id="RFC3168">
+<p><a href="#RFC3168"><strong>[RFC3168]</strong></a> </p>
+<p>Ramakrishnan, K., Floyd, S., and D. Black, “The Addition of Explicit Congestion Notification (ECN) to IP”, RFC 3168, DOI 10.17487/RFC3168, September 2001, <a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>.</p>
+</div>
+<div class="out_ref" id="RFC3449">
+<p><a href="#RFC3449"><strong>[RFC3449]</strong></a> </p>
+<p>Balakrishnan, H., Padmanabhan, V., Fairhurst, G., and M. Sooriyabandara, “TCP Performance Implications of Network Path Asymmetry”, BCP 69, RFC 3449, DOI 10.17487/RFC3449, December 2002, <a href="https://www.rfc-editor.org/info/rfc3449">https://www.rfc-editor.org/info/rfc3449</a>.</p>
+</div>
+<div class="out_ref" id="RFC4443">
+<p><a href="#RFC4443"><strong>[RFC4443]</strong></a> </p>
+<p>Conta, A., Deering, S., and M. Gupta, Ed., “Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification”, STD 89, RFC 4443, DOI 10.17487/RFC4443, March 2006, <a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>.</p>
+</div>
+<div class="out_ref" id="RFC4459">
+<p><a href="#RFC4459"><strong>[RFC4459]</strong></a> </p>
+<p>Savola, P., “MTU and Fragmentation Issues with In-the-Network Tunneling”, RFC 4459, DOI 10.17487/RFC4459, April 2006, <a href="https://www.rfc-editor.org/info/rfc4459">https://www.rfc-editor.org/info/rfc4459</a>.</p>
+</div>
+<div class="out_ref" id="RFC4787">
+<p><a href="#RFC4787"><strong>[RFC4787]</strong></a> </p>
+<p>Audet, F., Ed. and C. Jennings, “Network Address Translation (NAT) Behavioral Requirements for Unicast UDP”, BCP 127, RFC 4787, DOI 10.17487/RFC4787, January 2007, <a href="https://www.rfc-editor.org/info/rfc4787">https://www.rfc-editor.org/info/rfc4787</a>.</p>
+</div>
+<div class="out_ref" id="RFC4987">
+<p><a href="#RFC4987"><strong>[RFC4987]</strong></a> </p>
+<p>Eddy, W., “TCP SYN Flooding Attacks and Common Mitigations”, RFC 4987, DOI 10.17487/RFC4987, August 2007, <a href="https://www.rfc-editor.org/info/rfc4987">https://www.rfc-editor.org/info/rfc4987</a>.</p>
+</div>
+<div class="out_ref" id="RFC5382">
+<p><a href="#RFC5382"><strong>[RFC5382]</strong></a> </p>
+<p>Guha, S., Ed., Biswas, K., Ford, B., Sivakumar, S., and P. Srisuresh, “NAT Behavioral Requirements for TCP”, BCP 142, RFC 5382, DOI 10.17487/RFC5382, October 2008, <a href="https://www.rfc-editor.org/info/rfc5382">https://www.rfc-editor.org/info/rfc5382</a>.</p>
+</div>
+<div class="out_ref" id="RFC6066">
+<p><a href="#RFC6066"><strong>[RFC6066]</strong></a> </p>
+<p>Eastlake 3rd, D., “Transport Layer Security (TLS) Extensions: Extension Definitions”, RFC 6066, DOI 10.17487/RFC6066, January 2011, <a href="https://www.rfc-editor.org/info/rfc6066">https://www.rfc-editor.org/info/rfc6066</a>.</p>
+</div>
+<div class="out_ref" id="RFC7301">
+<p><a href="#RFC7301"><strong>[RFC7301]</strong></a> </p>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</div>
+<div class="out_ref" id="RFC7605">
+<p><a href="#RFC7605"><strong>[RFC7605]</strong></a> </p>
+<p>Touch, J., “Recommendations on Using Assigned Transport Port Numbers”, BCP 165, RFC 7605, DOI 10.17487/RFC7605, August 2015, <a href="https://www.rfc-editor.org/info/rfc7605">https://www.rfc-editor.org/info/rfc7605</a>.</p>
+</div>
+<div class="out_ref" id="RFC7801">
+<p><a href="#RFC7801"><strong>[RFC7801]</strong></a> </p>
+<p>Dolmatov, V., Ed., “GOST R 34.12-2015: Block Cipher “Kuznyechik””, RFC 7801, DOI 10.17487/RFC7801, March 2016, <a href="https://www.rfc-editor.org/info/rfc7801">https://www.rfc-editor.org/info/rfc7801</a>.</p>
+</div>
+<div class="out_ref" id="RFC7838">
+<p><a href="#RFC7838"><strong>[RFC7838]</strong></a> </p>
+<p>Nottingham, M., McManus, P., and J. Reschke, “HTTP Alternative Services”, RFC 7838, DOI 10.17487/RFC7838, April 2016, <a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>.</p>
+</div>
+<div class="out_ref" id="RFC7983">
+<p><a href="#RFC7983"><strong>[RFC7983]</strong></a> </p>
+<p>Petit-Huguenin, M. and G. Salgueiro, “Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)”, RFC 7983, DOI 10.17487/RFC7983, September 2016, <a href="https://www.rfc-editor.org/info/rfc7983">https://www.rfc-editor.org/info/rfc7983</a>.</p>
+</div>
+<div class="out_ref" id="RFC8201">
+<p><a href="#RFC8201"><strong>[RFC8201]</strong></a> </p>
+<p>McCann, J., Deering, S., Mogul, J., and R. Hinden, Ed., “Path MTU Discovery for IP version 6”, STD 87, RFC 8201, DOI 10.17487/RFC8201, July 2017, <a href="https://www.rfc-editor.org/info/rfc8201">https://www.rfc-editor.org/info/rfc8201</a>.</p>
+</div>
+<div class="out_ref" id="RFC8504">
+<p><a href="#RFC8504"><strong>[RFC8504]</strong></a> </p>
+<p>Chown, T., Loughney, J., and T. Winters, “IPv6 Node Requirements”, BCP 220, RFC 8504, DOI 10.17487/RFC8504, January 2019, <a href="https://www.rfc-editor.org/info/rfc8504">https://www.rfc-editor.org/info/rfc8504</a>.</p>
+</div>
+<div class="out_ref" id="RFC9065">
+<p><a href="#RFC9065"><strong>[RFC9065]</strong></a> </p>
+<p>Fairhurst, G. and C. Perkins, “Considerations around Transport Header Confidentiality, Network Operations, and the Evolution of Internet Transport Protocols”, RFC 9065, DOI 10.17487/RFC9065, July 2021, <a href="https://www.rfc-editor.org/info/rfc9065">https://www.rfc-editor.org/info/rfc9065</a>.</p>
+</div>
+<div class="out_ref" id="RFC9250">
+<p><a href="#RFC9250"><strong>[RFC9250]</strong></a> </p>
+<p>Huitema, C., Dickinson, S., and A. Mankin, “DNS over Dedicated QUIC Connections”, RFC 9250, DOI 10.17487/RFC9250, May 2022, <a href="https://www.rfc-editor.org/info/rfc9250">https://www.rfc-editor.org/info/rfc9250</a>.</p>
+</div>
+<div class="out_ref" id="TLS-ECH">
+<p><a href="#TLS-ECH"><strong>[TLS-ECH]</strong></a> </p>
+<p>Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, “TLS Encrypted Client Hello”, Work in Progress, Internet-Draft, draft-ietf-tls-esni-14, 13 February 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14">https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14</a>.</p>
+</div>
+<div class="out_ref" id="TMA-QOF">
+<p><a href="#TMA-QOF"><strong>[TMA-QOF]</strong></a> </p>
+<p>Trammell, B., Gugelmann, D., and N. Brownlee, “Inline Data Integrity Signals for Passive Measurement”, Traffic Measurement and Analysis, TMA 2014, Lecture Notes in Computer Science, vol. 8406, pp. 15-25, DOI 10.1007/978-3-642-54999-1_2, April 2014, <a href="https://link.springer.com/chapter/10.1007/978-3-642-54999-1_2">https://link.springer.com/chapter/10.1007/978-3-642-54999-1_2</a>.</p>
+</div>
+<div class="out_ref" id="WIRE-IMAGE">
+<p><a href="#WIRE-IMAGE"><strong>[WIRE-IMAGE]</strong></a> </p>
+<p>Trammell, B. and M. Kuehlewind, “The Wire Image of a Network Protocol”, RFC 8546, DOI 10.17487/RFC8546, April 2019, <a href="https://www.rfc-editor.org/info/rfc8546">https://www.rfc-editor.org/info/rfc8546</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgements">
+<h1>
+<a href="#Acknowledgements">致谢</a>
+</h1>
+<div class="content">
+<p>特别感谢定稿前最后时刻的评阅者Elwyn Davies、Barry Leiba、Al Morton，和Peter Saint-Andre。</p>
+<p>本工作的一部分得到了欧盟委员会根据 Horizon 2020 拨款协议第 688421 号《Measurement and Architecture for a Middleboxed Internet (MAMI)》以及瑞士教育、研究和创新国务秘书处根据第 15.0268 号合约所提供的支持。这种支持并不意味着背书。</p>
+</div>
+</section>
+<section class="page" id="Contributors">
+<h1>
+<a href="#Contributors">贡献者</a>
+</h1>
+<div class="content">
+<p>以下人员对本文档的文本和反馈做出了重要贡献：</p>
+<ul>
+<li>
+<p>Chris Box</p>
+</li>
+<li>
+<p>Dan Druta</p>
+</li>
+<li>
+<p>David Schinazi</p>
+</li>
+<li>
+<p>Gorry Fairhurst</p>
+</li>
+<li>
+<p>Ian Swett</p>
+</li>
+<li>
+<p>Igor Lubashev</p>
+</li>
+<li>
+<p>Jana Iyengar</p>
+</li>
+<li>
+<p>Jared Mauch</p>
+</li>
+<li>
+<p>Lars Eggert</p>
+</li>
+<li>
+<p>Lucas Purdue</p>
+</li>
+<li>
+<p>Marcus Ihlar</p>
+</li>
+<li>
+<p>Mark Nottingham</p>
+</li>
+<li>
+<p>Martin Duke</p>
+</li>
+<li>
+<p>Martin Thomson</p>
+</li>
+<li>
+<p>Matt Joras</p>
+</li>
+<li>
+<p>Mike Bishop</p>
+</li>
+<li>
+<p>Nick Banks</p>
+</li>
+<li>
+<p>Thomas Fossati</p>
+</li>
+<li>
+<p>Sean Turner</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="mirja-kühlewind">Mirja Kühlewind</h5>
+<p>Ericsson</p>
+<p>Email: <a href="mailto:mirja.kuehlewind@ericsson.com">mirja.kuehlewind@ericsson.com</a></p>
+<h5 id="brian-trammell">Brian Trammell</h5>
+<p>Google Switzerland GmbH</p>
+<p>Gustav-Gull-Platz 1</p>
+<p>CH-8004 Zurich</p>
+<p>Switzerland</p>
+<p>Email: <a href="mailto:ietf@trammell.ch">ietf@trammell.ch</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/ruokeqx">ruokeqx</a></p>
+<ul>
+<li>Email: <a href="mailto:ruokeqx@163.com">ruokeqx@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>

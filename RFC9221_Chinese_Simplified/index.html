@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9221中文：QUIC不可靠传输</title>
@@ -85,7 +85,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
@@ -178,8 +178,8 @@
 <a href="#1_Introduction">1. 介绍</a>
 </h1>
 <div class="content">
-<p>QUIC传输协议（详见《<a href="">RFC9000</a>》）为传输可靠应用数据的流提供了安全且可多路复用的连接。QUIC在数据包中使用各种不同的帧类型来传输数据，每种帧类型都定义了其中的数据是否需要被重传。可靠应用数据的流是使用<strong>流帧</strong>来发送的。</p>
-<p>部分应用，尤其是那些需要传输实时数据的应用，倾向于传输无需可靠性的数据。在过去，这些应用都是直接基于UDP（详见《<a href="">RFC0768</a>》）建立传输连接，并通常使用DTLS（详见《<a href="">RFC6347</a>》）来增强安全性。扩展QUIC并使其支持不可靠应用数据的传输，则为安全传输数据报提供了另一种方案，而且还有着共享在可靠流中使用的加密和认证上下文的好处。</p>
+<p>QUIC传输协议（详见《<a href="../RFC9000_Chinese_Simplified">RFC9000</a>》）为传输可靠应用数据的流提供了安全且可多路复用的连接。QUIC在数据包中使用各种不同的帧类型来传输数据，每种帧类型都定义了其中的数据是否需要被重传。可靠应用数据的流是使用<strong>流帧</strong>来发送的。</p>
+<p>部分应用，尤其是那些需要传输实时数据的应用，倾向于传输无需可靠性的数据。在过去，这些应用都是直接基于UDP（详见《<a href="https://www.rfc-editor.org/info/rfc768">RFC0768</a>》）建立传输连接，并通常使用DTLS（详见《<a href="https://www.rfc-editor.org/info/rfc6347">RFC6347</a>》）来增强安全性。扩展QUIC并使其支持不可靠应用数据的传输，则为安全传输数据报提供了另一种方案，而且还有着共享在可靠流中使用的加密和认证上下文的好处。</p>
 <p>本文档定义了两种新的名为<strong>数据报帧</strong>的QUIC帧类型，它们能传递应用数据而无需重传。</p>
 </div>
 </section>
@@ -281,8 +281,8 @@
 <a href="#5.2_Acknowledgement_Handling">5.2. 处理确认</a>
 </h2>
 <div class="content">
-<p>尽管<strong>数据报帧</strong>在遭遇丢包时不会被重传，但它们是会触发ACK的（详见《<a href="">RFC9002</a>》）。接收方<em><strong>应该</strong></em>支持在响应接收到的仅包含<strong>数据报帧</strong>的数据包时推迟发送<strong>ACK帧</strong>（但不超过由<code>max_ack_delay</code>指定的限制），因为即便这些数据包暂时没有得到确认，发送方也不会采取任何行动。在数据包可能遭遇了丢包或时，接收方将恢复发送<strong>ACK帧</strong>，因为数据包的载荷对于接收方是未知的，<code>max_ack_delay</code>或其他协议组件的限制也会使得<strong>ACK帧</strong>恢复发送。</p>
-<p>就像对待其他ACK触发帧的行为一样，当发送方怀疑仅包含<strong>数据报帧</strong>的数据包遭遇了丢包时，它会发送探测数据包来引发更快的确认，详见《<a href="">RFC9002</a>》的<a href="">第6.2.4章</a>。</p>
+<p>尽管<strong>数据报帧</strong>在遭遇丢包时不会被重传，但它们是会触发ACK的（详见《<a href="../RFC9002_Chinese_Simplified">RFC9002</a>》）。接收方<em><strong>应该</strong></em>支持在响应接收到的仅包含<strong>数据报帧</strong>的数据包时推迟发送<strong>ACK帧</strong>（但不超过由<code>max_ack_delay</code>指定的限制），因为即便这些数据包暂时没有得到确认，发送方也不会采取任何行动。在数据包可能遭遇了丢包或时，接收方将恢复发送<strong>ACK帧</strong>，因为数据包的载荷对于接收方是未知的，<code>max_ack_delay</code>或其他协议组件的限制也会使得<strong>ACK帧</strong>恢复发送。</p>
+<p>就像对待其他ACK触发帧的行为一样，当发送方怀疑仅包含<strong>数据报帧</strong>的数据包遭遇了丢包时，它会发送探测数据包来引发更快的确认，详见《<a href="../RFC9002_Chinese_Simplified">RFC9002</a>》的<a href="../RFC9002_Chinese_Simplified/#6.2.4_Sending_Probe_Packets">第6.2.4章</a>。</p>
 <p>如果发送方检测到包含着某个特定<strong>数据报帧</strong>的数据包可能遭遇了丢包，那么实现<em><strong>可以</strong></em>通知应用有关它认为该数据报遭遇了丢包的消息。</p>
 <p>类似地，如果包含着<strong>数据报帧</strong>的数据包得到了确认，那么实现<em><strong>可以</strong></em>通知作为发送方的应用有关该数据报传输与接收成功的消息。由于数据包乱序的存在，可能出现<strong>数据报帧</strong>起初被认为遭遇丢包但是后来被接收到且得到确认的情况。必须注意，对于某<strong>数据报帧</strong>的确认只能表明接收方的传输层处理了这个帧，并不保证接收方的应用成功处理了数据。因此，这个信号无法代替能够表明成功处理数据的应用层信号。</p>
 </div>
@@ -301,7 +301,7 @@
 <a href="#5.4_Congestion_Control">5.4. 拥塞控制</a>
 </h2>
 <div class="content">
-<p><strong>数据报帧</strong>采用了QUIC连接的拥塞控制器。于是，在拥塞控制器批准之前（详见《<a href="">RFC9002</a>》），某条连接可能无法发送<strong>数据报帧</strong>。发送方<em><strong>必须</strong></em>要么推迟发送该帧，直到拥塞控制器批准为止，或者丢弃该帧，干脆不发送它（这时发送方<em><strong>可以</strong></em>通知应用有关该事件的消息）。使用了数据包限速（详见《<a href="">RFC9002</a>》的<a href="">第7.7章</a>）的实现还可以推迟<strong>数据报帧</strong>的发送，来维持稳定的数据包发送速率。</p>
+<p><strong>数据报帧</strong>采用了QUIC连接的拥塞控制器。于是，在拥塞控制器批准之前（详见《<a href="../RFC9002_Chinese_Simplified">RFC9002</a>》），某条连接可能无法发送<strong>数据报帧</strong>。发送方<em><strong>必须</strong></em>要么推迟发送该帧，直到拥塞控制器批准为止，或者丢弃该帧，干脆不发送它（这时发送方<em><strong>可以</strong></em>通知应用有关该事件的消息）。使用了数据包限速（详见《<a href="../RFC9002_Chinese_Simplified">RFC9002</a>》的<a href="../RFC9002_Chinese_Simplified/#7.7_Pacing">第7.7章</a>）的实现还可以推迟<strong>数据报帧</strong>的发送，来维持稳定的数据包发送速率。</p>
 <p>实现可以选择性地支持由应用指定的发送超时时间，一旦超过了该时间，那么被拥塞控制机制限制的<strong>数据报帧</strong>就应该被丢弃，而不进行传输。</p>
 </div>
 </section>
@@ -310,8 +310,8 @@
 <a href="#6_Security_Considerations">6. 关于安全性的考量</a>
 </h1>
 <div class="content">
-<p><strong>数据报帧</strong>与在同一QUIC连接中发送的其他数据共享相同的安全属性，并且都适用于《<a href="">RFC9000</a>》中描述的安全性上的考量。所有用<strong>数据报帧</strong>传输的应用数据都，像<strong>流帧</strong>一样，<em><strong>必须</strong></em>受到0-RTT或1-RTT密钥的保护。</p>
-<p>允许在0-RTT中发送<strong>数据报帧</strong>的应用协议需要定义0-RTT的使用范围；详见《<a href="">RFC9001</a>》的<a href="">第5.6章</a>。</p>
+<p><strong>数据报帧</strong>与在同一QUIC连接中发送的其他数据共享相同的安全属性，并且都适用于《<a href="../RFC9000_Chinese_Simplified">RFC9000</a>》中描述的安全性上的考量。所有用<strong>数据报帧</strong>传输的应用数据都，像<strong>流帧</strong>一样，<em><strong>必须</strong></em>受到0-RTT或1-RTT密钥的保护。</p>
+<p>允许在0-RTT中发送<strong>数据报帧</strong>的应用协议需要定义0-RTT的使用范围；详见《<a href="../RFC9001_Chinese_Simplified">RFC9001</a>》的<a href="../RFC9001_Chinese_Simplified/#5.6_Use_of_0-RTT_Keys">第5.6章</a>。</p>
 <p>路径上的有能力丢弃数据包的中间设备可以检测到<strong>数据报帧</strong>的使用与否。由于<strong>数据报帧</strong>不需要使用传输层的重传，因此<strong>数据报帧</strong>对待数据包丢包的与众不同的响应行为可能令使用了该帧的连接被区分出来。</p>
 </div>
 </section>

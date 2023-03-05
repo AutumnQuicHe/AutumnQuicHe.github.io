@@ -3,31 +3,119 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
-<title>RFC9308中文：QUIC协议的适用性</title>
+<title>RFC9308中文：QUIC协议的适用范围</title>
 <link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC9308_Chinese_Simplified/css/RFC9308.css" rel="stylesheet"/>
-<link href="/RFC9308_Chinese_Simplified/index.xml" rel="alternate" title="RFC9308中文：QUIC协议的适用性" type="application/rss+xml">
+<link href="/RFC9308_Chinese_Simplified/index.xml" rel="alternate" title="RFC9308中文：QUIC协议的适用范围" type="application/rss+xml">
 </link></head>
 <body>
 <div class="sidebar sidebar-rfc9308">
 <div class="navigation">
 <div><a href="/">秋愧遲</a></div>
-<h1 class="site-title"><a href="/RFC9308_Chinese_Simplified/">RFC9308中文：QUIC协议的适用性</a></h1>
+<h1 class="site-title"><a href="/RFC9308_Chinese_Simplified/">RFC9308中文：QUIC协议的适用范围</a></h1>
 <nav class="internal">
 <ul>
 <li>
-<a href="#RFC9308%c2%a0Applicability%c2%a0of%c2%a0the%c2%a0QUIC%c2%a0Transport%c2%a0Protocol">RFC9308 QUIC协议的适用性</a>
+<a href="#RFC9308%c2%a0Applicability%c2%a0of%c2%a0the%c2%a0QUIC%c2%a0Transport%c2%a0Protocol">RFC9308 QUIC协议的适用范围</a>
 <ul>
 <li><a href="#Forword">前言</a></li>
 <li><a href="#Abstract">摘要</a></li>
 <li><a href="#Status_of_This_Memo">备忘状态</a></li>
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_The_Necessity_of_Fallback">2. 回退的必要性</a>
+</li>
+<li>
+<a href="#3_0-RTT">3. 0-RTT</a>
+<ul>
+<li><a href="#3.1_Replay_Attacks">3.1. 重放攻击</a></li>
+<li><a href="#3.2_Session_Resumption_versus_Keep_Alive">3.2. 重放攻击</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Use_of_Streams">4. 流的使用</a>
+<ul>
+<li><a href="#4.1_Stream_versus_Flow_Multiplexing">4.1. 流而非流量的多路复用</a></li>
+<li><a href="#4.2_Prioritization">4.2. 优先级</a></li>
+<li><a href="#4.3_Ordered_and_Reliable_Delivery">4.3. 有序且可靠的交付</a></li>
+<li><a href="#4.4_Flow_Control_Deadlocks">4.4. 流量控制死锁</a></li>
+<li><a href="#4.5_Stream_Limit_Commitments">4.5. 流数量限制的承诺</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_Packetization_and_Latency">5. 分包与延迟</a>
+</li>
+<li>
+<a href="#6_Error_Handling">6. 错误处理</a>
+</li>
+<li>
+<a href="#7_Acknowledgment_Efficiency">7. 确认频率</a>
+</li>
+<li>
+<a href="#8_Port_Selection_and_Application_Endpoint_Discovery">8. 端口选择与应用终端发现</a>
+<ul>
+<li>
+<a href="#8.1_Source_Port_Selection">8.1. 源端口的选择</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#9_Connection_Migration">9. 连接迁移</a>
+</li>
+<li>
+<a href="#10_Connection_Termination">10. 连接终止</a>
+</li>
+<li>
+<a href="#11_Information_Exposure_and_the_Connection_ID">11. 信息暴露与连接ID</a>
+<ul>
+<li><a href="#11.1_Server_Generated_Connection_ID">11.1. 由服务器创建的连接ID</a></li>
+<li><a href="#11.2_Mitigating_Timing_Linkability_with_Connection_ID_Migration">11.2. 使用连接ID迁移降低计时侧信道的可关联性</a></li>
+<li><a href="#11.3_Using_Server_Retry_for_Redirection">11.3. 将服务器重试用于重定向</a></li>
+</ul>
+</li>
+<li>
+<a href="#12_Quality_of_Service_QoS_and_Diffserv_Code_Point_DSCP">12. 服务质量（QoS）与差分服务码点（DSCP）</a>
+</li>
+<li>
+<a href="#13_Use_of_Versions_and_Cryptographic_Handshake">13. 版本与加密握手的使用</a>
+</li>
+<li>
+<a href="#14_Enabling_Deployment_of_New_Versions">14. 支持新版本的部署</a>
+</li>
+<li>
+<a href="#15_Unreliable_Datagram_Service_over_QUIC">15. 基于QUIC的不可靠数据报服务</a>
+</li>
+<li>
+<a href="#16_IANA_Considerations">16. 关于IANA的考量</a>
+</li>
+<li>
+<a href="#17_Security_Considerations">17. 关于安全性的考量</a>
+</li>
+<li>
+<a href="#18_References">18. 参考文献</a>
+<ul>
+<li><a href="#18.1_Normative_References">18.1. 规范性参考文献</a></li>
+<li><a href="#18.2_Informative_References">18.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgements">致谢</a>
+</li>
+<li>
+<a href="#Contributors">贡献者</a>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
 </li>
 </ul>
 </nav>
@@ -38,13 +126,13 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
 <section class="page" id="RFC9308 Applicability of the QUIC Transport Protocol">
 <h1>
-<a href="#RFC9308%c2%a0Applicability%c2%a0of%c2%a0the%c2%a0QUIC%c2%a0Transport%c2%a0Protocol">RFC9308 QUIC协议的适用性</a>
+<a href="#RFC9308%c2%a0Applicability%c2%a0of%c2%a0the%c2%a0QUIC%c2%a0Transport%c2%a0Protocol">RFC9308 QUIC协议的适用范围</a>
 </h1>
 <div class="content">
 <br/>
@@ -97,7 +185,7 @@
 <a href="#Forword">前言</a>
 </h2>
 <div class="content">
-<p>本文是关于如何协商QUIC位的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+<p>本文是关于QUIC协议适用范围的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
 </div>
 </section>
 <section class="page" id="Abstract">
@@ -105,7 +193,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>本文描述了一种协商能够为QUIC包第二个重要位发送任意值的能力的方法。</p>
+<p>本文档讨论了QUIC传输协议的适用范围，着重于可能影响应用基于QUIC开发与部署的警告。本文档的目标读者是可映射至QUIC的应用协议的设计者和这类应用协议的实现者。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -125,6 +213,594 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>QUIC（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》）是一种全新的传输协议，它提供了诸多高级特性。尽管起初是为HTTP的使用场景来设计的，但它提供的能力可以被广泛应用在其他应用中。QUIC是用UDP封装的。QUIC版本1中集成了TLS 1.3（详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》），从而加密所有载荷数据与绝大多数控制信息。基于QUIC的HTTP版本被称为HTTP/3（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》）。</p>
+<p>本文档为想要使用QUIC协议的应用开发者提供了指导，而无需开发者亲自实现QUIC协议。其中包括对基于HTTP/3或直接运行于QUIC之上的应用的通用指导。</p>
+<p>在后续的章节中，我们讨论了针对QUIC适用范围的警告和应用开发者在将QUIC用作其应用的传输方式时必须考虑的问题。</p>
+</div>
+</section>
+<section class="page" id="2_The_Necessity_of_Fallback">
+<h1>
+<a href="#2_The_Necessity_of_Fallback">2. 回退的必要性</a>
+</h1>
+<div class="content">
+<p>QUIC将UDP用作基础协议。这么做能支持用户空间中的实现且无需更新现有网络基础设施就能允许中间设备进行网络穿透（其中包括NAT）。</p>
+<p>尽管相比TCP，几乎没有证据表明UDP流量还具有其他形式的系统性缺陷，但是测量类的研究表明，3%（详见《<a href="https://ripe72.ripe.net/wp-content/uploads/presentations/86-atlas-udpdiff.pdf">Trammell16</a>》）至5%（详见《<a href="https://www.ietf.org/proceedings/96/slides/slides-96-quic-3.pdf">Swett16</a>》）的网络会拦截一切UDP流量。这种拦截行为意味着所有基于QUIC运行的应用都必须要么准备好接受这类网络中的连接故障，要么具有能够回退到其他传输协议的架构。在HTTP的场景中，回退方案就是基于TCP的TLS。</p>
+<p>IETF传输服务（TAPS）规范（详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-taps-arch-14">TAPS-ARCH</a>》）中描述的系统具有面向多种协议的通用API。这与QUIC尤其相关，因为它解决了在不同协议间回退所带来的影响。</p>
+<p>需要强调的是，应该避免回退至不安全的协议或同协议在安全性上较弱的版本。一般来说，实现了回退的应用应该考虑其安全性上的影响。回退至TCP和TLS的做法将使得网络设备有能力修改与操纵控制信息。除此之外，降级至低于1.3的TLS版本，即QUIC版本1中使用的TLS版本，可能造成加密保护效果的严重弱化。例如，只有在使用了TLS 1.3时，协议协商（详见《<a href="https://www.rfc-editor.org/info/rfc7301">RFC7301</a>》）的结果才具有可信度保护。</p>
+<p>这类应用必须有能力在回退协议缺少QUIC所提供的特性或具有功能缺陷的情况下运行。对于回退至基于TCP的TLS的做法，最显著的区别是TCP并不提供流的多路复用特性，因此应用层应该在必要时实现流的多路复用。除此之外，TCP实现和网络路径经常不支持“TCP快速打开”（TFO）选项，该选项像QUIC中提供的0-RTT会话恢复机制一样，允许在新连接上将载荷数据与首个控制数据包一起发送。注意，目前有证据表明某些中间设备即便在成功协商TFO后也会拦截SYN数据（详见《<a href="https://www.nanog.org/sites/default/files/Paasch_Network_Support.pdf">PaaschNanog</a>》）。即便两端间的快速打开正常运作，它也仅作用于单个包含TLS握手与应用数据的数据包，比不上QUIC的0-RTT。</p>
+<p>更进一步地，尽管加密（即TLS）是紧密集成在QUIC内部的，但是基于TCP的TLS协商却可以被拦截。如果不支持基于TCP的TLS，那么应该中止连接，且随后应用应该向用户做出合适的提醒，告知其目前无法进行安全通信。</p>
+<p>综上所述，所有回退机制都有可能带来性能上的恶化和安全性上的削弱；不过，回退绝不可以静默地违背应用对其载荷数据可信度与完整性的预期。</p>
+</div>
+</section>
+<section class="page" id="3_0-RTT">
+<h1>
+<a href="#3_0-RTT">3. 0-RTT</a>
+</h1>
+<div class="content">
+<p>QUIC在连接建立时允许发送0-RTT数据。尽管基于TCP的TLS 1.3中存在同样的特性，但是0-RTT为使用QUIC的应用同时带来了机遇与挑战。</p>
+<p>从使用0-RTT的应用视角来看，在连接建立期间支持0-RTT的传输协议与不支持的协议有着本质区别。在先关闭连接再打开新连接的开销与试图保持连接开放的开销之间权衡时的思路是不同的；详见《<a href="#3.2_Session_Resumption_versus_Keep_Alive">第3.2章</a>》。</p>
+<p>应用应该谨慎选择要不要支持0-RTT，因为0-RTT带来了重放攻击的风险。支持0-RTT的应用协议应该准备一份使用说明，在其中描述它可以安全发送的信息类型。对于HTTP来说，《<a href="https://www.rfc-editor.org/info/rfc8470">HTTP-REPLAY</a>》中描述了其使用说明。</p>
+</div>
+</section>
+<section class="page" id="3.1_Replay_Attacks">
+<h2>
+<a href="#3.1_Replay_Attacks">3.1. 重放攻击</a>
+</h2>
+<div class="content">
+<p>重传或恶意重放0-RTT中的数据有可能造成服务器多次接收到相同数据。</p>
+<p>若被重放，那么客户端在0-RTT数据包中发送的应用数据可能得到多次处理。应用应该了解哪些是它在0-RTT中能够安全发送的数据。希望启用0-RTT的应用协议需要进行细致分析，描述其能够在0-RTT中发送的内容；详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.6_Use_of_0-RTT_Keys">第5.6章</a>。</p>
+<p>在某些情况下，将0-RTT中的应用数据限制为不会引发服务器上具有持续影响的行为的数据就足够了。例如，发起数据检索或建立配置文件都是安全的行为。幂等的操作——多次操作与单次操作产生的影响完全相同的操作——或许是安全的。但是，独立的幂等操作被组合为一组非幂等操作的情况也是可能出现的。</p>
+<p>一旦服务器接受了0-RTT数据，就没有任何选择性撤销已接收到的数据的方法。但是，协议可以指定一些途径来拒绝个别在被重放后可能不安全的操作。</p>
+<p>一些TLS实现和部署或许有能力提供部分甚至完全的重放保护，可以用它们来控制重放风险。</p>
+</div>
+</section>
+<section class="page" id="3.2_Session_Resumption_versus_Keep_Alive">
+<h2>
+<a href="#3.2_Session_Resumption_versus_Keep_Alive">3.2. 重放攻击</a>
+</h2>
+<div class="content">
+<p>由于QUIC是用UDP封装的，使用QUIC的应用必须对较短的网络空闲超时进行处理。以有状态部署的中间设备一般会在发送首个数据包时为UDP流建立状态量，并以比TCP短得多的空闲期来维持该状态量。《<a href="https://www.rfc-editor.org/info/rfc5382">RFC5382</a>》建议TCP的空闲期为至少124分钟，尽管没有文献证据表明该建议值得到了广泛实现。然而，UDP的网络超时时长较短一事得到了完好的记录。根据一项2010年的研究（详见《<a href="https://conferences.sigcomm.org/imc/2010/papers/p260.pdf">Hatonen10</a>》），UDP应用可以假设所有NAT绑定和状态量都会仅仅因为网络三十秒无活动而过期失效。《<a href="https://www.rfc-editor.org/info/rfc8085">RFC8085</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8085#section-3.5">第3.5章</a>进一步讨论了UDP的<code>keep-alive</code>间隔：它要求其最低值为15秒，但是推荐使用更高的值，或完全省略<code>keep-alive</code>。</p>
+<p>通过使用连接ID，QUIC被设计为能够抵抗因为超时而引发的NAT重绑定。然而，这仅在某终端在其对端正在使用的地址上保持可用，且超时后由对端发起数据发送的情况下起作用。</p>
+<p>一些QUIC连接可能因为路由基础设施（尤其是负载均衡器）使用地址/端口四元组来转发流量而无法经受NAT重绑定。此外，功能并非地址转换的中间设备还可能影响网络路径。特别是，一些防火墙会因为最近没有来自客户端的相关数据包而拒绝放行来自服务器的流量。</p>
+<p>QUIC应用可以调整空闲期从而控制超时风险。空闲期与网络空闲超时时长，及连接空闲超时时长都不同，它被定义为两端的空闲超时参数中较小的那个值；详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#10.1_Idle_Timeout">第10.1章</a>。该调整存在三种方案：</p>
+<ul>
+<li>
+<p>如果应用层协议完全由空闲期较短或不存在的交互组成，或协议对NAT重绑定的抗性足够，那么就忽略该问题。</p>
+</li>
+<li>
+<p>确保不存在较长的空闲期。</p>
+</li>
+<li>
+<p>在一段较长的空闲期过后恢复会话，并在可用时使用0-RTT来恢复。</p>
+</li>
+</ul>
+<p>第一条策略是最简单的，但是它仅对特定应用适用。</p>
+<p>在某QUIC应用中，服务器和客户端中的一方可以将<strong>Ping帧</strong>用作<code>keep-alive</code>来发送，从而避免连接或任何路径上的状态量超时。<code>keep-alive</code>的使用推荐因应用而异，主要取决于应用对延迟的要求及其通信的频率。在这种情况下，应用映射必须指定是客户端还是服务器来负责保持应用的网络活跃。尽管《<a href="https://conferences.sigcomm.org/imc/2010/papers/p260.pdf">Hatonen10</a>》中建议，30秒对于路径上存在NAT的公共互联网可能是一个合适的值，但是如果部署有能力持续经受NAT重绑定，或它已知环境为可控状态（例如，数据中心），那么可以倾向于选取更大的值，从而降低网络及计算方面的负载。</p>
+<p>在较长的空闲期内以高于每30秒一次的频率发送<strong>Ping帧</strong>，在某些情况下可能产生过量且无效的流量，并为电力受限（移动）设备带来无法容忍的能耗。除此之外，短于30秒的超时时长将使得对网络暂时中断的处理变得困难，此类情况包括虚拟机（VM）迁移和在移动过程中的网络信号丢失。有关内容详见《<a href="https://www.rfc-editor.org/info/rfc8085">RFC8085</a>》，特别是其<a href="https://www.rfc-editor.org/rfc/rfc8085#section-3.5">第3.5章</a>。</p>
+<p>作为替代，客户端（而不是服务器）可以使用会话恢复而不是发送<code>keep-alive</code>流量。在这种情况下，想在一条已空闲的时长超过服务器的空闲超时时长（通过传输参数<code>idle_timeout</code>发送）的连接上发送数据的客户端可以简单地重新发起连接。若可用，则该重连可以使用0-RTT会话恢复机制，降低因重启连接而引入的延迟。当然，该方法仅在能够安全使用0-RTT且客户端为重连的发起方时才可用。</p>
+<p>在会话恢复和<code>keep-alive</code>间的选择需要按照各个应用的基准来权衡。一般来说，应用仅应该在极有可能维持通信的条件下使用<code>keep-alive</code>；例如，《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》中的推荐做法是仅当存在在途请求时才使用<code>keep-alive</code>。</p>
+</div>
+</section>
+<section class="page" id="4_Use_of_Streams">
+<h1>
+<a href="#4_Use_of_Streams">4. 流的使用</a>
+</h1>
+<div class="content">
+<p>QUIC流的多路复用特性允许应用在单条连接之上运行多条流，而不会引入流与流之间的队头阻塞。流数据是用帧来传递的，通信线路上的一个QUIC数据包能够携带一个或多个流帧。</p>
+<p>流可以是单向的或双向的，且流可以由客户端和服务器中的任意一方发起。对于单向流，只有其发起方才能发送数据。</p>
+<p>由于流数据偏移字段的编码限制和连接上的流量控制限制，流和连接分别只能在单个方向上传递至多<code>2<sup>62</sup>-1</code>字节的数据。在应用触及该上限这样一种不太可能发生的情况下，应该建立新连接。</p>
+<p>流可以被，优雅地或强行地，独立打开和关闭。应用可以通过令QUIC在<strong>流帧</strong>中发送<code>FIN</code>置位的方式，优雅地将某条流的发送方向关闭。只要对端没有发送<code>FIN</code>，它就不能优雅地关闭流的接收方向，这和TCP很像。然而，终端可以强行关闭发送方向，或要求对端强行关闭接收方向；这些操作完全不依赖于对端的意愿。</p>
+<p>QUIC并不提供对任何流进行异常处理的接口。如果一条对于应用来说很关键的流被关闭了，那么应用可以在应用层创建错误信息，以告知对端及/或其更高层，后者最终有能力终止QUIC连接。</p>
+<p>将应用数据映射至流的方式视应用的不同而不同，《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》中描述了HTTP/3的映射。在设计某应用对流的使用方式时，存在一些适用的通用准则：</p>
+<ul>
+<li>
+<p>单条流内的数据是有序的。如果应用要求按顺序接收特定数据，那么就应该在同一条流上发送这些数据。在不同的流间，不保证传输、接收和交付顺序。</p>
+</li>
+<li>
+<p>多条流间的数据是并发的。可以被独立处理，且在强制接收顺序的情况下会引发队头阻塞的数据应该经由多条单独的流来传输。</p>
+</li>
+<li>
+<p>流支持消息定向，且允许取消消息。如果某条消息被映射至某条流上，那么重置该流就能使得某未得到确认的消息超时，利用这一点可以模拟该消息的部分可靠性。</p>
+</li>
+</ul>
+<p>如果QUIC的接收方打开的并发流数量达到了上限，发送方又表示需要更多的流，那么这不会导致接收方提高流的数量上限。因此，应用应该在决定如何将数据映射至流上时将允许的流数量上限、当前打开的流数量和当前使用的流数量纳入考量。</p>
+<p>QUIC向每条流分配一个数字标识符，称之为流ID。尽管QUIC版本1中清晰地定义了这些标识符与流类型间的关系。但是将来的版本可能出于各种理由更改此关系。QUIC实现应该将各条流的属性暴露出来（哪个终端发起了流、流是单向的还是双向的、流的ID等）；应用应该查询这些属性，而不是尝试从流ID中推断它们。</p>
+<p>向应用打开的流分配流标识符的方法可能因传输协议的实现不同而不同。因此，应用不应该假设某个特定的流ID会被分配给某条尚未得到分配的流。例如，HTTP/3使用流ID来引用已打开的流，但对于将来的流ID或其分配方式不做任何假设（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》的<a href="../RFC9114_Chinese_Simplified/#6_Stream_Mapping_and_Usage">第6章</a>）。</p>
+</div>
+</section>
+<section class="page" id="4.1_Stream_versus_Flow_Multiplexing">
+<h2>
+<a href="#4.1_Stream_versus_Flow_Multiplexing">4.1. 流而非流量的多路复用</a>
+</h2>
+<div class="content">
+<p>流仅对应用有意义；由于流信息在QUIC的加密保护下传递的，任何数据包都不会暴露数据包内部的流数据究竟属于哪条（些）流。因此，流多路复用的目的并不是为了使它受到网络条件上的差别对待。所以要求网络条件差别化的应用流量应该经由不同的五元组（例如使用不同的QUIC连接）来传递。在QUIC有能力将应用数据放在连接的首轮RTT中发送的条件下（只要先前成功地与同一主机建立过连接以获得必要的凭据），建立另一条连接的成本非常低。</p>
+</div>
+</section>
+<section class="page" id="4.2_Prioritization">
+<h2>
+<a href="#4.2_Prioritization">4.2. 优先级</a>
+</h2>
+<div class="content">
+<p>流的优先级既没有暴露给网络也没有暴露给接收方。优先级是由发送方控制的，同时QUIC传输层应该向应用提供接口来为流设置优先级（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》）。应用可以基于QUIC实现它们自己的优先级方案：运行于QUIC之上的应用协议可以定义明确的用于标记优先级的消息，例如在《<a href="https://www.rfc-editor.org/info/rfc9218">RFC9218</a>》中为HTTP定义的那些消息。应用协议可以定义允许终端根据上下文来决定优先级的规则，或提供上层接口并交给上层应用来判断。</p>
+<p>重传行为的优先级处理可以由发送方在传输层实现。《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》推荐在发送新数据前重传丢失的数据，除非受到应用的特别指定。当QUIC终端使用完全可靠的流来传输数据时，重传的优先化将在大多数场景中有所裨益，既能填补数据空缺又能释放流量控制窗口。对于不可靠或部分可靠的流，可能不希望将重传的优先级设置到高于其他高优先级的流数据。对于这些流，QUIC可以要么提供明确的控制优先级的接口，要么基于流的可靠度来决定优先级。</p>
+</div>
+</section>
+<section class="page" id="4.3_Ordered_and_Reliable_Delivery">
+<h2>
+<a href="#4.3_Ordered_and_Reliable_Delivery">4.3. 有序且可靠的交付</a>
+</h2>
+<div class="content">
+<p>QUIC流支持有序且可靠的交付。尽管实现有可能提供将流用于乱序的或部分可靠的交付的选项，但是绝大多数实现都假设数据是可靠且有序地送达的。</p>
+<p>基于该假设，终端接收流数据的进度或许只有在与流的起始位置接续的数据抵达后才会有所进展。需要强调的是，接收方可能只有在接续数据被交付给应用后才释放流量控制额度；详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#2.2_Sending_and_Receiving_Data">第2.2章</a>。为了支持该接收逻辑，终端在数据得到确认前不会中断流数据的发送，确保流起始位置的数据首先得到发送和确认。</p>
+<p>使用了其他的发送行为，又没有与对端协商此变更的终端可能遇到性能问题或死锁。</p>
+</div>
+</section>
+<section class="page" id="4.4_Flow_Control_Deadlocks">
+<h2>
+<a href="#4.4_Flow_Control_Deadlocks">4.4. 流量控制死锁</a>
+</h2>
+<div class="content">
+<p>QUIC的流量控制机制（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#4_Flow_Control">第4章</a>）提供了一种途径来控制终端为传入数据准备的有限缓存的访问权限。这项机制限制了能够存在于终端的缓存或网络线路中的数据量。然而，这种限制在某些情况下可能使得连接低效运行或遇到死锁。</p>
+<p>流量控制中的死锁在任何使用QUIC的协议中都有可能出现，不过它们是否会发展为严重问题取决于实现消耗数据和提供流量控制额度的方式。把握住死锁产生的原因或许能帮助实现避免死锁。</p>
+<p>流量控制额度的尺寸和更新速率会影响性能。使用QUIC的应用经常具有一个从传输层缓存中读取数据的数据消费器。一些实现可能在传输层和应用层准备了独立的接收缓存。数据的消费并不总是意味着数据立即得到了处理。然而，一种常见的实现技巧是通过随数据消费而发送<strong>最大数据量帧</strong>和/或<strong>最大流数据量帧</strong>的方式来将流量控制额度的扩充告知发送方。这些帧的交付受到从接收方至数据发送方这一反向信道的延迟影响。如果没有及时扩充额度，那么正在发送的应用会受到阻塞，严重限制发送速率。</p>
+<p>如果接收方没有逐渐从传输层读取数据，那么较大的应用消息可能带来死锁。如果消息尺寸大于可用的流量控制额度，且接收方只有在接收到并交付完整消息后才释放额外的流量控制额度，那么死锁就会发生。即使没有触及流的流量控制上限，这种情况也有可能发生，因为其他流会来消费连接的流量控制额度。</p>
+<p>具有长度前缀的消息格式使得数据消费器更容易在传输层缓存中遗留数据并扣留流量控制额度。如果流量控制的限制阻止了消息剩余部分的发送，那么就会造成死锁。长度前缀或许有助于检测此类死锁。当应用协议中存在可能必须作为一个单元来处理的消息时，为整条消息保留足够的流量控制额度能使得此类死锁更不容易出现。</p>
+<p>数据消费器可以主动读取所有可用数据从而使得接收方扩充流量控制额度并降低发生死锁的可能性。然而，这样的数据消费器或许需要额外的方法，让对端对其为部分处理的消息维持的额外状态负起责任。</p>
+<p>死锁还有可能在不同流上的数据具有依赖时发生。假设某条流上的数据比另一条流上的数据先抵达，且前者依赖后者。如果前者的流保持未读状态，那么就会阻止接收方为后者的流扩充流量控制额度。为了降低死锁因为数据依赖而发生的可能性，发送方应该确保只有在为被依赖的数据恢复流级和连接级的流量控制额度后才发送依赖它的数据。</p>
+<p>或许可以通过用<strong>停止发送帧</strong>或<strong>流重置帧</strong>取消受影响的流的方式来解决一些死锁场景。在某些协议中，取消某些流会引发连接的终止。</p>
+</div>
+</section>
+<section class="page" id="4.5_Stream_Limit_Commitments">
+<h2>
+<a href="#4.5_Stream_Limit_Commitments">4.5. 流数量限制的承诺</a>
+</h2>
+<div class="content">
+<p>QUIC终端有义务宣告它允许对端打开的流的累计总数。初始的限制值是通过传输参数<code>initial_max_streams_bidi</code>和<code>initial_max_streams_uni</code>来宣告的。随着流的打开与关闭，会消耗可用的流数量，而累计总数会上升。限制值可以使用<strong>最大流帧</strong>来提高，但是不存在降低限制值的机制。一旦触及流上限，就不能再打开任何流，这会阻止QUIC应用继续通信。在这个阶段，可以通过空闲超时或主动关闭的方式来终止连接；详见<a href="#10_Connection_Termination">第10章</a>。</p>
+<p>为了，比如说，停止服务器来开展例行维护，使用QUIC并告知累计流数上限的应用可能需要连接在触及流数上限前就被关闭。连接的立即关闭会造成正在活跃的流被强行关闭。取决于应用使用QUIC流的方式，这种后果可能是不想要的或对应用行为和性能有害的。</p>
+<p>一种更加优雅的关闭技巧是停止提高流数量限制，令连接在消耗完已打开的流后自然地终止。然而，这个过程所需的时间取决于对端，且不确定的关闭耗时可能满足不了应用或操作上的需要。使用QUIC的应用可以在开放流数量上表现得保守一些，以降低承诺与不确定性。不过，表现得过于保守则会影响流的并发。在这些方面的权衡方式可以是特定于应用及其部署的。</p>
+<p>可以使用应用层的优雅关闭机制来明确表达在将来的某个时间点关闭连接的意图，而不是依靠流数量限制来避免强行关闭。利用<strong>关闭帧</strong>，HTTP/3提供了该机制。在HTTP/3中，当客户端接收到<strong>关闭帧</strong>时，即便累计流数量允许，它也会停止打开新的流。相反，客户端将创建一条新连接，并在新连接上打开后续的流。一旦旧连接上的所有流都被关闭，就能通过连接关闭的途径或经过空闲超时时长之后再安全地关闭所有流（详见<a href="#10_Connection_Termination">第10章</a>）。</p>
+</div>
+</section>
+<section class="page" id="5_Packetization_and_Latency">
+<h1>
+<a href="#5_Packetization_and_Latency">5. 分包与延迟</a>
+</h1>
+<div class="content">
+<p>QUIC暴露了一个可以向应用提供多条流的接口；然而，应用通常无法控制用这些流传输的数据与帧的映射方式，也无法控制这些帧被打包进数据包的方式。</p>
+<p>默认情况下，许多实现都会向各个QUIC数据包中尽可能多地填充来自一条或多条流的<strong>流帧</strong>，从而最小化带宽消耗和计算成本（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#13_Packetization_and_Reliability">第13章</a>）。如果没有足够的可用数据来填充数据包，那么实现可能等待一段较短的延迟，牺牲延迟以优化带宽效率。该延迟可以是预配置的，或是基于应用发送模式的观察结果而动态调整得到的。</p>
+<p>如果应用对低延迟有要求，又只有小块的数据需要发送，那么向QUIC提示应该尽快发送所有数据的做法可能是有价值的。作为替代方案，它也可以向QUIC提供一个建议的延迟值，指出在将帧打包进数据包前可以等待多久。</p>
+<p>类似地，应用一般无法控制通信线路上的QUIC数据包长度。QUIC提供了添加<strong>填充帧</strong>，从而任意扩大数据包尺寸，的能力。QUIC使用填充来确保在握手期间（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#14.1_Initial_Datagram_Size">第14.1章</a>）、连接迁移后的路径验证（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#8.2_Path_Validation">第8.2章</a>）时，以及进行数据报分包层PMTU发现（DPLPMTUD，详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#14.3_Datagram_Packetization_Layer_PMTU_Discovery">第14.3章</a>）时，路径有能力传输至少为某个特定尺寸大小的数据报。</p>
+<p>应用还可以使用填充来抑制被发送数据的信息泄露。QUIC实现可以暴露一个接口，允许应用层指定如何进行填充。</p>
+</div>
+</section>
+<section class="page" id="6_Error_Handling">
+<h1>
+<a href="#6_Error_Handling">6. 错误处理</a>
+</h1>
+<div class="content">
+<p>QUIC推荐终端为所有检测到的错误都向对端发出信号。错误可以在传输层和应用层发生。传输层错误，例如协议违反，会影响整条连接。使用QUIC的应用可以定义自己的错误检测与信号机制（作为样例，详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》的<a href="../RFC9114_Chinese_Simplified/#8_Error_Handling">第8章</a>）。应用层错误可以影响整条连接或单条流。</p>
+<p>QUIC定义了用于传输层错误处理的错误码空间。QUIC鼓励终端使用最为准确的错误码，不过允许使用任何适用的错误码，包括通用的那些。</p>
+<p>使用QUIC的应用定义的错误码空间独立于QUIC或其他应用（作为样例，详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》的<a href="../RFC9114_Chinese_Simplified/#8.1_HTTP3_Error_Codes">第8.1章</a>）。应用层错误码空间中的值可以在连接级错误和流级错误间复用。</p>
+<p>连接错误将引发连接终止。它们是使用<strong>连接关闭帧</strong>来发出信号的，其中包含着一个错误码和一个可以为空的原因字段。传输层错误和应用层错误是使用不同类型的<strong>连接关闭帧</strong>来发出信号的。</p>
+<p>流错误将引发流的终止。它们是使用<strong>停止发送帧</strong>或<strong>流重置帧</strong>来发出信号的，其中只包含一个错误码。</p>
+</div>
+</section>
+<section class="page" id="7_Acknowledgment_Efficiency">
+<h1>
+<a href="#7_Acknowledgment_Efficiency">7. 确认频率</a>
+</h1>
+<div class="content">
+<p>未经扩展的QUIC版本1采用一份源自TCP的确认策略（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#13.2_Generating_Acknowledgments">第13.2章</a>）。也就是说它推荐对所有数据包进行确认。然而，创建和处理QUIC确认会同时消耗发送方和接收方的资源。确认还会提高转发成本，并增加链路负载，这会影响部分类型的网络的性能。通过改用降低确认频率的替代策略，应用或许有能力影响综合性能。《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency-02">QUIC-ACK-FREQUENCY</a>》中描述了一种能够提示所需的确认延迟的扩展，并讨论了使用场景及其对拥塞控制和恢复的影响。</p>
+</div>
+</section>
+<section class="page" id="8_Port_Selection_and_Application_Endpoint_Discovery">
+<h1>
+<a href="#8_Port_Selection_and_Application_Endpoint_Discovery">8. 端口选择与应用终端发现</a>
+</h1>
+<div class="content">
+<p>通常来说，端口号具有两种目的：“首先，它们提供了解多路复用的标识符，从而区分同一对终端间的传输层会话；第二，它们还标识着应用协议和与进程连接着的关联服务”（详见《<a href="https://www.rfc-editor.org/info/rfc6335">RFC6335</a>》的<a href="https://www.rfc-editor.org/rfc/rfc6335#section-3">第3章</a>）。时至今日，动态端口分配的机制与封装的出现使得可以基于端口号来辨识网络应用的假设不再准确，详见《<a href="https://www.rfc-editor.org/info/rfc6335">RFC6335</a>》。</p>
+<p>由于QUIC是一份通用传输协议，因此不要求服务器为QUIC使用特定的UDP端口。对于能够回退至TCP但是尚未具有备选的UDP端口号映射的应用，通常来说，注册并使用与应用已注册的TCP端口号一致的UDP端口号的做法是合适的。例如，HTTP/3（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》）的默认端口是UDP端口<code>443</code>，与使用基于TCP的TLS的HTTP/1.1或HTTP/2类似。</p>
+<p>鉴于网络管理实践中普遍存在端口号明确映射到应用程序的假设，使用无法轻易映射到已注册服务名称的端口可能会导致转发行为受到网络元素，例如使用端口号进行应用程序识别的防火墙，的阻塞或其他更改。</p>
+<p>应用可以定义备选的终端发现机制以允许使用并非默认端口的端口号。例如，HTTP/3（详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》的[第3.2章](../RFC9114_Chinese_Simplified/#3.2_Connection Establishment)和<a href="../RFC9114_Chinese_Simplified/#3.3_Connection_Reuse">第3.3章</a>）规定了使用HTTP替代服务（详见《<a href="https://www.rfc-editor.org/info/rfc7838">RFC7838</a>》），在某HTTP源上以<code>h3</code>作为应用层协议协商（ALPN，详见《<a href="https://www.rfc-editor.org/info/rfc7301">RFC7301</a>》）词汇的方式宣告与其等价的HTTP/3终端正位于某个特定UDP端口上。</p>
+<p>ALPN允许客户端和服务器协商在给定连接上究竟使用哪份协议。因此，基于提供的ALPN词汇，在单个UDP端口上可以支持数个应用。为了用于TLS握手，使用QUIC的协议必须注册一个ALPN词汇。</p>
+<p>由于QUIC版本1将完整的版本协商机制的定义推迟了，所以HTTP/3指定使用QUIC版本1，且定义了ALPN词汇（<code>h3</code>）以专门适用于该版本。至今为止，无论是在HTTP/3中还是在一般用途中，都尚未指定任何单一方法来应对多QUIC版本的使用。使用QUIC的应用协议应该考虑协议如何应对不同的QUIC版本。这类协议在此问题上的决策或许可以从其他协议，如HTTP/3，的判断中获得启发。</p>
+</div>
+</section>
+<section class="page" id="8.1_Source_Port_Selection">
+<h2>
+<a href="#8.1_Source_Port_Selection">8.1. 源端口的选择</a>
+</h2>
+<div class="content">
+<p>某些UDP协议容易受到反射攻击，在这类攻击中，攻击者有能力将流量定向至第三方，引发拒绝服务。例如，与以下源端口关联的应用已知容易受到反射攻击，其常常是因为服务器的错误配置：</p>
+<ul>
+<li>
+<p>端口<code>53</code> - DNS （详见《<a href="https://www.rfc-editor.org/info/rfc1034">RFC1034</a>》）</p>
+</li>
+<li>
+<p>端口<code>123</code> - NTP （详见《<a href="https://www.rfc-editor.org/info/rfc5905">RFC5905</a>》）</p>
+</li>
+<li>
+<p>端口<code>1900</code> - SSDP （详见《<a href="https://openconnectivity.org/upnp-specs/UPnP-arch-DeviceArchitecture-v2.0-20200417.pdf">SSDP</a>》）</p>
+</li>
+<li>
+<p>端口<code>5353</code> - mDNS （详见《<a href="https://www.rfc-editor.org/info/rfc6762">RFC6762</a>》）</p>
+</li>
+<li>
+<p>端口<code>11211</code> - memcache</p>
+</li>
+</ul>
+<p>为了避免处理大量数据包所带来的开销，服务或许会拦截与已知易受反射攻击的协议关联的源端口。然而，这项实践在客户端上具有负面影响——它不仅需要建立新连接，在某些情况下还可能造成客户端在一段时间内避免用QUIC来连接该服务并降级到非UDP协议（详见<a href="#2_The_Necessity_of_Fallback">第2章</a>）。</p>
+<p>因此，鼓励客户端上的实现避免使用与已知易受反射攻击的协议关联的源端口。注意，遵循《<a href="https://www.rfc-editor.org/info/rfc6335">RFC6335</a>》中给出的客户端实现通用指导的做法会产生避免使用这些端口的效果。还要注意，其他源端口仍有可能成为反射攻击的目标。</p>
+</div>
+</section>
+<section class="page" id="9_Connection_Migration">
+<h1>
+<a href="#9_Connection_Migration">9. 连接迁移</a>
+</h1>
+<div class="content">
+<p>QUIC支持由客户端发起的连接迁移。如果客户端的IP地址发生变化，那么QUIC终端仍然可以使用QUIC数据包头部中的目标连接ID字段（详见<a href="#11_Information_Exposure_and_the_Connection_ID">第11章</a>）来将数据包关联到一条现存的传输层连接上。该特性能够支持地址信息变化，例如NAT重绑定、本地接口更改、临时IPv6地址（详见《<a href="https://www.rfc-editor.org/info/rfc8981">RFC8981</a>》）过期，以及来自服务器的首选地址指示（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#9.6_Server's_Preferred_Address">第9.6章</a>）等场景。</p>
+<p>如果存在或可能存在位于NAT后方的客户端，那么强烈推荐为服务器使用非空连接ID的做法。当支持活跃迁移时，也强烈推荐使用非空的连接ID。如果主动将连接迁移至新路径，那么使用新连接ID可以针对网络上的观察者将可关联性降至最低。如果使用了非空的连接ID，那么其他的QUIC终端可以使用连接ID来将不同地址关联至同一条连接。</p>
+<p>QUIC版本1的基本规范仅支持在同一时间使用一条网络路径，这能够支持故障切换的使用场景。要求终端在使用路径前先进行路径验证是为了避免地址伪造攻击。路径验证需要至少一轮RTT，同时拥塞控制状态会在路径迁移完成后被重置。因此，迁移对性能通常具有影响。</p>
+<p>QUIC的探测数据包被用于进行路径验证和测量路径特征，这种数据包可以同时在多条路径上发送。探测数据包不能传递应用数据，但是可能携带着填充帧。终端可以将接收到的探测数据包及其信息作为针对该路径的拥塞控制机制的输入。应用可以使用从探测中了解到的信息来决定要不要切换路径。</p>
+<p>在QUIC版本1中，只有客户端可以发起迁移。不过，服务器可以在握手期间表示出它倾向于在握手完成后将连接转移到另一个地址的意愿。作为范例，可以利用该机制来从一个与其他服务器共享的地址移动到服务器实例专属的地址上。服务器可以在TLS握手期间的传输参数中提供一个IPv4地址和一个IPv6地址，客户端则可以在两者均被提供时在其中选择一个。详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#9.6_Server's_Preferred_Address">第9.6章</a>。</p>
+</div>
+</section>
+<section class="page" id="10_Connection_Termination">
+<h1>
+<a href="#10_Connection_Termination">10. 连接终止</a>
+</h1>
+<div class="content">
+<p>QUIC的连接可能以三种方式之一终止：隐式的空闲超时、显式的立即关闭，或明确的无状态重置。</p>
+<p>QUIC并没有提供任何优雅地终止连接的机制；使用QUIC的应用可以定义自己的优雅终止流程（作为样例，详见《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》的<a href="../RFC9114_Chinese_Simplified/#5.2_Connection_Shutdown">第5.2章</a>）。</p>
+<p>QUIC的空闲超时是通过传输参数来启用的。客户端和服务器各声明一个超时时长，随后，对于此连接来说的有效值就是两个值中的较小的那个。一旦经过了超时时长，连接就会被静默地关闭。因此应用应该有能力配置其最大超时时长，并能够访问此连接上的超时计算值。应用可以基于开放的或期望的连接数为新连接调整其最大空闲超时时长，因为更短的超时值可以更频繁地触发资源回收。</p>
+<p>在流或数据报中通信的应用数据会推迟QUIC的空闲超时。因此具有自己的<code>keep-alive</code>机制的应用可以保持QUIC连接的活跃。并未提供自己的<code>keep-alive</code>机制的应用则可以利用传输层的一些机制（详见<a href="#3.2_Session_Resumption_versus_Keep_Alive">第3.2章</a>和《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#10.1.2_Deferring_Idle_Timeout">第10.1.2章</a>）。然而，不同的QUIC实现中，控制这类传输层行为的接口可能不同，影响这类方法的健壮性。</p>
+<p>立即关闭是通过<strong>连接关闭帧</strong>（详见<a href="#6_Error_Handling">第6章</a>）来发送信号的。立即关闭将使得所有流都被立即关闭，这可能会对应用产生影响；详见<a href="#4.5_Stream_Limit_Commitments">第4.5章</a>。</p>
+<p>无状态重置是一个无法访问连接状态的终端的最终手段。接收到无状态重置表明出现了并非连接错误的某种无法恢复的错误，且其中不存在应用层信息。</p>
+</div>
+</section>
+<section class="page" id="11_Information_Exposure_and_the_Connection_ID">
+<h1>
+<a href="#11_Information_Exposure_and_the_Connection_ID">11. 信息暴露与连接ID</a>
+</h1>
+<div class="content">
+<p>QUIC在头部未经加密的部分中向网络暴露了一些信息，这么做要么是因为尚未建立加密上下文，要么是有意将这些信息提供给网络使用。有关更多QUIC可管理性的信息，详见《<a href="../RFC9312_Chinese_Simplified">QUIC可管理性</a>》。QUIC的长包头会暴露更多信息（版本与源连接ID），而短包头只会暴露目标连接ID。在QUIC版本1中，连接建立期间使用的是长包头，而在已建立的连接中传输数据时使用的是短包头。</p>
+<p>连接ID可以为零长度。各个终端都能独立选择要不要使用零长度连接ID，除了客户端在连接建立期间发送的首个数据包外的所有数据包都可以使用零长度连接ID。</p>
+<p>选择使用零长度连接ID的终端将接收到零长度目标连接ID的数据包。终端应该使用其他信息，例如源IP地址和目标IP地址及端口号来分辨它归属于哪条连接。这意味着一旦这些值发生变化，终端就可能无法将数据报与连接成功匹配，使得连接无法经受NAT重绑定或迁移至新路径。</p>
+</div>
+</section>
+<section class="page" id="11.1_Server_Generated_Connection_ID">
+<h2>
+<a href="#11.1_Server_Generated_Connection_ID">11.1. 由服务器创建的连接ID</a>
+</h2>
+<div class="content">
+<p>QUIC支持使用由服务器创建的连接ID，它是在连接建立期间发送给客户端的（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#7.2_Negotiating_Connection_IDs">第7.2章</a>）。在负载均衡器后方的服务器可能需要在握手期间更改连接ID，将服务器身份或其负载均衡池的信息编码进去，从而支持无状态的负载均衡。</p>
+<p>启用了负载均衡器或其他路由基础设置的服务器部署需要确保即使地址、端口，以及连接ID发生变化，该基础设施也能将数据包稳定地路由至具有连接状态的服务器实例。这可能需要服务器与基础设施的协作。为了做到这一点，一种方法是将路由信息编码进连接ID中。有关此技巧的样例，详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">QUIC-LB</a>》。</p>
+</div>
+</section>
+<section class="page" id="11.2_Mitigating_Timing_Linkability_with_Connection_ID_Migration">
+<h2>
+<a href="#11.2_Mitigating_Timing_Linkability_with_Connection_ID_Migration">11.2. 使用连接ID迁移降低计时侧信道的可关联性</a>
+</h2>
+<div class="content">
+<p>如果QUIC终端没有签发新的连接ID，那么客户端就无法通过使用新连接ID的方式来降低地址迁移的可关联性。选择对外部观察者来说无法关联起来的值能够确保在不同路径上的活动不会因为连接ID而被简单的关联起来。</p>
+<p>尽管足够健壮的连接ID创建方案可以缓解可关联性问题，但是它们不能提供完全的保护。无论如何，对六元组（源地址和目标地址，以及迁移前后的连接ID）生命周期这一计时侧信道的分析总是有可能揭露其中的关联。</p>
+<p>当在一个服务器池中极少出现连接迁移时，观察者很轻易地就能将两个连接ID关联起来。相反，当池中每个服务器都在处理好几个正在同时进行的迁移时，即使暴露了服务器与连接的映射关系，也不足以观察者成功关联。</p>
+<p>对于此类攻击最有效率的缓解措施是利用网络设计和/或操作实践：使用能更多流量施加到单个服务器地址的负载均衡架构、协调迁移的时机从而增加同一时间内正在进行的迁移数量，或使用其他方式。</p>
+</div>
+</section>
+<section class="page" id="11.3_Using_Server_Retry_for_Redirection">
+<h2>
+<a href="#11.3_Using_Server_Retry_for_Redirection">11.3. 将服务器重试用于重定向</a>
+</h2>
+<div class="content">
+<p>QUIC提供的重试数据包可以由服务器作为对客户端初始数据包的响应来发送出去。服务器可以在该数据包中选择一个新的连接ID，随后客户端将以发送另一个使用了服务器所选的连接ID的客户端初始数据包的方式重试。出于，比如说，性能上的原因或池中的服务器正在渐进升级以支持多QUIC版本的缘故，可以使用该机制来将连接重定向至另一台服务器。</p>
+<p>在这种情况下，归属于某个特定服务器池的所有服务器都被假设为正在与基于连接ID来转发流量的负载均衡器配合工作。服务器可以在重试数据包中选择连接ID，以使得负载均衡器将接下来的初始数据包重定向至池中的另一台服务器。作为备选方案，负载均衡器可以直接将所有重试数据包指向特定服务器，详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00">QUIC-RETRY</a>》。</p>
+<p>在《<a href="https://www.rfc-editor.org/info/rfc5077">RFC5077</a>》的<a href="https://www.rfc-editor.org/rfc/rfc5077#section-4">第4章</a>中介绍的用于构建TLS会话恢复票据的方法提供了一个样例，可以将它应用到验证令牌上。不过，强烈建议使用更加新式的加密算法。</p>
+</div>
+</section>
+<section class="page" id="12_Quality_of_Service_QoS_and_Diffserv_Code_Point_DSCP">
+<h1>
+<a href="#12_Quality_of_Service_QoS_and_Diffserv_Code_Point_DSCP">12. 服务质量（QoS）与差分服务码点（DSCP）</a>
+</h1>
+<div class="content">
+<p>正如《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》中定义的那样，QUIC具有单一的拥塞控制器和恢复处理器。这种设计假定，只要在关于各个数据包的丢失或延迟反馈全都被用作拥塞控制器的输入的条件下，同一条QUIC连接上的或至少五元组（目标地址、源地址、协议、目标端口、源端口）一致的，且具有相同差分服务码点（DSCP，详见《<a href="https://www.rfc-editor.org/info/rfc2475">RFC2475</a>》）的所有数据包就都能获得相似的网络条件待遇。因此，归属于同一条连接的数据包应该使用相同的DSCP。《<a href="https://www.rfc-editor.org/info/rfc7657">RFC7657</a>》的<a href="https://www.rfc-editor.org/rfc/rfc7657#section-5.1">第5.1章</a>中讨论了差分服务与数据报传输协议（详见《<a href="https://www.rfc-editor.org/info/rfc7657">RFC7657</a>》）的交互方式（在这一方面，与QUIC的交互和与流控制传输协议（SCTP）的交互类似）。</p>
+<p>当多路流量复用同一条QUIC连接时，所选的DSCP值应该就是关联着为所有流量请求的DSCP中优先级最高的那个值。</p>
+<p>如果希望获得差异化的网络条件待遇，例如，要使用不同的DSCP，那么可以使用与同一服务器间的多条QUIC连接。通常来说，推荐将与同一服务器间的QUIC连接数降至最低，以降低开销，以及，更重要的一点是，与拥塞控制机制竞争。</p>
+<p>正如差分服务的其他使用场景那样，当数据包进入不支持DSCP值的网段时，连接可能无法得到它所期望的网络条件。数据包中的DSCP还可能随着数据包在网络路径上的传输而被重新标记，使得所请求的网络条件待遇发生变化。</p>
+</div>
+</section>
+<section class="page" id="13_Use_of_Versions_and_Cryptographic_Handshake">
+<h1>
+<a href="#13_Use_of_Versions_and_Cryptographic_Handshake">13. 版本与加密握手的使用</a>
+</h1>
+<div class="content">
+<p>QUIC的版本变化有可能完全改变协议行为，除了那些声明为不变量的少数头部字段的含义（详见《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》）。版本号更大的QUIC版本不一定会提供更优质的服务，而是可能只是提供一份不同的特性集。因此，应用应该有能力选择它想要使用的QUIC版本。</p>
+<p>新版本可能使用并非TLS 1.3的加密方案，或更高的TLS版本。《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》为加密握手制定了一些目前由TLS 1.3实现的要求，并在单独的规范《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》中进行了描述。分为两份文档是为了支持对不同的加密握手方案制定轻量化的版本。</p>
+<p>《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》中建立的“QUIC版本”注册表允许存在实验性的临时注册项。对实验性版本的注册对于避免冲突十分重要。实验性的版本不应该被长期使用，或应该作为永久注册项从而最小化基于版本号的指纹识别风险。</p>
+</div>
+</section>
+<section class="page" id="14_Enabling_Deployment_of_New_Versions">
+<h1>
+<a href="#14_Enabling_Deployment_of_New_Versions">14. 支持新版本的部署</a>
+</h1>
+<div class="content">
+<p>QUIC版本1在基本规范中没有规定一种版本协商机制，但是《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10">QUIC-VERSION-NEGOTIATION</a>》提出的扩展提供了一项具有兼容性的版本协商机制。</p>
+<p>该方法使用了一项三阶段的部署机制，支持在大型服务器部署中对多版本进行渐进式的版本发布与实验。在此方法中，部署中的所有服务器都必须先接受使用了新版本的连接（阶段1），再宣布对该版本的支持（阶段2），最后仅在宣布支持的新版本已完成部署后才对新版本进行认证（阶段3）。</p>
+<p>有关细节详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10">QUIC-VERSION-NEGOTIATION</a>》的<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10#section-5">第5章</a>。</p>
+</div>
+</section>
+<section class="page" id="15_Unreliable_Datagram_Service_over_QUIC">
+<h1>
+<a href="#15_Unreliable_Datagram_Service_over_QUIC">15. 基于QUIC的不可靠数据报服务</a>
+</h1>
+<div class="content">
+<p>《<a href="../RFC9221_Chinese_Simplified">RFC9221</a>》中定义的QUIC扩展能够支持基于QUIC发送和接收不可靠的数据报。不同于直接基于UDP运行，使用QUIC数据报服务的应用不需要按照《<a href="https://www.rfc-editor.org/info/rfc8085">RFC8085</a>》实现自己的拥塞控制协议，因为QUIC数据报都会受到拥塞控制。</p>
+<p>QUIC数据报不会受到流量控制，因为接收方在过载时会丢弃这类数据块。尽管可靠的QUIC传输服务提供了基于流的接口以经由多条QUIC流来发送和接收数据，但是数据报服务的接口是基于无序消息的。若有需要，可以在它之上使用应用层帧结构来支持多路不可靠的数据报流量复用同一条QUIC连接。</p>
+</div>
+</section>
+<section class="page" id="16_IANA_Considerations">
+<h1>
+<a href="#16_IANA_Considerations">16. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文档没有与IANA相关的操作；不过，注意<a href="#8_Port_Selection_and_Application_Endpoint_Discovery">第8章</a>中推荐已经注册了TCP端口但还想要将QUIC用作传输方式的应用应该去注册一个与其TCP注册项一致的UDP端口。</p>
+</div>
+</section>
+<section class="page" id="17_Security_Considerations">
+<h1>
+<a href="#17_Security_Considerations">17. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》和《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》中关于安全性的考量；底层传输协议的安全性与使用QUIC的应用密切相关。在部署和使用QUIC时，还要考虑在《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》中讨论的可关联性、重放攻击，以及随机化等议题。</p>
+<p>更进一步地，迁移至新地址会向服务器暴露客户端所用地址间的关联，还有可能在连接ID未改变或流量因其他方式而被关联的情况下向路径上的设备暴露该关联性。当支持迁移时，需要考虑以上因素以保护用户隐私。</p>
+<p>应用开发者应该注意，他们应该确保在因为网络拦截UDP而无法使用QUIC的情况下所用的任何回退都具有与QUIC一致的安全属性。如果做不到这一点，就应该断开连接，以使得显式地令应用判断要不要回退至安全性较低的替代方案。详见<a href="#2_The_Necessity_of_Fallback">第2章</a>。</p>
+<p>除此之外，《<a href="../RFC9114_Chinese_Simplified">QUIC-HTTP</a>》中还提供了关于HTTP安全性的考量。不过，对于形如跨协议攻击、流量分析、填充，以及迁移等主题的讨论还有可能与其他使用QUIC的应用相关。</p>
+</div>
+</section>
+<section class="page" id="18_References">
+<h1>
+<a href="#18_References">18. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="18.1_Normative_References">
+<h2>
+<a href="#18.1_Normative_References">18.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-INVARIANTS">
+<p><a href="#QUIC-INVARIANTS"><strong>[QUIC-INVARIANTS]</strong></a> </p>
+<p>Thomson, M., “Version-Independent Properties of QUIC”, RFC 8999, DOI 10.17487/RFC8999, May 2021, <a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TLS">
+<p><a href="#QUIC-TLS"><strong>[QUIC-TLS]</strong></a> </p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="18.2_Informative_References">
+<h2>
+<a href="#18.2_Informative_References">18.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="Edeline16">
+<p><a href="#Edeline16"><strong>[Edeline16]</strong></a> </p>
+<p>Edeline, K., Kühlewind, M., Trammell, B., Aben, E., and B. Donnet, “Using UDP for Internet Transport Evolution”, DOI 10.48550/arXiv.1612.07816, 22 December 2016, <a href="https://arxiv.org/abs/1612.07816">https://arxiv.org/abs/1612.07816</a>.</p>
+</div>
+<div class="out_ref" id="Hatonen10">
+<p><a href="#Hatonen10"><strong>[Hatonen10]</strong></a> </p>
+<p>Hätönen, S., Nyrhinen, A., Eggert, L., Strowes, S., Sarolahti, P., and M. Kojo, “An Experimental Study of Home Gateway Characteristics”, Proc. ACM IMC 2010, November 2010, <a href="https://conferences.sigcomm.org/imc/2010/papers/p260.pdf">https://conferences.sigcomm.org/imc/2010/papers/p260.pdf</a>.</p>
+</div>
+<div class="out_ref" id="HTTP-REPLAY">
+<p><a href="#HTTP-REPLAY"><strong>[HTTP-REPLAY]</strong></a> </p>
+<p>Thomson, M., Nottingham, M., and W. Tarreau, “Using Early Data in HTTP”, RFC 8470, DOI 10.17487/RFC8470, September 2018, <a href="https://www.rfc-editor.org/info/rfc8470">https://www.rfc-editor.org/info/rfc8470</a>.</p>
+</div>
+<div class="out_ref" id="PaaschNanog">
+<p><a href="#PaaschNanog"><strong>[PaaschNanog]</strong></a> </p>
+<p>Paasch, C., “Network support for TCP Fast Open”, NANOG 67 Presentation, 13 June 2016, <a href="https://www.nanog.org/sites/default/files/Paasch_Network_Support.pdf">https://www.nanog.org/sites/default/files/Paasch_Network_Support.pdf</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-ACK-FREQUENCY">
+<p><a href="#QUIC-ACK-FREQUENCY"><strong>[QUIC-ACK-FREQUENCY]</strong></a> </p>
+<p>Iyengar, J. and I. Swett, “QUIC Acknowledgement Frequency”, Work in Progress, Internet-Draft, draft-ietf-quic-ack-frequency-02, 11 July 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency-02">https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency-02</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-HTTP">
+<p><a href="#QUIC-HTTP"><strong>[QUIC-HTTP]</strong></a> </p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-LB">
+<p><a href="#QUIC-LB"><strong>[QUIC-LB]</strong></a> </p>
+<p>Duke, M., Banks, N., and C. Huitema, “QUIC-LB: Generating Routable QUIC Connection IDs”, Work in Progress, Internet-Draft, draft-ietf-quic-load-balancers-14, 11 July 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14">https://datatracker.ietf.org/doc/html/draft-ietf-quic-load-balancers-14</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-MANAGEABILITY">
+<p><a href="#QUIC-MANAGEABILITY"><strong>[QUIC-MANAGEABILITY]</strong></a> </p>
+<p>Kühlewind, M. and B. Trammell, “Manageability of the QUIC Transport Protocol”, RFC 9312, DOI 10.17487/RFC9312, September 2022, <a href="https://www.rfc-editor.org/info/rfc9312">https://www.rfc-editor.org/info/rfc9312</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-RETRY">
+<p><a href="#QUIC-RETRY"><strong>[QUIC-RETRY]</strong></a> </p>
+<p>Duke, M. and N. Banks, “QUIC Retry Offload”, Work in Progress, Internet-Draft, draft-ietf-quic-retry-offload-00, 25 May 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00">https://datatracker.ietf.org/doc/html/draft-ietf-quic-retry-offload-00</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-VERSION-NEGOTIATION">
+<p><a href="#QUIC-VERSION-NEGOTIATION"><strong>[QUIC-VERSION-NEGOTIATION]</strong></a> </p>
+<p>Schinazi, D. and E. Rescorla, “Compatible Version Negotiation for QUIC”, Work in Progress, Internet-Draft, draft-ietf-quic-version-negotiation-10, 27 September 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10">https://datatracker.ietf.org/doc/html/draft-ietf-quic-version-negotiation-10</a>.</p>
+</div>
+<div class="out_ref" id="RFC1034">
+<p><a href="#RFC1034"><strong>[RFC1034]</strong></a> </p>
+<p>Mockapetris, P., “Domain names - concepts and facilities”, STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987, <a href="https://www.rfc-editor.org/info/rfc1034">https://www.rfc-editor.org/info/rfc1034</a>.</p>
+</div>
+<div class="out_ref" id="RFC2475">
+<p><a href="#RFC2475"><strong>[RFC2475]</strong></a> </p>
+<p>Blake, S., Black, D., Carlson, M., Davies, E., Wang, Z., and W. Weiss, “An Architecture for Differentiated Services”, RFC 2475, DOI 10.17487/RFC2475, December 1998, <a href="https://www.rfc-editor.org/info/rfc2475">https://www.rfc-editor.org/info/rfc2475</a>.</p>
+</div>
+<div class="out_ref" id="RFC5077">
+<p><a href="#RFC5077"><strong>[RFC5077]</strong></a> </p>
+<p>Salowey, J., Zhou, H., Eronen, P., and H. Tschofenig, “Transport Layer Security (TLS) Session Resumption without Server-Side State”, RFC 5077, DOI 10.17487/RFC5077, January 2008, <a href="https://www.rfc-editor.org/info/rfc5077">https://www.rfc-editor.org/info/rfc5077</a>.</p>
+</div>
+<div class="out_ref" id="RFC5382">
+<p><a href="#RFC5382"><strong>[RFC5382]</strong></a> </p>
+<p>Guha, S., Ed., Biswas, K., Ford, B., Sivakumar, S., and P. Srisuresh, “NAT Behavioral Requirements for TCP”, BCP 142, RFC 5382, DOI 10.17487/RFC5382, October 2008, <a href="https://www.rfc-editor.org/info/rfc5382">https://www.rfc-editor.org/info/rfc5382</a>.</p>
+</div>
+<div class="out_ref" id="RFC5905">
+<p><a href="#RFC5905"><strong>[RFC5905]</strong></a> </p>
+<p>Mills, D., Martin, J., Ed., Burbank, J., and W. Kasch, “Network Time Protocol Version 4: Protocol and Algorithms Specification”, RFC 5905, DOI 10.17487/RFC5905, June 2010, <a href="https://www.rfc-editor.org/info/rfc5905">https://www.rfc-editor.org/info/rfc5905</a>.</p>
+</div>
+<div class="out_ref" id="RFC6335">
+<p><a href="#RFC6335"><strong>[RFC6335]</strong></a> </p>
+<p>Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S. Cheshire, “Internet Assigned Numbers Authority (IANA) Procedures for the Management of the Service Name and Transport Protocol Port Number Registry”, BCP 165, RFC 6335, DOI 10.17487/RFC6335, August 2011, <a href="https://www.rfc-editor.org/info/rfc6335">https://www.rfc-editor.org/info/rfc6335</a>.</p>
+</div>
+<div class="out_ref" id="RFC6762">
+<p><a href="#RFC6762"><strong>[RFC6762]</strong></a> </p>
+<p>Cheshire, S. and M. Krochmal, “Multicast DNS”, RFC 6762, DOI 10.17487/RFC6762, February 2013, <a href="https://www.rfc-editor.org/info/rfc6762">https://www.rfc-editor.org/info/rfc6762</a>.</p>
+</div>
+<div class="out_ref" id="RFC7301">
+<p><a href="#RFC7301"><strong>[RFC7301]</strong></a> </p>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</div>
+<div class="out_ref" id="RFC7413">
+<p><a href="#RFC7413"><strong>[RFC7413]</strong></a> </p>
+<p>Cheng, Y., Chu, J., Radhakrishnan, S., and A. Jain, “TCP Fast Open”, RFC 7413, DOI 10.17487/RFC7413, December 2014, <a href="https://www.rfc-editor.org/info/rfc7413">https://www.rfc-editor.org/info/rfc7413</a>.</p>
+</div>
+<div class="out_ref" id="RFC7657">
+<p><a href="#RFC7657"><strong>[RFC7657]</strong></a> </p>
+<p>Black, D., Ed. and P. Jones, “Differentiated Services (Diffserv) and Real-Time Communication”, RFC 7657, DOI 10.17487/RFC7657, November 2015, <a href="https://www.rfc-editor.org/info/rfc7657">https://www.rfc-editor.org/info/rfc7657</a>.</p>
+</div>
+<div class="out_ref" id="RFC7838">
+<p><a href="#RFC7838"><strong>[RFC7838]</strong></a> </p>
+<p>Nottingham, M., McManus, P., and J. Reschke, “HTTP Alternative Services”, RFC 7838, DOI 10.17487/RFC7838, April 2016, <a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>.</p>
+</div>
+<div class="out_ref" id="RFC8085">
+<p><a href="#RFC8085"><strong>[RFC8085]</strong></a> </p>
+<p>Eggert, L., Fairhurst, G., and G. Shepherd, “UDP Usage Guidelines”, BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>.</p>
+</div>
+<div class="out_ref" id="RFC8981">
+<p><a href="#RFC8981"><strong>[RFC8981]</strong></a> </p>
+<p>Gont, F., Krishnan, S., Narten, T., and R. Draves, “Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6”, RFC 8981, DOI 10.17487/RFC8981, February 2021, <a href="https://www.rfc-editor.org/info/rfc8981">https://www.rfc-editor.org/info/rfc8981</a>.</p>
+</div>
+<div class="out_ref" id="RFC9218">
+<p><a href="#RFC9218"><strong>[RFC9218]</strong></a> </p>
+<p>Oku, K. and L. Pardue, “Extensible Prioritization Scheme for HTTP”, RFC 9218, DOI 10.17487/RFC9218, June 2022, <a href="https://www.rfc-editor.org/info/rfc9218">https://www.rfc-editor.org/info/rfc9218</a>.</p>
+</div>
+<div class="out_ref" id="RFC9221">
+<p><a href="#RFC9221"><strong>[RFC9221]</strong></a> </p>
+<p>Pauly, T., Kinnear, E., and D. Schinazi, “An Unreliable Datagram Extension to QUIC”, RFC 9221, DOI 10.17487/RFC9221, March 2022, <a href="https://www.rfc-editor.org/info/rfc9221">https://www.rfc-editor.org/info/rfc9221</a>.</p>
+</div>
+<div class="out_ref" id="SSDP">
+<p><a href="#SSDP"><strong>[SSDP]</strong></a> </p>
+<p>Donoho, A., Roe, B., Bodlaender, M., Gildred, J., Messer, A., Kim, Y., Fairman, B., and J. Tourzan, “UPnP Device Architecture 2.0”, 17 April 2020, <a href="https://openconnectivity.org/upnp-specs/UPnP-arch-DeviceArchitecture-v2.0-20200417.pdf">https://openconnectivity.org/upnp-specs/UPnP-arch-DeviceArchitecture-v2.0-20200417.pdf</a>.</p>
+</div>
+<div class="out_ref" id="Swett16">
+<p><a href="#Swett16"><strong>[Swett16]</strong></a> </p>
+<p>Swett, I., “QUIC Deployment Experience @Google”, IETF96 QUIC BoF Presentation, 20 July 2016, <a href="https://www.ietf.org/proceedings/96/slides/slides-96-quic-3.pdf">https://www.ietf.org/proceedings/96/slides/slides-96-quic-3.pdf</a>.</p>
+</div>
+<div class="out_ref" id="TAPS-ARCH">
+<p><a href="#TAPS-ARCH"><strong>[TAPS-ARCH]</strong></a> </p>
+<p>Pauly, T., Trammell, B., Brunstrom, A., Fairhurst, G., and C. Perkins, “An Architecture for Transport Services”, Work in Progress, Internet-Draft, draft-ietf-taps-arch-14, 27 September 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-taps-arch-14">https://datatracker.ietf.org/doc/html/draft-ietf-taps-arch-14</a>.</p>
+</div>
+<div class="out_ref" id="TLS13">
+<p><a href="#TLS13"><strong>[TLS13]</strong></a> </p>
+<p>Rescorla, E., “The Transport Layer Security (TLS) Protocol Version 1.3”, RFC 8446, DOI 10.17487/RFC8446, August 2018, <a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>.</p>
+</div>
+<div class="out_ref" id="Trammell16">
+<p><a href="#Trammell16"><strong>[Trammell16]</strong></a> </p>
+<p>Trammell, B. and M. Kühlewind, “Internet Path Transparency Measurements using RIPE Atlas”, RIPE 72 MAT Presentation, 25 May 2016, <a href="https://ripe72.ripe.net/wp-content/uploads/presentations/86-atlas-udpdiff.pdf">https://ripe72.ripe.net/wp-content/uploads/presentations/86-atlas-udpdiff.pdf</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgements">
+<h1>
+<a href="#Acknowledgements">致谢</a>
+</h1>
+<div class="content">
+<p>特别感谢定稿前最后时刻的评阅者Chris Lonvick和Ines Robles。</p>
+<p>本工作的一部分得到了欧盟委员会根据 Horizon 2020 拨款协议第 688421 号《Measurement and Architecture for a Middleboxed Internet (MAMI)》以及瑞士教育、研究和创新国务秘书处根据第 15.0268 号合约所提供的支持。这种支持并不意味着背书。</p>
+</div>
+</section>
+<section class="page" id="Contributors">
+<h1>
+<a href="#Contributors">贡献者</a>
+</h1>
+<div class="content">
+<p>以下人员对本文档的文本和反馈做出了重要贡献：</p>
+<ul>
+<li>
+<p>Gorry Fairhurst</p>
+</li>
+<li>
+<p>Ian Swett</p>
+</li>
+<li>
+<p>Igor Lubashev</p>
+</li>
+<li>
+<p>Lucas Pardue</p>
+</li>
+<li>
+<p>Mike Bishop</p>
+</li>
+<li>
+<p>Mark Nottingham</p>
+</li>
+<li>
+<p>Martin Duke</p>
+</li>
+<li>
+<p>Martin Thomson</p>
+</li>
+<li>
+<p>Sean Turner</p>
+</li>
+<li>
+<p>Tommy Pauly</p>
+</li>
+</ul>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="mirja-kühlewind">Mirja Kühlewind</h5>
+<p>Ericsson</p>
+<p>Email: <a href="mailto:mirja.kuehlewind@ericsson.com">mirja.kuehlewind@ericsson.com</a></p>
+<h5 id="brian-trammell">Brian Trammell</h5>
+<p>Google Switzerland GmbH</p>
+<p>Gustav-Gull-Platz 1</p>
+<p>CH-8004 Zurich</p>
+<p>Switzerland</p>
+<p>Email: <a href="mailto:ietf@trammell.ch">ietf@trammell.ch</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/ruokeqx">ruokeqx</a></p>
+<ul>
+<li>Email: <a href="mailto:ruokeqx@163.com">ruokeqx@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>

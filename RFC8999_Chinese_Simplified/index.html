@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC8999中文：QUIC版本通用属性</title>
@@ -78,7 +78,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
@@ -265,13 +265,13 @@
 <div class="content">
 <p><a href="#Figure_3_QUIC_Short_Header">图3</a>是QUIC短包头的格式。</p>
 <div class="block ref" id="Figure_3_QUIC_Short_Header">
-<div class="highlight"><pre class="chroma" tabindex="0"><code class="language-markdown" data-lang="markdown">短包头 {
-  包头格式 (1) = 0,
-  版本特定相关位 (7),
-  目标连接ID (..),
-  版本特定相关数据 (..),
-}
-</code></pre></div><p><a href="#Figure_3_QUIC_Short_Header">图3：QUIC短包头</a></p>
+<div class="highlight"><pre class="chroma" tabindex="0"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">短包头 {
+</span></span><span class="line"><span class="cl">  包头格式 (1) = 0,
+</span></span><span class="line"><span class="cl">  版本特定相关位 (7),
+</span></span><span class="line"><span class="cl">  目标连接ID (..),
+</span></span><span class="line"><span class="cl">  版本特定相关数据 (..),
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><a href="#Figure_3_QUIC_Short_Header">图3：QUIC短包头</a></p>
 </div>
 <p>短包头QUIC数据包的首字节的最高位设置为0。</p>
 <p>短包头数据包紧随首字节之后是一个目标连接ID。短包头不会包含目标连接ID长度、源连接ID长度、源连接ID或版本字段。目标连接ID的长度不会编码在短包头数据包里，也不会受限于这个特性。</p>

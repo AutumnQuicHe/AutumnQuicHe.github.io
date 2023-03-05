@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9000中文：QUIC传输协议</title>
@@ -451,7 +451,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
@@ -707,7 +707,7 @@
 <div class="content">
 <p>流帧（<a href="#19.8_STREAM_Frames">第19.8章</a>）封装应用层发送的数据。终端使用流帧的流ID及偏移字段整理数据。</p>
 <p>终端<em><strong>必须</strong></em>将流数据以一个有序字节流传递给应用层。传递一个有序字节流需要终端缓存任何接收到的乱序数据，直到到达了建议的流量控制限制的上限。</p>
-<p>QUIC对于传递流的无序数据并没有做额外的打算。然而，实现上 <em><strong>可以</strong></em>选择支持传递无序数据给应用层接收。</p>
+<p>QUIC对于传递流的无序数据并没有做额外的打算。然而，实现上<em><strong>可以</strong></em>选择支持传递无序数据给应用层接收。</p>
 <p>终端可以从一条流的同一个偏移位置多次接收数据。如果数据已经被接收过了，就会直接被丢弃。处在任何偏移位置的数据如果被重复发送，其<em><strong>必须不</strong></em>能更改。终端<em><strong>可以</strong></em>将在流的同一偏移处收到不同数据的情况视为PROTOCOL_VIOLATION类型（违反协议）的连接错误。</p>
 <p>流是一个抽象的有序字节流，QUIC不感知除此以外的任何结构。流帧的边界在数据被传输、丢包后重传以及被传递给应用层接收者后，不会继续保留。</p>
 <p>终端<em><strong>必须不</strong></em>能在对端设置的流量控制限制之外发送任何数据。流量控制详见<a href="#4_Flow_Control">第4章</a>。</p>
@@ -2214,7 +2214,7 @@
 <a href="#13.1_Packet_Processing">13.1 数据包处理</a>
 </h2>
 <div class="content">
-<p>在数据包保护被成功移除且所有包含在数据包中的帧都被处理之前，<em><strong>必须不</strong></em>确认这个数据包。对于<strong>流帧</strong>，这个时机指其中的数据已经被置入队列，且准备被应用协议接收之时，但它不要求数据被分发和消费。</p>
+<p>在数据包保护被成功移除且所有包含在数据包中的帧都被处理之前，<em><strong>必须不</strong></em>确认这个数据包。对于<strong>流帧</strong>，这个时机指其中的数据已经被置入队列，且准备被应用协议接收之时，但它不要求数据被交付和消费。</p>
 <p>一旦数据包已经被完全处理，接收方通过发送一个或多个<strong>ACK帧</strong>来确认这个数据包的接收，这些<strong>ACK帧</strong>中包含被接收到的这个数据包的数据包号。</p>
 <p>如果终端有能力检测出收到了一个它未发送过的数据包的确认的情况，它<em><strong>应该</strong></em>将这种情况视作一种类型为<code>PROTOCOL_VIOLATION</code>（协议违背）的错误。有关如何做到这件事，详见<a href="#21.4_Optimistic_ACK_Attack">第21.4章</a>。</p>
 </div>
@@ -2861,7 +2861,7 @@
 <p>0-RTT数据包使用类型值为<code>0x01</code>的长包头，后面跟着长度和数据包号字段，详见<a href="#17.2_Long_Header_Packets">第17.2章</a>。首个字节包含保留比特位和数据包号长度比特位，详见<a href="#17.2_Long_Header_Packets">第17.2章</a>。0-RTT数据包被用来在握手完成前，携带来自客户端的“早期”数据，作为第一轮通信的一部分被发向服务器。</p>
 <p>有关0-RTT数据及其局限的讨论，详见《<a href="https://www.rfc-editor.org/info/rfc8446">TLS13</a>》的<a href="https://www.rfc-editor.org/rfc/rfc8446.html#section-2.3">第2.3章</a>。</p>
 <div class="block ref" id="Figure_16_0-RTT_Packet">
-<pre tabindex="0"><code>初始数据包 {
+<pre tabindex="0"><code>0-RTT数据包 {
   包头形式 (1) = 1,
   固定比特位 (1) = 1,
   长数据包类型 (2) = 1,
@@ -3324,9 +3324,9 @@
 </dd>
 </dl>
 <p>空档和ACK块长度值使用一个相对整型编码以提高效率。即使每个编码结果是正值，但也会被减去，因此每个ACK块表示的都是包号逐渐递减的数据包。</p>
-<p>每个ACK组确认一段包号连续的数据包，通过ACK块内包号最大的被确认数据包之前的包数指定确认范围。值为0表示只有包号最大的数据包被确认。更大的ACK块值表示更大的确认范围，与此同时该块内最小数据包号则更小。换言之，给定ACK块最大数据包号，则最小数据包号通过下述公式计算：</p>
+<p>每个ACK块确认一段包号连续的数据包，通过ACK块内包号最大的被确认数据包之前的包数指定确认范围。值为0表示只有包号最大的数据包被确认。更大的ACK块值表示更大的确认范围，与此同时该块内最小数据包号则更小。换言之，给定ACK块最大数据包号，则最小数据包号通过下述公式计算：</p>
 <pre tabindex="0"><code>最小数据包号 = 最大数据包号 - ACK块值
-</code></pre><p>一个ACK组确认最小数据包号到最大数据包号之间的全部数据包，包含两端。</p>
+</code></pre><p>一个ACK块确认最小数据包号到最大数据包号之间的全部数据包，包含两端。</p>
 <p>一个ACK块的最大数据包号通过累积减去先前的所有ACK块长度和空档确定。</p>
 <p>每个空档表示一段未被确认的数据包。空档内未被确认的数据包数目比空档字段中的编码值多1。</p>
 <p>空档字段值使用以下公式为后续ACK块生成最大的数据包号值：</p>

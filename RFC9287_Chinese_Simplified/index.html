@@ -3,31 +3,60 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.93.0-DEV" name="generator"/>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
-<title>RFC9287中文：QUIC位传输</title>
+<title>RFC9287中文：QUIC位转义</title>
 <link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC9287_Chinese_Simplified/css/RFC9287.css" rel="stylesheet"/>
-<link href="/RFC9287_Chinese_Simplified/index.xml" rel="alternate" title="RFC9287中文：QUIC位传输" type="application/rss+xml">
+<link href="/RFC9287_Chinese_Simplified/index.xml" rel="alternate" title="RFC9287中文：QUIC位转义" type="application/rss+xml">
 </link></head>
 <body>
 <div class="sidebar sidebar-rfc9287">
 <div class="navigation">
 <div><a href="/">秋愧遲</a></div>
-<h1 class="site-title"><a href="/RFC9287_Chinese_Simplified/">RFC9287中文：QUIC位传输</a></h1>
+<h1 class="site-title"><a href="/RFC9287_Chinese_Simplified/">RFC9287中文：QUIC位转义</a></h1>
 <nav class="internal">
 <ul>
 <li>
-<a href="#RFC9287%c2%a0Greasing%c2%a0the%c2%a0QUIC%c2%a0Bit">RFC9287 QUIC位传输</a>
+<a href="#RFC9287_Greasing_the_QUIC_Bit">RFC9287 QUIC位转义</a>
 <ul>
 <li><a href="#Forword">前言</a></li>
 <li><a href="#Abstract">摘要</a></li>
 <li><a href="#Status_of_This_Memo">备忘状态</a></li>
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</li>
+<li>
+<a href="#3_The_Grease_QUIC_Bit_Transport_Parameter">3. 传输参数：grease_quic_bit</a>
+<ul>
+<li><a href="#3.1_Clearing_the_QUIC_Bit">3.1. 清除QUIC位</a></li>
+<li><a href="#3.2_Using_the_QUIC_Bit">3.2. 使用QUIC位</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Security_Considerations">4. 关于安全性的考量</a>
+</li>
+<li>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+</li>
+<li>
+<a href="#6_References">6. 参考文献</a>
+<ul>
+<li><a href="#6.1_Normative_References">6.1. 规范性参考文献</a></li>
+<li><a href="#6.2_Informative_References">6.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
 </li>
 </ul>
 </nav>
@@ -38,13 +67,13 @@
 </nav>
 </div>
 <div class="version">
-            generated on Nov 17, 2022
+            generated on Mar 5, 2023
     </div>
 </div>
 <div class="content">
-<section class="page" id="RFC9287 Greasing the QUIC Bit">
+<section class="page" id="RFC9287_Greasing_the_QUIC_Bit">
 <h1>
-<a href="#RFC9287%c2%a0Greasing%c2%a0the%c2%a0QUIC%c2%a0Bit">RFC9287 QUIC位传输</a>
+<a href="#RFC9287_Greasing_the_QUIC_Bit">RFC9287 QUIC位转义</a>
 </h1>
 <div class="content">
 <br/>
@@ -104,7 +133,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>本文描述了一种协商能够为QUIC包第二个重要位发送任意值的能力的方法。</p>
+<p>本文档描述了一种方法，使用此方法能够协商是否在QUIC数据包中的第二最高有效位上传输任意值。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -124,6 +153,194 @@
 <div class="content">
 <p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>在与版本无关的QUIC定义《<a href="../RFC8999_Chinese_Simplified">QUIC不变量</a>》中描述了少量对于并非终端的实体可见的字段。除了那些不可变的特征外，QUIC的“通信线路图象”（<code>wire image</code>， 详见《<a href="https://www.rfc-editor.org/info/rfc8546">RFC8546</a>》）几乎是不可见的。</p>
+<p>在QUIC版本1中（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》），所有QUIC数据包的首个字节的第二最高有效位被指定为固定值。设定该固定值的目的是为了与允许终端高效地将QUIC从其他协议中区分出来；有关可以利用该属性的系统的描述，详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-avtcore-rfc7983bis-06">DEMUX</a>》。由于能够使用该比特位来辨识数据包是否为QUIC，因此它有时被称为“QUIC位”。</p>
+<p>在支持QUIC的终端和中间设备并不要求QUIC位必须是固定值的情况下，在所有数据包中都使用相同的值的做法相比其好处，更多的是一种负担。相反，如果这些系统都依赖着固定值，那么就不可能再定义一个为该比特位添加语义的QUIC版本。</p>
+<p>为了保护该比特位将来的用途，本文档定义了一个QUIC传输参数，它能表明终端愿意接收该比特位被设置为其他值的QUIC数据包。通过释放对该比特位的限制，希望能够在将来随时利用该位的值（详见《<a href="https://www.rfc-editor.org/info/rfc9170">USE-IT</a>》）。</p>
+</div>
+</section>
+<section class="page" id="2_Conventions_and_Definitions">
+<h1>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文使用了来自《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的术语和标记上的约定。</p>
+</div>
+</section>
+<section class="page" id="3_The_Grease_QUIC_Bit_Transport_Parameter">
+<h1>
+<a href="#3_The_Grease_QUIC_Bit_Transport_Parameter">3. 传输参数：grease_quic_bit</a>
+</h1>
+<div class="content">
+<p>传输参数<code>grease_quic_bit</code>（值为<code>0x2ab2</code>）是为QUIC版本1（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》）定义的。客户端和服务器都可以发送该传输参数。发送该传输参数时将值设置为空；理解该传输参数的终端<em><strong>必须</strong></em>将接收到此传输参数且其值为非空的情况视作类型为<code>TRANSPORT_PARAMETER_ERROR</code>（传输参数错误）的连接错误。</p>
+<p>宣告传输参数<code>grease_quic_bit</code>的终端<em><strong>必须</strong></em>接受QUIC位被设置为<code>0</code>的数据包。QUIC位的定义是QUIC数据包的首个字节的第二最高有效位（也就是掩码<code>0x40</code>所指示的位）。</p>
+</div>
+</section>
+<section class="page" id="3.1_Clearing_the_QUIC_Bit">
+<h2>
+<a href="#3.1_Clearing_the_QUIC_Bit">3.1. 清除QUIC位</a>
+</h2>
+<div class="content">
+<p>从对端接收到传输参数<code>grease_quic_bit</code>的终端<em><strong>应该</strong></em>将QUIC位设置为不可预测的值，除非另一个扩展为该比特位的值指定了特定的含义。</p>
+<p>终端可以将所有在接收并处理完传输参数后发送的数据包的QUIC位设置为<code>0</code>。其中可能包括初始数据包、握手数据包和重试数据包。</p>
+<p>客户端还<em><strong>可以</strong></em>在从服务器接收到传输参数前就将发送出去的初始数据包、握手数据包或0-RTT数据包的QUIC位设置为<code>0</code>。不过，只有在客户端发送的初始数据包中包含了服务器在<strong>新令牌帧</strong>（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#19.7_NEW_TOKEN_Frames">第19.7章</a>）中提供的令牌，且这个帧是在过去604800秒（7天）内，在一条服务器使用了传输参数<code>grease_quic_bit</code>的连接上接收到的时，它才可以这么做。</p>
+<p>这个7天的时限容许服务器的配置发生变化。如果服务器改变了配置且客户端没有设置QUIC位，那么服务器有可能丢弃数据包，使得连接失败。</p>
+<p>服务器<em><strong>必须</strong></em>仅在处理完来自客户端的传输参数后再将QUIC位设置为<code>0</code>。服务器<em><strong>必须不</strong></em>记忆客户端在先前的连接中协商的扩展，或基于该信息来将QUIC位设置为<code>0</code>。</p>
+<p>终端在不了解对端是否支持本扩展的情况下<em><strong>必须不</strong></em>将QUIC位设置为<code>0</code>。由于无状态重置数据包（详见《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#10.3_Stateless_Reset">第10.3章</a>）仅会在连接状态丢失后才被使用，所以终端不太可能在无状态重置数据包中将QUIC位设置为<code>0</code>。</p>
+</div>
+</section>
+<section class="page" id="3.2_Using_the_QUIC_Bit">
+<h2>
+<a href="#3.2_Using_the_QUIC_Bit">3.2. 使用QUIC位</a>
+</h2>
+<div class="content">
+<p>本扩展的目的是允许QUIC位被用于将来的扩展中。</p>
+<p>可以在协商传输参数<code>grease_quic_bit</code>的同时协商是否使用为QUIC位定义语义的QUIC扩展。在这种情况下，接收方需要有能力分辨随机值和按照扩展传递信息的值。使用QUIC位的扩展<em><strong>必须</strong></em>在使用值的语义前先协商它们的用途。</p>
+<p>例如，某扩展可能定义一个与传输参数<code>grease_quic_bit</code>一起发送的另一个传输参数。尽管对端接收到的数据包中的QUIC位可能一开始是按照扩展定义的规则来设置的，但在发送前它们可能按照本文档的规定经过了随机化。</p>
+<p>如果终端接收到了某使用了QUIC位的扩展所定义的传输参数，那么它就能确信对端支持扩展中定义的语义。为了避免对随机值作出反应，扩展可以要求终端按照扩展的规则来设置QUIC位，但是推迟对传递的信息做出反应，直到接收到该扩展定义的传输参数。</p>
+<p>可以不使用传输参数<code>grease_quic_bit</code>来协商是否使用为QUIC位定义语义的扩展。然而，同时使用这两种扩展使得QUIC位能在其替代用途不受支持的情况下仍能得到转义。</p>
+</div>
+</section>
+<section class="page" id="4_Security_Considerations">
+<h1>
+<a href="#4_Security_Considerations">4. 关于安全性的考量</a>
+</h1>
+<div class="content">
+<p>本文档为终端或依赖终端协作的实体引入新的安全风险。然而，该变更使得分辨QUIC的任务在没有终端协作的情况下变得更加困难。这有时与网络运营商依靠网络分类来识别威胁的安全目标背道而驰；有关此话题更全面的分析，详见《<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-manageability-18">QUIC可管理性</a>》的<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-manageability-18#section-3.1">第3.1章</a>。</p>
+</div>
+</section>
+<section class="page" id="5_IANA_Considerations">
+<h1>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文档在《<a href="../RFC9000_Chinese_Simplified">QUIC</a>》的<a href="../RFC9000_Chinese_Simplified/#22.3_QUIC_Transport_Parameters_Registry">第22.3章</a>定义的注册表《QUIC传输参数》中注册了传输参数<code>grease_quic_bit</code>。注册字段如下：</p>
+<dl>
+<dt>值：</dt>
+<dd>
+<p><code>0x2ab2</code></p>
+</dd>
+<dt>参数名称：</dt>
+<dd>
+<p><code>grease_quic_bit</code></p>
+</dd>
+<dt>状态：</dt>
+<dd>
+<p>永久</p>
+</dd>
+<dt>规范：</dt>
+<dd>
+<p>RFC 9287</p>
+</dd>
+<dt>日期：</dt>
+<dd>
+<p>2022-07-13</p>
+</dd>
+<dt>更改责任人：</dt>
+<dd>
+<p>IETF (<a href="mailto:iesg@ietf.org">iesg@ietf.org</a>)</p>
+</dd>
+<dt>联系方式：</dt>
+<dd>
+<p>QUIC工作组 (<a href="mailto:quic@ietf.org">quic@ietf.org</a>)</p>
+</dd>
+<dt>备注：</dt>
+<dd>
+<p>（无）</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="6_References">
+<h1>
+<a href="#6_References">6. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="6.1_Normative_References">
+<h2>
+<a href="#6.1_Normative_References">6.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-INVARIANTS">
+<p><a href="#QUIC-INVARIANTS"><strong>[QUIC-INVARIANTS]</strong></a> </p>
+<p>Thomson, M., “Version-Independent Properties of QUIC”, RFC 8999, DOI 10.17487/RFC8999, May 2021, <a href="https://www.rfc-editor.org/info/rfc8999">https://www.rfc-editor.org/info/rfc8999</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> </p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> </p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="6.2_Informative_References">
+<h2>
+<a href="#6.2_Informative_References">6.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="DEMUX">
+<p><a href="#DEMUX"><strong>[DEMUX]</strong></a> </p>
+<p>Aboba, B., Salgueiro, G., and C. Perkins, “Multiplexing Scheme Updates for QUIC”, Work in Progress, Internet-Draft, draft-ietf-avtcore-rfc7983bis-06, 5 August 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-avtcore-rfc7983bis-06">https://datatracker.ietf.org/doc/html/draft-ietf-avtcore-rfc7983bis-06</a>.</p>
+</div>
+<div class="out_ref" id="MANAGEABILITY">
+<p><a href="#MANAGEABILITY"><strong>[MANAGEABILITY]</strong></a> </p>
+<p>Kuehlewind, M. and B. Trammell, “Manageability of the QUIC Transport Protocol”, Work in Progress, Internet-Draft, draft-ietf-quic-manageability-18, 15 July 2022, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-manageability-18">https://datatracker.ietf.org/doc/html/draft-ietf-quic-manageability-18</a>.</p>
+</div>
+<div class="out_ref" id="RFC8546">
+<p><a href="#RFC8546"><strong>[RFC8546]</strong></a> </p>
+<p>Trammell, B. and M. Kuehlewind, “The Wire Image of a Network Protocol”, RFC 8546, DOI 10.17487/RFC8546, April 2019, <a href="https://www.rfc-editor.org/info/rfc8546">https://www.rfc-editor.org/info/rfc8546</a>.</p>
+</div>
+<div class="out_ref" id="USE-IT">
+<p><a href="#USE-IT"><strong>[USE-IT]</strong></a> </p>
+<p>Thomson, M. and T. Pauly, “Long-Term Viability of Protocol Extension Mechanisms”, RFC 9170, DOI 10.17487/RFC9170, December 2021, <a href="https://www.rfc-editor.org/info/rfc9170">https://www.rfc-editor.org/info/rfc9170</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="martin-thomson">Martin Thomson</h5>
+<p>Mozilla</p>
+<p>Email: <a href="mailto:mt@lowentropy.net">mt@lowentropy.net</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/YunzheZJU">Yunzhe</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/ruokeqx">ruokeqx</a></p>
+<ul>
+<li>Email: <a href="mailto:ruokeqx@163.com">ruokeqx@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>
