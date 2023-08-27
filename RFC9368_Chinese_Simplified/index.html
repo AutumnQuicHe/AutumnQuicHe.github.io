@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9368中文：QUIC兼容版本协商</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9368_Chinese_Simplified/css/RFC9368.css" rel="stylesheet"/>
+<link href="/RFC9368_Chinese_Simplified/index.xml" rel="alternate" title="RFC9368中文：QUIC兼容版本协商" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9368">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9368_Chinese_Simplified/">RFC9368中文：QUIC兼容版本协商</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9368_QUIC">RFC9368 QUIC兼容版本协商</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Conventions">1.1. 约定</a></li>
+<li><a href="#1.2_Definitions">1.2. 定义</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_Version_Negotiation_Mechanism">2. 版本协商机制</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Aug 27, 2023
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9368_QUIC">
+<h1>
+<a href="#RFC9368_QUIC">RFC9368 QUIC兼容版本协商</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更新：</td>
+<td colspan="2"><a href="https://www.rfc-editor.org/rfc/rfc8999">8999</a></td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9368">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9368&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9368">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/rfc/rfc9368">9368</a>
+</td>
+</tr>
+<tr>
+<td>更新：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/rfc/rfc8999">8999</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2023年5月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>D. Schinazi <br/><i>Google LLC</i></td>
+<td>E. Rescorla <br/><i>Mozilla</i></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于QUIC版本协商机制的更新文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>QUIC没有提供一个完整的版本协商机制，仅仅给服务端提供了一种方式用以声明客户端选择的版本是不可接受的。本文描述了一种版本协商机制，使得客户端和服务端能够选择一个相互都能支持的版本。可选地，如果客户端选择的版本及协商的版本具有兼容的首飞格式（first flight format），协商者可以立即生效而不需要再等一个往返。本网是对RFC 8999的更新。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9368">https://www.rfc-editor.org/info/rfc9368</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>QUIC的版本不变属性<sup>《<a href=""></a>》</sup>定义了版本协商包，但是没有指定终端收到该类包后该如何响应。QUIC第1版<sup>《<a href=""></a>》</sup>允许服务端使用版本协商包指出客户端选择的版本是不可接受的，但是其没有允许客户端安全地通过该信息使用一个双端支持的版本创建新的连接。本文通过为版本协商包定义版本协商机制，更新《》。</p>
+<p>有着合适且安全的机制，版本协商包可以成为该机制的一部分，从而使得两个QUIC实现得以在两个完全不相关的QUIC版本之间进行协商。本文使用版本协商包指定版本协商，如果需要的话其会在连接建立期间增加一个额外的往返。</p>
+<p>尽可能避免额外的往返延迟是有利的，尤其是假设大多数新增版本与先前版本是广泛相似的。本规范也定义了一种简单版本协商机制，其为各个版本赋能相似性，且可以在“兼容的”协商之间协商而不需要额外的往返延迟。</p>
+</div>
+</section>
+<section class="page" id="1.1_Conventions">
+<h1>
+<a href="#1.1_Conventions">1.1. 约定</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+</div>
+</section>
+<section class="page" id="1.2_Definitions">
+<h1>
+<a href="#1.2_Definitions">1.2. 定义</a>
+</h1>
+<div class="content">
+<p>本文使用了下述术语：</p>
+<ul>
+<li>在指定QUIC连接上下文中，包的“首飞（first flight）”指的是客户端在其收到服务端回包前创建并发送的用来初始化连接的所有包。</li>
+<li>在给定QUIC连接上下文中，“客户端选择版本（client’s Chosen Version）”是连接首飞使用的QUIC版本。</li>
+<li>“初始版本（Original Version）”是客户端发给服务端的最初第一个包的QUIC版本。
+如果版本协商跨越多个连接（详见<a href="">第2.4章</a>），初始版本等于第一个QUIC连接的客户端选择版本。</li>
+<li>“协商版本（Negotiated Version）”是版本协商过程一经完成后连接使用的QUIC版本。</li>
+<li>“最大段生命周期”（MSL，Maximum Segment Lifetime）表示QUIC包可以在网络上生存的时间。
+实现可以将其置为可配置的，并且<em><strong>推荐</strong></em>值是1分钟。
+注意，这里的“段（segment）”概念源自《<a href="">TCP</a>》<a href="">第3.4.1章</a>。</li>
+</ul>
+</div>
+</section>
+<section class="page" id="2_Version_Negotiation_Mechanism">
+<h1>
+<a href="#2_Version_Negotiation_Mechanism">2. 版本协商机制</a>
+</h1>
+<div class="content">
+<p>本文指出了两个版本协商的结果：1、“不兼容的”，需要一个额外的往返且适用于所有版本，以及2、“兼容的”，可以保留一个往返但是只适用于兼容的版本之间（详见<a href="">第2.2章</a>）。</p>
+<p>客户端通过选择一个初始版本，发送长包头的首飞QUIC包给服务端，以初始化QUIC连接<sup>《》</sup>。客户端的首飞包括版本信息（详见<a href="">第3章</a>），将被用于可选地开启兼容的版本协商（详见<a href="">第2.3章</a>），且阻止版本降级攻击（详见<a href="">第4章</a>）。</p>
+<p>在收到首飞后，服务端检验其是否知道如何从选择版本（此种场景下也即初始版本）解析首飞包。如果其不能解析，则启动不兼容的版本协商（详见），这会导致客户端使用另一个版本初始化一条新连接。例如，如果客户端使用服务端不能解析的版本A初始化一条连接，服务端启动不兼容版本协商；然后，客户端使用版本B初始化一条连接，则说第一条连接的客户端选择版本是A，第二条连接的客户端选择版本是B，而整个过程的初始版本是A。</p>
+<p>如果服务端可以解析首飞，则它可以使用客户端选择版本建立连接，也<em><strong>可以</strong></em>选择其他兼容的版本，详见<a href="">第2.3章</a>。</p>
+<p>注意，服务端也可能有能力解析首飞，即使其无法完整支持给定的版本，其在解析首飞以进行版本确认方面的实现是足够的，但是不足以完整地使用相应版本建立连接。</p>
+</div>
+</section>
+</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9220中文：HTTP/3网页套接字</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9220_Chinese_Simplified/css/RFC9220.css" rel="stylesheet"/>
+<link href="/RFC9220_Chinese_Simplified/index.xml" rel="alternate" title="RFC9220中文：HTTP/3网页套接字" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9220">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9220_Chinese_Simplified/">RFC9220中文：HTTP/3网页套接字</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9220_QUIC">RFC9220 通过HTTP/3引导网络套接字</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</li>
+<li>
+<a href="#3_WebSockets_Upgrade_over_HTTP_3">3. 在HTTP/3上升级使用网络套接字</a>
+</li>
+<li>
+<a href="#4_Security_Considerations">4. 安全考量</a>
+</li>
+<li>
+<a href="#5_IANA_Considerations">5. IANA考量</a>
+</li>
+<li>
+<a href="#6_Normative_References">6. 参考文献</a>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Address">作者地址</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Aug 27, 2023
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9220_QUIC">
+<h1>
+<a href="#RFC9220_QUIC">RFC9220 通过HTTP/3引导网络套接字</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9220">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9220&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9220">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/info/rfc9220">9220</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2022年6月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td colspan="2">R. Hamilton<br/><i>Google</i></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于HTTP/3支持网络套接字的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>在HTTP/2连接上运行网络套接字（WebSocket）协议的机制同样兼容HTTP/3，但是HTTP版本特性细节需要指定。本文描述该机制是如何适用于HTTP/3的。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9220">https://www.rfc-editor.org/info/rfc9220</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>《<a href="https://www.rfc-editor.org/info/rfc8441">HTTP/2引导网络套接字</a>》定义了一个针对<a href="https://www.rfc-editor.org/info/rfc9113">HTTP/2</a>的扩展，其在<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>中也是有用的。该扩展利用了HTTP/2的设置。在将其从HTTP/2移植到HTTP/3中过程中，《<a href="/RFC9114_Chinese_Simplified">HTTP/3</a>》的<a href="/RFC9114_Chinese_Simplified/#A.3_HTTP2_SETTINGS_Parameters">附录A.3</a>提供了合适的的引导（如果有的话）。</p>
+</div>
+</section>
+<section class="page" id="2_Conventions_and_Definitions">
+<h1>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+</div>
+</section>
+<section class="page" id="3_WebSockets_Upgrade_over_HTTP_3">
+<h1>
+<a href="#3_WebSockets_Upgrade_over_HTTP_3">3. 在HTTP/3上升级使用网络套接字</a>
+</h1>
+<div class="content">
+<p>《<a href="https://www.rfc-editor.org/rfc/rfc8441">RFC8441</a>》定义了在HTTP/2连接一条单独流上执行网络套接字协议（WebSocket Protocol）<sup>《<a href="https://www.rfc-editor.org/rfc/rfc6455">RFC6455</a>》</sup>的机制。其定义了一个扩展的<code>CONNECT</code>方法，通过给<code>:path</code>及<code>:authority</code>伪头部字段（pseudo-header）指定一个新的<code>:protocol</code>伪头部字段值及语义。其同时定义了一个新的通过服务端发送的HTTP/2设置，以告知客户端是否可以使用扩展的<code>CONNECT</code>方法。</p>
+<p>伪头部字段及设置与HTTP/2在《<a href="https://www.rfc-editor.org/rfc/rfc9220.html#RFC8441">RFC8441</a>》中的定义完全一致。《<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>》的<a href="/RFC9114_Chinese_Simplified/#A.3_HTTP2_SETTINGS_Parameters">附录A.3</a>要求HTTP/3分别注册设置。<code>SETTINGS_ENABLE_CONNECT_PROTOCOL</code>值是<code>0x08</code>（十进制值为8），就像在HTTP/2中那样。</p>
+<p>如果服务端圣母支持扩展的<code>CONNECT</code>方法，但是却收到了一个不识别或不支持的<code>:protocol</code>值，服务端<em><strong>应该</strong></em>给请求回复<code>501</code>（未实现）状态码（详见《<a href="https://www.rfc-editor.org/rfc/rfc9110">HTTP</a>》<a href="https://www.rfc-editor.org/rfc/rfc9110.html#name-501-not-implemented">第15.6.2章</a>）。服务端<em><strong>可以</strong></em>通过“问题细节（problem details）”回复提供更多信息<sup>《<a href="https://www.rfc-editor.org/rfc/rfc7807.html">RFC7807</a>》</sup>。</p>
+<p>HTTP/3流的关闭也类似于TCP连接在《<a href="https://www.rfc-editor.org/rfc/rfc9220.html#RFC6455">RFC6455</a>》中所述的方式关闭。有序的TCP层级关闭通过流的<code>FIN</code>位表示（详见《<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>》<a href="/RFC9114_Chinese_Simplified/#4.4_The_CONNECT_Method">第4.4章</a>）。<code>RST</code>异常通过<code>H3_REQUEST_CANCELLED</code>（HTTP/3请求取消，详见《<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>》<a href="/RFC9114_Chinese_Simplified/#8.1_HTTP3_Error_Codes">第8.1章</a>）类型的流错误（详见《<a href="">HTTP/3</a>》<a href="/RFC9114_Chinese_Simplified/#8_Error_Handling">第8章</a>）表示。</p>
+</div>
+</section>
+<section class="page" id="4_Security_Considerations">
+<h1>
+<a href="#4_Security_Considerations">4. 安全考量</a>
+</h1>
+<div class="content">
+<p>本文没有在《<a href="https://www.rfc-editor.org/rfc/rfc8441">RFC8441</a>》讨论的基础上引入新的安全问题。</p>
+</div>
+</section>
+<section class="page" id="5_IANA_Considerations">
+<h1>
+<a href="#5_IANA_Considerations">5. IANA考量</a>
+</h1>
+<div class="content">
+<p>本文在“HTTP/3设置”登记（详见《<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>》<a href="/RFC9114_Chinese_Simplified/#11.2.2_Settings_Parameters">第11.2.2章</a>）中注册了一个新的设置项。</p>
+<dl>
+<dt>值：</dt>
+<dd>
+<p><code>0x08</code></p>
+</dd>
+<dt>设置名称：</dt>
+<dd>
+<p><code>SETTINGS_ENABLE_CONNECT_PROTOCOL</code></p>
+</dd>
+<dt>默认值：</dt>
+<dd>
+<p>0</p>
+</dd>
+<dt>状态：</dt>
+<dd>
+<p>永久</p>
+</dd>
+<dt>规范：</dt>
+<dd>
+<p>本文</p>
+</dd>
+<dt>更改责任人：</dt>
+<dd>
+<p>IETF</p>
+</dd>
+<dt>联系方式：</dt>
+<dd>
+<p>HTTP工作组（Email: <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a>）</p>
+</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="6_Normative_References">
+<h1>
+<a href="#6_Normative_References">6. 参考文献</a>
+</h1>
+<div class="content">
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> HTTP语法</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> HTTP/2</p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC文档中用于指出要求级别的关键字</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC6455">
+<p><a href="#RFC6455"><strong>[RFC6455]</strong></a> 网络套接字协议</p>
+<p>Fette, I. and A. Melnikov, “The WebSocket Protocol”, RFC 6455, DOI 10.17487/RFC6455, December 2011, <a href="https://www.rfc-editor.org/info/rfc6455">https://www.rfc-editor.org/info/rfc6455</a>.</p>
+</div>
+<div class="out_ref" id="RFC7807">
+<p><a href="#RFC7807"><strong>[RFC7807]</strong></a> HTTP接口问题细节</p>
+<p>Nottingham, M. and E. Wilde, “Problem Details for HTTP APIs”, RFC 7807, DOI 10.17487/RFC7807, March 2016, <a href="https://www.rfc-editor.org/info/rfc7807">https://www.rfc-editor.org/info/rfc7807</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119中关键字大写与小写的歧义</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="RFC8441">
+<p><a href="#RFC8441"><strong>[RFC8441]</strong></a> 通过HTTP/2引导网络套接字</p>
+<p>McManus, P., “Bootstrapping WebSockets with HTTP/2”, RFC 8441, DOI 10.17487/RFC8441, September 2018, <a href="https://www.rfc-editor.org/info/rfc8441">https://www.rfc-editor.org/info/rfc8441</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>本文收到了来自IETF HTTP及QUIC工作组众多贡献者的提交与评审，大量实质性提交来自David Schinazi、Martin Thomson、Lucas Pardue、Mike Bishop、Dragana Damjanovic、Mark Nottingham，以及Julian Reschke。</p>
+</div>
+</section>
+<section class="page" id="Authors_Address">
+<h1>
+<a href="#Authors_Address">作者地址</a>
+</h1>
+<div class="content">
+<h5 id="ryan-hamilton">Ryan Hamilton</h5>
+<p>Google</p>
+<p>Email: <a href="mailto:rch@google.com">rch@google.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li>
+<p><a href="https://github.com/fangqiuhang">方秋航</a></p>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/YunzheZJU">YunzheZJU</a></p>
+<ul>
+<li>Email: <a href="mailto:yunzhe@zju.edu.cn">yunzhe@zju.edu.cn</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</div>
+</body>
+</html>

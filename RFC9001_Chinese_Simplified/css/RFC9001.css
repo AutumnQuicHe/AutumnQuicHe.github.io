@@ -86,9 +86,8 @@ section.page table, section.page th, section.page td {
   position: relative;
   overflow-wrap: break-word;
   display: block;
-  z-index: -1;
-  /* to ensure under sidebar */
-  background-color: #fff2f8;
+  z-index: -1; /* to ensure under sidebar */
+  background-color: rgb(255, 242, 248);
   color: #0f4731;
 }
 .block:before {

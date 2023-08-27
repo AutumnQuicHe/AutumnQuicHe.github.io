@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9443中文：QUIC多路复用</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9443_Chinese_Simplified/css/RFC9443.css" rel="stylesheet"/>
+<link href="/RFC9443_Chinese_Simplified/index.xml" rel="alternate" title="RFC9443中文：QUIC多路复用" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9443">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9443_Chinese_Simplified/">RFC9443中文：QUIC多路复用</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9443_QUIC">RFC9443 QUIC的多路复用更新</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Aug 27, 2023
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9443_QUIC">
+<h1>
+<a href="#RFC9443_QUIC">RFC9443 QUIC的多路复用更新</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="3">建议标准</td>
+</tr>
+<tr>
+<td>更新：</td>
+<td colspan="3">
+<a href="https://www.rfc-editor.org/rfc/rfc5764">5764</a>、
+      <a href="https://www.rfc-editor.org/rfc/rfc7983">7983</a>
+</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="3">
+<a href="https://datatracker.ietf.org/doc/rfc9443">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9443&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9443">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="3">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="3">
+<a href="https://www.rfc-editor.org/info/rfc9443">9443</a>
+</td>
+</tr>
+<tr>
+<td>更新：</td>
+<td colspan="3">
+<a href="https://www.rfc-editor.org/rfc/rfc5764">5764</a>、
+      <a href="https://www.rfc-editor.org/rfc/rfc7983">7983</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="3">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="3">2023年7月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="3">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>B. Aboba <br/><i>Microsoft Corporation</i></td>
+<td>G. Salgueiro <br/><i>Cisco Systems</i></td>
+<td>C. Perkins <br/><i>University of Glasgow</i></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于QUIC多路复用的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>RFC 7983为实时传输协议（Real-time Transport Protocol，RTP）接受方定义了一种方案，将到达单个端口的报文传输层安全（Datagram Transport Layer Security，DTLS）、NAT会话遍历工具集（Session Traversal Utilities for NAT，STUN）、安全实时传输协议（Secure Real-time Transport Protocol，SRTP）/安全实时传输控制协议（Secure Real-time Transport Control Protocol，SRTCP）、ZRTP、以及环NAT中继遍历（Traversal Using Relays around NAT，TURN）通道的数据包解除复用。本文更新RFC 7983及5764，以支持QUIC包在单个接受套接字（socket）上进行多路复用。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9443">https://www.rfc-editor.org/info/rfc9443</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+</div>
+</body>
+</html>

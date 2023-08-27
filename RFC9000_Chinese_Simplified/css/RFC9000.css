@@ -86,9 +86,8 @@ section.page table, section.page th, section.page td {
   position: relative;
   overflow-wrap: break-word;
   display: block;
-  z-index: -1;
-  /* to ensure under sidebar */
-  background-color: #fff2f8;
+  z-index: -1; /* to ensure under sidebar */
+  background-color: rgb(255, 242, 248);
   color: #281b0a;
 }
 .block:before {
@@ -136,7 +135,7 @@ section.page table, section.page th, section.page td {
   text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip {
-  background: #9cd4e7;
+  background: rgb(156, 212, 231);
   border-top-color: #284750;
 }
 .block.tip:before {
