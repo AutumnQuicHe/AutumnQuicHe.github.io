@@ -5,7 +5,7 @@ weight: 210
 rank: "h2"
 ---
 
-已经定稿的QUIC四层文档共8篇，原文及中译如下：
+已经定稿的QUIC四层文档共11篇，原文及中译如下：
 
 ### RFC8999：《[QUIC版本通用属性（Version-Independent Properties of QUIC）](https://www.rfc-editor.org/rfc/rfc8999.html)》
 中译：《[RFC8999中译：QUIC版本通用属性](/RFC8999_Chinese_Translation)》。
@@ -27,10 +27,25 @@ RFC9001描述了如何使用TLS加密QUIC。
 
 RFC9002描述了QUIC的丢包检测与恢复算法有关内容，其中提出了PTO机制用以取代RTO和TLP机制管理数据包超时重传。
 
-### RFC9221：《[QUIC不可靠数据报文传输扩展（QUIC Loss Detection and Congestion Control）](https://www.rfc-editor.org/rfc/rfc9221.html)》
+### RFC9221：《[QUIC不可靠数据报文传输扩展（QAn Unreliable Datagram Extension to QUIC）](https://www.rfc-editor.org/rfc/rfc9221.html)》
 中译：《[RFC9221中译：QUIC不可靠数据传输](/RFC9221_Chinese_Simplified)》
 
 RFC9221描述了如何使用QUIC进行不可靠数据传输。
+
+### RFC9287：《[QUIC位转义（Greasing the QUIC Bit）](https://www.rfc-editor.org/rfc/rfc9287.html)》
+中译：《[RFC9221中译：QUIC位转义](/RFC9287_Chinese_Simplified)》
+
+描述QUIC位转义。
+
+### RFC9308：《[QUIC协议的适用范围（Applicability of the QUIC Transport Protocol）](https://www.rfc-editor.org/rfc/rfc9308.html)》
+中译：《[RFC9308中译：QUIC协议的适用范围](/RFC9308_Chinese_Simplified)》
+
+讨论了QUIC的适用性。
+
+### RFC9312：《[QUIC协议的可管理性（Manageability of the QUIC Transport Protocol）](https://www.rfc-editor.org/rfc/rfc9312.html)》
+中译：《[RFC9312中译：QUIC协议的可管理性](/RFC9312_Chinese_Simplified)》
+
+讨论了QUIC的可管理性。
 
 ### RFC9368：《[QUIC兼容版本协商（Compatible Version Negotiation for QUIC）](https://www.rfc-editor.org/rfc/rfc9368.html)》
 中译：《[RFC9368中译：QUIC兼容版本协商](/RFC9368_Chinese_Simplified)》
