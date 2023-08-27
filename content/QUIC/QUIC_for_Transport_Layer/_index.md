@@ -5,7 +5,7 @@ weight: 210
 rank: "h2"
 ---
 
-已经定稿的QUIC四层文档共5篇，原文及中译如下：
+已经定稿的QUIC四层文档共8篇，原文及中译如下：
 
 ### RFC8999：《[QUIC版本通用属性（Version-Independent Properties of QUIC）](https://www.rfc-editor.org/rfc/rfc8999.html)》
 中译：《[RFC8999中译：QUIC版本通用属性](/RFC8999_Chinese_Translation)》。
@@ -31,3 +31,18 @@ RFC9002描述了QUIC的丢包检测与恢复算法有关内容，其中提出了
 中译：《[RFC9221中译：QUIC不可靠数据传输](/RFC9221_Chinese_Simplified)》
 
 RFC9221描述了如何使用QUIC进行不可靠数据传输。
+
+### RFC9368：《[QUIC兼容版本协商（Compatible Version Negotiation for QUIC）](https://www.rfc-editor.org/rfc/rfc9368.html)》
+中译：《[RFC9368中译：QUIC兼容版本协商](/RFC9368_Chinese_Simplified)》
+
+具体定义了QUIC的版本协商机制，包括双端如何协商出一个兼容版本。
+
+### RFC9369：《[QUIC第2版（QUIC Version 2）](https://www.rfc-editor.org/rfc/rfc9369.html)》
+中译：《[RFC9369中译：QUIC第2版](/RFC9369_Chinese_Simplified)》
+
+发布了QUIC第2版。
+
+### RFC9443：《[QUIC的多路复用更新（Multiplexing Scheme Updates for QUIC）](https://www.rfc-editor.org/rfc/rfc9443.html)》
+中译：《[RFC9443中译：QUIC多路复用](/RFC9443_Chinese_Simplified)》
+
+描述QUIC针对多路复用进行的更新。
