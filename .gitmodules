@@ -32,6 +32,15 @@
 [submodule "content/RFC9250_Chinese_Simplified"]
 	path = content/RFC9250_Chinese_Simplified
 	url = git@github.com:AutumnQuicHe/RFC9250_Chinese_Simplified.git
+[submodule "content/RFC9287_Chinese_Simplified"]
+	path = content/RFC9287_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9287_Chinese_Simplified.git
+[submodule "content/RFC9308_Chinese_Simplified"]
+	path = content/RFC9308_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9308_Chinese_Simplified.git
+[submodule "content/RFC9312_Chinese_Simplified"]
+	path = content/RFC9312_Chinese_Simplified
+	url = git@github.com:AutumnQuicHe/RFC9312_Chinese_Simplified.git
 [submodule "content/RFC9368_Chinese_Simplified"]
 	path = content/RFC9368_Chinese_Simplified
 	url = git@github.com:AutumnQuicHe/RFC9368_Chinese_Simplified.git
