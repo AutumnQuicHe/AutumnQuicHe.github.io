@@ -51,7 +51,7 @@
 <ul>
 <li><a href="#3.1_Sending_Stream_States">3.1. 流发送状态</a></li>
 <li><a href="#3.2_Receiving_Stream_States">3.2. 接收流状态</a></li>
-<li><a href="#3.3_Permitted_Frame_Types">3.3. 许可帧</a></li>
+<li><a href="#3.3_Permitted_Frame_Types">3.3. 允许的帧类型</a></li>
 <li><a href="#3.4_Bidirectional_Stream_States">3.4. 双向流状态</a></li>
 <li><a href="#3.5_Solicited_State_Transitions">3.5. 请求状态转换</a></li>
 </ul>
@@ -324,7 +324,7 @@
 <li><a href="#19.3.2_ECN_Counts">19.3.2 ECN计数</a></li>
 </ul>
 </li>
-<li><a href="#19.4_RESET_STREAM_Frames">19.4 重置帧</a></li>
+<li><a href="#19.4_RESET_STREAM_Frames">19.4 流重置帧</a></li>
 <li><a href="#19.5_STOP_SENDING_Frames">19.5 停止发送帧</a></li>
 <li><a href="#19.6_CRYPTO_Frames">19.6 加密帧</a></li>
 <li><a href="#19.7_NEW_TOKEN_Frames">19.7 新令牌帧</a></li>
@@ -451,7 +451,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 27, 2023
+            generated on Oct 12, 2023
     </div>
 </div>
 <div class="content">
@@ -761,7 +761,7 @@
 <a href="#3.1_Sending_Stream_States">3.1. 流发送状态</a>
 </h2>
 <div class="content">
-<p><a href="#Figure_2_States_for_Sending_Parts_of_Streams">图2</a>展示了通过流向对端发送发送数据的状态。</p>
+<p><a href="#Figure_2_States_for_Sending_Parts_of_Streams">图2</a>展示了通过流向对端发送数据的状态。</p>
 <div class="block ref" id="Figure_2_States_for_Sending_Parts_of_Streams">
 <img src="/RFC9000_Chinese_Simplified/images/Figure_2_States_for_Sending_Parts_of_Streams.svg"/>
 <p><a href="#Figure_2_States_for_Sending_Parts_of_Streams">图2：流数据发送部分状态</a></p>
@@ -769,8 +769,8 @@
 <p>终端发起的流的发送部分（客户端发起的流类型是0和2，1和3则是由服务端发起的）由应用层打开。用于发送的流数据可能被缓存起来。</p>
 <p>发送首个<strong>流帧</strong>（STREAM）或<strong>流阻塞帧</strong>（STREAM_DATA_BLOCKED）使流的发送部分进入“发送”状态。QUIC实现可以选择延迟分配流ID直到其发送首个<strong>流帧</strong>并进入“发送”状态，这样可以实现更好的流优先级。</p>
 <p>由对端发起的双向流的发送部分（服务端发起的流类型是0，客户端发起的是1）在接收部分创建时就已处于“就绪”状态，并从此状态开始。</p>
-<p>在“发送”状态，终端通过<strong>流帧</strong>传输——必要时重传——流数据。终端遵从其对端设置的流量控制限制，同时持续接收与处理<strong>最大流数据帧</strong>（MAX_STREAM_DATA）。当发送过程被流的流量控制限制（<a href="#4.1_Data_Flow_Control">第4.1章</a>）所阻塞时，处在“发送”状态的终端会生成<strong>流阻塞帧</strong>。</p>
-<p>在应用层表示所有应用数据及一个带FIN置位的<strong>流帧</strong>都发送完成后，流的发送部分进入“发送完成”状态。从这个状态开始，终端只会做必要的数据重传。在对端收到最终流下标前，都有可能收到<strong>最大流数据帧</strong>。处于此状态的终端可以忽略任何其收到的<strong>最大流数据帧</strong>，这样是安全的。</p>
+<p>在“发送”状态，终端通过<strong>流帧</strong>传输——必要时重传——流数据。终端遵从其对端设置的流量控制限制，同时持续接收与处理<strong>最大流数据量帧</strong>（MAX_STREAM_DATA）。当发送过程被流的流量控制限制（<a href="#4.1_Data_Flow_Control">第4.1章</a>）所阻塞时，处在“发送”状态的终端会生成<strong>流阻塞帧</strong>。</p>
+<p>在应用层表示所有应用数据及一个带FIN置位的<strong>流帧</strong>都发送完成后，流的发送部分进入“发送完成”状态。从这个状态开始，终端只会做必要的数据重传。在对端收到最终流下标前，都有可能收到<strong>最大流数据量帧</strong>。处于此状态的终端可以忽略任何其收到的<strong>最大流数据量帧</strong>，这样是安全的。</p>
 <p>当所有流数据都被成功确认后，发送部分进入“接收完成”状态，这是一个最终状态。</p>
 <p>处在“就绪”、“发送”及“发送完成”状态中的任何一个状态时，应用层都可以提出取消发送流数据。相应地，终端也可能从其对端收到一个<strong>停止发送帧</strong>（STOP_SENDING）。不论哪种情况，终端都会发送<strong>流重置帧</strong>（RESET_STREAM），随后流进入“重置发送”状态。</p>
 <p>终端<em><strong>可以</strong></em>发送一个<strong>流重置帧</strong>作为流的首个帧，这会导致该流的发送部分开启然后立即转到“重置发送”状态。</p>
@@ -787,12 +787,12 @@
 <img src="/RFC9000_Chinese_Simplified/images/Figure_3_States_for_Receiving_Parts_of_Streams.svg"/>
 <p><a href="#Figure_3_States_for_Receiving_Parts_of_Streams">图3：流数据接收部分状态</a></p>
 </div>
-<p>由对端发起的流（客户端发起的流类型是1和3，服务端发起的是0和2）的接收部分在收到该流的第一个<strong>流帧</strong>、<strong>流阻塞帧</strong>或<strong>流重置帧</strong>时创建。对于由对端创建的双向流，发送部分收到<strong>最大流数据帧</strong>或<strong>停止发送帧</strong>时也会创建该流的接收部分。流的接收部分的初始状态是“接受”状态。</p>
+<p>由对端发起的流（客户端发起的流类型是1和3，服务端发起的是0和2）的接收部分在收到该流的第一个<strong>流帧</strong>、<strong>流阻塞帧</strong>或<strong>流重置帧</strong>时创建。对于由对端创建的双向流，发送部分收到<strong>最大流数据量帧</strong>或<strong>停止发送帧</strong>时也会创建该流的接收部分。流的接收部分的初始状态是“接收”状态。</p>
 <p>由本端发起的双向流（客户端发起的流类型是0，服务端发起的是1），当其发送部分进入“就绪”状态时，其接收部分进入“接收”状态。</p>
-<p>终端在收到<strong>最大流数据帧</strong>或<strong>停止发送帧</strong>后打开一条双向流。接收到一条未开启的流的<strong>最大流数据帧</strong>意味着对端已经开启了该流，并开始支持流量控制额度。而接收到一条未开启流的<strong>停止发送帧</strong>意味着对端不会再从该流接收数据。无论这两种帧的哪一种都可能先于<strong>流帧</strong>或<strong>流阻塞帧</strong>到达本端，原因是包丢失或乱序。</p>
+<p>终端在收到<strong>最大流数据量帧</strong>或<strong>停止发送帧</strong>后打开一条双向流。接收到一条未开启的流的<strong>最大流数据量帧</strong>意味着对端已经开启了该流，并开始支持流量控制额度。而接收到一条未开启流的<strong>停止发送帧</strong>意味着对端不会再从该流接收数据。无论这两种帧的哪一种都可能先于<strong>流帧</strong>或<strong>流阻塞帧</strong>到达本端，原因是包丢失或乱序。</p>
 <p>在一条流创建前，所有数值小于该流ID的同类型流都<em><strong>必须</strong></em>被创建。这样能确保双端流的创建次序保持一致。</p>
-<p>在“接收”状态，终端接收<strong>流帧</strong>和<strong>流阻塞帧</strong>。传入数据将被缓存，并可以按照正确顺序重组以便递给应用层。随着应用层不断消耗数据，缓冲区重新空出来，终端发送<strong>最大流数据帧</strong>告知对端可以发送更多数据。</p>
-<p>当收到一个带FIN置位的<strong>流帧</strong>时，数据的最终大小确定下来，详见<a href="#4.5_Stream_Final_Size">第4.5章</a>。流的接收部分随后转到“数据量确认”状态。在此状态，终端不再需要发送<strong>最大流数据帧</strong>，只需要接收重传数据即可。</p>
+<p>在“接收”状态，终端接收<strong>流帧</strong>和<strong>流阻塞帧</strong>。传入数据将被缓存，并可以按照正确顺序重组以便递给应用层。随着应用层不断消耗数据，缓冲区重新空出来，终端发送<strong>最大流数据量帧</strong>告知对端可以发送更多数据。</p>
+<p>当收到一个带FIN置位的<strong>流帧</strong>时，数据的最终大小确定下来，详见<a href="#4.5_Stream_Final_Size">第4.5章</a>。流的接收部分随后转到“数据量确认”状态。在此状态，终端不再需要发送<strong>最大流数据量帧</strong>，只需要接收重传数据即可。</p>
 <p>一旦收完了一条流的所有数据，流的接收部分转入“接收完成”状态。这可能发生在收到导致转入“数据量确认”状态的同一个<strong>流帧</strong>后。在所有数据都收完后，可以丢弃该流的任何<strong>流帧</strong>或<strong>流阻塞帧</strong>。</p>
 <div class="block note">
 <p><strong>秋航注</strong>：意思是说，在收到<strong>流帧</strong>后，接收方可能转入“接收量确认”状态；紧接着，状态再次流转到“接收完成”状态。中间这句原译为：</p>
@@ -809,13 +809,13 @@
 </section>
 <section class="page" id="3.3_Permitted_Frame_Types">
 <h2>
-<a href="#3.3_Permitted_Frame_Types">3.3. 许可帧</a>
+<a href="#3.3_Permitted_Frame_Types">3.3. 允许的帧类型</a>
 </h2>
 <div class="content">
 <p>流的发送端发送的帧只有三种能同时影响发送端和接收端状态：<strong>流帧</strong>（<a href="#19.8_STREAM_Frames">第19.8章</a>）、<strong>流阻塞帧</strong>（<a href="#19.13_STREAM_DATA_BLOCKED_Frames">第19.13章</a>），以及<strong>流重置帧</strong>（<a href="#19.4_RESET_STREAM_Frames">第19.4章</a>）。</p>
 <p>发送端<em><strong>必须不</strong></em>在最终状态（“接收完成”或“重置接收”）发送任何这些帧。当流处在“重置发送”或任何最终状态时——也就是说，在发送完一个<strong>流重置帧</strong>后，发送端<em><strong>必须不</strong></em>发送<strong>流帧</strong>或<strong>流阻塞帧</strong>。接收端可以在任何状态接收这三种帧，原因在于被延迟的包可能携带这些帧。</p>
-<p>流的接收端发送<strong>最大流数据帧</strong>（<a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a>）及<strong>停止发送帧</strong>（<a href="#19.5_STOP_SENDING_Frames">第19.5章</a>）。</p>
-<p>接收端只可以在“接收”状态发送<strong>最大流数据帧</strong>。接收端<em><strong>可以</strong></em>在任何尚未收到过<strong>流重置帧</strong>的状态——也就是除“重置接收”、“重置读取”之外的状态，发送一个<strong>停止发送帧</strong>。然而，在“接收完成”状态发送<strong>停止发送帧</strong>意义不大，因为所有流数据都已经收到了。由于可能存在数据包延迟，因此发送端可以在任何状态接收这两种帧。</p>
+<p>流的接收端发送<strong>最大流数据量帧</strong>（<a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a>）及<strong>停止发送帧</strong>（<a href="#19.5_STOP_SENDING_Frames">第19.5章</a>）。</p>
+<p>接收端只可以在“接收”状态发送<strong>最大流数据量帧</strong>。接收端<em><strong>可以</strong></em>在任何尚未收到过<strong>流重置帧</strong>的状态——也就是除“重置接收”、“重置读取”之外的状态，发送一个<strong>停止发送帧</strong>。然而，在“接收完成”状态发送<strong>停止发送帧</strong>意义不大，因为所有流数据都已经收到了。由于可能存在数据包延迟，因此发送端可以在任何状态接收这两种帧。</p>
 </div>
 </section>
 <section class="page" id="3.4_Bidirectional_Stream_States">
@@ -902,7 +902,7 @@
 <p>如果应用层不再需要流接收到的数据，应用层可以中止流的读取，并指定一个应用层错误码。</p>
 <p>如果流处在“接收”或“数据量确认”状态，传输层<em><strong>应该</strong></em>发送一个<strong>停止发送帧</strong>通知对端及时在反方向关闭流。这通常表明接收方应用层不再读取流接收到的数据，但这并不意味着传入的数据一定会被忽略。</p>
 <p>在发送完<strong>停止发送帧</strong>后收到的<strong>流帧</strong>仍然会被连接及流级别的流量控制统计，即使这些帧可能在接收时即被丢弃。</p>
-<p><strong>停止发送帧</strong>请求接收端发送一个<strong>流重置帧</strong>。如果流处在“就绪”或“发送”状态，收到<strong>停止发送帧</strong>的一端<em><strong>必须</strong></em>发送一个<strong>流重置帧</strong>。如果流处在“发送完成”状态，终端<em><strong>可以</strong></em>推迟发送<strong>流重置帧</strong>直到含有未发完数据的数据包被确认或明确的被丢弃。如果任何未发完数据得到明确被丢弃了，终端<em><strong>应该</strong></em>发送一个<strong>流重置帧</strong>而非重传数据。</p>
+<p><strong>停止发送帧</strong>请求接收到它的那一端发送一个<strong>流重置帧</strong>。如果流处在“就绪”或“发送”状态，收到<strong>停止发送帧</strong>的一端<em><strong>必须</strong></em>发送一个<strong>流重置帧</strong>。如果流处在“发送完成”状态，终端<em><strong>可以</strong></em>推迟发送<strong>流重置帧</strong>直到含有未发完数据的数据包被确认或明确地被丢弃。如果任何未发完数据得到明确被丢弃了，终端<em><strong>应该</strong></em>发送一个<strong>流重置帧</strong>而非重传数据。</p>
 <p>终端<em><strong>应该</strong></em>从<strong>停止发送帧</strong>复制错误码到要发出的<strong>流重置帧</strong>，但是其可以使用任何应用层错误码。发送<strong>停止发送帧</strong>的终端<em><strong>可以</strong></em>忽略任何随后被流接收到的<strong>流重置帧</strong>里的错误码。</p>
 <p><strong>停止发送帧</strong><em><strong>应该</strong></em>只能在流尚未被对端重置前发送出去。<strong>停止发送帧</strong>主要在流的“接收”或“数据量确认”状态使用。</p>
 <p>如果包含前一个<strong>停止发送帧</strong>的数据包丢失了，终端应当发送另一个<strong>停止发送帧</strong>。然而，一旦流收到了所有流数据或一个<strong>流重置帧</strong>——也就是说流处在“接收”或“数据量确认”之外的状态——发送<strong>停止发送帧</strong>就不再必要了。</p>
@@ -930,12 +930,12 @@
 <li>连接流量控制：通过限制所有流经由<strong>流帧</strong>可以发送的数据量，防止发送方超过连接接收方的缓冲区容量。</li>
 </ul>
 <p>发送方发送数据<em><strong>必须不</strong></em>能超过上述任何一个限制。</p>
-<p>接收方在握手过程中（<a href="#7.4_Transport_Parameters">第7.4章</a>）通过传输参数为所有流设置初始的流接收缓存区上限。随后，接收方发送<strong>最大流数据帧</strong>（<a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a>）或<strong>最大数据帧</strong>（<a href="#19.9_MAX_DATA_Frames">第19.9章</a>）以告知对方提高流接收缓存区上限。</p>
-<p>接收方可以通过发送一个含相关流ID的<strong>最大流数据帧</strong>告知对方提高流接收缓存区上限。<strong>最大流数据帧</strong>表示流的最大绝对字节偏移量。接收方可以根据当前流消耗数据的偏移量确定后续发出的流量控制的偏移量。</p>
-<p>接收方可以通过发送一个<strong>最大数据帧</strong>告知对方提高连接的接收缓存区上限，亦即所有流绝对字节偏移量之和的上限。接收方维护一个在所有流上累计接收数据的总字节数，用以检查是否超过了连接或流流量控制上限。接收方可以基于在所有流上消耗数据总字节数确定后续发出的最大数据偏移量。</p>
+<p>接收方在握手过程中（<a href="#7.4_Transport_Parameters">第7.4章</a>）通过传输参数为所有流设置初始的流接收缓存区上限。随后，接收方发送<strong>最大流数据量帧</strong>（<a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a>）或<strong>最大数据量帧</strong>（<a href="#19.9_MAX_DATA_Frames">第19.9章</a>）以告知对方提高流接收缓存区上限。</p>
+<p>接收方可以通过发送一个含相关流ID的<strong>最大流数据量帧</strong>告知对方，它提高了流接收缓存区上限。<strong>最大流数据量帧</strong>表示流的最大绝对字节偏移量。接收方可以根据当前流消耗数据的偏移量确定后续发出的流量控制的偏移量。</p>
+<p>接收方可以通过发送一个<strong>最大数据量帧</strong>告知对方，它提高了连接的接收缓存区上限，亦即所有流绝对字节偏移量之和的上限。接收方维护一个在所有流上累计接收数据的总字节数，用以检查是否超过了连接或流流量控制上限。接收方可以基于在所有流上消耗数据总字节数确定后续发出的最大数据偏移量。</p>
 <p>接收方发布连接或流的流量控制上限若低于之前的上限，这不是错误，只是这个更低的上限不会生效而已。</p>
 <p>如果发送方违反了推荐的连接或流的流量控制上限，接收方<em><strong>必须</strong></em>以FLOW_CONTROL_ERROR类型错误关闭连接，更多错误处理相关细节详见<a href="#11_Error_Handling">第11章</a>。</p>
-<p>发送方<em><strong>必须</strong></em>忽略任何不会提高流量控制上限的<strong>最大流数据帧</strong>或<strong>最大数据帧</strong>。</p>
+<p>发送方<em><strong>必须</strong></em>忽略任何不会提高流量控制上限的<strong>最大流数据量帧</strong>或<strong>最大数据量帧</strong>。</p>
 <p>如果发送方发送数据达到了流量控制上限，其将不能再发送新数据，且应认为其被阻塞住了。发送方<em><strong>应该</strong></em>发送一个<strong>流数据阻塞帧</strong>或<strong>数据阻塞帧</strong>来告知接收方其有数据要写出但是被流量控制所阻塞。如果发送方被阻塞的时间超过空等超时时间（<a href="#10.1_Idle_Timeout">第10.1章</a>），接收方可以关闭连接，即便发送方有可传输的数据。为了保持连接不被关闭，在没有可引发ACK的数据包处于传输中时，被流量控制限制所阻塞的发送方<em><strong>应该</strong></em>定期发送一个<strong>流数据阻塞帧</strong>或<strong>数据阻塞帧</strong>。</p>
 </div>
 </section>
@@ -944,14 +944,14 @@
 <a href="#4.2_Increasing_Flow_Control_Limits">4.2. 提高流量控制限制</a>
 </h2>
 <div class="content">
-<p>QUIC实现决定什么时候以什么额度通过<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>提高流量控制限制，但是本章提出了一些注意事项。</p>
-<p>为了避免阻塞发送方，接收方<em><strong>可以</strong></em>在一个往返时间（RTT）内多次发送一个<strong>最大流数据帧</strong>或<strong>最大数据帧</strong>，或者尽可能早地发送，从而为帧的丢失及随后的恢复留出时间。</p>
-<p>控制帧也会引入连接开销。也就是说频繁发送<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>做极其微小的调整是不可取的。另一方面，如果更新不够频繁，每次更新时就要对接收方上限做更大幅度的提升以防发送方被阻塞，使得接收方耗费需要更多资源。因此，确定决定接收方推荐上限需要权衡资源耗费与连接开销。</p>
+<p>QUIC实现决定什么时候以什么额度通过<strong>最大流数据量帧</strong>及<strong>最大数据量帧</strong>提高流量控制限制，但是本章提出了一些注意事项。</p>
+<p>为了避免阻塞发送方，接收方<em><strong>可以</strong></em>在一个往返时间（RTT）内多次发送一个<strong>最大流数据量帧</strong>或<strong>最大数据量帧</strong>，或者尽可能早地发送，从而为帧的丢失及随后的恢复留出时间。</p>
+<p>控制帧也会引入连接开销。也就是说频繁发送<strong>最大流数据量帧</strong>及<strong>最大数据量帧</strong>做极其微小的调整是不可取的。另一方面，如果更新不够频繁，每次更新时就要对接收方上限做更大幅度的提升以防发送方被阻塞，使得接收方耗费需要更多资源。因此，确定决定接收方推荐上限需要权衡资源耗费与连接开销。</p>
 <p>接收方可以使用一个常见于TCP实现的基于往返时间及接收数据应用层消耗速率的自动调谐机制来调整推荐接收上限的频率和增量。作为优化，终端只有在有其他帧要发送时才可以发送流量控制相关帧，以确保流量控制不会导致额外的数据包发送。</p>
-<p>被阻塞发送方不一定发送<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>。因此，接收方<em><strong>必须不</strong></em>能在发送<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>前等待接收<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>，否则可能导致发送方在连接的其余部分被阻塞。即使发送方发送了这些帧，等待它们也会导致发送方至少被阻塞一个完整的往返周期。</p>
+<p>被阻塞发送方不一定发送<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>。因此，接收方<em><strong>必须不</strong></em>能在发送<strong>最大流数据量帧</strong>及<strong>最大数据量帧</strong>前等待接收<strong>流阻塞帧</strong>或<strong>数据阻塞帧</strong>，否则可能导致发送方在连接的其余部分被阻塞。即使发送方发送了这些帧，等待它们也会导致发送方至少被阻塞一个完整的往返周期。</p>
 <p>当终端在阻塞期间收到可发送数据额度时，它可能会回复大量数据，造成短暂的拥塞，详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》<a href="../RFC9002_Chinese_Simplified/#7.7_Pacing">第7.7章</a>有关终端如何避免这类拥塞的讨论。</p>
 <div class="block note">
-<p><strong>秋航注</strong>：这里将credit翻译为额度、增量等，指的是<strong>最大流数据帧</strong>及<strong>最大数据帧</strong>所带来的接收方新流量控制上限相对之前的提升量，这个提升量是发送方后续可发送新数据的空间。</p>
+<p><strong>秋航注</strong>：这里将credit翻译为额度、增量等，指的是<strong>最大流数据量帧</strong>及<strong>最大数据量帧</strong>所带来的接收方新流量控制上限相对之前的提升量，这个提升量是发送方后续可发送新数据的空间。</p>
 </div>
 </div>
 </section>
@@ -983,7 +983,7 @@
 <a href="#4.5_Stream_Final_Size">4.5. 流的最终数据量</a>
 </h2>
 <div class="content">
-<p>流的最终数据量是流消耗的流量控制额度的总量。假设流的每个连续的字节只被发送一次，那么其最终数据量就是发出的总字节数。更一般地来说，这比流上发送的最大偏移的字节高1，若无字节发送则为0。</p>
+<p>流的最终数据量是流消耗的流量控制额度的总量。假设流的每个连续的字节都被发送了一次，那么其最终数据量就是发出的总字节数。更一般地来说，这比流上发送的偏移最高的字节的偏移值高<code>1</code>，若无字节发送则为<code>0</code>。</p>
 <p>不管流是如何终止的，发送方始终试图将流的最终数据量可靠地发送给接收方。最终数据量是 带有FIN置位的<strong>流帧</strong>的Offset（下标）和Length（长度）字段值的总和，注意这些字段可能是隐式的。或者，<strong>流重置帧</strong>的Final Size字段也可以携带最终数据量值。这保证了双端发送方在该流上消耗的流量控制额度上达成一致。</p>
 <p>终端在流的接收部分转入“数据量确认”或“重置接收”状态（<a href="#3_Stream_States">第3章</a>）后将得知最终数据量。接收方<em><strong>必须</strong></em>根据流的最终数据量在其连接层流量控制上统计该流发送的字节数。</p>
 <p>终端<em><strong>必须不</strong></em>能在大于或等于最终数据量的流上发送数据。</p>
@@ -995,12 +995,12 @@
 <a href="#4.6_Controlling_Concurrency">4.6. 并发控制</a>
 </h2>
 <div class="content">
-<p>终端限制对端累计可以开启的流的数量。只有流ID小于<code>(max_streams * 4 + first_stream_id_of_type)</code>的流可以被开启，详见<a href="#Table_1_Stream_ID_Types">表1</a>。初始限制由传输参数设置，详见<a href="#18.2_Transport_Parameter_Definitions">第18.2章</a>。随后的限制由<strong>最大流帧</strong>推出，详见<a href="#19.11_MAX_STREAMS_Frames">第19.11章</a>。针对单向及双向流由单独的限制。</p>
+<p>终端限制对端累计可以开启的流的数量。只有流ID小于<code>(max_streams * 4 + first_stream_id_of_type)</code>的流可以被开启，详见<a href="#Table_1_Stream_ID_Types">表1</a>。初始限制由传输参数设置，详见<a href="#18.2_Transport_Parameter_Definitions">第18.2章</a>。随后的限制由<strong>最大流帧</strong>推出，详见<a href="#19.11_MAX_STREAMS_Frames">第19.11章</a>。对于单向流和双向流的限制值是相互独立的。</p>
 <p>如果经由<code>max_streams</code>传输参数或<strong>最大流帧</strong>收到的值大于2<sup>60</sup>，这将使得最大流ID不能表示为变长整数，详见<a href="#16_Variable-Length_Integer_Encoding">第16章</a>。如果收到了这两者的其中一个，<em><strong>必须</strong></em>立即关闭连接：如果这个值是通过传输参数收到的，就以TRANSPORT_PARAMETER_ERROR错误关闭连接；如果是通过帧收到的，就以FRAME_ENCODING_ERROR错误关闭连接，详见<a href="#10.2_Immediate_Close">第10.2章</a>。</p>
-<p>终端<em><strong>必须不</strong></em>能触达对端设置的流数量限制。终端收到一个有个触达其设置的流数量上限的流ID的帧的情况<em><strong>必须</strong></em>视为STREAM_LIMIT_ERROR类型的连接错误，更多有关错误梳理的细节详见<a href="#11_Error_Handling">第11章</a>。</p>
+<p>终端<em><strong>必须不</strong></em>能触达对端设置的流数量限制。终端收到一个有个触达其设置的流数量上限的流ID的帧的情况<em><strong>必须</strong></em>视为STREAM_LIMIT_ERROR类型的连接错误，更多有关错误处理的细节详见<a href="#11_Error_Handling">第11章</a>。</p>
 <p>一旦接收方通过<strong>最大流帧</strong>推荐了一个流数量上限，再推荐一个更小的上限将不再生效。<em><strong>必须</strong></em>忽略不会提高流数量上限的<strong>最大流帧</strong>。</p>
-<p>正如流及连接层流量控制，本文让实现者来决定通过<strong>最大流帧</strong>发布的流数量上限的时间及数值。QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端可以使用的流的数量大体对等。</p>
-<p>终端因对端设置的流数量上限而不能再开启新流时，<em><strong>应该</strong></em>发送一个<strong>流阻塞帧</strong>（<a href="#19.14_STREAMS_BLOCKED_Frames">第19.14章</a>）。可以认为这个信号主要用于调试。终端<em><strong>必须不</strong></em>能在告知额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发<strong>流阻塞帧</strong>时则等待可能会是无限期的。</p>
+<p>正如流及连接层流量控制，本文让实现者来决定通过<strong>最大流帧</strong>发布流数量上限的时机及数值。QUIC实现可以选择在流关闭时提高流数量上限，从而保持对端可以使用的流的数量大体对等。</p>
+<p>终端因对端设置的流数量上限而不能再开启新流时，<em><strong>应该</strong></em>发送一个<strong>流阻塞帧</strong>（<a href="#19.14_STREAMS_BLOCKED_Frames">第19.14章</a>）。这个信号对于调试很有帮助。终端<em><strong>必须不</strong></em>能在告知额外额度前等待这个信号，因为这样做的话意味着对端会被阻塞至少一个往返周期，且若对端选择不发<strong>流阻塞帧</strong>时则等待可能会是无限期的。</p>
 </div>
 </section>
 <section class="page" id="5_Connections">
@@ -1037,10 +1037,10 @@
 </h3>
 <div class="content">
 <p>当<code>新连接ID帧</code>或<code>撤销连接ID帧</code>指向同一个值时，每个连接ID都有一个相关联的序列号用于协助检测。一个终端发出的初始连接ID是通过握手阶段（<a href="#17.2_Long_Header_Packets">第17.2章</a>）的长包头的源连接ID字段发送的。初始连接ID的序列号是0。如果发送了传输参数<code>preferred_address</code>（推荐地址），发出的连接ID的序列号就是1。</p>
-<p>额外的连接ID通过<code>新连接ID帧</code>（<a href="#19.5_STOP_SENDING_Frames">第19.5章</a>）传输给对方。新发出的连接ID的序列号<em><strong>必须</strong></em>递增1。客户端给其发出的第一个目标连接ID字段的连接ID及重试包的连接ID不会分配序列号。</p>
-<p>当一个终端发出一个连接ID，其<em><strong>必须</strong></em>在连接存活期间或在对端通过<code>撤销连接ID帧</code>（<a href="#19.16_RETIRE_CONNECTION_ID_Frames">第19.16章</a>）取消连接前接收携带该连接ID的数据包。连接ID被发出且没有被取消，即是活跃的；任何活跃的连接ID在连接任何时间、对其任何类型的数据包都可以有效使用。这包括被服务端通过推荐地址传输参数发出的连接ID。</p>
-<p>终端<em><strong>应该</strong></em>确保其对端有足够数量可用且未使用的连接ID。终端使用<code>active_connection_id_limit</code>（活跃连接ID限制）传输参数指定它们想要维持的活跃连接ID的数目。一个终端<em><strong>必须不</strong></em>能提供超过对端限制数目的连接ID。如果<code>新连接ID帧</code>也要求终止任何多余的连接ID，终端<em><strong>可以</strong></em>通过在“撤销前”字段包含一个足够大的值来发送临时超过对端限制数量的连接ID。</p>
-<p>终端可以根据<code>新连接ID帧</code>的“撤销前”字段内容添加一些活跃连接ID并终止其他连接ID。在处理完一个<code>新连接ID帧</code>，添加及撤销一些活跃连接ID后，如果活跃连接ID数量仍然超过<code>active_connection_id_limit</code>传输参数建议的值，终端<em><strong>必须</strong></em>以<code>CONNECTION_ID_LIMIT_ERROR</code>（连接ID限制）错误关闭连接。</p>
+<p>额外的连接ID通过<code>新连接ID帧</code>（<a href="#19.15_NEW_CONNECTION_ID_Frames">第19.15章</a>）传输给对方。新发出的连接ID的序列号<em><strong>必须</strong></em>递增1。客户端不会为它发出的第一个目标连接ID字段的连接ID及重试包的连接ID分配序列号。</p>
+<p>只要一个终端发出了某个连接ID，那么在连接存活，且对端尚未通过<code>撤销连接ID帧</code>（<a href="#19.16_RETIRE_CONNECTION_ID_Frames">第19.16章</a>）取消的期间，它<em><strong>必须</strong></em>接受携带该连接ID的数据包。连接ID被发出且没有被取消，即是活跃的；任何活跃的连接ID在连接任何时间、对其任何类型的数据包都可以有效使用。这包括被服务端通过推荐地址传输参数发出的连接ID。</p>
+<p>终端<em><strong>应该</strong></em>确保其对端有足够数量可用且未使用的连接ID。终端使用<code>active_connection_id_limit</code>（活跃连接ID限制）传输参数指定它们想要维持的活跃连接ID的数目。一个终端<em><strong>必须不</strong></em>能提供超过对端限制数目的连接ID。如果<code>新连接ID帧</code>也要求终止任何多余的连接ID，终端<em><strong>可以</strong></em>通过在“停用至”字段包含一个足够大的值来发送临时超过对端限制数量的连接ID。</p>
+<p>终端可以根据<code>新连接ID帧</code>的“停用至”字段内容添加一些活跃连接ID并终止其他连接ID。在处理完一个<code>新连接ID帧</code>，添加及撤销一些活跃连接ID后，如果活跃连接ID数量仍然超过<code>active_connection_id_limit</code>传输参数建议的值，终端<em><strong>必须</strong></em>以<code>CONNECTION_ID_LIMIT_ERROR</code>（连接ID限制）错误关闭连接。</p>
 <p>当对端撤销一个连接ID后，终端<em><strong>应该</strong></em>提供一个新的连接ID。如果终端提供的连接ID数目小于对端<code>active_connection_id_limit</code>值，则其<em><strong>可以</strong></em>在收到一个包含之前撤销的连接ID的数据包时提供一个新的连接ID。终端<em><strong>可以</strong></em>限制为每条连接发布的连接ID总数来避免连接ID耗尽的风险，见<a href="#10.3.2_Calculating_a_Stateless_Reset_Token">第10.3.2章</a>。终端也<em><strong>可以</strong></em>限制连接ID的发布以降低其维护的通道层面的状态量，例如通道验证状态，因为对端可能有多少连接ID就用多少通道与其交互。</p>
 <p>启动连接迁移且需要非零长度连接ID的终端<em><strong>应该</strong></em>确保其连接ID池对端可得，从而使对端能在连接迁移时用新的连接ID，因为如果连接ID池耗尽，对端将无法回复。</p>
 <p>在握手阶段选择零长度连接ID的终端不能发布新的连接ID。通过任何通道发往一个这样的终端的所有包使用零长度目标连接ID字段。</p>
@@ -1051,13 +1051,13 @@
 <a href="#5.1.2_Consuming_and_Retiring_Connection_IDs">5.1.2 消耗及撤销连接ID</a>
 </h3>
 <div class="content">
-<p>终端可以在连接期间任何时候将其与对端交互的连接ID更改为另一个可用的连接ID。在对端进行迁移连接时，终端会消耗连接ID，更多详见<a href="#9.5_Privacy_Implications_of_Connection_Migration">第9.5章</a>。</p>
-<p>终端维护一个接收自对端的连接ID集合，其中每个ID均可用于发送数据包。当终端想要停止使用一个连接ID，其可以发送一个<code>撤销连接ID帧</code>给对端。发送一个<code>撤销连接ID帧</code>意味着将不会再次使用该连接ID，同时请求对端通过<code>新连接ID帧</code>换一个新的连接ID。</p>
-<p>如<a href="#9.5_Privacy_Implications_of_Connection_Migration">第9.5章</a>所述，终端限制使用一个连接ID从一个单一本地地址向一个单一目标地址发送数据包。当使用连接ID的本地或目标地址不再活跃的时候，终端<em><strong>应该</strong></em>撤销这些连接ID。</p>
-<p>在特定场合，终端可能需要停止接收先前发布的连接ID。这种终端会通过发送带有值已增加的“撤销前”字段的<code>新连接ID帧</code>使对端停用这些连接ID。终端<em><strong>应该</strong></em>继续接收先前发布的连接ID直到它们被对端撤销。如果终端不能再处理指定的连接ID，其<em><strong>可以</strong></em>关闭连接。</p>
-<p>一旦收到一个值增加的“撤销前”字段，对端<em><strong>必须</strong></em>停止使用相关连接ID，并在添加新提供的连接ID到活跃连接ID集合之前，通过<code>撤销连接ID帧</code>停用这些连接ID。这么安排使得终端能够替换全部活跃连接ID，而不会出现对端没有可用连接ID的情况，也不会使活跃连接ID数超过对端传输参数<code>active_connection_id_limit</code>设下的限制，详见<a href="#18.2_Transport_Parameter_Definitions">第18.2章</a>。无法停止使用连接ID可能导致连接错误，因为发布端可能不能在当前连接上继续使用这些连接ID。</p>
-<p>如果<code>撤销连接ID帧</code>尚未被确认，那么终端<em><strong>应该</strong></em>限制本地已撤销连接ID的数量。终端<em><strong>应该</strong></em>允许发送中及可追踪的<code>撤销连接ID帧</code>数量至少是传输参数<code>active_connection_id_limit</code>值的两倍。终端<em><strong>必须不</strong></em>在没有撤销一个连接ID前忘记它，尽管其<em><strong>可以</strong></em>选择将仍然使用达到该限制而需要被撤销的连接ID的情况视为一个<code>CONNECTION_ID_LIMIT_ERROR</code>类型的连接错误。</p>
-<p>在收到撤销由先前的“撤销前”字段指定的全部连接ID的<code>撤销连接ID帧</code>前，终端<em><strong>不应该</strong></em>发布更新“撤销前”字段。</p>
+<p>终端可以在连接期间任何时候将其与对端交互的连接ID更改为另一个可用的连接ID。在对端进行连接迁移时，终端发布的连接ID会被消耗，更多详见<a href="#9.5_Privacy_Implications_of_Connection_Migration">第9.5章</a>。</p>
+<p>终端维护一个接收自对端的连接ID集合，其中每个ID均可用于发送数据包。当终端想要停止使用其中的某个连接ID，其可以发送一个<code>撤销连接ID帧</code>给对端。发送一个<code>撤销连接ID帧</code>意味着将不会再次使用该连接ID，同时请求对端通过<code>新连接ID帧</code>换一个新的连接ID。</p>
+<p>如<a href="#9.5_Privacy_Implications_of_Connection_Migration">第9.5章</a>所述，终端对连接ID的使用作出了限制，同一个连接ID只能用于从同一本地地址向同一目标地址发送数据包。当使用连接ID的本地或目标地址不再活跃的时候，终端<em><strong>应该</strong></em>撤销这些连接ID。</p>
+<p>在特定场合，终端可能需要停止接收先前发布的连接ID。这种终端会通过发送带有值已增加的“停用至”字段的<code>新连接ID帧</code>使对端停用这些连接ID。终端<em><strong>应该</strong></em>继续接收先前发布的连接ID直到它们被对端撤销。如果终端不能再处理指定的连接ID，其<em><strong>可以</strong></em>关闭连接。</p>
+<p>一旦收到一个值增加的“停用至”字段，对端<em><strong>必须</strong></em>停止使用相关连接ID，并在添加新提供的连接ID到活跃连接ID集合之前，通过<code>撤销连接ID帧</code>停用这些连接ID。这么安排使得终端能够替换全部活跃连接ID，而不会出现对端没有可用连接ID的情况，也不会使活跃连接ID数超过对端传输参数<code>active_connection_id_limit</code>设下的限制，详见<a href="#18.2_Transport_Parameter_Definitions">第18.2章</a>。无法停止使用连接ID可能导致连接错误，因为发布端可能不能在当前连接上继续使用这些连接ID。</p>
+<p>如果<code>撤销连接ID帧</code>尚未被确认，那么终端<em><strong>应该</strong></em>限制本地已撤销连接ID的数量。终端<em><strong>应该</strong></em>允许发送中及可追踪的<code>撤销连接ID帧</code>数量至少是传输参数<code>active_connection_id_limit</code>值的两倍。终端<em><strong>必须不</strong></em>在没有撤销一个连接ID前忘记它，不过它<em><strong>可以</strong></em>将存在某连接ID亟待撤销，但是待撤销连接ID的总数超过上述限制的情况视为一个<code>CONNECTION_ID_LIMIT_ERROR</code>类型的连接错误。</p>
+<p>在收到撤销由先前的“停用至”字段指定的全部连接ID的<code>撤销连接ID帧</code>前，终端<em><strong>不应该</strong></em>发布更新“停用至”字段。</p>
 </div>
 </section>
 <section class="page" id="5.2_Matching_Packets_to_Connections">
@@ -1067,9 +1067,9 @@
 <div class="content">
 <p>入包在接收时进行分类。数据包可能被关联到一个已存在的连接，也可能（在服务端）创建一个新连接。</p>
 <p>终端尝试将数据包与现有连接关联起来。如果数据包有关联到一个已存在的连接的非零目标连接ID，QUIC将在相应连接上处理该数据包。注意一条连接可以对应不止一个连接ID，详见<a href="#5.1_Connection_ID">第5.1章</a>。</p>
-<p>如果一个数据包的目标连接ID是零长度的，而且其地址信息与终端用来标识零长度连接ID的连接匹配，则QUIC将该数据包作为该连接的一部分处理。终端可以只使用目标IP和端口，也可以同时使用源地址和目标地址作为标识，尽管这样会使连接像<a href="#5.1_Connection_ID">第5.1章</a>描述的那样变得脆弱。</p>
+<p>如果一个数据包的目标连接ID是零长度的，而且其地址信息与终端用来标识零长度连接ID的连接的地址信息一致，则QUIC将该数据包作为该连接的一部分处理。终端可以使用目标IP和端口或同时使用源地址和目标地址作为标识，不过这样会使连接像<a href="#5.1_Connection_ID">第5.1章</a>描述的那样变得脆弱。</p>
 <p>对任何不属于已存在连接的数据包，终端都可以发送一个无状态重置（<a href="#10.3_Stateless_Reset">第10.3章</a>）。无状态重置使对端能更快地识别连接变得不可用的情况。</p>
-<p>初始化、重试或版本协商这种缺乏强完整性保护的无效包<em><strong>可以</strong></em>被丢弃。如果终端在发生错误前处理了这些包的内容，终端<em><strong>必须</strong></em>产生一个连接错误，或完全恢复处理期间所做的所有变更。</p>
+<p>初始、重试或版本协商这种缺乏强完整性保护的无效包<em><strong>可以</strong></em>被丢弃。如果终端在发生错误前处理了这些包的内容，终端<em><strong>必须</strong></em>产生一个连接错误，或完全恢复处理期间所做的所有变更。</p>
 </div>
 </section>
 <section class="page" id="5.2.1_Client_Packet_Handling">
@@ -1087,10 +1087,10 @@
 <a href="#5.2.2_Server_Packet_Handling">5.2.2 服务端数据包处理</a>
 </h3>
 <div class="content">
-<p>如果服务端收到一个来自不支持版本的数据包而其又足够初始化某个支持版本的新连接，服务端<em><strong>应该</strong></em>发送一个版本协商包，详见<a href="#6.1_Sending_Version_Negotiation_Packets">第6.1章</a>。服务端<em><strong>可以</strong></em>限制其回复的版本协商包的数量。服务端<em><strong>必须</strong></em>丢弃属于不支持版本的小包。</p>
+<p>如果服务端收到一个来自不支持版本的数据包而其尺寸又足够初始化某个支持版本的新连接，那么服务端<em><strong>应该</strong></em>发送一个版本协商包，详见<a href="#6.1_Sending_Version_Negotiation_Packets">第6.1章</a>。服务端<em><strong>可以</strong></em>限制其回复的版本协商包的数量。服务端<em><strong>必须</strong></em>丢弃属于不支持版本且尺寸不到上述要求的数据包。</p>
 <p>一个不支持版本的第一个包可以对任何与具体版本有关的字段使用不同语义和编码。尤其是不同的版本可能使用不同的数据包保护密钥。不支持一个特定版本的服务端不太可能解密数据包的有效负载或正确解释其内容。当数据报文足够长时，服务端<em><strong>应该</strong></em>回复一个版本协商包。</p>
 <p>有一个支持版本或没有版本字段的数据包通过连接ID或——对于零长度连接ID的数据包——本地地址和端口与一个连接匹配，这些包在该连接上处理；否则，服务端继续做如下处理。</p>
-<p>如果数据包是完全符合规范的初始化包，则服务端继续进行握手（<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>）。服务端会指派为客户端选择的版本。</p>
+<p>如果数据包是完全符合规范的初始化包，则服务端继续进行握手（<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>）。服务端将按照客户端选择的版本来进行握手。</p>
 <p>如果服务端拒绝接收一个新连接，它<em><strong>应该</strong></em>发送一个带<code>连接关闭帧</code>的初始化包给客户端，其中<code>连接关闭帧</code>的错误码设置为<code>CONNECTION_REFUSED</code>（连接拒绝）。</p>
 <p>如果数据包是一个0-RTT包，服务端<em><strong>可以</strong></em>进行有限数量的缓存，因为后续预期会收到初始化包。由于客户端不可能先于收到服务端回复发送握手包，所以服务端<em><strong>应该</strong></em>忽略任何这样的包。</p>
 <p>服务端<em><strong>必须</strong></em>丢弃任何其他场合收到的数据包。</p>
@@ -1117,7 +1117,7 @@
 </h2>
 <div class="content">
 <p>本文没有定义QUIC的API，而是定义了一系列有关QUIC连接的函数，用于应用层协议进行依赖。应用层协议可以假设一个QUIC的实现提供了一个包括本章所述操作的接口。针对一个特定应用层协议而设计的实现可能只提供该协议用到的那些操作。</p>
-<p>当实现用户端时，应用层协议可以：</p>
+<p>当实现客户端时，应用层协议可以：</p>
 <ul>
 <li>创建一个连接，开始进行<a href="#7_Cryptographic_and_Transport_Handshake">第7章</a>描述的交互过程；</li>
 <li>如果支持，启用早期数据功能；</li>
@@ -1129,9 +1129,9 @@
 <li>如果支持早期数据，在发送给客户端的TLS恢复ticket中嵌入应用层控制数据；</li>
 <li>如果支持早期数据，从接收自客户端的恢复ticket中恢复应用层控制数据，并根据该信息接受或拒绝早期数据。</li>
 </ul>
-<p>当同时实现客户端及服务端时，应用层协议可以：</p>
+<p>无论哪种情况，应用层协议都可以：</p>
 <ul>
-<li>如传输参数（<a href="#7.4_Transport_Parameters">第7.4章</a>）所述，为每种类型允许的流的配置最小的初始数量；</li>
+<li>如传输参数（<a href="#7.4_Transport_Parameters">第7.4章</a>）所述，为每种类型所允许的流数量的初始值设置最小值；</li>
 <li>通过设置流级别及连接级别的流量控制限制，限制接收缓存区资源分配；</li>
 <li>识别握手已经成功结束抑或仍在进行中；</li>
 <li>保持连接不被默认关闭，即通过PING帧（<a href="#19.2_PING_Frames">第19.2章</a>）或其他请求使得传输层在空闲超时（<a href="#10.1_Idle_Timeout">第10.1章</a>）前发送额外的帧；以及</li>
@@ -1174,7 +1174,7 @@
 </h2>
 <div class="content">
 <p>对于将来使用新版本QUIC的服务端，客户端需要正确处理不支持的版本。一些版本号（如<code>0x?a?a?a?a</code>，见<a href="#15_Versions">第15章</a>）保留作包含版本号的字段。</p>
-<p>终端<em><strong>可以</strong></em>添加保留版本到任意未知或不支持版本中会被忽略的字段，用以测试对端是否正确地忽略了该值。例如，终端可以发版本协商包中包含一个保留版本，详见<a href="#17.2.1_Version_Negotiation_Packet">第17.2.1章</a>)。终端<em><strong>可以</strong></em>发送一个保留版本的数据包来测试对端是否会正确丢弃该包。</p>
+<p>终端<em><strong>可以</strong></em>添加保留版本到任意未知或不支持版本中会被忽略的字段，用以测试对端是否正确地忽略了该值。例如，终端可以在版本协商包中包含一个保留版本，详见<a href="#17.2.1_Version_Negotiation_Packet">第17.2.1章</a>)。终端<em><strong>可以</strong></em>发送一个保留版本的数据包来测试对端是否会正确丢弃该包。</p>
 </div>
 </section>
 <section class="page" id="7_Cryptographic_and_Transport_Handshake">
@@ -1182,8 +1182,8 @@
 <a href="#7_Cryptographic_and_Transport_Handshake">7. 加密与传输握手</a>
 </h1>
 <div class="content">
-<p>QUIC通过将加密与传输握手组合最小化连接建立的延迟。QUIC使用<strong>加密帧</strong>（详见<a href="#19.6_CRYPTO_Frames">第19.6章</a>）传递加密握手信息。本文所定义的QUIC版本标识为<code>0x00000001</code>，使用《<a href="/RFC9001_Chinese_Simplified">QUIC-TLS</a>》描述的TLS，而不同的QUIC版本可能表面其使用了不同的加密握手协议。</p>
-<p>QUIC可靠、有序地传递加密握手数据。QUIC数据包保护用于尽可能多地对握手协议进行加密。加密握手{&lt; req_level MUST &gt;}具备如下属性：</p>
+<p>QUIC通过将加密与传输握手组合最小化连接建立的延迟。QUIC使用<strong>加密帧</strong>（详见<a href="#19.6_CRYPTO_Frames">第19.6章</a>）传递加密握手信息。本文所定义的QUIC版本标识为<code>0x00000001</code>，使用《<a href="/RFC9001_Chinese_Simplified">QUIC-TLS</a>》描述的TLS，而不同的QUIC版本可能表明其使用了不同的加密握手协议。</p>
+<p>QUIC可靠、有序地传递加密握手数据。QUIC数据包保护用于尽可能多地对握手协议进行加密。加密握手<em><strong>必须</strong></em>具备如下属性：</p>
 <ul>
 <li>密钥交换是认证的，需要
 <ul>
@@ -1214,7 +1214,7 @@
 <p>关于TLS如何与QUIC整合的更多细节详见《<a href="/RFC9001_Chinese_Simplified">QUIC-TLS</a>》，但在此举出一些范例。用以支持客户端地址验证的这种交换的一个扩展详见<a href="#8.1.2_Address_Validation_Using_Retry_Packets">第8.1.2章</a>。</p>
 <p>一旦完成任何地址验证交换，加密握手将用于协商密钥。加密握手由初始包（<a href="#17.2.2_Initial_Packet">第17.2.2章</a>）和握手包（<a href="#17.2.4_Handshake_Packet">第17.2.4章</a>）携带。</p>
 <p><a href="#Figure_5_Example_1-RTT_Handshake">图5</a>展示了1-RTT握手过程的概况。每行展示一个QUIC数据包，首先展示其包类型和包号，紧接着展示这类包通常包含的帧。例如首包通常是初始包，包号是0，且包含一个携带ClientHello内容的<strong>加密帧</strong>。</p>
-<p>多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见<a href="#12.2_Coalescing_Packets">第12.2章</a>。因此，这次握手可能由仅仅4个或更少的UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</p>
+<p>多个QUIC包——甚至包类型各不相同——可以合并成一个UDP报文，详见<a href="#12.2_Coalescing_Packets">第12.2章</a>。因此，这次握手最少可以仅由4个UDP报文组成（受限于协议固有的诸如拥塞控制和反放大机制）。例如，服务端的首个报文包含初始包、握手包及包含“0.5-RTT数据”的1-RTT包。</p>
 <div class="block ref" id="Figure_5_Example_1-RTT_Handshake">
 <img src="/RFC9000_Chinese_Simplified/images/Figure_5_Example_1-RTT_Handshake.svg"/>
 <p><a href="#Figure_5_Example_1-RTT_Handshake">图5：1-RTT握手示例</a></p>
@@ -1234,10 +1234,10 @@
 <p>连接ID用于确保数据包稳定路由，详见<a href="#5.1_Connection_ID">第5.1章</a>。长包头包含两个连接ID：目标连接ID由接收方指定并用于提供稳定路由；源连接ID供对端设置为目标连接ID。</p>
 <p>在握手期间，带有长包头（详见<a href="#17.2_Long_Header_Packets">第17.2章</a>）的数据包用于设置双端所使用的连接ID。每端的源连接ID会作为发往该端的数据包的目标连接ID。在处理完首个初始数据包后，每端将后续发送数据包的目标连接ID字段值设置为其接收的源连接ID字段值。</p>
 <p>当客户端发送初始包之前未从服务端收到过初始数据包或重试数据包，则生成不可预测值填充发送的初始包的目标连接ID字段。目标连接ID的长度<em><strong>必须</strong></em>至少8字节。客户端在一条连接上<em><strong>必须</strong></em>使用同一个目标连接ID，直到收到服务端发来的数据包为止。</p>
-<p>客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。这些密钥在收到重试数据包后变更，详见<a href="/RFC9001_Chinese_Simplified">QUIC-TLS</a><a href="#5.2_Matching_Packets_to_Connections">第5.2章</a>。</p>
+<p>客户端发送的首个初始数据包的目标连接ID字段用于确定初始数据包的包保护密钥。这些密钥在收到重试数据包后变更，详见<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>的<a href="../RFC9001_Chinese_Simplified/#5.2_Initial_Secrets">第5.2章</a>。</p>
 <p>客户端选择一个值填充源连接ID字段，并设置源连接ID长度字段以标识其长度。</p>
-<p>客户端发送的首个0-RTT数据包使用其发送的首个初始数据包一致的源连接ID和目标连接ID。</p>
-<p>在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务的提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次：一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。一旦客户端收到一个从服务端发来的有效的初始数据包，则其<em><strong>必须</strong></em>丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。</p>
+<p>客户端发送的首个0-RTT数据包使用与其发送的首个初始数据包一致的源连接ID和目标连接ID。</p>
+<p>在首次收到从服务端发来的初始数据包或重试数据包后，客户端将服务端提供的源连接ID作为后续发送数据包的目标连接ID，包括任何0-RTT包。这意味着客户端可能需要在连接建立阶段将目标连接ID字段的值变更两次：一次是响应服务端发来的重试数据包，一次是响应服务端发来的初始数据包。一旦客户端收到一个从服务端发来的有效的初始数据包，则其<em><strong>必须</strong></em>丢弃在该连接上后续接收到的任何带有不同源连接ID值的数据包。</p>
 <p>客户端<em><strong>必须</strong></em>在收到首个初始数据包或首个重试数据包后，更改其后续发送数据包时的目标连接ID值。服务端<em><strong>必须</strong></em>基于收到的首个初始数据包设置发送数据包的目标连接ID。任何针对目标连接ID的后续改动，只允许通过<strong>新连接ID帧</strong>携带的值进行；如果后续的初始数据包包含不同的源连接ID，则<em><strong>必须</strong></em>将该包丢弃。这避免了对多个具有不同源连接ID的初始数据包进行无状态处理可能导致的不可预测的结果。</p>
 <p>终端发出的目标连接ID可以在一条连接的生命周期内变更，尤其是在响应连接迁移（<a href="#9_Connection_Migration">第9章</a>），详见<a href="#5.1.1_Issuing_Connection_IDs">第5.1.1章</a>。</p>
 </div>
@@ -1247,14 +1247,14 @@
 <a href="#7.3_Authenticating_Connection_IDs">7.3. 验证连接ID</a>
 </h2>
 <div class="content">
-<p>终端在握手期间的连接ID做出的选择，通过包括传输参数的所有的值验证，详见<a href="#7.4_Transport_Parameters">第7.4章</a>。这确保所有用于握手的连接ID也同时通过加密握手得到认证了。</p>
+<p>终端在握手期间所选择的连接ID会被包含在传输参数中受到认证，详见<a href="#7.4_Transport_Parameters">第7.4章</a>。于是所有用于握手的连接ID都会经由加密握手得到认证。</p>
 <p>终端将其发出的首个初始数据包的源连接ID字段值包含在<code>initial_source_connection_id</code>传输参数中，详见<a href="#18.2_Transport_Parameter_Definitions">第18.2章</a>。服务端将其接收到的首个初始数据包中的目标连接ID值包含在<code>original_destination_connection_id</code>传输参数中；如果服务端发送了一个重试数据包，则其对应的是发送该包之前收到的首个初始数据包。如果发送重试数据包，服务端也会将重试数据包的源连接ID字段包含在<code>retry_source_connection_id</code>传输参数中。</p>
 <p>来自对端的传输参数中的值<em><strong>必须</strong></em>与终端在其发送的（对于服务端，则同时包括其接收到的）初始数据包的目标连接ID和源连接ID字段所使用的值保持一致。终端<em><strong>必须</strong></em>验证其接收到的传输参数匹配接收到的连接ID值。将连接ID值包含在传输参数中并认证，从而确保攻击者不能在握手期间通过插入携带有攻击者选择的连接ID的数据包影响连接ID的选择。</p>
 <p>终端<em><strong>必须</strong></em>将任意终端缺失<code>initial_source_connection_id</code>传输参数以及服务端缺失<code>original_destination_connection_id</code>传输参数视为<code>TRANSPORT_PARAMETER_ERROR</code>类型的连接错误。</p>
 <p>终端<em><strong>必须</strong></em>将下述情况视为<code>TRANSPORT_PARAMETER_ERROR</code>或<code>PROTOCOL_VIOLATION</code>类型的连接错误：</p>
 <ul>
-<li>服务端在接收到一个重试数据包后，缺失<code>retry_source_connection_id</code>传输参数，</li>
-<li>未接收到重试数据包，但是却存在<code>retry_source_connection_id</code>传输参数，或</li>
+<li>从服务端接收到了重试数据包，但缺失<code>retry_source_connection_id</code>传输参数，</li>
+<li>未从服务端接收到重试数据包，但存在<code>retry_source_connection_id</code>传输参数，或</li>
 <li>从对端接收到的传输参数中的值与发送的初始数据包中相应目标连接ID或源连接ID字段不一致。</li>
 </ul>
 <p>如果选择了一个零长度连接ID，则相应的传输参数包含一个零长度值。</p>
@@ -1270,7 +1270,6 @@
 </div>
 <p>在上述两种情况（<a href="#Figure_7_Use_of_Connection_IDs_in_a_Handshake">图7</a>和<a href="#Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">图8</a>）下，客户端设置其<code>initial_source_connection_id</code>传输参数值为<code>C1</code>。</p>
 <p>当握手过程没有出现重试数据包（<a href="#Figure_7_Use_of_Connection_IDs_in_a_Handshake">图7</a>），服务端设置<code>original_destination_connection_id</code>为<code>S1</code>（注意该值是客户端选择的），设置<code>initial_source_connection_id</code>为<code>S3</code>。在这种情况下，服务端不包含<code>retry_source_connection_id</code>传输参数。</p>
-<p>When the handshake includes a Retry (Figure 8), the server sets original_destination_connection_id to S1, retry_source_connection_id to S2, and initial_source_connection_id to S3.</p>
 <p>当握手过程出现了重试数据包（<a href="#Figure_8_Use_of_Connection_IDs_in_a_Handshake_with_Retry">图8</a>），服务端设置<code>original_destination_connection_id</code>为<code>S1</code>，设置<code>retry_source_connection_id</code>为<code>S2</code>，设置<code>initial_source_connection_id</code>为<code>S3</code>。</p>
 </div>
 </section>
@@ -1335,7 +1334,6 @@
 <p>QUIC实现需要维护一个用于保存乱序接收到的加密数据的缓存区。由于<strong>加密帧</strong>没有流量控制，终端有可能强制对端缓存无限量的数据。</p>
 <p>QUIC实现<em><strong>必须</strong></em>支持缓存至少4096字节从乱序<strong>加密帧</strong>收到的数据。终端<em><strong>可以</strong></em>选择允许在握手期间缓存更多的数据。更大的缓存上限意味着可以交换更大的密钥或证书。终端的缓存区大小不必在整个连接生命周期内保持不变。</p>
 <p>握手期间无法缓存<strong>加密帧</strong>可能导致连接失败。如果终端的缓存区在握手期间溢出，则其可以通过暂时扩大缓存空间确保握手完成。如果终端不扩大其缓存，则其<em><strong>必须</strong></em>以错误码<code>CRYPTO_BUFFER_EXCEEDED</code>关闭连接。</p>
-<p>Once the handshake completes, if an endpoint is unable to buffer all data in a CRYPTO frame, it MAY discard that CRYPTO frame and all CRYPTO frames received in the future, or it MAY close the connection with a CRYPTO_BUFFER_EXCEEDED error code. Packets containing discarded CRYPTO frames MUST be acknowledged because the packet has been received and processed by the transport even though the CRYPTO frame was discarded.</p>
 <p>一旦握手完成，如果终端不能缓存<strong>加密帧</strong>中的全部数据，那么其<em><strong>可以</strong></em>丢弃该帧及其随后收到的所有<strong>加密帧</strong>，也<em><strong>可以</strong></em>以错误码<code>CRYPTO_BUFFER_EXCEEDED</code>关闭连接。<em><strong>必须</strong></em>确认包含被丢弃的<strong>加密帧</strong>的数据包，因为该数据包已经被接收且被传输层处理了，即使是以丢弃<strong>加密帧</strong>的方式处理的。</p>
 </div>
 </section>
@@ -1345,7 +1343,7 @@
 </h1>
 <div class="content">
 <p>地址验证确保终端不会被用于流量放大攻击。在这种攻击中，一个填写了指向受害者的假源地址信息的数据包被发送给服务器。如果服务器在响应那个数据包时生成了更多或更大的数据包，攻击者就能使用这台服务器向受害者发送比攻击者自己能发送的还要多的数据。</p>
-<p>针对放大攻击的主要防御手段是验证对端有能力在它声称的传输地址接收数据包。因此，在从一个未经验证的地址接收到数据包后，终端<em><strong>必须</strong></em>限制它向未经验证的地址发送的数据量为它从那个地址接收到的数据量的三倍。这个对于响应尺寸的上限被称为抗放大上限。</p>
+<p>针对放大攻击的主要防御手段是验证对端有能力在它声称的传输地址接收数据包。因此，在从一个未经验证的地址接收到数据包后，终端<em><strong>必须</strong></em>限制它向未经验证的地址发送的数据量，不超过它从那个地址接收到的数据量的三倍。这个对于响应尺寸的上限被称为抗放大上限。</p>
 <p>在连接建立期间（详见<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>）和连接迁移期间（详见<a href="#8.2_Path_Validation">第8.2章</a>）都会进行地址验证。</p>
 </div>
 </section>
@@ -1357,9 +1355,9 @@
 <p>连接建立为两侧终端隐式提供了地址验证。具体来说，接收到一个受握手密钥保护的数据包证实了对端已成功处理了初始数据包。一旦终端成功处理了来自对端的握手数据包，它就能将对端地址认定为已验证。</p>
 <p>除此之外，如果对端使用了一个由终端选择的连接ID并且连接ID包含至少64位的熵，那么终端<em><strong>可以</strong></em>将对端地址认定为已验证。</p>
 <p>对客户端来说，它的首个初始数据包中目标连接ID字段的值允许它有机会验证服务器的地址，只要服务器能成功处理任一数据包。来自服务器的初始数据包会受到从那个目标连接ID字段的值衍生的密钥的保护（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.2_Initial_Secrets">第5.2章</a>）。另一方面，这个值会被服务器在版本协商包（详见<a href="#6_Version_Negotiation">第6章</a>）中被回显，或在重试数据包的完整性标签中被使用（详见《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.8_Retry_Packet_Integrity">第5.8章</a>）。</p>
-<p>在验证客户端地址前，服务器发送的字节数<em><strong>必须不</strong></em>超过已接收字节数三倍。这就限制了所有能用伪造源地址的方式实施的放大攻击的量级。出于在地址验证前避免放大攻击的目的，服务器<em><strong>必须</strong></em>统计在数据报中接收的载荷的字节数，每个数据报都是归属于唯一的某条连接的。这里的数据报既包括了含有被成功处理的数据包的数据报，也包括了含有被全部丢弃的数据包的数据报。</p>
+<p>在验证客户端地址前，服务器发送的字节数<em><strong>必须不</strong></em>超过已接收字节数的三倍。这就限制了所有能用伪造源地址的方式实施的放大攻击的量级。出于在地址验证前避免放大攻击的目的，服务器<em><strong>必须</strong></em>统计在数据报中接收的载荷的字节数，每个数据报都是归属于唯一的某条连接的。这里的数据报既包括了含有被成功处理的数据包的数据报，也包括了含有被全部丢弃的数据包的数据报。</p>
 <p>客户端<em><strong>必须</strong></em>确保包含初始数据包的UDP数据报含有至少1200字节的UDP载荷，不够就加<strong>填充帧</strong>。发送扩充过的数据报的客户端允许服务器在完成地址验证前发送更多数据。</p>
-<p>如果来自服务器的初始数据包或握手数据包遭遇丢包，并且客户端没有发送额外的初始数据包或握手数据包，那么这会引发死锁。当客户端已经接收到了所有它发出的数据的确认但服务器抵达了抗放大上限，那么死锁就会发生。在这种情况下，当客户端没有理由发送额外的数据包时，服务器将无法发送更多数据因为它还没有验证过客户端的地址。为了避免这种死锁，客户端<em><strong>必须</strong></em>在一个探测包超时（PTO）的时候发送一个数据包；详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》的<a href="../RFC9002_Chinese_Simplified/#6.2_Probe_Timeout">第6.2章</a>。具体来说，如果客户端没有握手密钥，那么它<em><strong>必须</strong></em>用包含至少1200字节的UDP数据报发送一个初始数据包，否则发送的是握手数据包。</p>
+<p>如果来自服务器的初始数据包或握手数据包遭遇丢包，并且客户端没有发送额外的初始数据包或握手数据包，那么这会引发死锁。当客户端已经接收到了所有它发出的数据的确认但服务器抵达了抗放大上限，那么死锁就会发生。在这种情况下，当客户端没有理由发送额外的数据包时，服务器将无法发送更多数据，因为它还没有验证过客户端的地址。为了避免这种死锁，客户端<em><strong>必须</strong></em>在一个探测包超时（PTO）的时候发送一个数据包；详见《<a href="../RFC9002_Chinese_Simplified">QUIC恢复</a>》的<a href="../RFC9002_Chinese_Simplified/#6.2_Probe_Timeout">第6.2章</a>。具体来说，如果客户端没有握手密钥，那么它<em><strong>必须</strong></em>用包含至少1200字节的UDP数据报发送一个初始数据包，否则发送的是握手数据包。</p>
 <p>服务器可能想要在开始加密握手前验证客户端地址。QUIC使用一个包含在初始数据包的令牌以在完成握手前提供地址验证。这个令牌是在连接建立期间通过重试数据包（详见<a href="#8.1.2_Address_Validation_Using_Retry_Packets">第8.1.2章</a>），或在之前的连接中通过<strong>新令牌帧</strong>（详见<a href="#8.1.3_Address_Validation_for_Future_Connections">第8.1.3章</a>），分发给客户端的。</p>
 <p>除了在地址验证通过前被施加发送限制之外，服务器还在能发送的内容上被拥塞控制器所设置的上限所限制。客户端则仅受拥塞控制器的限制。</p>
 </div>
@@ -1738,8 +1736,8 @@
 <a href="#10.2.2_Draining_Connection_State">10.2.2 连接的排空状态</a>
 </h3>
 <div class="content">
-<p>一旦终端接收到<strong>连接关闭帧</strong>，他就会进入排空状态，这表明对端已处于关闭或排空状态。虽然在其他方面都和关闭状态一致，不过处于排空状态的终端<em><strong>必须不</strong></em>发送任何数据包。一旦连接处于排空状态，就没有必要再保留数据包保护密钥了。</p>
-<p>接收到<strong>连接关闭帧</strong>的终端<em><strong>可以</strong></em>再进入排空状态前发送一个包含<strong>连接关闭帧</strong>的数据包，并且，如若合适，使用<code>NO_ERROR</code>（无错误）代码。除此之外，终端<em><strong>必须不</strong></em>发送更多数据包。不这么做会导致两个终端间保持不断交换<strong>连接关闭帧</strong>的状态，直到其中一个终端退出关闭状态。</p>
+<p>一旦终端接收到<strong>连接关闭帧</strong>，就会进入排空状态，这表明对端已处于关闭或排空状态。虽然在其他方面都和关闭状态一致，不过处于排空状态的终端<em><strong>必须不</strong></em>发送任何数据包。一旦连接处于排空状态，就没有必要再保留数据包保护密钥了。</p>
+<p>接收到<strong>连接关闭帧</strong>的终端<em><strong>可以</strong></em>在进入排空状态前发送一个包含<strong>连接关闭帧</strong>的数据包，并且，如若合适，使用<code>NO_ERROR</code>（无错误）代码。除此之外，终端<em><strong>必须不</strong></em>发送更多数据包。不这么做会导致两个终端间保持不断交换<strong>连接关闭帧</strong>的状态，直到其中一个终端退出关闭状态。</p>
 <p>如果终端接收到了<strong>连接关闭帧</strong>，那么它<em><strong>可以</strong></em>从关闭状态进入排空状态，这表明对端也处于关闭或排空状态。在这种情况下，排空状态会在原来关闭状态应该结束时结束。换句话说，终端使用相同的状态结束时机但是不再在这条连接上传输数据包。</p>
 </div>
 </section>
@@ -2637,7 +2635,7 @@
 <p>数据包号是范围在<code>0</code>至<code>2<sup>62</sup>-1</code>中的整数（<a href="#12.3_Packet_Numbers">第12.3章</a>）。当在长包或短包的头部出现时 ，它们被编码在1至4字节中。通过仅使用数据包号的几个最低有效位，用于表示数据包号的比特位数量得以被减少。</p>
 <p>经过编码的数据包号是受保护的，如《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》<a href="../RFC9001_Chinese_Simplified/#5.4_Header_Protection">第5.4章</a>所述。</p>
 <p>在接收到对于某数据包号空间的确认前，<em><strong>必须</strong></em>使用完整的数据包号；它不可以如下文所述那样被截断。</p>
-<p>在接收到对于某数据包号空间的确认后，发送方<em><strong>必须</strong></em>使用一个足够大的数据包号尺寸，这个尺寸能够表示的范围大小至少是最大已确认数据包号和正在发送的数据包号之差的两倍。接收到该数据包的对端将正确解码数据包号，除非此包在传输过程中被延误得比很多更大编号的数据包更晚才被接收到。终端<em><strong>应该</strong></em>使用一个足够大的数据包号编码，使得即便此数据包比后续发送的数据包更晚到达，其数据包号也能被恢复。</p>
+<p>在接收到对于某数据包号空间的确认后，发送方<em><strong>必须</strong></em>使用一个足够大的数据包号尺寸，这个尺寸能够表示的范围大小至少是最大已确认数据包号和正在发送的数据包号之差的两倍。接收到该数据包的对端将正确解码数据包号，除非此包在传输过程中被延误得比很多更大编号的数据包还晚地被接收到。终端<em><strong>应该</strong></em>使用一个足够大的数据包号编码，使得即便此数据包比后续发送的数据包更晚到达，其数据包号也能被恢复。</p>
 <p>于是，某数据包号编码的尺寸至少要比连续未被确认的数据包号的数量（包括此数据包本身）的以<code>2</code>为底的对数值大<code>1</code>比特。在<a href="#A.2_Sample_Packet_Number_Encoding_Algorithm">附录A.2</a>中可以找到数据包号编码的伪代码和一个样例。</p>
 <p>在接收方一侧，数据包号的保护在恢复完整数据包号前被移除。完整的数据包号随后被重建，重建基于数据包中出现的包号有效比特位的数量和值，以及已接收的且成功认证的数据包中最大的数据包号。恢复完整的数据包号对于成功移除数据包保护很有必要。</p>
 <p>一旦头部保护被移除，通过找到与下一个预期数据包更接近的数据包号值即可将数据包号解码。下一个预期数据包就是将最大的已接收数据包编号加上<code>1</code>。在<a href="#A.3_Sample_Packet_Number_Decoding_Algorithm">附录A.3</a>中可以找到数据包号解码的伪代码和一个样例。</p>
@@ -2921,7 +2919,7 @@
 <a href="#17.2.5_Retry_Packet">17.2.5 重试数据包</a>
 </h3>
 <div class="content">
-<p>如<a href="#Figure_18_Retry_Packet">图18</a>所示，重试数据包（Retry packet）使用类型值为<code>0x03</code>的长包头。它携带者由服务器创建的一个地址验证令牌。想要进行重试的服务器会使用它，详见<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
+<p>如<a href="#Figure_18_Retry_Packet">图18</a>所示，重试数据包（Retry packet）使用类型值为<code>0x03</code>的长包头。它携带着由服务器创建的一个地址验证令牌。想要进行重试的服务器会使用它，详见<a href="#8.1_Address_Validation_during_Connection_Establishment">第8.1章</a>。</p>
 <div class="block ref" id="Figure_18_Retry_Packet">
 <pre tabindex="0"><code>重试数据包 {
   包头形式 (1) = 1,
@@ -2946,7 +2944,7 @@
 </dd>
 <dt>重试完整性标签（Retry Integrity Tag）：</dt>
 <dd>
-<p>在《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.8_Retry_Packet_Integrity">第5.8章</a>（《重试完整性标签》）中定义。</p>
+<p>在《<a href="../RFC9001_Chinese_Simplified">QUIC-TLS</a>》的<a href="../RFC9001_Chinese_Simplified/#5.8_Retry_Packet_Integrity">第5.8章</a>（《重试数据包的完整性》）中定义。</p>
 </dd>
 </dl>
 </div>
@@ -3115,7 +3113,7 @@
 <dl>
 <dt>原始目标连接ID<code>original_destination_connection_id</code> (<code>0x00</code>)：</dt>
 <dd>
-<p>这个参数是由客户端发出的第一个初始包的目标连接ID字段的值，详见<a href="#16_Variable-Length_Integer_Encoding">第16章</a>。该传输参数只会由服务端发出。</p>
+<p>这个参数是由客户端发出的第一个初始包的目标连接ID字段的值，详见<a href="#7.3_Authenticating_Connection_IDs">第7.3章</a>。该传输参数只会由服务端发出。</p>
 </dd>
 <dt>最大空闲超时时间<code>max_idle_timeout</code> (<code>0x01</code>)：</dt>
 <dd>
@@ -3137,7 +3135,7 @@
 </dd>
 <dt>初始最大数据量<code>initial_max_data</code> (<code>0x04</code>)：</dt>
 <dd>
-<p>初始最大数据量参数是一个包含连接可发送初始最大数据量的整型值。等效于连接在完成握手后立即发送一个<code>最大数据帧</code>（<code>MAX_DATA</code>，详见<a href="#19.9_MAX_DATA_Frames">第19.9章</a>）。</p>
+<p>初始最大数据量参数是一个包含连接可发送初始最大数据量的整型值。等效于连接在完成握手后立即发送一个<code>最大数据量帧</code>（<code>MAX_DATA</code>，详见<a href="#19.9_MAX_DATA_Frames">第19.9章</a>）。</p>
 </dd>
 <dt>初始本地最大双向流数据量<code>initial_max_stream_data_bidi_local</code> (<code>0x05</code>)：</dt>
 <dd>
@@ -3169,7 +3167,7 @@
 </dd>
 <dt>禁止活跃迁移<code>disable_active_migration</code> (<code>0x0c</code>):</dt>
 <dd>
-<p>禁止活动迁移传输参数是在终端握手阶段所使用的地址不支持活跃连接迁移（<a href="#9_Connection_Migration">第9章</a>）时加入的。收到该传输参数的终端<em><strong>必须不</strong></em>使用一个新的本地地址发往对端在握手阶段使用的地址。该传输参数不能在<code>preferred_address</code>已经在客户端生效后阻止连接迁移。该参数是一个非零值。</p>
+<p>禁止活动迁移传输参数是在终端握手阶段所使用的地址不支持活跃连接迁移（<a href="#9_Connection_Migration">第9章</a>）时加入的。收到该传输参数的终端<em><strong>必须不</strong></em>使用一个新的本地地址发往对端在握手阶段使用的地址。该传输参数不能在<code>preferred_address</code>已经在客户端生效后阻止连接迁移。该参数的值为空。</p>
 </dd>
 <dt>首选地址<code>preferred_address</code> (<code>0x0d</code>):</dt>
 <dd>
@@ -3205,7 +3203,7 @@
 <p>这是服务端包含于一个重试包的源连接ID字段的值，详见<a href="#7.3_Authenticating_Connection_IDs">第7.3章</a>。该传输参数仅由服务端发出。</p>
 </dd>
 </dl>
-<p>如果存在，用于设置初始化每条流的流量控制上限的传输参数（<code>initial_max_stream_data_bidi_local</code>、<code>initial_max_stream_data_bidi_remote</code>及<code>initial_max_stream_data_uni</code>）等效于在每条流开启后立即给它发送相应流类型的<em>最大流数据帧</em>（详见<a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a>）。如果相应传输参数没有设置，则其对应流类型的流其初始流量控制上限就是0。</p>
+<p>如果存在，用于设置初始化每条流的流量控制上限的传输参数（<code>initial_max_stream_data_bidi_local</code>、<code>initial_max_stream_data_bidi_remote</code>及<code>initial_max_stream_data_uni</code>）等效于在每条流开启后立即给它发送相应流类型的<em>最大流数据量帧</em>（详见<a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a>）。如果相应传输参数没有设置，则其对应流类型的流其初始流量控制上限就是0。</p>
 <p>客户端<em><strong>必须不</strong></em>包含任何只有服务端可以发送的传输参数：<code>original_destination_connection_id</code>、<code>preferred_address</code>、<code>retry_source_connection_id</code>或<code>stateless_reset_token</code>。服务端<em><strong>必须</strong></em>将收到任何此类传输参数的情况视为<code>TRANSPORT_PARAMETER_ERROR</code>类型连接错误。</p>
 </div>
 </section>
@@ -3369,23 +3367,23 @@
 </section>
 <section class="page" id="19.4_RESET_STREAM_Frames">
 <h2>
-<a href="#19.4_RESET_STREAM_Frames">19.4 重置帧</a>
+<a href="#19.4_RESET_STREAM_Frames">19.4 流重置帧</a>
 </h2>
 <div class="content">
-<p>终端使用<strong>重置帧</strong>（RESET_STREAM frame，类型为<code>0x04</code>）立即关闭流的发送部分。</p>
-<p>发送完<strong>重置帧</strong>后，终端停止在相应的流上传输或重传<strong>流帧</strong>。<strong>重置帧</strong>的接收方可以忽略任何已经在该流上收到的数据。</p>
+<p>终端使用<strong>流重置帧</strong>（RESET_STREAM frame，类型为<code>0x04</code>）立即关闭流的发送部分。</p>
+<p>发送完<strong>流重置帧</strong>后，终端停止在相应的流上传输或重传<strong>流帧</strong>。<strong>流重置帧</strong>的接收方可以忽略任何已经在该流上收到的数据。</p>
 <p>终端收到一条只用于发送的流的<strong>重置</strong>帧时<em><strong>必须</strong></em>以<code>STREAM_STATE_ERROR</code>类型错误关闭连接。</p>
-<p><strong>重置帧</strong>格式如<a href="#Figure_28_RESET_STREAM_Frame_Format">图28</a>所示。</p>
+<p><strong>流重置帧</strong>格式如<a href="#Figure_28_RESET_STREAM_Frame_Format">图28</a>所示。</p>
 <div class="block ref" id="Figure_28_RESET_STREAM_Frame_Format">
-<pre tabindex="0"><code>重置帧 {
+<pre tabindex="0"><code>流重置帧 {
   类型 (i) = 0x04,
   流ID (i),
   应用层协议错误码 (i),
   最终大小 (i),
 }
-</code></pre><p><a href="#Figure_28_RESET_STREAM_Frame_Format">图28：重置帧格式</a></p>
+</code></pre><p><a href="#Figure_28_RESET_STREAM_Frame_Format">图28：流重置帧格式</a></p>
 </div>
-<p><strong>重置帧</strong>包含下述字段：</p>
+<p><strong>流重置帧</strong>包含下述字段：</p>
 <dl>
 <dt>流ID：</dt>
 <dd>
@@ -3397,7 +3395,7 @@
 </dd>
 <dt>最终大小（Final Size）：</dt>
 <dd>
-<p>一个可变长度整型值，表示<strong>重置帧</strong>发送方的流最终大小，单位字节，详见<a href="#4.5_Stream_Final_Size">第4.5章</a>。</p>
+<p>一个可变长度整型值，表示<strong>流重置帧</strong>发送方的流最终大小，单位字节，详见<a href="#4.5_Stream_Final_Size">第4.5章</a>。</p>
 </dd>
 </dl>
 </div>
@@ -3443,7 +3441,7 @@
   类型 (i) = 0x06,
   偏移 (i),
   长度 (i),
-  加密数据 (i),
+  加密数据 (..),
 }
 </code></pre><p><a href="#Figure_30_CRYPTO_Frame_Format">图30：加密帧格式</a></p>
 </div>
@@ -3663,6 +3661,7 @@
 <div class="block ref" id="Figure_37_STREAM_DATA_BLOCKED_Frame_Format">
 <pre tabindex="0"><code>流数据阻塞帧 {
   类型 (i) = 0x15,
+  流ID (i),
   最大流数据量 (i),
 }
 </code></pre><p><a href="#Figure_37_STREAM_DATA_BLOCKED_Frame_Format">图37：流数据阻塞帧格式</a></p>
@@ -3699,7 +3698,7 @@
 <dl>
 <dt>最大流数：</dt>
 <dd>
-<p>一个可变长度整型值，表示该帧发送时允许创建的最大流数量。该值不能超过<code>2<sup>60</sup></code>，因为不能编码超过<code>2<sup>62-1</sup></code>的流ID。收到编码值超过这个限制的<strong>流阻塞帧</strong>的情况<em><strong>必须</strong></em>被视为一个<code>STREAM_LIMIT_ERROR</code>或<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
+<p>一个可变长度整型值，表示该帧发送时允许创建的最大流数量。该值不能超过<code>2<sup>60</sup></code>，因为不能编码超过<code>2<sup>62</sup>-1</code>的流ID。收到编码值超过这个限制的<strong>流阻塞帧</strong>的情况<em><strong>必须</strong></em>被视为一个<code>STREAM_LIMIT_ERROR</code>或<code>FRAME_ENCODING_ERROR</code>类型的连接错误。</p>
 </dd>
 </dl>
 </div>
@@ -3715,7 +3714,7 @@
 <pre tabindex="0"><code>新连接ID帧 {
   类型 (i) = 0x18,
   序列号 (i),
-  停用前 (i),
+  停用至 (i),
   长度 (i),
   连接ID (8..160),
   无状态重置令牌 (128),
@@ -3728,7 +3727,7 @@
 <dd>
 <p>序列号由发送方分配给连接ID，编码为可变长度整型值，详见<a href="#5.1.1_Issuing_Connection_IDs">第5.1.1章</a>。</p>
 </dd>
-<dt>停用前（Retire Prior To）：</dt>
+<dt>停用至（Retire Prior To）：</dt>
 <dd>
 <p>一个可变长度整型值，表示被停用的连接ID（们），详见<a href="#5.1.2_Consuming_and_Retiring_Connection_IDs">第5.1.2章</a>。</p>
 </dd>
@@ -3748,9 +3747,9 @@
 <p>如果终端当前需要对端使用0长度的目标连接ID，那么其<em><strong>必须不</strong></em>能发送该帧。将连接ID长度改为0长度或从0长度改为非0长度都会使得难以辨别连接ID值何时发生了改变。终端发送0长度目标连接ID的数据包时，<em><strong>必须</strong></em>将收到<strong>新连接ID帧</strong>的情况视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
 <p>传输错误、超时和重传可能导致相同的<strong>新连接ID帧</strong>被重复接收。重复接收相同的该类帧的情况<em><strong>必须不</strong></em>能被当作连接错误处理。接收方可以根据<strong>新连接ID帧</strong>提供的序列号处理重复收到相同<strong>新连接ID帧</strong>的情况。</p>
 <p>如果终端收到一个<strong>新连接ID帧</strong>重复了之前发布的连接ID，却有着不同的无状态重置令牌或不同的序列号字段值或该序列号用于其他不同的连接ID，终端<em><strong>可以</strong></em>将之视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
-<p>“停用前”字段适用于在连接设置期间创建的连接ID以及<code>preferred_address</code>传输参数，详见<a href="#5.1.2_Consuming_and_Retiring_Connection_IDs">第5.1.2章</a>。“停用前”字段值<em><strong>必须</strong></em>小于或等于“序列号”字段值。收到“停用前”字段值大于序列号字段值<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型连接错误。</p>
-<p>一旦发送方指定了一个“停用前”字段值，在后续<strong>新连接ID帧</strong>中发送的较小值就不再发挥作用了。接收方<em><strong>必须</strong></em>忽略任何没有提高最大“停用前”值的“停用前”字段。</p>
-<p>收到序列号小于已收到<strong>新连接ID帧</strong>的“停用前”字段值的<strong>新连接ID帧</strong>的终端<em><strong>必须</strong></em>发送一个相应的停用新收到连接ID的<strong>停用连接ID帧</strong>，除非其已经对该序列号发过这个帧了。</p>
+<p>“停用至”字段适用于在连接设置期间创建的连接ID以及<code>preferred_address</code>传输参数，详见<a href="#5.1.2_Consuming_and_Retiring_Connection_IDs">第5.1.2章</a>。“停用至”字段值<em><strong>必须</strong></em>小于或等于“序列号”字段值。收到“停用至”字段值大于序列号字段值<em><strong>必须</strong></em>视为一个<code>FRAME_ENCODING_ERROR</code>类型连接错误。</p>
+<p>一旦发送方指定了一个“停用至”字段值，在后续<strong>新连接ID帧</strong>中发送的较小值就不再发挥作用了。接收方<em><strong>必须</strong></em>忽略任何没有提高最大“停用至”值的“停用至”字段。</p>
+<p>收到序列号小于已收到<strong>新连接ID帧</strong>的“停用至”字段值的<strong>新连接ID帧</strong>的终端<em><strong>必须</strong></em>发送一个相应的停用新收到连接ID的<strong>停用连接ID帧</strong>，除非其已经对该序列号发过这个帧了。</p>
 </div>
 </section>
 <section class="page" id="19.16_RETIRE_CONNECTION_ID_Frames">
@@ -3852,7 +3851,7 @@
 </dd>
 <dt>原因语句长度（Reason Phrase Length）：</dt>
 <dd>
-<p>一个可变长度整型值，指定原因语句的字节长度。由于<strong>连接关闭帧</strong>不能被拆分到多个数据包，因此任何对数据包大小作出的限制也会相应得限制原因语句的可用空间。</p>
+<p>一个可变长度整型值，指定原因语句的字节长度。由于<strong>连接关闭帧</strong>不能被拆分到多个数据包，因此任何对数据包大小作出的限制也会相应地限制原因语句的可用空间。</p>
 </dd>
 <dt>原因语句（Reason Phrase）：</dt>
 <dd>
@@ -3875,7 +3874,7 @@
 }
 </code></pre><p><a href="#Figure_44_HANDSHAKE_DONE_Frame_Format">图44：握手完成帧格式</a></p>
 </div>
-<p><strong>握手完成帧</strong>只可以由服务端发送。服务端<em><strong>必须不</strong></em>能在完成握手前发送<strong>握手完成帧</strong>。服务的<em><strong>必须</strong></em>必须将收到<strong>握手完成帧</strong>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
+<p><strong>握手完成帧</strong>只可以由服务端发送。服务端<em><strong>必须不</strong></em>能在完成握手前发送<strong>握手完成帧</strong>。服务端<em><strong>必须</strong></em>必须将收到<strong>握手完成帧</strong>视为一个<code>PROTOCOL_VIOLATION</code>类型连接错误。</p>
 </div>
 </section>
 <section class="page" id="19.21_Extension_Frames">
@@ -3985,7 +3984,7 @@
 <a href="#20.2_Application_Protocol_Error_Codes">20.2 应用协议错误码</a>
 </h1>
 <div class="content">
-<p>应用程序错误码留给应用协议管理。应用协议错误码用于<strong>重置帧</strong>（<a href="#19.4_RESET_STREAM_Frames">第19.4章</a>）、<strong>停止发送帧</strong>（<a href="#19.5_STOP_SENDING_Frames">第19.5章</a>），以及<code>0x1d</code>类型的<strong>连接关闭帧</strong>（<a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a>）。</p>
+<p>应用程序错误码留给应用协议管理。应用协议错误码用于<strong>流重置帧</strong>（<a href="#19.4_RESET_STREAM_Frames">第19.4章</a>）、<strong>停止发送帧</strong>（<a href="#19.5_STOP_SENDING_Frames">第19.5章</a>），以及<code>0x1d</code>类型的<strong>连接关闭帧</strong>（<a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a>）。</p>
 </div>
 </section>
 <section class="page" id="21_Security_Considerations">
@@ -5107,7 +5106,7 @@
   min_bits = log(num_unacked, 2) + 1
   num_bytes = ceil(min_bits / 8)
 
-  // 将整型值编码，并截断为仅剩最低`num_bytes`个字节
+  // 将整型值编码，截断为仅剩最低`num_bytes`个字节
   return encode(full_pn, num_bytes)
 </code></pre><p><a href="#Figure_46_Sample_Packet_Number_Encoding_Algorithm">图46：数据包号编码算法样例</a></p>
 </div>

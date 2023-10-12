@@ -225,7 +225,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 27, 2023
+            generated on Oct 12, 2023
     </div>
 </div>
 <div class="content">
@@ -871,7 +871,7 @@
 }
 </code></pre><p><a href="#Figure_1_Unidirectional_Stream_Header">图1：单向流的头部</a></p>
 </div>
-<p>本文档定义了两种流类型：控制流（详见<a href="#6.2.1_Control_Streams">第6.2.1章</a>）和推送流（详见<a href="#6.2.2_Push_Streams">第6.2.2章</a>）。《<a href="../RFC9204_Chinese_Simplified">QPACK</a>》定义了两种额外的帧类型。HTTP/3的扩展还可以定义其他流类型；详见<a href="#9_Extensions_to_HTTP3">第9章</a>。某些流类型是被保留使用的（详见<a href="#6.2.3_Reserved_Stream_Types">第6.2.3章</a>）。</p>
+<p>本文档定义了两种流类型：控制流（详见<a href="#6.2.1_Control_Streams">第6.2.1章</a>）和推送流（详见<a href="#6.2.2_Push_Streams">第6.2.2章</a>）。《<a href="../RFC9204_Chinese_Simplified">QPACK</a>》定义了两种额外的流类型。HTTP/3的扩展还可以定义其他流类型；详见<a href="#9_Extensions_to_HTTP3">第9章</a>。某些流类型是被保留使用的（详见<a href="#6.2.3_Reserved_Stream_Types">第6.2.3章</a>）。</p>
 <p>在一条HTTP/3连接的生命周期的早期阶段，单向流上的数据创建与通信很容易影响到连接的性能。过度限制流的最大数量或这些流的流量控制窗口的终端将增大对端迅速抵达这些上限值并被阻塞的可能性。特别是，实现应该考虑到对端可能想要通过某些允许使用的单向流来利用被保留使用的流的行为（详见<a href="#6.2.3_Reserved_Stream_Types">第6.2.3章</a>）。</p>
 <p>每个终端都需要创建至少一条作为HTTP控制流的单向流。除此之外，QPACK需要两条单向流，并且其他扩展还可能需要更多流。因此，客户端和服务器发送的传输参数都<em><strong>必须</strong></em>允许对端创建至少三条单向流。这些传输参数还<em><strong>应该</strong></em>为每条单向流提供至少1024字节的流量控制额度。</p>
 <p>注意，如果对端在创建关键的单向流前就用完了所有的初始额度，那么终端没有必要额外提供用于创建更多单向流的额度。终端<em><strong>应该</strong></em>首先创建HTTP控制流和强制使用的扩展（例如QPACK的编码器流和解码器流）所需的单向流，然后再在对端允许下创建额外的流。</p>
