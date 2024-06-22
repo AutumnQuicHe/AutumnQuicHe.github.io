@@ -15,7 +15,7 @@ RFC8999定下了QUIC协议版本升级及协商所需要遵守的规范，后世
 ### RFC9000：《[QUIC，一种基于UDP的安全多路复用传输协议（QUIC: A UDP-Based Multiplexed and Secure Transport）](https://www.rfc-editor.org/rfc/rfc9000.html)》
 中译：《[RFC9000中译：QUIC传输协议](/RFC9000_Chinese_Translation)》
 
-RFC9000详细描绘了QUIC四层可靠传输协议，一般简称为“QUIC传输协议”。同时，由于该文是自QUIC问世以来的发版的第一份RFC正式文档，因此其定义的QUIC协议也称被为“QUIC第1版”。
+RFC9000详细描绘了QUIC四层可靠传输协议，一般简称为“QUIC传输协议”。同时，由于该文是自QUIC问世以来的发版的第一份RFC正式文档，因此其定义的QUIC协议也称被为“QUIC版本1”。
 
 ### RFC9001：《[使用TLS保护QUIC（Using TLS to Secure QUIC）](https://www.rfc-editor.org/rfc/rfc9001.html)》
 中译：《[RFC9001中译：QUIC TLS](/RFC9001_Chinese_Translation)》
@@ -52,10 +52,10 @@ RFC9221描述了如何使用QUIC进行不可靠数据传输。
 
 具体定义了QUIC的版本协商机制，包括双端如何协商出一个兼容版本。
 
-### RFC9369：《[QUIC第2版（QUIC Version 2）](https://www.rfc-editor.org/rfc/rfc9369.html)》
-中译：《[RFC9369中译：QUIC第2版](/RFC9369_Chinese_Simplified)》
+### RFC9369：《[QUIC版本2（QUIC Version 2）](https://www.rfc-editor.org/rfc/rfc9369.html)》
+中译：《[RFC9369中译：QUIC版本2](/RFC9369_Chinese_Simplified)》
 
-发布了QUIC第2版。
+发布了QUIC版本2。
 
 ### RFC9443：《[QUIC的多路复用更新（Multiplexing Scheme Updates for QUIC）](https://www.rfc-editor.org/rfc/rfc9443.html)》
 中译：《[RFC9443中译：QUIC多路复用](/RFC9443_Chinese_Simplified)》
