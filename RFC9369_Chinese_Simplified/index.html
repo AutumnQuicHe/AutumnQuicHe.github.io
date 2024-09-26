@@ -3,30 +3,46 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="Hugo 0.111.3" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
-<title>RFC9369中文：QUIC第2版</title>
+<title>RFC9369中文：QUIC版本2</title>
 <link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC9369_Chinese_Simplified/css/RFC9369.css" rel="stylesheet"/>
-<link href="/RFC9369_Chinese_Simplified/index.xml" rel="alternate" title="RFC9369中文：QUIC第2版" type="application/rss+xml">
+<link href="/RFC9369_Chinese_Simplified/index.xml" rel="alternate" title="RFC9369中文：QUIC版本2" type="application/rss+xml">
 </link></head>
 <body>
 <div class="sidebar sidebar-rfc9369">
 <div class="navigation">
 <div><a href="/">秋愧遲</a></div>
-<h1 class="site-title"><a href="/RFC9369_Chinese_Simplified/">RFC9369中文：QUIC第2版</a></h1>
+<h1 class="site-title"><a href="/RFC9369_Chinese_Simplified/">RFC9369中文：QUIC版本2</a></h1>
 <nav class="internal">
 <ul>
 <li>
-<a href="#RFC9369_QUIC">RFC9369 QUIC第2版</a>
+<a href="#RFC9369_QUIC">RFC9369 QUIC版本2</a>
 <ul>
 <li><a href="#Forword">前言</a></li>
 <li><a href="#Abstract">摘要</a></li>
 <li><a href="#Status_of_This_Memo">备忘状态</a></li>
 <li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Conventions">2. 约定</a>
+</li>
+<li>
+<a href="#3_Differences_with_QUIC_Version_1">3. 与QUIC版本1的区别</a>
+<ul>
+<li><a href="#3.1_Version_Field">3.1. 与QUIC版本1的区别</a></li>
+<li><a href="#3.2_Long_Header_Packet_Types">3.2. 长包头包类型</a></li>
+<li><a href="#3.3.1_Initial_Salt">3.3.1 长包头包类型</a></li>
+<li><a href="#3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">3.3.2 基于HMAC的密钥派生函数（HKDF）标签</a></li>
+<li><a href="#3.3.3_Retry_Integrity_Tag">3.3.3 重试完整性标签</a></li>
 </ul>
 </li>
 </ul>
@@ -38,13 +54,13 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 27, 2023
+            generated on Sep 26, 2024
     </div>
 </div>
 <div class="content">
 <section class="page" id="RFC9369_QUIC">
 <h1>
-<a href="#RFC9369_QUIC">RFC9369 QUIC第2版</a>
+<a href="#RFC9369_QUIC">RFC9369 QUIC版本2</a>
 </h1>
 <div class="content">
 <br/>
@@ -96,7 +112,7 @@
 <a href="#Forword">前言</a>
 </h2>
 <div class="content">
-<p>本文是关于QUIC第2版的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+<p>本文是关于QUIC版本2的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
 </div>
 </section>
 <section class="page" id="Abstract">
@@ -104,7 +120,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>本文详细说明QUIC第2版，其与QUIC第1版除了部分微小的细节外都一致。其目的是为了对抗一些僵化的模型，并实现版本协商框架。其也作为一个在任何QUIC的未来版本中作出最小变动的模板。</p>
+<p>本文详细说明QUIC版本2，其与QUIC版本1除了部分微小的细节外都一致。其目的是为了对抗一些僵化的模型，并实现版本协商框架。其也作为一个在任何QUIC的未来版本中作出最小变动的模板。</p>
 <p>注意“第2版”对于本协议是一个非正式的名称，表明这是QUIC作为标准追踪文档公开发表的第2个版本。此次制定的协议在网络镜像中使用版本号而不是2，是为了最小化僵化风险。</p>
 </div>
 </section>
@@ -125,6 +141,89 @@
 <div class="content">
 <p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>QUIC版本1<sup>《<a href="">QUIC</a>》</sup>具有许多扩展点，包括每个长头部中占据第二到第五个字节的版本号（详见《<a href="">QUIC版本通用属性</a>》）。如果实验版本很少见，而QUIC流量的绝大部分是QUIC版本1，那么中间盒就有可能固化在版本字节<code>0x00000001</code>上。</p>
+<p>在QUIC版本1中，初始化包使用版本指定的盐值进行加密，如《<a href="">QUIC TLS</a>》第5.2章所述。以该方式保护初始包允许观察者检查其包内容，包括TLS客户端及服务的Hello消息。同样，中间盒也可能存在固化在版本1的密钥派生及数据包格式上的风险。</p>
+<p>最后，《<a href="">QUIC VN</a>》描述了两种终端用以协商选择何种QUIC版本的机制。“不兼容”版本协商方式可以支持从任何QUIC版本全面切换到另一个版本，代价是在建联阶段多加一个往返。“兼容”版本协商消除了往返延迟，但却对两个版本之间的语义差异程度有一定的限制。</p>
+<p>QUIC版本2旨在缓解固化问题，并执行版本协商机制。这些改动提供了一个指定新版本QUIC所需要做的最小改动的示例。然而需要注意的是，链路上选择版本号是随机的，而非只选择“2”，且区分长包头包类型的两个字节也与版本1不同；这两个特性都是为了对抗固化问题，并非新版本QUIC必须具备的属性。</p>
+<p>任何支持两个版本的终端都需要实现版本协商，以防范降级攻击。</p>
+</div>
+</section>
+<section class="page" id="2_Conventions">
+<h1>
+<a href="#2_Conventions">2. 约定</a>
+</h1>
+<div class="content">
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+</div>
+</section>
+<section class="page" id="3_Differences_with_QUIC_Version_1">
+<h1>
+<a href="#3_Differences_with_QUIC_Version_1">3. 与QUIC版本1的区别</a>
+</h1>
+<div class="content">
+<p>除了一些不同，QUIC版本2终端<em><strong>必须</strong></em>实现QUIC版本1在《<a href="">QUIC</a>》、《<a href="">QUIC TLS</a>》以及《<a href="">QUIC恢复</a>》中所描述的规范。本章接下来罗列不同点。</p>
+</div>
+</section>
+<section class="page" id="3.1_Version_Field">
+<h2>
+<a href="#3.1_Version_Field">3.1. 与QUIC版本1的区别</a>
+</h2>
+<div class="content">
+<p>长包头中的版本字段值是<code>0x6b3343cf</code>。这是通过取“QUICv2 version number”（“QUICv2版本号”）的sha256散列值的前四个字节来生成的。</p>
+</div>
+</section>
+<section class="page" id="3.2_Long_Header_Packet_Types">
+<h2>
+<a href="#3.2_Long_Header_Packet_Types">3.2. 长包头包类型</a>
+</h2>
+<div class="content">
+<p>所有版本2长包头包类型都不同。类型字段值分别是：</p>
+<ul>
+<li>初始包：<code>0b01</code></li>
+<li>0-RTT包：<code>0b10</code></li>
+<li>握手包：<code>0b11</code></li>
+<li>重试包：<code>0b00</code></li>
+</ul>
+</div>
+</section>
+<section class="page" id="3.3.1_Initial_Salt">
+<h3>
+<a href="#3.3.1_Initial_Salt">3.3.1 长包头包类型</a>
+</h3>
+<div class="content">
+<p>The salt used to derive Initial keys in Section 5.2 of [QUIC-TLS] changes to:</p>
+<blockquote>
+<p>initial_salt = 0x0dede3def700a6db819381be6e269dcbf9bd2ed9</p>
+</blockquote>
+<p>This is the first 20 bytes of the sha256sum of “QUICv2 salt”.</p>
+</div>
+</section>
+<section class="page" id="3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">
+<h3>
+<a href="#3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">3.3.2 基于HMAC的密钥派生函数（HKDF）标签</a>
+</h3>
+<div class="content">
+<p>The labels used in [QUIC-TLS] to derive packet protection keys (Section 5.1), header protection keys (Section 5.4), Retry Integrity Tag keys (Section 5.8), and key updates (Section 6.1) change from “quic key” to “quicv2 key”, from “quic iv” to “quicv2 iv”, from “quic hp” to “quicv2 hp”, and from “quic ku” to “quicv2 ku” to meet the guidance for new versions in Section 9.6 of that document.</p>
+</div>
+</section>
+<section class="page" id="3.3.3_Retry_Integrity_Tag">
+<h3>
+<a href="#3.3.3_Retry_Integrity_Tag">3.3.3 重试完整性标签</a>
+</h3>
+<div class="content">
+<p>The key and nonce used for the Retry Integrity Tag (Section 5.8 of [QUIC-TLS]) change to:</p>
+<pre tabindex="0"><code>secret =
+  0xc4dd2484d681aefa4ff4d69c2c20299984a765a5d3c31982f38fc74162155e9f
+key = 0x8fb4b01b56ac48e260fbcbcead7ccc92
+nonce = 0xd86969bc2d7c6d9990efb04a
+</code></pre><p>The secret is the sha256sum of “QUICv2 retry secret”. The key and nonce are derived from this secret with the labels “quicv2 key” and “quicv2 iv”, respectively.</p>
 </div>
 </section>
 </div>

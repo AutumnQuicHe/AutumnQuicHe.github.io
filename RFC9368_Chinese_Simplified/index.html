@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="Hugo 0.111.3" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9368中文：QUIC兼容版本协商</title>
@@ -38,6 +38,46 @@
 </li>
 <li>
 <a href="#2_Version_Negotiation_Mechanism">2. 版本协商机制</a>
+<ul>
+<li><a href="#2.1_Incompatible_Version_Negotiation">2.1. 非兼容版本协商</a></li>
+<li><a href="#2.2_Compatible_Versions">2.2. 兼容版本</a></li>
+<li><a href="#2.3_Compatible_Version_Negotiation">2.3. 兼容版本协商</a></li>
+<li><a href="#2.4_Connections_and_Version_Negotiation">2.4. 连接与版本协商</a></li>
+<li><a href="#2.5_Client_Choice_of_Original_Version">2.5. 客户端选择初始版本</a></li>
+</ul>
+</li>
+<li>
+<a href="#3_Version_Information">3. 版本信息</a>
+</li>
+<li>
+<a href="#4_Version_Downgrade_Prevention">4. 版本降级防范</a>
+</li>
+<li>
+<a href="#5_Server_Deployments_of_QUIC">5. QUIC的服务端部署</a>
+</li>
+<li>
+<a href="#7_Considerations_for_Future_Versions">7. </a>
+</li>
+<li>
+<a href="#7_Considerations_for_Future_Versions">7. 关于未来版本的考虑</a>
+</li>
+<li>
+<a href="#8_Special_Handling_for_QUIC_Version_1">8. QUIC第一版的特殊处理</a>
+</li>
+<li>
+<a href="#9_Security_Considerations">9. 安全考虑</a>
+</li>
+<li>
+<a href="#10_IANA_Considerations">10. IANA考虑</a>
+</li>
+<li>
+<a href="#References">参考文献</a>
+</li>
+<li>
+<a href="#Acknowledgments"></a>
+</li>
+<li>
+<a href="#Authors_Addresses">作者地址</a>
 </li>
 </ul>
 </nav>
@@ -48,7 +88,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 27, 2023
+            generated on Sep 26, 2024
     </div>
 </div>
 <div class="content">
@@ -152,7 +192,7 @@
 <a href="#1_Introduction">1. 引言</a>
 </h1>
 <div class="content">
-<p>QUIC的版本不变属性<sup>《<a href=""></a>》</sup>定义了版本协商包，但是没有指定终端收到该类包后该如何响应。QUIC第1版<sup>《<a href=""></a>》</sup>允许服务端使用版本协商包指出客户端选择的版本是不可接受的，但是其没有允许客户端安全地通过该信息使用一个双端支持的版本创建新的连接。本文通过为版本协商包定义版本协商机制，更新《》。</p>
+<p>QUIC的版本不变属性<sup>《<a href=""></a>》</sup>定义了版本协商包，但是没有指定终端收到该类包后该如何响应。QUIC版本1<sup>《<a href=""></a>》</sup>允许服务端使用版本协商包指出客户端选择的版本是不可接受的，但是其没有允许客户端安全地通过该信息使用一个双端支持的版本创建新的连接。本文通过为版本协商包定义版本协商机制，更新《》。</p>
 <p>有着合适且安全的机制，版本协商包可以成为该机制的一部分，从而使得两个QUIC实现得以在两个完全不相关的QUIC版本之间进行协商。本文使用版本协商包指定版本协商，如果需要的话其会在连接建立期间增加一个额外的往返。</p>
 <p>尽可能避免额外的往返延迟是有利的，尤其是假设大多数新增版本与先前版本是广泛相似的。本规范也定义了一种简单版本协商机制，其为各个版本赋能相似性，且可以在“兼容的”协商之间协商而不需要额外的往返延迟。</p>
 </div>
@@ -193,6 +233,241 @@
 <p>在收到首飞后，服务端检验其是否知道如何从选择版本（此种场景下也即初始版本）解析首飞包。如果其不能解析，则启动不兼容的版本协商（详见），这会导致客户端使用另一个版本初始化一条新连接。例如，如果客户端使用服务端不能解析的版本A初始化一条连接，服务端启动不兼容版本协商；然后，客户端使用版本B初始化一条连接，则说第一条连接的客户端选择版本是A，第二条连接的客户端选择版本是B，而整个过程的初始版本是A。</p>
 <p>如果服务端可以解析首飞，则它可以使用客户端选择版本建立连接，也<em><strong>可以</strong></em>选择其他兼容的版本，详见<a href="">第2.3章</a>。</p>
 <p>注意，服务端也可能有能力解析首飞，即使其无法完整支持给定的版本，其在解析首飞以进行版本确认方面的实现是足够的，但是不足以完整地使用相应版本建立连接。</p>
+</div>
+</section>
+<section class="page" id="2.1_Incompatible_Version_Negotiation">
+<h2>
+<a href="#2.1_Incompatible_Version_Negotiation">2.1. 非兼容版本协商</a>
+</h2>
+<div class="content">
+<p>服务端通过发送版本协商包启动非兼容版本协商。该包<em><strong>强烈要求</strong></em>在一个支持版本字段（Supported Version filed）中包含来自服务端提供版本（详见<a href="">第5章</a>）集合的每个入口。服务端<em><strong>可以</strong></em>往支持版本字段中添加保留版本（如《<a href=""></a>》<a href="">第6.3章</a>所述）。</p>
+<p>如果版本协商包包含客户端提供的初始版本，客户端可将忽略该包，如<a href="">第4章</a>所述。客户端也会忽略保护不正确连接ID字段的版本协商包，如《<a href=""></a>》<a href="">第6章</a>所述。</p>
+<p>在收到版本协商包后，客户端<em><strong>强烈要求</strong></em>在服务端提供的列表中搜索一个其支持的版本。如果没有找到这样的版本，其<em><strong>强烈要求</strong></em>中止连接尝试。否则，其<em><strong>强烈要求</strong></em>选择一个相互支持的版本并以该版本发送一个新的首飞——该版本就是当前的协商版本。</p>
+<p>新的首飞将允许终端使用协商版本创建连接。协商版本的握手将交换版本信息（详见<a href="">第3章</a>），用于确保版本协商的真实性，也即没有攻击者为了影响版本协商过程中途注入数据包（详见<a href="">第4章</a>）。</p>
+<p>只有服务端可以发起非兼容版本协商。客户端<em><strong>必须不</strong></em>能发送版本协商包，且服务端<em><strong>必须</strong></em>忽略所有收到的版本协商包。</p>
+</div>
+</section>
+<section class="page" id="2.2_Compatible_Versions">
+<h2>
+<a href="#2.2_Compatible_Versions">2.2. 兼容版本</a>
+</h2>
+<div class="content">
+<p>如果A、B是两个不同的QUIC版本，A是所谓“兼容”B的，如果其可以识别版本A的首飞包，并将其转换为版本B的首飞包。例如，如果版本A和B在握手期间的链路镜像及行为上是绝对一致的，但是在握手后不一致，那么A是兼容B的且B也兼容A。注意，对首飞的转换可能是有损耗的；一些数据，例如QUIC版本1的0-RTT包，可能在转换及随后的重传时被忽略。</p>
+<p>版本兼容性不是对称的。存在版本A兼容版本B但是版本B不兼容版本A的情况。这可能发生在，例如，如果版本B是版本A的一个严格超集，也即，如果版本A包含流及<strong>流帧</strong>的概念，而版本B包含流及假定的连同<strong>流帧</strong>及<strong>管道帧</strong>的管道概念，那么A兼容B，但是B不兼容A。</p>
+<p>注意版本兼容性并不意味着首飞的任何单独可能的实例都将成功转换到其他版本。如果满足两个条件，则称使用版本A的首飞“兼容”版本B：1、版本A兼容版本B且，2、其定义了首飞对版本B的转换。例如，如果版本B除了在首飞中引入的版本A不能解析或会忽略的新帧之外其他所有方面与版本A一致，则版本B可能仍然兼容版本A，因为转换对于该帧不被使用的连接可能成功。在该例中，使用版本B的首飞所携带的该新帧不兼容版本A。</p>
+<p>当定义一个新的QUIC版本时，一般假设其不兼容任何其他版本，除非额外指定。同样地，没有其他版本兼容该新版本除非额外指定。QUIC实现<em><strong>必须不</strong></em>能假设不同版本之间是兼容的，除非额外指定。</p>
+<p>注意双端可能对两个版本是否兼容持相反意见。例如，两个版本可能同时被定义，但是却在很久后的第三份文档中被定义为兼容的——在那种场景下，一端可能注意到了该兼容性稳定，而另一端则没有。</p>
+</div>
+</section>
+<section class="page" id="2.3_Compatible_Version_Negotiation">
+<h2>
+<a href="#2.3_Compatible_Version_Negotiation">2.3. 兼容版本协商</a>
+</h2>
+<div class="content">
+<p>当服务端可以使用客户端选择的版本解析客户端的首飞，则其能够解出客户端的版本信息结构（详见<a href="">第3章</a>）。这包含客户端所知道的其所兼容的版本的列表。</p>
+<p>为了执行兼容版本协商，服务端<em><strong>必须</strong></em>选择其中一个版本：（1）支持，且（2）知道兼容客户端选择版本。这个选择的版本就是当前的协商版本。完成选择后，服务端试图将客户端首飞信息转换成该版本并回复客户端，正如其收到的转换后的首飞。</p>
+<p>如果这些格式是完全相同的，就像协商版本与客户端选择版本一致那样，那么这将是恒等转换。如果首飞是正确格式，那么这个转换过程不能通过对兼容的首飞进行定义而失败；如果服务端不能转换该首飞，其<em><strong>必须</strong></em>中断握手。</p>
+<p>如果一份文档确定了一个QUIC版本，其兼容另一个版本，该文档<em><strong>必须</strong></em>确定使客户端知晓协商版本的机制。这样的机制的一个例子是，客户端通过验证QUIC长包头版本字段确认服务端的协商版本。注意，在这个示例机制中，对于服务端而言在切换到协商版本前（这可能发生在客户端版本信息结构跨越多个数据包的时候；在这种情况下，服务端可能确认了包括客户端选择版本的首包及其后切换到一个不同的协商版本的数据包）使用客户端选择的版本发送初始包是可行的。相互兼容的版本<em><strong>应该</strong></em>使用相同的机制。</p>
+<p>注意，在首飞转换成协商版本后，握手以协商版本结束。如果协商版本在握手过程中有什么要求，这些要求将适用于整个握手过程，包括转化后的首飞。特别是，如果协商版本要求终端验证握手包，终端<em><strong>必须</strong></em>对转化后的首飞也进行同等验证。例如，如果协商版本要求五元组保持稳定（正如QUIC版本1所要求的），那么终端两侧需要验证握手期间收到的所有包的五元组，包括转化后的首飞。</p>
+<p>注意客户端也可以通过只在版本信息字段可用版本中包含选定版本来禁止兼容版本协商（详见<a href="">第3章</a>）。</p>
+<p>如果服务端没有找到一个兼容版本（包括客户端选择的版本），其将转而执行不兼容版本协商（详见<a href="">第2.1章</a>）。</p>
+<p>注意可能先发生不兼容版本协商后，再紧随着发生兼容版本协商。例如，如果版本A兼容版本B且版本C兼容版本D，下述情况可能发生：</p>
+<p>TODO：重新作图</p>
+<pre tabindex="0"><code>客户端                                  服务端
+
+选择版本 = A, 可选版本 = (A, B) -------------&gt;
+&lt;------------------------ 版本协商 = (D, C)
+
+选择版本 = C, 可选版本 = (C, D) -------------&gt;
+&lt;------------- 选择版本 = D, 可选版本 = (D, C)
+</code></pre><p>图1：组合协商图</p>
+<p>在这个示例中，客户端从服务端版本协商包中选择版本C，但是服务端倾向于版本D，并从客户端提供的选项中选择了D。</p>
+</div>
+</section>
+<section class="page" id="2.4_Connections_and_Version_Negotiation">
+<h2>
+<a href="#2.4_Connections_and_Version_Negotiation">2.4. 连接与版本协商</a>
+</h2>
+<div class="content">
+<p>QUIC连接在客户端与服务端之间共享状态<sup>《<a href="">QUIC版本不变属性</a>》</sup>。本文定义的兼容版本协商机制（详见<a href="">第2.3章</a>）作为一条QUIC连接的一部分执行，也就是说，客户端选择版本数据包与协商版本的数据包一样，都属于同一条连接。</p>
+<p>作为对比，不兼容版本协商机制，通过利用QUIC版本协商包（详见<a href="">第2.1章</a>），在概念上跨越两条QUIC连接执行操作。也就是说，收到版本协商包之前的建联尝试，与随后采用不兼容版本的连接是不同的。</p>
+<p>注意，这种跨越两个连接的区分是概念上的，也就是说，其仅适用于QUIC的规范需求，但是不需要在实现上使用两个不同的连接实体。</p>
+</div>
+</section>
+<section class="page" id="2.5_Client_Choice_of_Original_Version">
+<h2>
+<a href="#2.5_Client_Choice_of_Original_Version">2.5. 客户端选择初始版本</a>
+</h2>
+<div class="content">
+<p>当客户端选择其原始版本时，其<em><strong>应该</strong></em>尝试避免不兼容版本协商，从而节约一个往返时间。因此，客户端<em><strong>应该</strong></em>选择一个能最大化下述两者的组合概率：</p>
+<ul>
+<li>服务端知道如何从初始版本解析首飞，而且</li>
+<li>初始版本兼容客户端首选的版本。</li>
+</ul>
+<p>若缺乏更多信息，可能意味着选择客户端支持的最老的版本，并在客户端首飞中推荐较新的兼容版本。</p>
+</div>
+</section>
+<section class="page" id="3_Version_Information">
+<h1>
+<a href="#3_Version_Information">3. 版本信息</a>
+</h1>
+<div class="content">
+<p>握手期间，终端将交换版本信息（Version Information），包括一个选定版本及一系列可选版本。任何支持该机制的QUIC版本<em><strong>必须</strong></em>提供一个能够在握手期间双向交换版本信息的机制，并确保该数据得到认证。</p>
+<p>在QUIC版本1中，版本信息通过一个<code>version_information</code>（版本信息）传输参数（详见《<a href="">QUIC</a>》第7.4章）。版本信息内容如下（使用《<a href="">QUIC</a>》第1.3章所述表示法表示）：</p>
+<pre tabindex="0"><code>版本信息 {
+  选定版本 (32),
+  可选版本 (32) ...,
+}
+</code></pre><p>图2：版本信息格式</p>
+<p>各个字段内容描述如下：</p>
+<p>选定版本（Chosen Version）：</p>
+<blockquote>
+<p>发送端为连接选择的版本。在大多数情况下，该字段的值等于承载该段数据的长包头中版本字段的值。但是，未来的版本或扩展可以选择在长包头的版本字段设置不同的值。</p>
+<p>可选版本字段的内容基于其发送端是客户端还是服务端。</p>
+</blockquote>
+<p>客户端发送的可选版本（Client-Sent Available Versions）：</p>
+<blockquote>
+<p>当由客户端发送的时候，可选版本字段列出所有该首飞兼容的版本，并按降序排列。注意，该列表中<em><strong>必须</strong></em>包含选定版本字段中的版本，使得客户端得以表明偏好该选定版本；且该偏好仅供参考，服务端<em><strong>可以</strong></em>选择自身偏好的版本取代。</p>
+</blockquote>
+<p>服务端发送的可选版本（Server-Sent Available Versions）：</p>
+<blockquote>
+<p>当由服务端发送的时候，可选版本字段列出所有当前服务端完整部署的版本（Fully Deployed Versions，详见<a href="">第5章</a>）。该字段列出的版本在排序上不具有任何涵义。注意，选定版本字段中的版本不要求必须包含在该列表中，因为服务端操作者可能正在移除对该版本的支持。基于同样的原因，可选版本字段<em><strong>可以</strong></em>为空。</p>
+</blockquote>
+<p>客户端和服务端都<em><strong>可以</strong></em>在其可选版本列表中包含<code>0x?a?a?a?a</code>格式的版本。这些版本用于测试版本协商（详见《<a href=""></a>》第15章），且永远不会被用于连接。</p>
+</div>
+</section>
+<section class="page" id="4_Version_Downgrade_Prevention">
+<h1>
+<a href="#4_Version_Downgrade_Prevention">4. 版本降级防范</a>
+</h1>
+<div class="content">
+<p>版本降级是一种由恶意实体设法使QUIC终端协商出的版本不同于其在不受该攻击情况下协商得到的版本的攻击。本文描述的机制是为了防范降级攻击而设计的。</p>
+<p>客户端<em><strong>必须</strong></em>忽略任何包含初始版本的版本协商包。试图基于从版本协商包得到的信息创建新的连接的客户端<em><strong>必须</strong></em>忽略所有其收到的用于回应该连接的版本协商包。</p>
+<p>握手期间，双端<em><strong>必须</strong></em>解析对端发送的版本信息。如果解析失败（例如，版本信息太短或其长度不能被4整除），终端<em><strong>必须</strong></em>关闭连接；如果连接使用QUIC版本1，<em><strong>必须</strong></em>使用类型为<code>TRANSPORT_PARAMETER_ERROR</code>（<code>传输参数错误</code>）的传输错误关闭连接。如果终端收到的选定版本为零，或任何可选版本为零，<em><strong>必须</strong></em>视为解析错误。如果服务端收到的版本信息中的可选版本不包含选定版本，也<em><strong>必须</strong></em>视为解析错误。</p>
+<p>任何支持版本协商的QUIC版本<em><strong>必须</strong></em>定义一种以版本协商错误关闭连接的。对于QUIC版本1，版本协商错误通过<code>VERSION_NEGOTIATION_ERROR</code>类型传输错误（详见<a href="">第10.2章</a>）进行标识。</p>
+<p>当服务端收到客户端的首飞，服务端将首先确定该连接使用的QUIC版本，从而正确解析首飞。这可能涉及检查握手记录之外的数据，例如部分包头。当服务端解析完客户端的版本信息时，<em><strong>必须</strong></em>校验客户端选定版本是否与连接当前使用版本一致。如果两者不一致，服务端<em><strong>必须</strong></em>以版本协商错误为由关闭连接。</p>
+<p>在QUIC版本1的特定情况下，服务端通过观察其收到的首个长包头包的版本字段值为<code>0x00000001</code>从而确认当前连接使用的是QUIC版本1。接下来，如果服务端通过QUIC版本1连接收到客户端的版本信息（通过长包头包版本字段携带的传输参数）中客户端的选定版本未设置为<code>0x00000001</code>，服务端<em><strong>必须</strong></em>以版本协商错误关闭连接。</p>
+<p>即使版本信息缺失，服务端也<em><strong>可以</strong></em>完成握手。如果客户端处理版本协商包时缺少版本信息，那么其<em><strong>必须不</strong></em>能完成握手，但是在其他情况下是<em><strong>可以</strong></em>的。</p>
+<p>如果客户端收到的版本信息中服务端的选定版本不在客户端发送的可选版本中，那么客户端<em><strong>必须</strong></em>以版本协商错误关闭连接。如果客户端处理了版本协商包而其中缺乏版本信息，那么客户端<em><strong>必须</strong></em>以版本协商错误关闭连接。</p>
+<p>如果客户端收到且执行了版本协商包，那么客户端<em><strong>必须</strong></em>验证服务端的可选版本字段。验证可选版本字段通过确认如果客户端知道服务端支持的版本，则其将尝试同样的版本。就是说，如果已经收到版本协商包，其中列出了服务端可选版本字段支持的版本，包括协商版本，则客户端将选择相同的版本。如果客户端将选择不同的版本，则其<em><strong>必须</strong></em>以版本协商错误关闭连接。特别是，如果客户端处理版本协商包时发现服务端的可选版本字段是空的，则其<em><strong>必须</strong></em>以版本协商错误关闭连接。这些连接关闭使得攻击者不能使用伪造的版本协商包强制版本降级。</p>
+<p>例如，假设客户端支持QUIC版本10、12和14，并优先支持较高的版本。客户端以版本12发起建联尝试。接下来探讨两个独立的示例场景：</p>
+<ul>
+<li>
+<p>在第一个场景中，服务端支持版本10、13和14，但是只有版本13和14是完整部署的（详见<a href="">第2章</a>）。服务端发送了携带版本10、13和14的版本协商包。触发了一个非兼容版本协商，且客户端以创建了基于版本14的新连接。然后，服务端的可选版本字段包含13和14。在该场景中，如果客户端收到了包含版本10、13和14的版本协商包，客户端仍然会选择版本14；因此，握手以版本14成功完成。</p>
+</li>
+<li>
+<p>在第二个场景中，服务端支持版本10、13和14，且它们都进行了完整部署。然而，攻击者伪造包含版本10和13的版本协商包。触发了一个非兼容版本协商，且客户端以创建了基于版本10的新连接。然后，服务端的可选版本字段包含版本10、13和14。在该场景中，如果客户端收到了包含版本10、13和14的版本协商包，客户端会选择版本14；因此，客户端以版本协商错误中止握手过程。</p>
+</li>
+</ul>
+<p>这种对可选版本的验证不足以防范降级攻击。防范降级攻击还需要客户端忽略包含原始版本的版本协商包（详见<a href="">第2.1章</a>）。</p>
+<p>在本文描述的版本协商过程完成后，连接使用的版本将是服务端在其版本信息的选定版本字段中提供的版本。即使在连接生命周期中任何时刻有其他长包头的版本字段使用过其他的版本，这一点也是成立的。特别是，由于客户端可能通过QUIC长包头关注着兼容版本协商期间的协商版本（详见<a href="">第2.3章</a>），客户端<em><strong>必须</strong></em>验证服务端的选定版本是否等于协商版本；如果两者不一致，客户端<em><strong>必须</strong></em>以版本协商错误关闭连接。这阻止了攻击者通过伪造长包头的版本字段影响版本协商。</p>
+</div>
+</section>
+<section class="page" id="5_Server_Deployments_of_QUIC">
+<h1>
+<a href="#5_Server_Deployments_of_QUIC">5. QUIC的服务端部署</a>
+</h1>
+<div class="content">
+<p>虽然本文主要讨论单个QUIC服务端，但是QUIC服务端实际部署中通常会包含多个服务器实例构成的服务器集群。因此，本文定义了下述术语：</p>
+<p><strong>可接受版本</strong>（Acceptable Versions）：</p>
+<blockquote>
+<p>这是给定的服务端实例支持的QUIC版本的集合。更具体来说就是，如果客户端使用这些版本发起首飞，它们是服务端实例实际会选择的版本。</p>
+</blockquote>
+<p><strong>提供版本</strong>（Offered Versions）：</p>
+<blockquote>
+<p>这是给定的服务端实例在收到未知版本的首飞后，会在发送的版本协商包中列出的版本集合。该集合更有可能等于可接受版本集合，除开添加或删除版本时短暂过渡期间（见下）。</p>
+</blockquote>
+<p><strong>完整部署版本</strong>（Fully Deployed Versions）：</p>
+<blockquote>
+<p>这是在该服务端部署中每个QUIC服务端实例都支持且能够协商的版本集合。如果服务端部署只包含一个服务器实例，那么该集合等于提供版本集合，除开添加或删除版本时短暂过渡期间（见下）。</p>
+</blockquote>
+<p>如果服务端部署包含多个实例，软件更新可能无法确保在所有服务器实例上同时进行。因此，客户端可能收到已经升级的服务器实例发来的版本协商包，发起建联尝试的对象却是另一个尚未更新的服务器实例。</p>
+<p>然而，即使只有一个实例，如果服务端在版本协商包在飞时执行软件更新，客户端仍然会收到一个过时的版本协商包。</p>
+<p>这可能导致第4章描述的版本降级防范机制错误地判断为降级攻击。为了避免这种情况，当服务端希望添加或删除对某个版本的支持的时候，其<em><strong>应该</strong></em>执行三步过程，如下所述。</p>
+<p>当添加对一个新版本的支持时：</p>
+<ul>
+<li>
+<p>第一步是逐步给所有服务器实例增加对新版本的支持。这一步更新接受版本但是不更新提供版本及完整部署版本。一旦所有服务器实例更新完毕，操作者至少等待一个MSL，以确保任何在飞的版本协商包都有时间到达。</p>
+</li>
+<li>
+<p>然后，第二步是逐渐将新版本纳入所有服务器实例的提供版本中。这一步做完后，操作者至少再等待一个MSL。</p>
+</li>
+<li>
+<p>最后，第三步是逐步将心版本添加到所有服务器实例的完整部署版本中。</p>
+</li>
+</ul>
+<p>当移除对一个版本的支持时：</p>
+<ul>
+<li>
+<p>第一步是逐步从所有服务器实例的完整部署版本中移除该版本。一旦移除完成，操作者等待至少一个MSL以准许任何在飞版本协商包到达。</p>
+</li>
+<li>
+<p>然后，第二步是逐步从所有服务器实例的提供版本中移除该版本。一旦完成，操作者再等待至少一个MSL。</p>
+</li>
+<li>
+<p>最后，第三步是逐步从所有服务器实例中移除对该版本的支持。这一步将更新接受版本。</p>
+</li>
+</ul>
+<p>注意，在更新的窗口期，连接极易由于接受版本没有得到完整部署而受到版本降级攻击。这是因为客户端不能辨别降级攻击与更新前及更新后的服务端实例之间的合法信息交换。</p>
+</div>
+</section>
+<section class="page" id="7_Considerations_for_Future_Versions">
+<h1>
+<a href="#7_Considerations_for_Future_Versions">7. </a>
+</h1>
+<div class="content">
+<p>In order to facilitate the deployment of future versions of QUIC, designers of future versions SHOULD attempt to design their new version such that commonly deployed versions are compatible with it.</p>
+<p>QUIC version 1 defines multiple features which are not documented in the QUIC invariants. Since, at the time of writing, QUIC version 1 is widely deployed, this section discusses considerations for future versions to help with compatibility with QUIC version 1.</p>
+</div>
+</section>
+<section class="page" id="7_Considerations_for_Future_Versions">
+<h1>
+<a href="#7_Considerations_for_Future_Versions">7. 关于未来版本的考虑</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="8_Special_Handling_for_QUIC_Version_1">
+<h1>
+<a href="#8_Special_Handling_for_QUIC_Version_1">8. QUIC第一版的特殊处理</a>
+</h1>
+<div class="content">
+<p>Because QUIC version 1 was the only QUIC version that was published on the IETF Standards Track before this document, it is handled specially as follows: if a client is starting a QUIC version 1 connection in response to a received Version Negotiation packet and the version_information transport parameter is missing from the server’s transport parameters, then the client SHALL proceed as if the server’s transport parameters contained a version_information transport parameter with a Chosen Version set to 0x00000001 and an Available Version list containing exactly one version set to 0x00000001. This allows version negotiation to work with servers that only support QUIC version 1. Note that implementations that wish to use version negotiation to negotiate versions other than QUIC version 1 MUST implement the version negotiation mechanism defined in this document.</p>
+</div>
+</section>
+<section class="page" id="9_Security_Considerations">
+<h1>
+<a href="#9_Security_Considerations">9. 安全考虑</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="10_IANA_Considerations">
+<h1>
+<a href="#10_IANA_Considerations">10. IANA考虑</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="References">
+<h1>
+<a href="#References">参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments"></a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">作者地址</a>
+</h1>
+<div class="content">
 </div>
 </section>
 </div>

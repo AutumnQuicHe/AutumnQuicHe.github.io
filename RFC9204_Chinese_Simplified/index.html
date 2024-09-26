@@ -3,7 +3,7 @@
 
 <html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Hugo 0.112.0-DEV" name="generator"/>
+<meta content="Hugo 0.111.3" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
 <title>RFC9204中文：QPACK</title>
@@ -202,7 +202,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Aug 27, 2023
+            generated on Sep 26, 2024
     </div>
 </div>
 <div class="content">
@@ -492,7 +492,7 @@
 <a href="#3.2_Dynamic_Table">3.2. 动态表</a>
 </h2>
 <div class="content">
-<p>动态表由一组按照先进先出顺序维护的字段行组成。QPACK编码器和解码器共享一张动态表，该表初始为空。编码器项动态表添加条目，并在编码流上通过指令向解码器发送这些条目；详见<a href="#4.3_Encoder_Instructions">第4.3章</a>。</p>
+<p>动态表由一组按照先进先出顺序维护的字段行组成。QPACK编码器和解码器共享一张动态表，该表初始为空。编码器向动态表添加条目，并在编码流上通过指令向解码器发送这些条目；详见<a href="#4.3_Encoder_Instructions">第4.3章</a>。</p>
 <p>动态表中可以包含重复的条目（也就是具有相同名称和相同值的条目）。因此，条目重复的情况<em><strong>必须不</strong></em>被解码器视作错误。</p>
 <p>动态表条目的值可以为空。</p>
 </div>
