@@ -461,7 +461,7 @@
 </dl>
 <p>有关术语“内容”的定义详见《<a href="https://www.rfc-editor.org/info/rfc9110">HTTP</a>》的<a href="https://www.rfc-editor.org/rfc/rfc9110#section-6.4">第6.4章</a>。</p>
 <p>最后，有关术语“资源”、“消息”、“用户代理”、“源服务器”、“网关”、“中间设备”、“代理”和“隧道”的定义详见《<a href="https://www.rfc-editor.org/info/rfc9110">HTTP</a>》的<a href="https://www.rfc-editor.org/rfc/rfc9110#section-3">第3章</a>。</p>
-<p>本文中的数据包示意图使用了在《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#1.3_Notational-Conventions">第1.3章</a>中定义的格式来表示字段的顺序和尺寸。</p>
+<p>本文中的数据包示意图使用了在《<a href="../RFC9000_Chinese_Simplified">QUIC传输</a>》的<a href="../RFC9000_Chinese_Simplified/#1.3_Notational_Conventions">第1.3章</a>中定义的格式来表示字段的顺序和尺寸。</p>
 </div>
 </section>
 <section class="page" id="3_Connection_Setup_and_Management">
@@ -930,69 +930,69 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">帧</th>
-<th style="text-align:left">控制流</th>
-<th style="text-align:left">请求流</th>
-<th style="text-align:left">推送流</th>
-<th style="text-align:left">章节</th>
+<th style="text-align: left">帧</th>
+<th style="text-align: left">控制流</th>
+<th style="text-align: left">请求流</th>
+<th style="text-align: left">推送流</th>
+<th style="text-align: left">章节</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><strong>数据帧</strong></td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left"><a href="#7.2.1_DATA">第7.2.1章</a></td>
+<td style="text-align: left"><strong>数据帧</strong></td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left"><a href="#7.2.1_DATA">第7.2.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>标头帧</strong></td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left"><a href="#7.2.2_HEADERS">第7.2.2章</a></td>
+<td style="text-align: left"><strong>标头帧</strong></td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left"><a href="#7.2.2_HEADERS">第7.2.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>取消推送帧</strong></td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left"><a href="#7.2.3_CANCEL_PUSH">第7.2.3章</a></td>
+<td style="text-align: left"><strong>取消推送帧</strong></td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left"><a href="#7.2.3_CANCEL_PUSH">第7.2.3章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>设置帧</strong></td>
-<td style="text-align:left">是（1）</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left"><a href="#7.2.4_SETTINGS">第7.2.4章</a></td>
+<td style="text-align: left"><strong>设置帧</strong></td>
+<td style="text-align: left">是（1）</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left"><a href="#7.2.4_SETTINGS">第7.2.4章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>推送承诺帧</strong></td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left"><a href="#7.2.5_PUSH_PROMISE">第7.2.5章</a></td>
+<td style="text-align: left"><strong>推送承诺帧</strong></td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left"><a href="#7.2.5_PUSH_PROMISE">第7.2.5章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>关闭帧</strong></td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left"><a href="#7.2.6_GOAWAY">第7.2.6章</a></td>
+<td style="text-align: left"><strong>关闭帧</strong></td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left"><a href="#7.2.6_GOAWAY">第7.2.6章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>最大推送ID帧</strong></td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left">否</td>
-<td style="text-align:left"><a href="#7.2.7_MAX_PUSH_ID">第7.2.7章</a></td>
+<td style="text-align: left"><strong>最大推送ID帧</strong></td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left">否</td>
+<td style="text-align: left"><a href="#7.2.7_MAX_PUSH_ID">第7.2.7章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><em>被保留使用的帧</em></td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left">是</td>
-<td style="text-align:left"><a href="#7.2.8_Reserved_Frame_Types">第7.2.8章</a></td>
+<td style="text-align: left"><em>被保留使用的帧</em></td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left">是</td>
+<td style="text-align: left"><a href="#7.2.8_Reserved_Frame_Types">第7.2.8章</a></td>
 </tr>
 </tbody>
 </table>
@@ -1543,66 +1543,66 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">帧类型</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">规范</th>
+<th style="text-align: left">帧类型</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">规范</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><strong>数据帧</strong></td>
-<td style="text-align:left"><code>0x00</code></td>
-<td style="text-align:left"><a href="#7.2.1_DATA">第7.2.1章</a></td>
+<td style="text-align: left"><strong>数据帧</strong></td>
+<td style="text-align: left"><code>0x00</code></td>
+<td style="text-align: left"><a href="#7.2.1_DATA">第7.2.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>标头帧</strong></td>
-<td style="text-align:left"><code>0x01</code></td>
-<td style="text-align:left"><a href="#7.2.2_HEADERS">第7.2.2章</a></td>
+<td style="text-align: left"><strong>标头帧</strong></td>
+<td style="text-align: left"><code>0x01</code></td>
+<td style="text-align: left"><a href="#7.2.2_HEADERS">第7.2.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x02</code></td>
-<td style="text-align:left">本文档</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x02</code></td>
+<td style="text-align: left">本文档</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>取消推送帧</strong></td>
-<td style="text-align:left"><code>0x03</code></td>
-<td style="text-align:left"><a href="#7.2.3_CANCEL_PUSH">第7.2.3章</a></td>
+<td style="text-align: left"><strong>取消推送帧</strong></td>
+<td style="text-align: left"><code>0x03</code></td>
+<td style="text-align: left"><a href="#7.2.3_CANCEL_PUSH">第7.2.3章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>设置帧</strong></td>
-<td style="text-align:left"><code>0x04</code></td>
-<td style="text-align:left"><a href="#7.2.4_SETTINGS">第7.2.4章</a></td>
+<td style="text-align: left"><strong>设置帧</strong></td>
+<td style="text-align: left"><code>0x04</code></td>
+<td style="text-align: left"><a href="#7.2.4_SETTINGS">第7.2.4章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>推送承诺帧</strong></td>
-<td style="text-align:left"><code>0x05</code></td>
-<td style="text-align:left"><a href="#7.2.5_PUSH_PROMISE">第7.2.5章</a></td>
+<td style="text-align: left"><strong>推送承诺帧</strong></td>
+<td style="text-align: left"><code>0x05</code></td>
+<td style="text-align: left"><a href="#7.2.5_PUSH_PROMISE">第7.2.5章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x06</code></td>
-<td style="text-align:left">本文档</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x06</code></td>
+<td style="text-align: left">本文档</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>关闭帧</strong></td>
-<td style="text-align:left"><code>0x07</code></td>
-<td style="text-align:left"><a href="#7.2.6_GOAWAY">第7.2.6章</a></td>
+<td style="text-align: left"><strong>关闭帧</strong></td>
+<td style="text-align: left"><code>0x07</code></td>
+<td style="text-align: left"><a href="#7.2.6_GOAWAY">第7.2.6章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x08</code></td>
-<td style="text-align:left">本文档</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x08</code></td>
+<td style="text-align: left">本文档</td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x09</code></td>
-<td style="text-align:left">本文档</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x09</code></td>
+<td style="text-align: left">本文档</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>最大推送ID帧</strong></td>
-<td style="text-align:left"><code>0x0d</code></td>
-<td style="text-align:left"><a href="#7.2.7_MAX_PUSH_ID">第7.2.7章</a></td>
+<td style="text-align: left"><strong>最大推送ID帧</strong></td>
+<td style="text-align: left"><code>0x0d</code></td>
+<td style="text-align: left"><a href="#7.2.7_MAX_PUSH_ID">第7.2.7章</a></td>
 </tr>
 </tbody>
 </table>
@@ -1634,48 +1634,48 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">设置名称</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">规范</th>
-<th style="text-align:left">默认值</th>
+<th style="text-align: left">设置名称</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">规范</th>
+<th style="text-align: left">默认值</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x00</code></td>
-<td style="text-align:left">本文档</td>
-<td style="text-align:left">无</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x00</code></td>
+<td style="text-align: left">本文档</td>
+<td style="text-align: left">无</td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x02</code></td>
-<td style="text-align:left">本文档</td>
-<td style="text-align:left">无</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x02</code></td>
+<td style="text-align: left">本文档</td>
+<td style="text-align: left">无</td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x03</code></td>
-<td style="text-align:left">本文档</td>
-<td style="text-align:left">无</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x03</code></td>
+<td style="text-align: left">本文档</td>
+<td style="text-align: left">无</td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x04</code></td>
-<td style="text-align:left">本文档</td>
-<td style="text-align:left">无</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x04</code></td>
+<td style="text-align: left">本文档</td>
+<td style="text-align: left">无</td>
 </tr>
 <tr>
-<td style="text-align:left"><em>保留使用</em></td>
-<td style="text-align:left"><code>0x05</code></td>
-<td style="text-align:left">本文档</td>
-<td style="text-align:left">无</td>
+<td style="text-align: left"><em>保留使用</em></td>
+<td style="text-align: left"><code>0x05</code></td>
+<td style="text-align: left">本文档</td>
+<td style="text-align: left">无</td>
 </tr>
 <tr>
-<td style="text-align:left"><code>MAX_FIELD_SECTION_SIZE</code></td>
-<td style="text-align:left"><code>0x06</code></td>
-<td style="text-align:left"><a href="#7.2.4.1_Defined_SETTINGS_Parameters">第7.2.4.1章</a>]</td>
-<td style="text-align:left">无限大</td>
+<td style="text-align: left"><code>MAX_FIELD_SECTION_SIZE</code></td>
+<td style="text-align: left"><code>0x06</code></td>
+<td style="text-align: left"><a href="#7.2.4.1_Defined_SETTINGS_Parameters">第7.2.4.1章</a>]</td>
+<td style="text-align: left">无限大</td>
 </tr>
 </tbody>
 </table>
@@ -1708,114 +1708,114 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">描述</th>
-<th style="text-align:left">规范</th>
+<th style="text-align: left">名称</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">描述</th>
+<th style="text-align: left">规范</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><code>H3_NO_ERROR</code>（无错误）</td>
-<td style="text-align:left"><code>0x0100</code></td>
-<td style="text-align:left">没有错误发生</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_NO_ERROR</code>（无错误）</td>
+<td style="text-align: left"><code>0x0100</code></td>
+<td style="text-align: left">没有错误发生</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_GENERAL_PROTOCOL_ERROR</code>（通用协议错误）</td>
-<td style="text-align:left"><code>0x0101</code></td>
-<td style="text-align:left">通用的协议错误</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_GENERAL_PROTOCOL_ERROR</code>（通用协议错误）</td>
+<td style="text-align: left"><code>0x0101</code></td>
+<td style="text-align: left">通用的协议错误</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_INTERNAL_ERROR</code>（内部错误）</td>
-<td style="text-align:left"><code>0x0102</code></td>
-<td style="text-align:left">发生了内部错误</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_INTERNAL_ERROR</code>（内部错误）</td>
+<td style="text-align: left"><code>0x0102</code></td>
+<td style="text-align: left">发生了内部错误</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_STREAM_CREATION_ERROR</code>（流创建错误）</td>
-<td style="text-align:left"><code>0x0103</code></td>
-<td style="text-align:left">创建流时发生错误</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_STREAM_CREATION_ERROR</code>（流创建错误）</td>
+<td style="text-align: left"><code>0x0103</code></td>
+<td style="text-align: left">创建流时发生错误</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_CLOSED_CRITICAL_STREAM</code>（关键流遭关闭）</td>
-<td style="text-align:left"><code>0x0104</code></td>
-<td style="text-align:left">关键的流遭到了关闭</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_CLOSED_CRITICAL_STREAM</code>（关键流遭关闭）</td>
+<td style="text-align: left"><code>0x0104</code></td>
+<td style="text-align: left">关键的流遭到了关闭</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_FRAME_UNEXPECTED</code>（意料外的帧）</td>
-<td style="text-align:left"><code>0x0105</code></td>
-<td style="text-align:left">接收到了在当前状态下不允许出现的帧</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_FRAME_UNEXPECTED</code>（意料外的帧）</td>
+<td style="text-align: left"><code>0x0105</code></td>
+<td style="text-align: left">接收到了在当前状态下不允许出现的帧</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_FRAME_ERROR</code>（帧错误）</td>
-<td style="text-align:left"><code>0x0106</code></td>
-<td style="text-align:left">帧的结构或尺寸违反了约定</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_FRAME_ERROR</code>（帧错误）</td>
+<td style="text-align: left"><code>0x0106</code></td>
+<td style="text-align: left">帧的结构或尺寸违反了约定</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_EXCESSIVE_LOAD</code>（负载过量）</td>
-<td style="text-align:left"><code>0x0107</code></td>
-<td style="text-align:left">对端正在施加过量的负载</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_EXCESSIVE_LOAD</code>（负载过量）</td>
+<td style="text-align: left"><code>0x0107</code></td>
+<td style="text-align: left">对端正在施加过量的负载</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_ID_ERROR</code>（ID错误）</td>
-<td style="text-align:left"><code>0x0108</code></td>
-<td style="text-align:left">某标识符被错误地使用了</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_ID_ERROR</code>（ID错误）</td>
+<td style="text-align: left"><code>0x0108</code></td>
+<td style="text-align: left">某标识符被错误地使用了</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_SETTINGS_ERROR</code>（设置错误）</td>
-<td style="text-align:left"><code>0x0109</code></td>
-<td style="text-align:left"><strong>设置帧</strong>中存在不合法的值</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_SETTINGS_ERROR</code>（设置错误）</td>
+<td style="text-align: left"><code>0x0109</code></td>
+<td style="text-align: left"><strong>设置帧</strong>中存在不合法的值</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_MISSING_SETTINGS</code>（缺失设置）</td>
-<td style="text-align:left"><code>0x010a</code></td>
-<td style="text-align:left">没有接收到<strong>设置帧</strong></td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_MISSING_SETTINGS</code>（缺失设置）</td>
+<td style="text-align: left"><code>0x010a</code></td>
+<td style="text-align: left">没有接收到<strong>设置帧</strong></td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_REQUEST_REJECTED</code>（请求被拒绝）</td>
-<td style="text-align:left"><code>0x010b</code></td>
-<td style="text-align:left">没有处理请求</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_REQUEST_REJECTED</code>（请求被拒绝）</td>
+<td style="text-align: left"><code>0x010b</code></td>
+<td style="text-align: left">没有处理请求</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_REQUEST_CANCELLED</code>（请求被取消）</td>
-<td style="text-align:left"><code>0x010c</code></td>
-<td style="text-align:left">不再需要数据</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_REQUEST_CANCELLED</code>（请求被取消）</td>
+<td style="text-align: left"><code>0x010c</code></td>
+<td style="text-align: left">不再需要数据</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_REQUEST_INCOMPLETE</code>（不完整的请求）</td>
-<td style="text-align:left"><code>0x010d</code></td>
-<td style="text-align:left">流被过早地终止</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_REQUEST_INCOMPLETE</code>（不完整的请求）</td>
+<td style="text-align: left"><code>0x010d</code></td>
+<td style="text-align: left">流被过早地终止</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_MESSAGE_ERROR</code>（消息错误）</td>
-<td style="text-align:left"><code>0x010e</code></td>
-<td style="text-align:left">畸形的请求</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_MESSAGE_ERROR</code>（消息错误）</td>
+<td style="text-align: left"><code>0x010e</code></td>
+<td style="text-align: left">畸形的请求</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_CONNECT_ERROR</code>（CONNECT错误）</td>
-<td style="text-align:left"><code>0x010f</code></td>
-<td style="text-align:left">为CONNECT请求创建的TCP连接遭到重置或发生错误</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_CONNECT_ERROR</code>（CONNECT错误）</td>
+<td style="text-align: left"><code>0x010f</code></td>
+<td style="text-align: left">为CONNECT请求创建的TCP连接遭到重置或发生错误</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 <tr>
-<td style="text-align:left"><code>H3_VERSION_FALLBACK</code>（版本回退）</td>
-<td style="text-align:left"><code>0x0110</code></td>
-<td style="text-align:left">以HTTP/1.1重试</td>
-<td style="text-align:left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
+<td style="text-align: left"><code>H3_VERSION_FALLBACK</code>（版本回退）</td>
+<td style="text-align: left"><code>0x0110</code></td>
+<td style="text-align: left">以HTTP/1.1重试</td>
+<td style="text-align: left"><a href="#8.1_HTTP3_Error_Codes">第8.1章</a></td>
 </tr>
 </tbody>
 </table>
@@ -1847,24 +1847,24 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">流类型</th>
-<th style="text-align:left">值</th>
-<th style="text-align:left">规范</th>
-<th style="text-align:left">发送方</th>
+<th style="text-align: left">流类型</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">规范</th>
+<th style="text-align: left">发送方</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">控制流</td>
-<td style="text-align:left"><code>0x00</code></td>
-<td style="text-align:left"><a href="#6.2.1_Control_Streams">第6.2.1章</a></td>
-<td style="text-align:left">双方</td>
+<td style="text-align: left">控制流</td>
+<td style="text-align: left"><code>0x00</code></td>
+<td style="text-align: left"><a href="#6.2.1_Control_Streams">第6.2.1章</a></td>
+<td style="text-align: left">双方</td>
 </tr>
 <tr>
-<td style="text-align:left">推送流</td>
-<td style="text-align:left"><code>0x01</code></td>
-<td style="text-align:left"><a href="#4.6_Server_Push">第4.6章</a></td>
-<td style="text-align:left">服务器</td>
+<td style="text-align: left">推送流</td>
+<td style="text-align: left"><code>0x01</code></td>
+<td style="text-align: left"><a href="#4.6_Server_Push">第4.6章</a></td>
+<td style="text-align: left">服务器</td>
 </tr>
 </tbody>
 </table>

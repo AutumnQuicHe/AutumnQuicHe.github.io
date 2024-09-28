@@ -34,7 +34,7 @@
 <ul>
 <li><a href="#1.1_Document_Structure">1.1. 文档结构</a></li>
 <li><a href="#1.2_Terms_and_Definitions">1.2. 术语及定义</a></li>
-<li><a href="#1.3_Notational-Conventions">1.3. 标准规范</a></li>
+<li><a href="#1.3_Notational_Conventions">1.3. 标准规范</a></li>
 </ul>
 </li>
 <li>
@@ -628,9 +628,9 @@
 <p>本文使用术语“QUIC数据包”、“UDP报文”及“IP数据包”表示相应协议的传输单元。换言之，一个或多个QUIC包被封装到一个UDP报文里，最终封装到一个IP数据包中。</p>
 </div>
 </section>
-<section class="page" id="1.3_Notational-Conventions">
+<section class="page" id="1.3_Notational_Conventions">
 <h2>
-<a href="#1.3_Notational-Conventions">1.3. 标准规范</a>
+<a href="#1.3_Notational_Conventions">1.3. 标准规范</a>
 </h2>
 <div class="content">
 <p>本文数据包及帧的图解使用一种定制格式，目的是总结而不是定义协议元素。文中定义了完整的语义及详细的结构。</p>
@@ -672,26 +672,26 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">位</th>
-<th style="text-align:left">流类型</th>
+<th style="text-align: left">位</th>
+<th style="text-align: left">流类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">0x00</td>
-<td style="text-align:left">客户端创建的双向流</td>
+<td style="text-align: left">0x00</td>
+<td style="text-align: left">客户端创建的双向流</td>
 </tr>
 <tr>
-<td style="text-align:left">0x01</td>
-<td style="text-align:left">服务端创建的双向流</td>
+<td style="text-align: left">0x01</td>
+<td style="text-align: left">服务端创建的双向流</td>
 </tr>
 <tr>
-<td style="text-align:left">0x02</td>
-<td style="text-align:left">客户端创建的单向流</td>
+<td style="text-align: left">0x02</td>
+<td style="text-align: left">客户端创建的单向流</td>
 </tr>
 <tr>
-<td style="text-align:left">0x03</td>
-<td style="text-align:left">服务端创建的单向流</td>
+<td style="text-align: left">0x03</td>
+<td style="text-align: left">服务端创建的单向流</td>
 </tr>
 </tbody>
 </table>
@@ -829,61 +829,61 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">发送部分</th>
-<th style="text-align:left">接收部分</th>
-<th style="text-align:left">组合状态</th>
+<th style="text-align: left">发送部分</th>
+<th style="text-align: left">接收部分</th>
+<th style="text-align: left">组合状态</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">无流、就绪</td>
-<td style="text-align:left">无流、接收<sup>①</sup></td>
-<td style="text-align:left">空闲</td>
+<td style="text-align: left">无流、就绪</td>
+<td style="text-align: left">无流、接收<sup>①</sup></td>
+<td style="text-align: left">空闲</td>
 </tr>
 <tr>
-<td style="text-align:left">就绪、发送、发送完成</td>
-<td style="text-align:left">接收、数据量确认</td>
-<td style="text-align:left">打开</td>
+<td style="text-align: left">就绪、发送、发送完成</td>
+<td style="text-align: left">接收、数据量确认</td>
+<td style="text-align: left">打开</td>
 </tr>
 <tr>
-<td style="text-align:left">就绪、发送、发送完成</td>
-<td style="text-align:left">接收完成、读取完成</td>
-<td style="text-align:left">半关闭（对端）</td>
+<td style="text-align: left">就绪、发送、发送完成</td>
+<td style="text-align: left">接收完成、读取完成</td>
+<td style="text-align: left">半关闭（对端）</td>
 </tr>
 <tr>
-<td style="text-align:left">就绪、发送、发送完成</td>
-<td style="text-align:left">重置接收、重置读取</td>
-<td style="text-align:left">半关闭（对端）</td>
+<td style="text-align: left">就绪、发送、发送完成</td>
+<td style="text-align: left">重置接收、重置读取</td>
+<td style="text-align: left">半关闭（对端）</td>
 </tr>
 <tr>
-<td style="text-align:left">接收完成</td>
-<td style="text-align:left">接收、数据量确认</td>
-<td style="text-align:left">半关闭（本端）</td>
+<td style="text-align: left">接收完成</td>
+<td style="text-align: left">接收、数据量确认</td>
+<td style="text-align: left">半关闭（本端）</td>
 </tr>
 <tr>
-<td style="text-align:left">重置发送、重置接收</td>
-<td style="text-align:left">接收、数据量确认</td>
-<td style="text-align:left">半关闭（本端）</td>
+<td style="text-align: left">重置发送、重置接收</td>
+<td style="text-align: left">接收、数据量确认</td>
+<td style="text-align: left">半关闭（本端）</td>
 </tr>
 <tr>
-<td style="text-align:left">重置发送、重置接收</td>
-<td style="text-align:left">接收完成、读取完成</td>
-<td style="text-align:left">关闭</td>
+<td style="text-align: left">重置发送、重置接收</td>
+<td style="text-align: left">接收完成、读取完成</td>
+<td style="text-align: left">关闭</td>
 </tr>
 <tr>
-<td style="text-align:left">重置发送、重置接收</td>
-<td style="text-align:left">重置接收、重置读取</td>
-<td style="text-align:left">关闭</td>
+<td style="text-align: left">重置发送、重置接收</td>
+<td style="text-align: left">重置接收、重置读取</td>
+<td style="text-align: left">关闭</td>
 </tr>
 <tr>
-<td style="text-align:left">接收完成</td>
-<td style="text-align:left">接收完成、读取完成</td>
-<td style="text-align:left">关闭</td>
+<td style="text-align: left">接收完成</td>
+<td style="text-align: left">接收完成、读取完成</td>
+<td style="text-align: left">关闭</td>
 </tr>
 <tr>
-<td style="text-align:left">接收完成</td>
-<td style="text-align:left">重置接收、重置读取</td>
-<td style="text-align:left">关闭</td>
+<td style="text-align: left">接收完成</td>
+<td style="text-align: left">重置接收、重置读取</td>
+<td style="text-align: left">关闭</td>
 </tr>
 </tbody>
 </table>
@@ -1970,153 +1970,153 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">类型值</th>
-<th style="text-align:left">帧类型名称</th>
-<th style="text-align:left">定义</th>
-<th style="text-align:left">数据包类型</th>
-<th style="text-align:left">特殊规则</th>
+<th style="text-align: left">类型值</th>
+<th style="text-align: left">帧类型名称</th>
+<th style="text-align: left">定义</th>
+<th style="text-align: left">数据包类型</th>
+<th style="text-align: left">特殊规则</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">0x00</td>
-<td style="text-align:left">填充帧</td>
-<td style="text-align:left"><a href="#19.1_PADDING_Frames">第19.1章</a></td>
-<td style="text-align:left">IH01</td>
-<td style="text-align:left">NP</td>
+<td style="text-align: left">0x00</td>
+<td style="text-align: left">填充帧</td>
+<td style="text-align: left"><a href="#19.1_PADDING_Frames">第19.1章</a></td>
+<td style="text-align: left">IH01</td>
+<td style="text-align: left">NP</td>
 </tr>
 <tr>
-<td style="text-align:left">0x01</td>
-<td style="text-align:left">Ping帧</td>
-<td style="text-align:left"><a href="#19.2_PING_Frames">第19.2章</a></td>
-<td style="text-align:left">IH01</td>
-<td></td>
+<td style="text-align: left">0x01</td>
+<td style="text-align: left">Ping帧</td>
+<td style="text-align: left"><a href="#19.2_PING_Frames">第19.2章</a></td>
+<td style="text-align: left">IH01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x02-0x03</td>
-<td style="text-align:left">ACK帧</td>
-<td style="text-align:left"><a href="#19.3_ACK_Frames">第19.3章</a></td>
-<td style="text-align:left">IH_1</td>
-<td style="text-align:left">NC</td>
+<td style="text-align: left">0x02-0x03</td>
+<td style="text-align: left">ACK帧</td>
+<td style="text-align: left"><a href="#19.3_ACK_Frames">第19.3章</a></td>
+<td style="text-align: left">IH_1</td>
+<td style="text-align: left">NC</td>
 </tr>
 <tr>
-<td style="text-align:left">0x04</td>
-<td style="text-align:left">流重置帧</td>
-<td style="text-align:left"><a href="#19.4_RESET_STREAM_Frames">第19.4章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x04</td>
+<td style="text-align: left">流重置帧</td>
+<td style="text-align: left"><a href="#19.4_RESET_STREAM_Frames">第19.4章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x05</td>
-<td style="text-align:left">停止发送帧</td>
-<td style="text-align:left"><a href="#19.5_STOP_SENDING_Frames">第19.5章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x05</td>
+<td style="text-align: left">停止发送帧</td>
+<td style="text-align: left"><a href="#19.5_STOP_SENDING_Frames">第19.5章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x06</td>
-<td style="text-align:left">加密帧</td>
-<td style="text-align:left"><a href="#19.6_CRYPTO_Frames">第19.6章</a></td>
-<td style="text-align:left">IH_1</td>
-<td></td>
+<td style="text-align: left">0x06</td>
+<td style="text-align: left">加密帧</td>
+<td style="text-align: left"><a href="#19.6_CRYPTO_Frames">第19.6章</a></td>
+<td style="text-align: left">IH_1</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x07</td>
-<td style="text-align:left">新令牌帧</td>
-<td style="text-align:left"><a href="#19.7_NEW_TOKEN_Frames">第19.7章</a></td>
-<td style="text-align:left">___1</td>
-<td></td>
+<td style="text-align: left">0x07</td>
+<td style="text-align: left">新令牌帧</td>
+<td style="text-align: left"><a href="#19.7_NEW_TOKEN_Frames">第19.7章</a></td>
+<td style="text-align: left">___1</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x08-0x0f</td>
-<td style="text-align:left">流帧</td>
-<td style="text-align:left"><a href="#19.8_STREAM_Frames">第19.8章</a></td>
-<td style="text-align:left">__01</td>
-<td style="text-align:left">F</td>
+<td style="text-align: left">0x08-0x0f</td>
+<td style="text-align: left">流帧</td>
+<td style="text-align: left"><a href="#19.8_STREAM_Frames">第19.8章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left">F</td>
 </tr>
 <tr>
-<td style="text-align:left">0x10</td>
-<td style="text-align:left">最大数据量帧</td>
-<td style="text-align:left"><a href="#19.9_MAX_DATA_Frames">第19.9章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x10</td>
+<td style="text-align: left">最大数据量帧</td>
+<td style="text-align: left"><a href="#19.9_MAX_DATA_Frames">第19.9章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x11</td>
-<td style="text-align:left">最大流数据量帧</td>
-<td style="text-align:left"><a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x11</td>
+<td style="text-align: left">最大流数据量帧</td>
+<td style="text-align: left"><a href="#19.10_MAX_STREAM_DATA_Frames">第19.10章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x12-0x13</td>
-<td style="text-align:left">最大流帧</td>
-<td style="text-align:left"><a href="#19.11_MAX_STREAMS_Frames">第19.11章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x12-0x13</td>
+<td style="text-align: left">最大流帧</td>
+<td style="text-align: left"><a href="#19.11_MAX_STREAMS_Frames">第19.11章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x14</td>
-<td style="text-align:left">数据阻塞帧</td>
-<td style="text-align:left"><a href="#19.12_DATA_BLOCKED_Frames">第19.12章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x14</td>
+<td style="text-align: left">数据阻塞帧</td>
+<td style="text-align: left"><a href="#19.12_DATA_BLOCKED_Frames">第19.12章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x15</td>
-<td style="text-align:left">流数据阻塞帧</td>
-<td style="text-align:left"><a href="#19.13_STREAM_DATA_BLOCKED_Frames">第19.13章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x15</td>
+<td style="text-align: left">流数据阻塞帧</td>
+<td style="text-align: left"><a href="#19.13_STREAM_DATA_BLOCKED_Frames">第19.13章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x16-0x17</td>
-<td style="text-align:left">流阻塞帧</td>
-<td style="text-align:left"><a href="#19.14_STREAMS_BLOCKED_Frames">第19.14章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x16-0x17</td>
+<td style="text-align: left">流阻塞帧</td>
+<td style="text-align: left"><a href="#19.14_STREAMS_BLOCKED_Frames">第19.14章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x18</td>
-<td style="text-align:left">新连接ID帧</td>
-<td style="text-align:left"><a href="#19.15_NEW_CONNECTION_ID_Frames">第19.15章</a></td>
-<td style="text-align:left">__01</td>
-<td style="text-align:left">P</td>
+<td style="text-align: left">0x18</td>
+<td style="text-align: left">新连接ID帧</td>
+<td style="text-align: left"><a href="#19.15_NEW_CONNECTION_ID_Frames">第19.15章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left">P</td>
 </tr>
 <tr>
-<td style="text-align:left">0x19</td>
-<td style="text-align:left">撤销连接ID帧</td>
-<td style="text-align:left"><a href="#19.16_RETIRE_CONNECTION_ID_Frames">第19.16章</a></td>
-<td style="text-align:left">__01</td>
-<td></td>
+<td style="text-align: left">0x19</td>
+<td style="text-align: left">撤销连接ID帧</td>
+<td style="text-align: left"><a href="#19.16_RETIRE_CONNECTION_ID_Frames">第19.16章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align:left">0x1a</td>
-<td style="text-align:left">通道挑战帧</td>
-<td style="text-align:left"><a href="#19.17_PATH_CHALLENGE_Frames">第19.17章</a></td>
-<td style="text-align:left">__01</td>
-<td style="text-align:left">P</td>
+<td style="text-align: left">0x1a</td>
+<td style="text-align: left">通道挑战帧</td>
+<td style="text-align: left"><a href="#19.17_PATH_CHALLENGE_Frames">第19.17章</a></td>
+<td style="text-align: left">__01</td>
+<td style="text-align: left">P</td>
 </tr>
 <tr>
-<td style="text-align:left">0x1b</td>
-<td style="text-align:left">回复通道帧</td>
-<td style="text-align:left"><a href="#19.18_PATH_RESPONSE_Frames">第19.18章</a></td>
-<td style="text-align:left">___1</td>
-<td style="text-align:left">P</td>
+<td style="text-align: left">0x1b</td>
+<td style="text-align: left">回复通道帧</td>
+<td style="text-align: left"><a href="#19.18_PATH_RESPONSE_Frames">第19.18章</a></td>
+<td style="text-align: left">___1</td>
+<td style="text-align: left">P</td>
 </tr>
 <tr>
-<td style="text-align:left">0x1c-0x1d</td>
-<td style="text-align:left">连接关闭帧</td>
-<td style="text-align:left"><a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a></td>
-<td style="text-align:left">ih01</td>
-<td style="text-align:left">N</td>
+<td style="text-align: left">0x1c-0x1d</td>
+<td style="text-align: left">连接关闭帧</td>
+<td style="text-align: left"><a href="#19.19_CONNECTION_CLOSE_Frames">第19.19章</a></td>
+<td style="text-align: left">ih01</td>
+<td style="text-align: left">N</td>
 </tr>
 <tr>
-<td style="text-align:left">0x1e</td>
-<td style="text-align:left">握手完成帧</td>
-<td style="text-align:left"><a href="#19.20_HANDSHAKE_DONE_Frames">第19.20章</a></td>
-<td style="text-align:left">___1</td>
-<td></td>
+<td style="text-align: left">0x1e</td>
+<td style="text-align: left">握手完成帧</td>
+<td style="text-align: left"><a href="#19.20_HANDSHAKE_DONE_Frames">第19.20章</a></td>
+<td style="text-align: left">___1</td>
+<td style="text-align: left"></td>
 </tr>
 </tbody>
 </table>
@@ -2579,36 +2579,36 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">最高的2个有效位</th>
-<th style="text-align:left">字节长度</th>
-<th style="text-align:left">可用位数</th>
-<th style="text-align:left">可表示范围</th>
+<th style="text-align: left">最高的2个有效位</th>
+<th style="text-align: left">字节长度</th>
+<th style="text-align: left">可用位数</th>
+<th style="text-align: left">可表示范围</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">00</td>
-<td style="text-align:left">1</td>
-<td style="text-align:left">6</td>
-<td style="text-align:left">0-63</td>
+<td style="text-align: left">00</td>
+<td style="text-align: left">1</td>
+<td style="text-align: left">6</td>
+<td style="text-align: left">0-63</td>
 </tr>
 <tr>
-<td style="text-align:left">01</td>
-<td style="text-align:left">2</td>
-<td style="text-align:left">14</td>
-<td style="text-align:left">0-16383</td>
+<td style="text-align: left">01</td>
+<td style="text-align: left">2</td>
+<td style="text-align: left">14</td>
+<td style="text-align: left">0-16383</td>
 </tr>
 <tr>
-<td style="text-align:left">10</td>
-<td style="text-align:left">4</td>
-<td style="text-align:left">30</td>
-<td style="text-align:left">0-1073741823</td>
+<td style="text-align: left">10</td>
+<td style="text-align: left">4</td>
+<td style="text-align: left">30</td>
+<td style="text-align: left">0-1073741823</td>
 </tr>
 <tr>
-<td style="text-align:left">11</td>
-<td style="text-align:left">8</td>
-<td style="text-align:left">62</td>
-<td style="text-align:left">0-4611686018427387903</td>
+<td style="text-align: left">11</td>
+<td style="text-align: left">8</td>
+<td style="text-align: left">62</td>
+<td style="text-align: left">0-4611686018427387903</td>
 </tr>
 </tbody>
 </table>
@@ -2709,31 +2709,31 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">类型</th>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">章节</th>
+<th style="text-align: left">类型</th>
+<th style="text-align: left">名称</th>
+<th style="text-align: left">章节</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">0x00</td>
-<td style="text-align:left">初始</td>
-<td style="text-align:left"><a href="#17.2.2_Initial_Packet">第17.2.2章</a></td>
+<td style="text-align: left">0x00</td>
+<td style="text-align: left">初始</td>
+<td style="text-align: left"><a href="#17.2.2_Initial_Packet">第17.2.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x01</td>
-<td style="text-align:left">0-RTT</td>
-<td style="text-align:left"><a href="#17.2.3_0-RTT">第17.2.3章</a></td>
+<td style="text-align: left">0x01</td>
+<td style="text-align: left">0-RTT</td>
+<td style="text-align: left"><a href="#17.2.3_0-RTT">第17.2.3章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x02</td>
-<td style="text-align:left">握手</td>
-<td style="text-align:left"><a href="#17.2.4_Handshake_Packet">第17.2.4章</a></td>
+<td style="text-align: left">0x02</td>
+<td style="text-align: left">握手</td>
+<td style="text-align: left"><a href="#17.2.4_Handshake_Packet">第17.2.4章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x03</td>
-<td style="text-align:left">重试</td>
-<td style="text-align:left"><a href="#17.2.5_Retry_Packet">第17.2.5章</a></td>
+<td style="text-align: left">0x03</td>
+<td style="text-align: left">重试</td>
+<td style="text-align: left"><a href="#17.2.5_Retry_Packet">第17.2.5章</a></td>
 </tr>
 </tbody>
 </table>
@@ -4581,96 +4581,96 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">值</th>
-<th style="text-align:left">参数名称</th>
-<th style="text-align:left">规范</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">参数名称</th>
+<th style="text-align: left">规范</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">0x00</td>
-<td style="text-align:left">original_destination_connection_id</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x00</td>
+<td style="text-align: left">original_destination_connection_id</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x01</td>
-<td style="text-align:left">max_idle_timeout</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x01</td>
+<td style="text-align: left">max_idle_timeout</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x02</td>
-<td style="text-align:left">stateless_reset_token</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x02</td>
+<td style="text-align: left">stateless_reset_token</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x03</td>
-<td style="text-align:left">max_udp_payload_size</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x03</td>
+<td style="text-align: left">max_udp_payload_size</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x04</td>
-<td style="text-align:left">initial_max_data</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x04</td>
+<td style="text-align: left">initial_max_data</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x05</td>
-<td style="text-align:left">initial_max_stream_data_bidi_local</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x05</td>
+<td style="text-align: left">initial_max_stream_data_bidi_local</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x06</td>
-<td style="text-align:left">initial_max_stream_data_bidi_remote</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x06</td>
+<td style="text-align: left">initial_max_stream_data_bidi_remote</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x07</td>
-<td style="text-align:left">initial_max_stream_data_uni</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x07</td>
+<td style="text-align: left">initial_max_stream_data_uni</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x08</td>
-<td style="text-align:left">initial_max_streams_bidi</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x08</td>
+<td style="text-align: left">initial_max_streams_bidi</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x09</td>
-<td style="text-align:left">initial_max_streams_uni</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x09</td>
+<td style="text-align: left">initial_max_streams_uni</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0a</td>
-<td style="text-align:left">ack_delay_exponent</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0a</td>
+<td style="text-align: left">ack_delay_exponent</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0b</td>
-<td style="text-align:left">max_ack_delay</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0b</td>
+<td style="text-align: left">max_ack_delay</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0c</td>
-<td style="text-align:left">disable_active_migration</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0c</td>
+<td style="text-align: left">disable_active_migration</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0d</td>
-<td style="text-align:left">preferred_address</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0d</td>
+<td style="text-align: left">preferred_address</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0e</td>
-<td style="text-align:left">active_connection_id_limit</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0e</td>
+<td style="text-align: left">active_connection_id_limit</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0f</td>
-<td style="text-align:left">initial_source_connection_id</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x0f</td>
+<td style="text-align: left">initial_source_connection_id</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x10</td>
-<td style="text-align:left">retry_source_connection_id</td>
-<td style="text-align:left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
+<td style="text-align: left">0x10</td>
+<td style="text-align: left">retry_source_connection_id</td>
+<td style="text-align: left"><a href="#18.2_Transport_Parameter_Definitions">第18.2章</a></td>
 </tr>
 </tbody>
 </table>
@@ -4720,120 +4720,120 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:left">值</th>
-<th style="text-align:left">代码</th>
-<th style="text-align:left">描述</th>
-<th style="text-align:left">规范</th>
+<th style="text-align: left">值</th>
+<th style="text-align: left">代码</th>
+<th style="text-align: left">描述</th>
+<th style="text-align: left">规范</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">0x00</td>
-<td style="text-align:left">NO_ERROR</td>
-<td style="text-align:left">无错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x00</td>
+<td style="text-align: left">NO_ERROR</td>
+<td style="text-align: left">无错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x01</td>
-<td style="text-align:left">INTERNAL_ERROR</td>
-<td style="text-align:left">实现中的错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x01</td>
+<td style="text-align: left">INTERNAL_ERROR</td>
+<td style="text-align: left">实现中的错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x02</td>
-<td style="text-align:left">CONNECTION_REFUSED</td>
-<td style="text-align:left">服务器拒绝了连接</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x02</td>
+<td style="text-align: left">CONNECTION_REFUSED</td>
+<td style="text-align: left">服务器拒绝了连接</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x03</td>
-<td style="text-align:left">FLOW_CONTROL_ERROR</td>
-<td style="text-align:left">流量控制错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x03</td>
+<td style="text-align: left">FLOW_CONTROL_ERROR</td>
+<td style="text-align: left">流量控制错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x04</td>
-<td style="text-align:left">STREAM_LIMIT_ERROR</td>
-<td style="text-align:left">打开了过多流</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x04</td>
+<td style="text-align: left">STREAM_LIMIT_ERROR</td>
+<td style="text-align: left">打开了过多流</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x05</td>
-<td style="text-align:left">STREAM_STATE_ERROR</td>
-<td style="text-align:left">接收到了在当前流状态下非法的帧</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x05</td>
+<td style="text-align: left">STREAM_STATE_ERROR</td>
+<td style="text-align: left">接收到了在当前流状态下非法的帧</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x06</td>
-<td style="text-align:left">FINAL_SIZE_ERROR</td>
-<td style="text-align:left">最终尺寸发生了变化</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x06</td>
+<td style="text-align: left">FINAL_SIZE_ERROR</td>
+<td style="text-align: left">最终尺寸发生了变化</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x07</td>
-<td style="text-align:left">FRAME_ENCODING_ERROR</td>
-<td style="text-align:left">帧编码错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x07</td>
+<td style="text-align: left">FRAME_ENCODING_ERROR</td>
+<td style="text-align: left">帧编码错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x08</td>
-<td style="text-align:left">TRANSPORT_PARAMETER_ERROR</td>
-<td style="text-align:left">传输参数中出现错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x08</td>
+<td style="text-align: left">TRANSPORT_PARAMETER_ERROR</td>
+<td style="text-align: left">传输参数中出现错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x09</td>
-<td style="text-align:left">CONNECTION_ID_LIMIT_ERROR</td>
-<td style="text-align:left">接收到了过多的连接ID</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x09</td>
+<td style="text-align: left">CONNECTION_ID_LIMIT_ERROR</td>
+<td style="text-align: left">接收到了过多的连接ID</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0a</td>
-<td style="text-align:left">PROTOCOL_VIOLATION</td>
-<td style="text-align:left">通用的协议违背错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0a</td>
+<td style="text-align: left">PROTOCOL_VIOLATION</td>
+<td style="text-align: left">通用的协议违背错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0b</td>
-<td style="text-align:left">INVALID_TOKEN</td>
-<td style="text-align:left">接收到了非法的令牌</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0b</td>
+<td style="text-align: left">INVALID_TOKEN</td>
+<td style="text-align: left">接收到了非法的令牌</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0c</td>
-<td style="text-align:left">APPLICATION_ERROR</td>
-<td style="text-align:left">应用错误</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0c</td>
+<td style="text-align: left">APPLICATION_ERROR</td>
+<td style="text-align: left">应用错误</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0d</td>
-<td style="text-align:left">CRYPTO_BUFFER_EXCEEDED</td>
-<td style="text-align:left">加密数据缓存溢出</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0d</td>
+<td style="text-align: left">CRYPTO_BUFFER_EXCEEDED</td>
+<td style="text-align: left">加密数据缓存溢出</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0e</td>
-<td style="text-align:left">KEY_UPDATE_ERROR</td>
-<td style="text-align:left">对数据包保护密钥的非法更新</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0e</td>
+<td style="text-align: left">KEY_UPDATE_ERROR</td>
+<td style="text-align: left">对数据包保护密钥的非法更新</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0f</td>
-<td style="text-align:left">AEAD_LIMIT_REACHED</td>
-<td style="text-align:left">对数据包保护密钥的超量使用</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0f</td>
+<td style="text-align: left">AEAD_LIMIT_REACHED</td>
+<td style="text-align: left">对数据包保护密钥的超量使用</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x10</td>
-<td style="text-align:left">NO_VIABLE_PATH</td>
-<td style="text-align:left">无可用网络路径</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x10</td>
+<td style="text-align: left">NO_VIABLE_PATH</td>
+<td style="text-align: left">无可用网络路径</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 <tr>
-<td style="text-align:left">0x0100-<br>0x01ff</br></td>
-<td style="text-align:left">CRYPTO_ERROR</td>
-<td style="text-align:left">TLS警告码</td>
-<td style="text-align:left"><a href="#20_Error_Codes">第20章</a></td>
+<td style="text-align: left">0x0100-<br>0x01ff</br></td>
+<td style="text-align: left">CRYPTO_ERROR</td>
+<td style="text-align: left">TLS警告码</td>
+<td style="text-align: left"><a href="#20_Error_Codes">第20章</a></td>
 </tr>
 </tbody>
 </table>
