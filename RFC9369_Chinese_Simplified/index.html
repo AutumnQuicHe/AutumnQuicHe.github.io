@@ -40,10 +40,48 @@
 <ul>
 <li><a href="#3.1_Version_Field">3.1. 与QUIC版本1的区别</a></li>
 <li><a href="#3.2_Long_Header_Packet_Types">3.2. 长包头包类型</a></li>
-<li><a href="#3.3.1_Initial_Salt">3.3.1 长包头包类型</a></li>
+<li>
+<a href="#3.3_Cryptography_Changes">3.3. 密码学相关变化</a>
+<ul>
+<li><a href="#3.3.1_Initial_Salt">3.3.1 初始盐值</a></li>
 <li><a href="#3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">3.3.2 基于HMAC的密钥派生函数（HKDF）标签</a></li>
 <li><a href="#3.3.3_Retry_Integrity_Tag">3.3.3 重试完整性标签</a></li>
 </ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#4_Version_Negotiation_Considerations">4. 约定</a>
+<ul>
+<li><a href="#4.1_Compatible_Negotiation_Requirements">4.1. 兼容协商要求</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. 约定</a>
+</li>
+<li>
+<a href="#6_Ossification_Considerations">6. 约定</a>
+</li>
+<li>
+<a href="#7_Applicability">7. 约定</a>
+</li>
+<li>
+<a href="#8_Security_Considerations">8. 约定</a>
+</li>
+<li>
+<a href="#9_IANA_Considerations">9. 约定</a>
+</li>
+<li>
+<a href="#10_">10. xx</a>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">作者地址</a>
 </li>
 </ul>
 </nav>
@@ -193,16 +231,23 @@
 </ul>
 </div>
 </section>
+<section class="page" id="3.3_Cryptography_Changes">
+<h2>
+<a href="#3.3_Cryptography_Changes">3.3. 密码学相关变化</a>
+</h2>
+<div class="content">
+</div>
+</section>
 <section class="page" id="3.3.1_Initial_Salt">
 <h3>
-<a href="#3.3.1_Initial_Salt">3.3.1 长包头包类型</a>
+<a href="#3.3.1_Initial_Salt">3.3.1 初始盐值</a>
 </h3>
 <div class="content">
-<p>The salt used to derive Initial keys in Section 5.2 of [QUIC-TLS] changes to:</p>
+<p>《<a href="/RFC9001_Chinese_Simplified/">QUIC TLS</a>》<a href="/RFC9001_Chinese_Simplified/#5.2_Initial_Secrets">第5.2章</a>用于推导初始密钥的盐值改为：</p>
 <blockquote>
 <p>initial_salt = 0x0dede3def700a6db819381be6e269dcbf9bd2ed9</p>
 </blockquote>
-<p>This is the first 20 bytes of the sha256sum of “QUICv2 salt”.</p>
+<p>即“QUICv2 salt”的<code>sha256sum</code>值的前20字节。</p>
 </div>
 </section>
 <section class="page" id="3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">
@@ -210,7 +255,7 @@
 <a href="#3.3.2_HMAC_based_Key_Derivation_Function_HKDF_Labels">3.3.2 基于HMAC的密钥派生函数（HKDF）标签</a>
 </h3>
 <div class="content">
-<p>The labels used in [QUIC-TLS] to derive packet protection keys (Section 5.1), header protection keys (Section 5.4), Retry Integrity Tag keys (Section 5.8), and key updates (Section 6.1) change from “quic key” to “quicv2 key”, from “quic iv” to “quicv2 iv”, from “quic hp” to “quicv2 hp”, and from “quic ku” to “quicv2 ku” to meet the guidance for new versions in Section 9.6 of that document.</p>
+<p>在《<a href="/RFC9001_Chinese_Simplified/">QUIC TLS</a>》中用于推导包保护密钥（详见<a href="">第5.1章</a>）、头部保护密钥（详见<a href="">第5.4章</a>）、重试完整性标签密钥（详见<a href="">第5.8章</a>）以及密钥升级（详见<a href="">第6.1章</a>）的标签，分别从“quic key”改为“quicv2 key”、“quic iv”改为“quicv2 iv”、“quic hp”改为“quicv2 hp”以及“quic ku”改为“quicv2 ku”，从而满足该文档<a href="/RFC9001_Chinese_Simplified/#9.6_Key_Diversity">第9.6章</a>对新版本的要求。</p>
 </div>
 </section>
 <section class="page" id="3.3.3_Retry_Integrity_Tag">
@@ -218,12 +263,124 @@
 <a href="#3.3.3_Retry_Integrity_Tag">3.3.3 重试完整性标签</a>
 </h3>
 <div class="content">
-<p>The key and nonce used for the Retry Integrity Tag (Section 5.8 of [QUIC-TLS]) change to:</p>
-<pre tabindex="0"><code>secret =
-  0xc4dd2484d681aefa4ff4d69c2c20299984a765a5d3c31982f38fc74162155e9f
+<p>用于重试完整性标签（Retry Integrity Tag）的密钥和随机数（详见《<a href="/RFC9001_Chinese_Simplified/">QUIC TLS</a>》<a href="/RFC9001_Chinese_Simplified/#5.8_Retry_Packet_Integrity">第5.8章</a>）改为：</p>
+<pre tabindex="0"><code>secret = 0xc4dd2484d681aefa4ff4d69c2c20299984a765a5d3c31982f38fc74162155e9f
 key = 0x8fb4b01b56ac48e260fbcbcead7ccc92
 nonce = 0xd86969bc2d7c6d9990efb04a
-</code></pre><p>The secret is the sha256sum of “QUICv2 retry secret”. The key and nonce are derived from this secret with the labels “quicv2 key” and “quicv2 iv”, respectively.</p>
+</code></pre><p>其中<code>secret</code>（密码）就是“QUICv2 retry secret”的<code>sha256sum</code>值。密钥和随机数分别通过标签“quicv2 key”及“quicv2 iv”从这个密码派生而来。</p>
+</div>
+</section>
+<section class="page" id="4_Version_Negotiation_Considerations">
+<h1>
+<a href="#4_Version_Negotiation_Considerations">4. 约定</a>
+</h1>
+<div class="content">
+<p>QUIC版本2的目的并不是为了取代QUIC版本1。支持QUIC版本2的终端可能继续支持版本1以最大限度兼容其他终端。特别是，HTTP客户端通常使用Alt-Svc<sup>《<a href="">RFC7838</a>》</sup>检测QUIC支持情况。由于该机制目前还无法区别不同的QUIC版本，因此HTTP服务端<em><strong>应该</strong></em>支持多个QUIC版本，从而降低不兼容的概率以及由QUIC版本协商或TCP回退带来的开销。例如，一个在Alt-Svc头部中表示支持“h3”的源站应该支持QUIC版本1，因为HTTP/3最初就是基于QUIC版本1的；因此，一些客户端可能只支持该版本的QUIC。</p>
+<p>任何支持QUIC版本2的QUIC终端<em><strong>必须</strong></em>发送、执行并验证《<a href="">QUIC VN</a>》中定义的传输参数<code>version_information</code>，以防范版本降级攻击。</p>
+<p>注意，版本2满足《<a href="">QUIC VN</a>》中有关兼容QUIC版本1的定义，且QUIC版本1同样兼容版本2。因此，服务端可以通过使用兼容版本协商在这两个版本之间切换连接。同时支持这两个版本的终端<em><strong>应该</strong></em>支持兼容版本协商，从而节省一个往返。</p>
+</div>
+</section>
+<section class="page" id="4.1_Compatible_Negotiation_Requirements">
+<h2>
+<a href="#4.1_Compatible_Negotiation_Requirements">4.1. 兼容协商要求</a>
+</h2>
+<div class="content">
+<p>Compatible version negotiation between versions 1 and 2 follows the same requirements in either direction. This section uses the terms “original version” and “negotiated version” from [QUIC-VN].</p>
+<p>版本1和版本2之间的兼容版本协商在两个方向都需要满足相同的要求。本章使用来自《<a href="">QUIC VN</a>》的“原始版本”和“协商版本”。</p>
+<p>如果服务端发送重试包，其<em><strong>必须</strong></em>使用初始版本。客户端忽略使用其他版本的重试包。客户端<em><strong>必须不</strong></em>能使用不同的</p>
+<p>If the server sends a Retry packet, it MUST use the original version. The client ignores Retry packets using other versions. The client MUST NOT use a different version in the subsequent Initial packet that contains the Retry token. The server MAY encode the QUIC version in its Retry token to validate that the client did not switch versions, and drop the packet if it switched, to enforce client compliance.</p>
+<p>QUIC version 2 uses the same transport parameters to authenticate the Retry as QUIC version 1. After switching to a negotiated version after a Retry, the server MUST include the relevant transport parameters to validate that the server sent the Retry and the connection IDs used in the exchange, as described in Section 7.3 of [QUIC].</p>
+<p>The server cannot send CRYPTO frames until it has processed the client’s transport parameters. The server MUST send all CRYPTO frames using the negotiated version.</p>
+<p>The client learns the negotiated version by observing the first long header Version field that differs from the original version. If the client receives a CRYPTO frame from the server in the original version, it indicates that the negotiated version is equal to the original version.</p>
+<p>Before the server is able to process transport parameters from the client, it might need to respond to Initial packets from the client. For these packets, the server uses the original version.</p>
+<p>Once the client has learned the negotiated version, it SHOULD send subsequent Initial packets using that version. The server MUST NOT discard its original version Initial receive keys until it successfully processes a Handshake packet with the negotiated version.</p>
+<p>Both endpoints MUST send Handshake and 1-RTT packets using the negotiated version. An endpoint MUST drop packets using any other version. Endpoints have no need to generate the keying material that would allow them to decrypt or authenticate such packets.</p>
+<p>The client MUST NOT send 0-RTT packets using the negotiated version, even after processing a packet of that version from the server. Servers can accept 0-RTT and then process 0-RTT packets from the original version.</p>
+</div>
+</section>
+<section class="page" id="5_TLS_Resumption_and_NEW_TOKEN_Tokens">
+<h1>
+<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. 约定</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="6_Ossification_Considerations">
+<h1>
+<a href="#6_Ossification_Considerations">6. 约定</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="7_Applicability">
+<h1>
+<a href="#7_Applicability">7. 约定</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="8_Security_Considerations">
+<h1>
+<a href="#8_Security_Considerations">8. 约定</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="9_IANA_Considerations">
+<h1>
+<a href="#9_IANA_Considerations">9. 约定</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="10_">
+<h1>
+<a href="#10_">10. xx</a>
+</h1>
+<div class="content">
+<p>x</p>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>感谢Nick Banks、Mike Bishop、Martin Duke、Ryan Hamilton、Roberto Peon、Anthony Rossi及Martin Thomson的投入和贡献！</p>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>感谢Nick Banks、Mike Bishop、Martin Duke、Ryan Hamilton、Roberto Peon、Anthony Rossi及Martin Thomson的投入和贡献！</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">作者地址</a>
+</h1>
+<div class="content">
+<h5 id="david-schinazi">David Schinazi</h5>
+<p>美国加州山景城94043圆形剧场公园路1600号谷歌公司</p>
+<p>Email: <a href="mailto:dschinazi.ietf@gmail.com">dschinazi.ietf@gmail.com</a></p>
+<h5 id="eric-rescorla">Eric Rescorla</h5>
+<p>Mozilla</p>
+<p>Email: <a href="mailto:ekr@rtfm.com">ekr@rtfm.com</a></p>
+<h2 id="译">译</h2>
+<ul>
+<li><a href="https://github.com/fangqiuhang">方秋航</a>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </div>
