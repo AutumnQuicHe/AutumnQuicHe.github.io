@@ -133,37 +133,37 @@ section.page table, section.page th, section.page td {
   color: snow;
   text-shadow: 1px 1px 1px lightgray;
 }
+.block.tip:before {
+  content: "Tip";
+  color: snow;
+}
 .block.tip {
   background: #454849;
   border-top-color: #284750;
 }
-.block.tip:before {
-  content: "Tip";
+.block.note:before {
+  content: "Note";
   color: snow;
 }
 .block.note {
   background: #454b5e;
   border-top-color: #070d1d;
 }
-.block.note:before {
-  content: "Note";
+.block.info:before {
+  content: "Info";
   color: snow;
 }
 .block.info {
   background: #2b2520;
   border-top-color: #271200;
 }
-.block.info:before {
-  content: "Info";
+.block.warn:before {
+  content: "Warn";
   color: snow;
 }
 .block.warn {
   background: #533f3f;
   border-top-color: #270000;
-}
-.block.warn:before {
-  content: "Warn";
-  color: snow;
 }
 
 .sidebar.sidebar-rfc9250 {

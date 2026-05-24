@@ -51,31 +51,42 @@
 </ul>
 </li>
 <li>
-<a href="#4_Version_Negotiation_Considerations">4. 约定</a>
+<a href="#4_Version_Negotiation_Considerations">4. 版本协商考量</a>
 <ul>
 <li><a href="#4.1_Compatible_Negotiation_Requirements">4.1. 兼容协商要求</a></li>
 </ul>
 </li>
 <li>
-<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. 约定</a>
+<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. TLS恢复与NEW_TOKEN令牌</a>
 </li>
 <li>
-<a href="#6_Ossification_Considerations">6. 约定</a>
+<a href="#6_Ossification_Considerations">6. 固化考量</a>
 </li>
 <li>
-<a href="#7_Applicability">7. 约定</a>
+<a href="#7_Applicability">7. 适用性</a>
 </li>
 <li>
-<a href="#8_Security_Considerations">8. 约定</a>
+<a href="#8_Security_Considerations">8. 安全考量</a>
 </li>
 <li>
-<a href="#9_IANA_Considerations">9. 约定</a>
+<a href="#9_IANA_Considerations">9. IANA考量</a>
 </li>
 <li>
-<a href="#10_">10. xx</a>
+<a href="#10_References">10. 参考文献</a>
+<ul>
+<li><a href="#10.1_Normative%20References">10. 参考文献</a></li>
+<li><a href="#10.2_Informative_References">10. 参考文献</a></li>
+</ul>
 </li>
 <li>
-<a href="#Acknowledgments">致谢</a>
+<a href="#Appendix_A_Sample_Packet_Protection">附录A. 样本包保护示例</a>
+<ul>
+<li><a href="#A.1_keys">A.1. 密钥</a></li>
+<li><a href="#A.2_Client_Initial">A.2. 客户端初始密钥</a></li>
+<li><a href="#A.3_Servre_Initial">A.3. 服务端初始密钥</a></li>
+<li><a href="#A.4_Retry">A.4. 重试</a></li>
+<li><a href="#A.5_ChaCha20_Poly1305_Short_Header_Packet">A.5. 短头数据包示例</a></li>
+</ul>
 </li>
 <li>
 <a href="#Acknowledgments">致谢</a>
@@ -92,7 +103,7 @@
 </nav>
 </div>
 <div class="version">
-            generated on Sep 26, 2024
+            generated on May 24, 2026
     </div>
 </div>
 <div class="content">
@@ -272,12 +283,12 @@ nonce = 0xd86969bc2d7c6d9990efb04a
 </section>
 <section class="page" id="4_Version_Negotiation_Considerations">
 <h1>
-<a href="#4_Version_Negotiation_Considerations">4. 约定</a>
+<a href="#4_Version_Negotiation_Considerations">4. 版本协商考量</a>
 </h1>
 <div class="content">
-<p>QUIC版本2的目的并不是为了取代QUIC版本1。支持QUIC版本2的终端可能继续支持版本1以最大限度兼容其他终端。特别是，HTTP客户端通常使用Alt-Svc<sup>《<a href="">RFC7838</a>》</sup>检测QUIC支持情况。由于该机制目前还无法区别不同的QUIC版本，因此HTTP服务端<em><strong>应该</strong></em>支持多个QUIC版本，从而降低不兼容的概率以及由QUIC版本协商或TCP回退带来的开销。例如，一个在Alt-Svc头部中表示支持“h3”的源站应该支持QUIC版本1，因为HTTP/3最初就是基于QUIC版本1的；因此，一些客户端可能只支持该版本的QUIC。</p>
-<p>任何支持QUIC版本2的QUIC终端<em><strong>必须</strong></em>发送、执行并验证《<a href="">QUIC VN</a>》中定义的传输参数<code>version_information</code>，以防范版本降级攻击。</p>
-<p>注意，版本2满足《<a href="">QUIC VN</a>》中有关兼容QUIC版本1的定义，且QUIC版本1同样兼容版本2。因此，服务端可以通过使用兼容版本协商在这两个版本之间切换连接。同时支持这两个版本的终端<em><strong>应该</strong></em>支持兼容版本协商，从而节省一个往返。</p>
+<p>QUIC版本2的目的并不是为了淘汰QUIC版本1。支持QUIC版本2的终端可能继续支持版本1以最大限度兼容其他终端。特别是，HTTP客户端通常使用Alt-Svc<sup>《<a href="">RFC7838</a>》</sup>检测QUIC支持情况。由于该机制目前还无法区分不同的QUIC版本，因此HTTP服务端<em><strong>应该</strong></em>支持多个QUIC版本，从而降低不兼容的概率以及由QUIC版本协商或TCP回退带来的开销。例如，一个在Alt-Svc头部中表示支持“h3”的源站应该支持QUIC版本1，因为HTTP/3最初就是基于QUIC版本1的；因此，一些客户端只会支持该版本的QUIC。</p>
+<p>任何支持QUIC版本2的QUIC终端<em><strong>必须</strong></em>发送、处理并验证《<a href="">QUIC VN</a>》中定义的传输参数<code>version_information</code>，以防范版本降级攻击。</p>
+<p>注意，版本2满足《<a href="">QUIC VN</a>》中有关兼容QUIC版本1的定义，且QUIC版本1同样兼容版本2。因此，服务端可以通过使用兼容版本协商在这两个版本之间切换连接。同时支持这两个版本的终端<em><strong>应该</strong></em>支持兼容版本协商，从而避免一次往返。</p>
 </div>
 </section>
 <section class="page" id="4.1_Compatible_Negotiation_Requirements">
@@ -285,73 +296,330 @@ nonce = 0xd86969bc2d7c6d9990efb04a
 <a href="#4.1_Compatible_Negotiation_Requirements">4.1. 兼容协商要求</a>
 </h2>
 <div class="content">
-<p>Compatible version negotiation between versions 1 and 2 follows the same requirements in either direction. This section uses the terms “original version” and “negotiated version” from [QUIC-VN].</p>
 <p>版本1和版本2之间的兼容版本协商在两个方向都需要满足相同的要求。本章使用来自《<a href="">QUIC VN</a>》的“原始版本”和“协商版本”。</p>
-<p>如果服务端发送重试包，其<em><strong>必须</strong></em>使用初始版本。客户端忽略使用其他版本的重试包。客户端<em><strong>必须不</strong></em>能使用不同的</p>
-<p>If the server sends a Retry packet, it MUST use the original version. The client ignores Retry packets using other versions. The client MUST NOT use a different version in the subsequent Initial packet that contains the Retry token. The server MAY encode the QUIC version in its Retry token to validate that the client did not switch versions, and drop the packet if it switched, to enforce client compliance.</p>
-<p>QUIC version 2 uses the same transport parameters to authenticate the Retry as QUIC version 1. After switching to a negotiated version after a Retry, the server MUST include the relevant transport parameters to validate that the server sent the Retry and the connection IDs used in the exchange, as described in Section 7.3 of [QUIC].</p>
-<p>The server cannot send CRYPTO frames until it has processed the client’s transport parameters. The server MUST send all CRYPTO frames using the negotiated version.</p>
-<p>The client learns the negotiated version by observing the first long header Version field that differs from the original version. If the client receives a CRYPTO frame from the server in the original version, it indicates that the negotiated version is equal to the original version.</p>
-<p>Before the server is able to process transport parameters from the client, it might need to respond to Initial packets from the client. For these packets, the server uses the original version.</p>
-<p>Once the client has learned the negotiated version, it SHOULD send subsequent Initial packets using that version. The server MUST NOT discard its original version Initial receive keys until it successfully processes a Handshake packet with the negotiated version.</p>
-<p>Both endpoints MUST send Handshake and 1-RTT packets using the negotiated version. An endpoint MUST drop packets using any other version. Endpoints have no need to generate the keying material that would allow them to decrypt or authenticate such packets.</p>
-<p>The client MUST NOT send 0-RTT packets using the negotiated version, even after processing a packet of that version from the server. Servers can accept 0-RTT and then process 0-RTT packets from the original version.</p>
+<p>如果服务端发送Retry包，其<em><strong>必须</strong></em>使用原始版本。客户端忽略使用其他版本的Retry包。客户端<em><strong>必须不</strong></em>在后续包含Retry令牌的Initial包中使用不同的版本。服务端<em><strong>可以</strong></em>在其Retry令牌中编码QUIC版本，以验证客户端没有切换版本，并在发生切换时丢弃数据包，从而强制客户端遵守此规则。</p>
+<p>QUIC版本2使用与QUIC版本1相同的传输参数来认证Retry。在Retry之后切换到协商版本时，服务端<em><strong>必须</strong></em>包含相关的传输参数，以验证服务端发送了该Retry以及交换中使用的连接ID，如《<a href="">QUIC</a>》第7.3节所述。</p>
+<p>服务端在处理完客户端的传输参数之前不能发送CRYPTO帧。服务端<em><strong>必须</strong></em>使用协商版本发送所有CRYPTO帧。</p>
+<p>客户端通过观察首个与原始版本不同的长包头Version字段来获知协商版本。如果客户端从服务端收到原始版本的CRYPTO帧，则表明协商版本等于原始版本。</p>
+<p>在服务端能够处理客户端的传输参数之前，它可能需要响应客户端的Initial包。对于这些数据包，服务端使用原始版本。</p>
+<p>一旦客户端获知了协商版本，它<em><strong>应该</strong></em>使用该版本发送后续的Initial包。服务端<em><strong>必须不</strong></em>丢弃其原始版本的Initial接收密钥，直到它成功处理了一个协商版本的Handshake包。</p>
+<p>双方终端<em><strong>必须</strong></em>使用协商版本发送Handshake和1-RTT包。终端<em><strong>必须</strong></em>丢弃使用其他任何版本的数据包。终端无需生成能够解密或认证此类数据包的密钥材料。</p>
+<p>客户端<em><strong>必须不</strong></em>使用协商版本发送0-RTT包，即使在处理了来自服务端的该版本数据包之后也是如此。服务端可以接受0-RTT，然后处理来自原始版本的0-RTT包。</p>
 </div>
 </section>
 <section class="page" id="5_TLS_Resumption_and_NEW_TOKEN_Tokens">
 <h1>
-<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. 约定</a>
+<a href="#5_TLS_Resumption_and_NEW_TOKEN_Tokens">5. TLS恢复与NEW_TOKEN令牌</a>
 </h1>
 <div class="content">
-<p>x</p>
+<p>TLS会话票据和NEW_TOKEN令牌与提供它们的连接的QUIC版本绑定。客户端<em><strong>必须不</strong></em>使用来自QUIC版本1连接的会话票据或令牌来发起QUIC版本2连接，反之亦然。当连接包含兼容版本协商时，任何已发放的服务端令牌被视为源于协商版本而非原始版本。</p>
+<p>服务端<em><strong>必须</strong></em>验证任何会话票据或令牌的原始版本，不得接受来自不同版本的票据或令牌。被拒绝的票据将导致回退到完整的TLS握手，且不使用0-RTT。被拒绝的令牌将导致客户端地址保持未验证状态，从而限制服务端可以发送的数据量。</p>
+<p>在兼容版本协商之后，任何产生的会话票据都映射到协商版本而非原始版本。</p>
 </div>
 </section>
 <section class="page" id="6_Ossification_Considerations">
 <h1>
-<a href="#6_Ossification_Considerations">6. 约定</a>
+<a href="#6_Ossification_Considerations">6. 固化考量</a>
 </h1>
 <div class="content">
-<p>x</p>
+<p>QUIC版本2提供了针对某些形式固化的防护。假设所有长包头都将编码为版本1，或假设版本1的Initial密钥派生公式将保持版本不变的设备，将无法正确处理版本2的数据包。</p>
+<p>然而，许多中间设备（如防火墙）关注的是连接中的首个数据包，而该数据包出于上述考量通常仍保持版本1的格式。</p>
+<p>有意对抗中间设备固化的客户端，如果合理地确信服务端支持版本2，并且愿意在判断错误时承受一次往返的代价，则可以使用版本2发起连接。特别是，为版本2签发会话票据的服务端表明其有意在票据有效期内维持对版本2的支持，即使该支持无法得到保证。</p>
 </div>
 </section>
 <section class="page" id="7_Applicability">
 <h1>
-<a href="#7_Applicability">7. 约定</a>
+<a href="#7_Applicability">7. 适用性</a>
 </h1>
 <div class="content">
-<p>x</p>
+<p>QUIC版本2在应用程序可用的能力方面与QUIC版本1相比没有任何变化。因此，所有被指定为可运行于QUIC版本1之上的应用层协议协商（ALPN）《<a href="">RFC7301</a>》代码点也可运行于此版本QUIC之上。特别是，“h3”《<a href="">HTTP/3</a>》和“doq”《<a href="">RFC9250</a>》这两个ALPN均可运行于QUIC版本2之上。</p>
+<p>除非另有说明，所有被定义为适用于版本1的QUIC扩展同样适用于版本2。</p>
 </div>
 </section>
 <section class="page" id="8_Security_Considerations">
 <h1>
-<a href="#8_Security_Considerations">8. 约定</a>
+<a href="#8_Security_Considerations">8. 安全考量</a>
 </h1>
 <div class="content">
-<p>x</p>
+<p>QUIC版本2未对QUIC版本1的安全性或隐私属性引入任何变化。</p>
+<p>强制性的版本协商机制可防范降级攻击，但由于两个版本的属性完全相同，降级不会带来安全影响。</p>
+<p>对QUIC版本2的支持可能帮助观察者对客户端和服务端设备进行指纹识别。</p>
 </div>
 </section>
 <section class="page" id="9_IANA_Considerations">
 <h1>
-<a href="#9_IANA_Considerations">9. 约定</a>
+<a href="#9_IANA_Considerations">9. IANA考量</a>
 </h1>
 <div class="content">
-<p>x</p>
+<p>IANA已向维护于 <a href="https://www.iana.org/assignments/quic">https://www.iana.org/assignments/quic</a> 的“QUIC Versions”注册表添加了以下条目。</p>
+<p>值：0x6b3343cf状态：永久规范：RFC 9369变更控制方：IETF联系人：QUIC WG</p>
+<p>值：0x709a50c4状态：临时规范：RFC 9369变更控制方：IETF联系人：QUIC WG备注：QUIC v2草案代码点</p>
 </div>
 </section>
-<section class="page" id="10_">
+<section class="page" id="10_References">
 <h1>
-<a href="#10_">10. xx</a>
+<a href="#10_References">10. 参考文献</a>
 </h1>
 <div class="content">
-<p>x</p>
 </div>
 </section>
-<section class="page" id="Acknowledgments">
+<section class="page" id="10.1_Normative References">
 <h1>
-<a href="#Acknowledgments">致谢</a>
+<a href="#10.1_Normative%20References">10. 参考文献</a>
 </h1>
 <div class="content">
-<p>感谢Nick Banks、Mike Bishop、Martin Duke、Ryan Hamilton、Roberto Peon、Anthony Rossi及Martin Thomson的投入和贡献！</p>
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> QUIC协议</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-RECOVERY">
+<p><a href="#QUIC-RECOVERY"><strong>[QUIC-RECOVERY]</strong></a> QUIC恢复机制</p>
+<p>Iyengar, J., Ed. and I. Swett, Ed., “QUIC Loss Detection and Congestion Control”, RFC 9002, DOI 10.17487/RFC9002, May 2021, <a href="https://www.rfc-editor.org/info/rfc9002">https://www.rfc-editor.org/info/rfc9002</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-TLS">
+<p><a href="#QUIC-TLS"><strong>[QUIC-TLS]</strong></a> QUIC TLS安全</p>
+<p>Thompson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, <a href="https://www.rfc-editor.org/info/rfc9001">https://www.rfc-editor.org/info/rfc9001</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-VN">
+<p><a href="#QUIC-VN"><strong>[QUIC-VN]</strong></a> QUIC版本协商</p>
+<p>Schinazi, D. and E. Rescorla, “Compatible Version Negotiation for QUIC”, RFC 9368, DOI 10.17487/RFC9368, May 2023, <a href="https://www.rfc-editor.org/info/rfc9368">https://www.rfc-editor.org/info/rfc9368</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC2119</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC8174</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="10.2_Informative_References">
+<h1>
+<a href="#10.2_Informative_References">10. 参考文献</a>
+</h1>
+<div class="content">
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-INVARIANTS">
+<p><a href="#QUIC-INVARIANTS"><strong>[QUIC-INVARIANTS]</strong></a> QUIC不变性</p>
+<p>Bishop, M., Ed., “Version-Independent Properties of QUIC”, RFC 914, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="RFC7301">
+<p><a href="#RFC7301"><strong>[RFC7301]</strong></a> TLS应用层协议协商扩展</p>
+<p>Friedl, S., Popov, A., Langley, A., and E. Stephan, “Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension”, RFC 7301, DOI 10.17487/RFC7301, July 2014, <a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>.</p>
+</div>
+<div class="out_ref" id="RFC7838">
+<p><a href="#RFC7838"><strong>[RFC7838]</strong></a> HTTP替代服务</p>
+<p>Nottingham, M., McManus, P., and J. Reschke, “HTTP Alternative Services”, RFC 7838, DOI 10.17487/RFC7838, April 2016, <a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>.</p>
+</div>
+<div class="out_ref" id="RFC9250">
+<p><a href="#RFC9250"><strong>[RFC9250]</strong></a> DNS QUIC</p>
+<p>Huitema, C., Dickinson, S., and A. Mankin, “DNS over Dedicated QUIC Connections”, RFC 9250, DOI 10.17487/RFC9250, May 2022, <a href="https://www.rfc-editor.org/info/rfc9250">https://www.rfc-editor.org/info/rfc9250</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Appendix_A_Sample_Packet_Protection">
+<h1>
+<a href="#Appendix_A_Sample_Packet_Protection">附录A. 样本包保护示例</a>
+</h1>
+<div class="content">
+<p>本附录展示了数据包保护的示例，以便实现者能够逐步验证其实现。文中定义了来自客户端和服务器的Initial数据包样本，以及一个Retry数据包样本。这些数据包使用一个由客户端选择的8字节目标连接ID，其值为<code>0x8394c8f03e515708</code>。文中还包含了一些中间值。所有值均以十六进制表示。</p>
+</div>
+</section>
+<section class="page" id="A.1_keys">
+<h2>
+<a href="#A.1_keys">A.1. 密钥</a>
+</h2>
+<div class="content">
+<p>在<code>HKDF-Expand-Label</code>函数执行过程中生成的标签（即<code>HkdfLabel.label</code>），以及为生成输出而提供给<code>HKDF-Expand</code>函数的值的一部分如下：</p>
+<blockquote>
+<p>client in: 00200f746c73313320636c69656e7420696e00</p>
+<p>server in: 00200f746c7331332073657276657220696e00</p>
+<p>quicv2 key: 001010746c73313320717569637632206b657900</p>
+<p>quicv2 iv: 000c0f746c7331332071756963763220697600</p>
+<p>quicv2 hp: 00100f746c7331332071756963763220687000</p>
+</blockquote>
+<p>初始密钥通常是：</p>
+<pre tabindex="0"><code>initial_secret = HKDF-Extract(initial_salt, cid)
+    = 2062e8b3cd8d52092614b8071d0aa1fb
+      7c2e3ac193f78b280e72d8f5751f6aba
+</code></pre><p>用于保护客户端数据包的密钥是：</p>
+<pre tabindex="0"><code>client_initial_secret
+    = HKDF-Expand-Label(initial_secret, "client in", "", 32)
+    = 14ec9d6eb9fd7af83bf5a668bc17a7e2
+      83766aade7ecd0891f70f9ff7f4bf47b
+
+key = HKDF-Expand-Label(client_initial_secret, "quicv2 key", "", 16)
+    = 8b1a0bc121284290a29e0971b5cd045d
+
+iv  = HKDF-Expand-Label(client_initial_secret, "quicv2 iv", "", 12)
+    = 91f73e2351d8fa91660e909f
+
+hp  = HKDF-Expand-Label(client_initial_secret, "quicv2 hp", "", 16)
+    = 45b95e15235d6f45a6b19cbcb0294ba9
+</code></pre><p>用于保护服务端数据包的密钥是：</p>
+<pre tabindex="0"><code>server_initial_secret
+    = HKDF-Expand-Label(initial_secret, "server in", "", 32)
+    = 0263db1782731bf4588e7e4d93b74639
+      07cb8cd8200b5da55a8bd488eafc37c1
+
+key = HKDF-Expand-Label(server_initial_secret, "quicv2 key", "", 16)
+    = 82db637861d55e1d011f19ea71d5d2a7
+
+iv  = HKDF-Expand-Label(server_initial_secret, "quicv2 iv", "", 12)
+    = dd13c276499c0249d3310652
+
+hp  = HKDF-Expand-Label(server_initial_secret, "quicv2 hp", "", 16)
+    = edf6d05c83121201b436e16877593c3a
+</code></pre>
+</div>
+</section>
+<section class="page" id="A.2_Client_Initial">
+<h2>
+<a href="#A.2_Client_Initial">A.2. 客户端初始密钥</a>
+</h2>
+<div class="content">
+<p>客户端发送一个Initial数据包。该数据包的未加密载荷包含以下CRYPTO帧，以及足够的PADDING帧以使载荷达到1162字节：</p>
+<pre tabindex="0"><code>060040f1010000ed0303ebf8fa56f129 39b9584a3896472ec40bb863cfd3e868
+04fe3a47f06a2b69484c000004130113 02010000c000000010000e00000b6578
+616d706c652e636f6dff01000100000a 00080006001d00170018001000070005
+04616c706e0005000501000000000033 00260024001d00209370b2c9caa47fba
+baf4559fedba753de171fa71f50f1ce1 5d43e994ec74d748002b000302030400
+0d0010000e0403050306030203080408 050806002d00020101001c0002400100
+3900320408ffffffffffffffff050480 00ffff07048000ffff08011001048000
+75300901100f088394c8f03e51570806 048000ffff
+</code></pre><p>未加密包头指示的长度为1182字节：4字节的数据包编号、1162字节的帧数据以及16字节的认证标签。包头包含连接ID和数据包编号2：</p>
+<pre tabindex="0"><code>d36b3343cf088394c8f03e5157080000449e00000002
+</code></pre><p>对载荷进行保护会产生一个输出，该输出将被采样用于包头保护。由于包头使用4字节的数据包编号编码，因此对受保护载荷的前16字节进行采样，然后按如下方式应用于包头：</p>
+<pre tabindex="0"><code>sample = ffe67b6abcdb4298b485dd04de806071
+
+mask = AES-ECB(hp, sample)[0..4]
+     = 94a0c95e80
+
+header[0] ^= mask[0] &amp; 0x0f
+     = d7
+header[18..21] ^= mask[1..4]
+     = a0c95e82
+header = d76b3343cf088394c8f03e5157080000449ea0c95e82
+</code></pre><p>最终得到的受保护数据包如下：</p>
+<pre tabindex="0"><code>d76b3343cf088394c8f03e5157080000 449ea0c95e82ffe67b6abcdb4298b485
+dd04de806071bf03dceebfa162e75d6c 96058bdbfb127cdfcbf903388e99ad04
+9f9a3dd4425ae4d0992cfff18ecf0fdb 5a842d09747052f17ac2053d21f57c5d
+250f2c4f0e0202b70785b7946e992e58 a59ac52dea6774d4f03b55545243cf1a
+12834e3f249a78d395e0d18f4d766004 f1a2674802a747eaa901c3f10cda5500
+cb9122faa9f1df66c392079a1b40f0de 1c6054196a11cbea40afb6ef5253cd68
+18f6625efce3b6def6ba7e4b37a40f77 32e093daa7d52190935b8da58976ff33
+12ae50b187c1433c0f028edcc4c2838b 6a9bfc226ca4b4530e7a4ccee1bfa2a3
+d396ae5a3fb512384b2fdd851f784a65 e03f2c4fbe11a53c7777c023462239dd
+6f7521a3f6c7d5dd3ec9b3f233773d4b 46d23cc375eb198c63301c21801f6520
+bcfb7966fc49b393f0061d974a2706df 8c4a9449f11d7f3d2dcbb90c6b877045
+636e7c0c0fe4eb0f697545460c806910 d2c355f1d253bc9d2452aaa549e27a1f
+ac7cf4ed77f322e8fa894b6a83810a34 b361901751a6f5eb65a0326e07de7c12
+16ccce2d0193f958bb3850a833f7ae43 2b65bc5a53975c155aa4bcb4f7b2c4e5
+4df16efaf6ddea94e2c50b4cd1dfe060 17e0e9d02900cffe1935e0491d77ffb4
+fdf85290fdd893d577b1131a610ef6a5 c32b2ee0293617a37cbb08b847741c3b
+8017c25ca9052ca1079d8b78aebd4787 6d330a30f6a8c6d61dd1ab5589329de7
+14d19d61370f8149748c72f132f0fc99 f34d766c6938597040d8f9e2bb522ff9
+9c63a344d6a2ae8aa8e51b7b90a4a806 105fcbca31506c446151adfeceb51b91
+abfe43960977c87471cf9ad4074d30e1 0d6a7f03c63bd5d4317f68ff325ba3bd
+80bf4dc8b52a0ba031758022eb025cdd 770b44d6d6cf0670f4e990b22347a7db
+848265e3e5eb72dfe8299ad7481a4083 22cac55786e52f633b2fb6b614eaed18
+d703dd84045a274ae8bfa73379661388 d6991fe39b0d93debb41700b41f90a15
+c4d526250235ddcd6776fc77bc97e7a4 17ebcb31600d01e57f32162a8560cacc
+7e27a096d37a1a86952ec71bd89a3e9a 30a2a26162984d7740f81193e8238e61
+f6b5b984d4d3dfa033c1bb7e4f0037fe bf406d91c0dccf32acf423cfa1e70710
+10d3f270121b493ce85054ef58bada42 310138fe081adb04e2bd901f2f13458b
+3d6758158197107c14ebb193230cd115 7380aa79cae1374a7c1e5bbcb80ee23e
+06ebfde206bfb0fcbc0edc4ebec30966 1bdd908d532eb0c6adc38b7ca7331dce
+8dfce39ab71e7c32d318d136b6100671 a1ae6a6600e3899f31f0eed19e3417d1
+34b90c9058f8632c798d4490da498730 7cba922d61c39805d072b589bd52fdf1
+e86215c2d54e6670e07383a27bbffb5a ddf47d66aa85a0c6f9f32e59d85a44dd
+5d3b22dc2be80919b490437ae4f36a0a e55edf1d0b5cb4e9a3ecabee93dfc6e3
+8d209d0fa6536d27a5d6fbb17641cde2 7525d61093f1b28072d111b2b4ae5f89
+d5974ee12e5cf7d5da4d6a31123041f3 3e61407e76cffcdcfd7e19ba58cf4b53
+6f4c4938ae79324dc402894b44faf8af bab35282ab659d13c93f70412e85cb19
+9a37ddec600545473cfb5a05e08d0b20 9973b2172b4d21fb69745a262ccde96b
+a18b2faa745b6fe189cf772a9f84cbfc
+</code></pre>
+</div>
+</section>
+<section class="page" id="A.3_Servre_Initial">
+<h2>
+<a href="#A.3_Servre_Initial">A.3. 服务端初始密钥</a>
+</h2>
+<div class="content">
+<p>服务器响应时发送以下载荷，包含一个 ACK 帧、一个 CRYPTO 帧，且不包含 PADDING 帧：</p>
+<pre tabindex="0"><code>02000000000600405a020000560303ee fce7f7b37ba1d1632e96677825ddf739
+88cfc79825df566dc5430b9a045a1200 130100002e00330024001d00209d3c94
+0d89690b84d08a60993c144eca684d10 81287c834d5311bcf32bb9da1a002b00
+020304
+</code></pre><p>服务器的包头包含一个新的连接 ID，以及用于数据包编号 1 的 2 字节数据包编号编码：</p>
+<pre tabindex="0"><code>d16b3343cf0008f067a5502a4262b50040750001
+</code></pre><p>因此，在保护之后，包头保护样本从第三个受保护字节开始提取：</p>
+<pre tabindex="0"><code>sample = 6f05d8a4398c47089698baeea26b91eb
+mask   = 4dd92e91ea
+header = dc6b3343cf0008f067a5502a4262b5004075d92f
+</code></pre><p>最终的受保护数据包如下：</p>
+<pre tabindex="0"><code>dc6b3343cf0008f067a5502a4262b500 4075d92faaf16f05d8a4398c47089698
+baeea26b91eb761d9b89237bbf872630 17915358230035f7fd3945d88965cf17
+f9af6e16886c61bfc703106fbaf3cb4c fa52382dd16a393e42757507698075b2
+c984c707f0a0812d8cd5a6881eaf21ce da98f4bd23f6fe1a3e2c43edd9ce7ca8
+4bed8521e2e140
+</code></pre>
+</div>
+</section>
+<section class="page" id="A.4_Retry">
+<h2>
+<a href="#A.4_Retry">A.4. 重试</a>
+</h2>
+<div class="content">
+<p>本附录展示了一个可能响应<a href="#A.2_Client_Initial">附录A.2</a>中的Initial数据包而发送的Retry数据包。完整性检查包含客户端选择的连接ID值<code>0x8394c8f03e515708</code>，但该值不包含在最终的Retry数据包中：</p>
+<pre tabindex="0"><code>cf6b3343cf0008f067a5502a4262b574 6f6b656ec8646ce8bfe33952d9555436
+65dcc7b6
+</code></pre>
+</div>
+</section>
+<section class="page" id="A.5_ChaCha20_Poly1305_Short_Header_Packet">
+<h2>
+<a href="#A.5_ChaCha20_Poly1305_Short_Header_Packet">A.5. 短头数据包示例</a>
+</h2>
+<div class="content">
+<p>本示例展示了使用短包头保护数据包所需的部分步骤。它使用<code>AEAD_CHACHA20_POLY1305</code>算法。</p>
+<p>在本示例中，TLS生成一个应用层写入密钥，服务器使用<code>HKDF-Expand-Label</code>和<code>SHA2-56</code>算法从该密钥派生四个值：一个密钥、一个初始化向量（IV）、一个包头保护密钥，以及密钥更新后将使用的密钥（本示例中不再使用最后一个值）。</p>
+<pre tabindex="0"><code>secret
+    = 9ac312a7f877468ebe69422748ad00a1
+      5443f18203a07d6060f688f30f21632b
+
+key = HKDF-Expand-Label(secret, "quicv2 key", "", 32)
+    = 3bfcddd72bcf02541d7fa0dd1f5f9eee
+      a817e09a6963a0e6c7df0f9a1bab90f2
+
+iv  = HKDF-Expand-Label(secret, "quicv2 iv", "", 12)
+    = a6b5bc6ab7dafce30ffff5dd
+
+hp  = HKDF-Expand-Label(secret, "quicv2 hp", "", 32)
+    = d659760d2ba434a226fd37b35c69e2da
+      8211d10c4f12538787d65645d5d1b8e2
+
+ku  = HKDF-Expand-Label(secret, "quicv2 ku", "", 32)
+    = c69374c49e3d2a9466fa689e49d476db
+      5d0dfbc87d32ceeaa6343fd0ae4c7d88
+</code></pre><p>以下展示了使用空目标连接ID保护最小数据包所涉及的步骤。该数据包包含一个PING帧（即仅为0x01的载荷），其数据包编号为654360564。在本示例中，使用长度为3的数据包编号（即编码为49140）可避免对数据包载荷进行填充；如果数据包编号使用更少的字节编码，则需要PADDING帧。</p>
+<pre tabindex="0"><code>pn                 = 654360564 (decimal)
+nonce              = a6b5bc6ab7dafce328ff4a29
+unprotected header = 4200bff4
+payload plaintext  = 01
+payload ciphertext = 0ae7b6b932bc27d786f4bc2bb20f2162ba
+</code></pre><p>生成的密文为可能的最小大小。跳过一个字节以生成包头保护样本。</p>
+<pre tabindex="0"><code>sample = e7b6b932bc27d786f4bc2bb20f2162ba
+mask   = 97580e32bf
+header = 5558b1c6
+</code></pre><p>受保护的数据包是可能的最小数据包大小，为21字节。</p>
+<pre tabindex="0"><code>packet = 5558b1c60ae7b6b932bc27d786f4bc2bb20f2162ba
+</code></pre>
 </div>
 </section>
 <section class="page" id="Acknowledgments">

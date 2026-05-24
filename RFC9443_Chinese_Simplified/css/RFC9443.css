@@ -134,37 +134,37 @@ section.page table, section.page th, section.page td {
   color: #f1d7b0;
   text-shadow: 1px 1px 1px lightgray;
 }
+.block.tip:before {
+  content: "Tip";
+  color: snow;
+}
 .block.tip {
   background: rgb(156, 212, 231);
   border-top-color: #284750;
 }
-.block.tip:before {
-  content: "Tip";
+.block.note:before {
+  content: "Note";
   color: snow;
 }
 .block.note {
   background: #a0b2ec;
   border-top-color: #070d1d;
 }
-.block.note:before {
-  content: "Note";
+.block.info:before {
+  content: "Info";
   color: snow;
 }
 .block.info {
   background: #f3b07a;
   border-top-color: #271200;
 }
-.block.info:before {
-  content: "Info";
+.block.warn:before {
+  content: "Warn";
   color: snow;
 }
 .block.warn {
   background: #dd9b9b;
   border-top-color: #270000;
-}
-.block.warn:before {
-  content: "Warn";
-  color: snow;
 }
 
 .sidebar.sidebar-rfc9443 {
