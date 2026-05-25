@@ -6,28 +6,56 @@
 <meta content="Hugo 0.162.0-DEV" name="generator"/>
 <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
-<title>RFC9412中文：HTTP/3 ORIGIN扩展</title>
+<title>RFC9412中文：HTTP/3之ORIGIN扩展</title>
 <link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
 <link href="/css/styles.css" rel="stylesheet"/>
 <link href="/RFC9412_Chinese_Simplified/css/RFC9412.css" rel="stylesheet"/>
-<link href="/RFC9412_Chinese_Simplified/index.xml" rel="alternate" title="RFC9412中文：HTTP/3 ORIGIN扩展" type="application/rss+xml">
+<link href="/RFC9412_Chinese_Simplified/index.xml" rel="alternate" title="RFC9412中文：HTTP/3之ORIGIN扩展" type="application/rss+xml">
 </link></head>
 <body>
 <div class="sidebar sidebar-rfc9412">
 <div class="navigation">
 <div><a href="/">秋愧遲</a></div>
-<h1 class="site-title"><a href="/RFC9412_Chinese_Simplified/">RFC9412中文：HTTP/3 ORIGIN扩展</a></h1>
+<h1 class="site-title"><a href="/RFC9412_Chinese_Simplified/">RFC9412中文：HTTP/3之ORIGIN扩展</a></h1>
 <nav class="internal">
 <ul>
 <li>
-<a href="#RFC9412_QUIC">RFC9412 HTTP/3的ORIGIN扩展字段</a>
+<a href="#RFC9412_ORIGIN_HTTP3">RFC9412 HTTP/3之ORIGIN扩展</a>
 <ul>
 <li><a href="#Forword">前言</a></li>
 <li><a href="#Abstract">摘要</a></li>
 <li><a href="#Status_of_This_Memo">备忘状态</a></li>
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Notational_Conventions">1.1. 符号约定</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_The_ORIGIN_HTTP3_Frame">2. ORIGIN HTTP/3帧</a>
+<ul>
+<li><a href="#2.1_Frame_Layout">2.1. 帧布局</a></li>
+</ul>
+</li>
+<li>
+<a href="#3_Security_Considerations">3. 安全性考量</a>
+</li>
+<li>
+<a href="#4_IANA_Considerations">4. 关于IANA的考量</a>
+</li>
+<li>
+<a href="#5_References">5. 参考文献</a>
+<ul>
+<li><a href="#5.1_Normative_References">5.1. 规范性参考文献</a></li>
+<li><a href="#5.2_Informative_References">5.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Authors_Address">作者地址</a>
 </li>
 </ul>
 </nav>
@@ -38,13 +66,13 @@
 </nav>
 </div>
 <div class="version">
-            generated on May 24, 2026
+            generated on May 25, 2026
     </div>
 </div>
 <div class="content">
-<section class="page" id="RFC9412_QUIC">
+<section class="page" id="RFC9412_ORIGIN_HTTP3">
 <h1>
-<a href="#RFC9412_QUIC">RFC9412 HTTP/3的ORIGIN扩展字段</a>
+<a href="#RFC9412_ORIGIN_HTTP3">RFC9412 HTTP/3之ORIGIN扩展</a>
 </h1>
 <div class="content">
 <br/>
@@ -69,7 +97,7 @@
 <tr>
 <td>RFC编号：</td>
 <td colspan="2">
-<a href="https://www.rfc-editor.org/rfc/rfc9412">9412</a>
+<a href="https://www.rfc-editor.org/info/rfc9412">9412</a>
 </td>
 </tr>
 <tr>
@@ -78,7 +106,7 @@
 </tr>
 <tr>
 <td>出版时间：</td>
-<td colspan="2">2023年6月</td>
+<td colspan="2">2023年3月</td>
 </tr>
 <tr>
 <td>国际标准期刊编号：</td>
@@ -86,7 +114,8 @@
 </tr>
 <tr>
 <td>作者：</td>
-<td colspan="2">M. Bishop <br/><i>Akamai</i></td>
+<td>M. Bishop <br/><i>Akamai</i></td>
+<td></td>
 </tr>
 </table>
 </div>
@@ -96,7 +125,7 @@
 <a href="#Forword">前言</a>
 </h2>
 <div class="content">
-<p>本文是关于HTTP/3 ORIGIN扩展的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+<p>本文是关于HTTP/3中ORIGIN扩展的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
 </div>
 </section>
 <section class="page" id="Abstract">
@@ -104,8 +133,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>The ORIGIN frame for HTTP/2 is equally applicable to HTTP/3, but it needs to be separately registered. This document describes the ORIGIN frame for HTTP/3.</p>
-<p>HTTP/2的ORIGIN帧同样适用于HTTP/3，但是其需要单独注册。本文描述在HTTP/3中的ORIGIN帧。</p>
+<p>HTTP/2的ORIGIN帧同样适用于HTTP/3，但需要重新注册。本文描述了HTTP/3的ORIGIN帧。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -114,7 +142,7 @@
 </h2>
 <div class="content">
 <p>本文是互联网标准追踪文档。</p>
-<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
 <p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9412">https://www.rfc-editor.org/info/rfc9412</a>。</p>
 </div>
 </section>
@@ -125,6 +153,144 @@
 <div class="content">
 <p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>已有RFC定义了HTTP/2（[HTTP/2]）的扩展，这些扩展在HTTP/3中仍然有用。[HTTP/3]的<a href="https://www.rfc-editor.org/info/rfc9114/#appendix-A.2">附录A.2</a>描述了将HTTP/2帧用于HTTP/3时所需的更新。</p>
+<p>[ORIGIN]定义了HTTP/2的ORIGIN帧，用于指示某个连接上有哪些源站可用。它定义了一种单一的HTTP/2帧类型。</p>
+</div>
+</section>
+<section class="page" id="1.1_Notational_Conventions">
+<h2>
+<a href="#1.1_Notational_Conventions">1.1. 符号约定</a>
+</h2>
+<div class="content">
+<p>本文中的关键词“<strong>必须（MUST）</strong>”、“<strong>必须不（MUST NOT）</strong>”、“<strong>必需（REQUIRED）</strong>”、“<strong>应当（SHALL）</strong>”、“<strong>应当不（SHALL NOT）</strong>”、“<strong>应该（SHOULD）</strong>”、“<strong>不应该（SHOULD NOT）</strong>”、“<strong>推荐（RECOMMENDED）</strong>”、“<strong>不推荐（NOT RECOMMENDED）</strong>”、“**可以（MAY）”**以及“<strong>可选（OPTIONAL）</strong>”应按照BCP 14 [RFC2119] [RFC8174]所述进行解释，当且仅当它们以全大写形式出现时，如上所示。</p>
+<p>本文中的帧图示使用[QUIC-TRANSPORT]的<a href="https://www.rfc-editor.org/info/rfc9000/#section-1.3">第1.3章</a>所定义的格式来说明字段的顺序和大小。</p>
+</div>
+</section>
+<section class="page" id="2_The_ORIGIN_HTTP3_Frame">
+<h1>
+<a href="#2_The_ORIGIN_HTTP3_Frame">2. ORIGIN HTTP/3帧</a>
+</h1>
+<div class="content">
+<p>ORIGIN HTTP/3帧允许服务器向客户端指示一个或多个源站（origin）[RFC6454]，服务器希望客户端将这些源站视为该连接发生时所处源站集合（Origin Set，[ORIGIN]的<a href="https://www.rfc-editor.org/info/rfc8336/#section-2.3">第2.3章</a>）的成员。</p>
+<p>该帧负载的语义与[ORIGIN]中定义的HTTP/2帧的语义完全相同。HTTP/2将流0预留给与连接状态相关的帧，而HTTP/3为此目的定义了一对单向流，称为“控制流（control streams）”。</p>
+<p>当[ORIGIN]指出ORIGIN帧在流0上发送时，应将其理解为HTTP/3的控制流：即ORIGIN帧由服务器在服务器的控制流上发送给客户端。</p>
+<p>HTTP/3在通用帧布局中未定义Flags字段。由于尚未为ORIGIN帧定义任何标志位，本规范不在HTTP/3中定义传递此类标志位的机制。</p>
+</div>
+</section>
+<section class="page" id="2.1_Frame_Layout">
+<h2>
+<a href="#2.1_Frame_Layout">2.1. 帧布局</a>
+</h2>
+<div class="content">
+<p>ORIGIN帧的布局与HTTP/2中使用的布局几乎相同；为清晰起见，此处重新陈述相关信息。ORIGIN帧类型为<code>0x0c</code>（十进制12），与HTTP/2中一致。负载包含零个或多个Origin-Entry字段的实例。</p>
+<pre tabindex="0"><code>HTTP/3 Origin-Entry {
+  Origin-Len (16),
+  ASCII-Origin (..),
+}
+
+HTTP/3 ORIGIN Frame {
+  Type (i) = 0x0c,
+  Length (i),
+  Origin-Entry (..) ...,
+}
+</code></pre><p><strong>图1：ORIGIN帧布局</strong></p>
+<p>一个Origin-Entry是一个以长度分隔的字符串。具体而言，它包含两个字段：</p>
+<dl>
+<dt>Origin-Len：</dt>
+<dd>一个无符号的16位整数，指示ASCII-Origin字段的长度，以八位字节为单位。</dd>
+<dt>ASCII-Origin：</dt>
+<dd>一个<strong>可选</strong>的字符序列，包含发送方声称此连接对其具有或可能具有权威性的源站的ASCII序列化形式（[RFC6454]的<a href="https://www.rfc-editor.org/info/rfc6454/#section-6.2">第6.2章</a>）。</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="3_Security_Considerations">
+<h1>
+<a href="#3_Security_Considerations">3. 安全性考量</a>
+</h1>
+<div class="content">
+<p>除[ORIGIN]和[HTTP/3]中已讨论的内容外，本文未引入新的安全性考量。</p>
+</div>
+</section>
+<section class="page" id="4_IANA_Considerations">
+<h1>
+<a href="#4_IANA_Considerations">4. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<p>本文在[HTTP/3]定义的“HTTP/3 Frame Types”注册表中注册一种帧类型，该注册表位于&lt;<a href="https://www.iana.org/assignments/http3-parameters/">https://www.iana.org/assignments/http3-parameters/</a>&gt;。</p>
+<dl>
+<dt>值：</dt>
+<dd><code>0x0c</code></dd>
+<dt>帧类型：</dt>
+<dd>ORIGIN</dd>
+<dt>状态：</dt>
+<dd>permanent（永久）</dd>
+<dt>参考：</dt>
+<dd><a href="#2_The_ORIGIN_HTTP3_Frame">第2章</a></dd>
+<dt>日期：</dt>
+<dd>2023-03-14</dd>
+<dt>变更控制者：</dt>
+<dd>IETF</dd>
+<dt>联系方式：</dt>
+<dd>HTTP工作组 <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a></dd>
+</dl>
+</div>
+</section>
+<section class="page" id="5_References">
+<h1>
+<a href="#5_References">5. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="5.1_Normative_References">
+<h2>
+<a href="#5.1_Normative_References">5.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<dl>
+<dt><strong>[HTTP/2]</strong></dt>
+<dd>Thomson, M., Ed. 和 C. Benfield, Ed.，《HTTP/2》，RFC 9113，DOI 10.17487/RFC9113，2022年6月，&lt;<a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>&gt;。</dd>
+<dt><strong>[HTTP/3]</strong></dt>
+<dd>Bishop, M., Ed.，《HTTP/3》，RFC 9114，DOI 10.17487/RFC9114，2022年6月，&lt;<a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>&gt;。</dd>
+<dt><strong>[ORIGIN]</strong></dt>
+<dd>Nottingham, M. 和 E. Nygren，《HTTP/2之ORIGIN帧》，RFC 8336，DOI 10.17487/RFC8336，2018年3月，&lt;<a href="https://www.rfc-editor.org/info/rfc8336">https://www.rfc-editor.org/info/rfc8336</a>&gt;。</dd>
+<dt><strong>[RFC2119]</strong></dt>
+<dd>Bradner, S.，《用于RFC中指示需求等级的关键词》，BCP 14，RFC 2119，DOI 10.17487/RFC2119，1997年3月，&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;。</dd>
+<dt><strong>[RFC8174]</strong></dt>
+<dd>Leiba, B.，《RFC 2119关键词中大写与小写的歧义性》，BCP 14，RFC 8174，DOI 10.17487/RFC8174，2017年5月，&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;。</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="5.2_Informative_References">
+<h2>
+<a href="#5.2_Informative_References">5.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<dl>
+<dt><strong>[QUIC-TRANSPORT]</strong></dt>
+<dd>Iyengar, J., Ed. 和 M. Thomson, Ed.，《QUIC：一种基于UDP的安全多路复用传输协议》，RFC 9000，DOI 10.17487/RFC9000，2021年5月，&lt;<a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>&gt;。</dd>
+<dt><strong>[RFC6454]</strong></dt>
+<dd>Barth, A.，《Web源站概念》，RFC 6454，DOI 10.17487/RFC6454，2011年12月，&lt;<a href="https://www.rfc-editor.org/info/rfc6454">https://www.rfc-editor.org/info/rfc6454</a>&gt;。</dd>
+</dl>
+</div>
+</section>
+<section class="page" id="Authors_Address">
+<h1>
+<a href="#Authors_Address">作者地址</a>
+</h1>
+<div class="content">
+<dl>
+<dt><strong>Mike Bishop</strong></dt>
+<dd>Akamai</dd>
+<dd>Email: <a href="mailto:mbishop@evequefou.be">mbishop@evequefou.be</a></dd>
+</dl>
 </div>
 </section>
 </div>

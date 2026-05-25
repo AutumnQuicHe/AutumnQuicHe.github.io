@@ -1,19 +1,17 @@
 /* Default values */
 /* Blocks*/
-/* levi */
-/* old #299c69*/
 /* content */
 /* block */
 html, body {
-  color: #111109;
-  background-color: #efe5cc;
+  color: #000d1a;
+  background-color: #f5f8ff;
   letter-spacing: 0.1px;
   font-size: 15px;
 }
 
 .sidebar.sidebar-quic {
-  color: #efe5cc;
-  background-color: #111109;
+  color: #f5f8ff;
+  background-color: #000d1a;
 }
 
 .content {
@@ -22,61 +20,61 @@ html, body {
 
 body::-webkit-scrollbar,
 .sidebar::-webkit-scrollbar {
-  background: #281b0a;
+  background: #001a33;
   width: 4px;
 }
 
 body::-webkit-scrollbar-thumb,
 .sidebar::-webkit-scrollbar-thumb {
-  background: #efe5cc;
+  background: #f5f8ff;
 }
 
 body::-webkit-scrollbar-track,
 .sidebar::-webkit-scrollbar-track {
-  background: #281b0a;
+  background: #001a33;
 }
 
 /* Sidebar */
 .sidebar a, .sidebar a:hover, .sidebar a:visited {
   text-decoration: none;
-  color: #efe5cc;
+  color: #f5f8ff;
 }
 .sidebar a:hover {
   text-decoration: none;
-  color: #d9b67f;
+  color: #4da6ff;
 }
 
 section.page h1, section.page h2, section.page h3, section.page h4 {
-  text-shadow: 2px 4px 5px #f1d7b0;
-  border-color: #0a2c1f;
+  text-shadow: 2px 4px 5px #cce5ff;
+  border-color: #000d1a;
 }
 section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
-  color: #281b0a;
+  color: #001a33;
 }
 section.page a, section.page a:hover, section.page a:visited {
-  color: #281b0a;
+  color: #001a33;
 }
 section.page table, section.page th, section.page td {
-  border: 1px solid #281b0a;
+  border: 1px solid #001a33;
 }
 
 .content code {
-  background: #efe5cc;
-  -webkit-box-shadow: inset 0 1px 10px rgba(182, 141, 158, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: #f5f8ff;
+  -webkit-box-shadow: inset 0 1px 10px rgba(141, 158, 182, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .content em strong {
-  text-shadow: 1px 1px 2px #281b0a;
-  color: #111109;
+  text-shadow: 1px 1px 2px #001a33;
+  color: #000d1a;
 }
 .content strong {
-  text-shadow: 0 0 2px #281b0a;
-  color: #111109;
+  text-shadow: 0 0 2px #001a33;
+  color: #000d1a;
 }
 .content blockquote {
-  border-left: 0.7em groove #442c11;
-  background: #f1d7b0;
+  border-left: 0.7em groove dimgray;
+  background: transparent;
 }
 
 .block {
@@ -87,14 +85,14 @@ section.page table, section.page th, section.page td {
   overflow-wrap: break-word;
   display: block;
   z-index: -1; /* to ensure under sidebar */
-  background-color: rgb(255, 242, 248);
-  color: #281b0a;
+  background-color: rgb(242, 248, 255);
+  color: #001a33;
 }
 .block:before {
   position: absolute;
   top: -24px;
   left: 12px;
-  color: #281b0a;
+  color: #001a33;
 }
 .block.ref {
   display: inline-block;
@@ -104,7 +102,7 @@ section.page table, section.page th, section.page td {
   position: relative;
   overflow-wrap: break-word;
   border-top: 0px solid;
-  background: #111109;
+  background: rgba(0, 26, 51, 0.6392156863);
   color: snow;
   border-radius: 2px;
 }
@@ -120,9 +118,9 @@ section.page table, section.page th, section.page td {
   margin: 10px 0 0 0;
 }
 .block.ref code {
-  background: #111109;
+  background: rgba(0, 26, 51, 0.6392156863);
   color: snow;
-  -webkit-box-shadow: inset 0 1px 10px rgba(224, 220, 220, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 1px 10px rgba(141, 158, 182, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 .block.ref a, .block.ref a:hover, .block.ref a:visited {
   color: snow;
@@ -131,7 +129,7 @@ section.page table, section.page th, section.page td {
   border: 1px solid snow;
 }
 .block.ref strong {
-  color: #f1d7b0;
+  color: snow;
   text-shadow: 1px 1px 1px lightgray;
 }
 .block.tip:before {
@@ -139,7 +137,7 @@ section.page table, section.page th, section.page td {
   color: snow;
 }
 .block.tip {
-  background: rgb(156, 212, 231);
+  background: #cce5ff;
   border-top-color: #284750;
 }
 .block.note:before {
@@ -168,8 +166,8 @@ section.page table, section.page th, section.page td {
 }
 
 .sidebar.sidebar-rfc9412 {
-  color: #efe5cc;
-  background-color: #111109;
+  color: #f5f8ff;
+  background-color: #000d1a;
 }
 
 /*# sourceMappingURL=RFC9412.css.map */
