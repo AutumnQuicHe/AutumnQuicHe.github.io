@@ -29,6 +29,34 @@
 <li><a href="#Copyright_Notice">版权声明</a></li>
 </ul>
 </li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Terminology">1.1. 术语</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_Multiplexing_of_TURN_Channels">2. TURN通道的多路复用</a>
+</li>
+<li>
+<a href="#3_Updates_to_RFC_7983">3. 对RFC 7983的更新</a>
+</li>
+<li>
+<a href="#4_Security_Considerations">4. 安全性考虑</a>
+</li>
+<li>
+<a href="#5_IANA_Considerations">5. IANA考虑</a>
+</li>
+<li>
+<a href="#6_References">6. 参考文献</a>
+<ul>
+<li><a href="#6.1_Normative_References">6.1. 规范性参考文献</a></li>
+<li><a href="#6.2_Informative_References">6.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Authors_Addresses">联系作者</a>
+</li>
 </ul>
 </nav>
 <nav class="external">
@@ -112,7 +140,7 @@
 <a href="#Forword">前言</a>
 </h2>
 <div class="content">
-<p>本文是关于QUIC多路复用的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+<p>本文是关于QUIC多路复用的网络规范文档译文，欢迎指正。</p>
 </div>
 </section>
 <section class="page" id="Abstract">
@@ -140,6 +168,221 @@
 <div class="content">
 <p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
 <p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的简版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>“安全实时传输协议（SRTP）扩展用于数据报传输层安全（DTLS）的多路复用方案更新”<a href="#RFC7983">RFC7983</a>为实时传输协议（RTP）<a href="#RFC3550">RFC3550</a>接收方定义了一种方案，将到达单个端口的DTLS<a href="#RFC9147">RFC9147</a>、NAT会话遍历工具集（STUN）<a href="#RFC8489">RFC8489</a>、安全实时传输协议（SRTP）/安全实时传输控制协议（SRTCP）<a href="#RFC3711">RFC3711</a>、ZRTP<a href="#RFC6189">RFC6189</a>以及环NAT中继遍历（TURN）通道的数据包解除复用。本文更新[RFC7983]和"数据报传输层安全（DTLS）扩展用于建立安全实时传输协议（SRTP）密钥"[RFC5764]，以允许QUIC[RFC9000]在同一端口上进行多路复用。</p>
+<p>本文描述的多路复用方案支持多种使用场景。在[P2P-QUIC]和[P2P-QUIC-TRIAL]中描述的WebRTC场景中，SRTP传输音视频，而点对点QUIC用于数据交换。对于这种使用场景，SRTP<a href="#RFC3711">RFC3711</a>使用DTLS-SRTP[RFC5764]生成密钥；因此，SRTP/SRTCP[RFC3550]、STUN、TURN、DTLS和QUIC需要在同一端口上多路复用。如果SRTP使用QUIC-SRTP（尚未规范）生成密钥，那么SRTP/SRTCP、STUN、TURN和QUIC需要在同一端口上多路复用。如果QUIC既用于点对点数据传输，又用于RTP/RTCP[RTP-OVER-QUIC]传输，那么STUN、TURN和QUIC需要在同一端口上多路复用。</p>
+<p>虽然本文描述的方案与QUIC版本2<a href="#RFC9369">RFC9369</a>兼容，但与QUIC比特润滑<a href="#RFC9287">RFC9287</a>不兼容。因此，希望在其套接字上使用多路复用的端点<em><strong>必须不</strong></em>发送grease_quic_bit传输参数。</p>
+</div>
+</section>
+<section class="page" id="1.1_Terminology">
+<h2>
+<a href="#1.1_Terminology">1.1. 术语</a>
+</h2>
+<div class="content">
+<p>本文中的关键字"<em><strong>必须</strong></em>（<strong>MUST</strong>）"、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）"、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）"、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）"、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）"、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）"、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）"、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）"、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）"、“<em><strong>可以</strong></em>（<strong>MAY</strong>）“以及"<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）“应按照BCP 14[RFC2119][RFC8174]中的描述进行解释，仅当它们以大写形式出现时，才如此处所示。</p>
+</div>
+</section>
+<section class="page" id="2_Multiplexing_of_TURN_Channels">
+<h1>
+<a href="#2_Multiplexing_of_TURN_Channels">2. TURN通道的多路复用</a>
+</h1>
+<div class="content">
+<p>TURN通道是一种优化，其中数据报文使用4字节前缀进行交换，而非标准的36字节STUN开销（参见<a href="#RFC8656">RFC8656</a>第3.5章）。<a href="#RFC7983">RFC7983</a>分配了64到79的值，以便在TURN客户端执行通道绑定请求并与<a href="#RFC7983">RFC7983</a>中描述的多路复用方案结合使用时，能够解除复用TURN通道。</p>
+<p>在没有QUIC比特润滑的情况下，QUIC报文的第一个八位组（例如QUIC v1或v2中的短头部报文）可能落在64到127的范围内，从而与分配给TURN通道的64到79范围重叠。然而，在实际应用中，这种重叠并不构成问题。TURN通道报文只会从已发送TURN分配和通道绑定请求的TURN服务器接收到。因此，从TURN服务器的源IP地址和端口接收报文的TURN客户端只需要区分STUN（即常规TURN）报文和TURN通道报文；（S）RTP、（S）RTCP、ZRTP、DTLS或QUIC报文不会从先前响应过TURN分配或通道绑定请求的源IP地址和端口发送。</p>
+<p>因此，如果报文的源IP地址和端口与响应的TURN服务器不匹配，那么第一个八位组为64到127的报文可以明确解除复用为QUIC。</p>
+</div>
+</section>
+<section class="page" id="3_Updates_to_RFC_7983">
+<h1>
+<a href="#3_Updates_to_RFC_7983">3. 对RFC 7983的更新</a>
+</h1>
+<div class="content">
+<p>本文更新[RFC7983]第7章（该章节进而更新[RFC5764]）的内容如下：</p>
+<p><strong>旧文本</strong></p>
+<div style="border: 2px solid black;">
+<p>解除复用报文的过程如下。接收方查看报文的第一个字节。如果该字节的值在0到3之间（含），则该报文为STUN。如果该值在16到19之间（含），则该报文为ZRTP。如果该值在20到63之间（含），则该报文为DTLS。如果该值在64到79之间（含），则该报文为TURN通道。如果该值在128到191之间（含），则该报文为RTP（或RTCP，如果RTCP和RTP都在同一目的端口上多路复用）。如果该值不匹配任何已知范围，则该报文<em><strong>必须</strong></em>被丢弃，并且<em><strong>可以</strong></em>记录告警。该过程总结在<a href="#Figure_3_DTLS_SRTP_receiver_packet_demultiplexing_algorithm">图3</a>中。</p>
+<div class="block ref" id="Figure_3_DTLS_SRTP_receiver_packet_demultiplexing_algorithm">
+<pre tabindex="0"><code>                 +----------------+
+                 |        [0..3] -+--&gt; 转发给STUN
+                 |                |
+                 |      [16..19] -+--&gt; 转发给ZRTP
+                 |                |
+      报文 --&gt;  |      [20..63] -+--&gt; 转发给DTLS
+                 |                |
+                 |      [64..79] -+--&gt; 转发给TURN通道
+                 |                |
+                 |    [128..191] -+--&gt; 转发给RTP/RTCP
+                 +----------------+
+</code></pre><p><a href="#Figure_3_DTLS_SRTP_receiver_packet_demultiplexing_algorithm">图3：DTLS-SRTP接收方的报文多路复用算法</a></p>
+</div>
+</div>
+<p><strong>旧文本结束</strong></p>
+<p><strong>新文本</strong></p>
+<div style="border: 2px solid black;">
+解除复用报文的过程如下。接收方查看报文的第一个字节。如果该字节的值在0到3之间（含），则该报文为STUN。如果该值在16到19之间（含），则该报文为ZRTP。如果该值在20到63之间（含），则该报文为DTLS。如果该值在128到191之间（含），则该报文为RTP（或RTCP，如果RTCP和RTP都在同一目的端口上多路复用）。如果该值在80到127之间（含）或192到255之间（含），则该报文为QUIC。如果该值在64到79之间（含）且报文的源IP地址和端口为响应的TURN服务器，则该报文为TURN通道；如果源IP地址和端口不是响应的TURN服务器，则该报文为QUIC。
+<p>如果该值不匹配任何已知范围，则该报文<em><strong>必须</strong></em>被丢弃，并且<em><strong>可以</strong></em>记录告警。该过程总结在<a href="#Figure_3_receiver_packet_demultiplexing_algorithm">图3</a>中。</p>
+<p>注：希望解除复用QUIC的端点<em><strong>必须不</strong></em>发送grease_quic_bit传输参数，如[RFC9287]中所述。</p>
+<div class="block ref" id="Figure_3_receiver_packet_demultiplexing_algorithm">
+<pre tabindex="0"><code>                +----------------+
+                |        [0..3] -+--&gt; 转发给STUN
+                |                |
+                |       [4..15] -+--&gt; 丢弃
+                |                |
+                |      [16..19] -+--&gt; 转发给ZRTP
+                |                |
+      报文 --&gt;  |      [20..63] -+--&gt; 转发给DTLS
+                |                |
+                |      [64..79] -+--&gt; 转发给TURN通道（如果来自TURN服务器），否则为QUIC
+                |                |
+                |     [80..127] -+--&gt; 转发给QUIC
+                |                |
+                |    [128..191] -+--&gt; 转发给RTP/RTCP
+                |                |
+                |    [192..255] -+--&gt; 转发给QUIC
+                +----------------+
+</code></pre><p><a href="#Figure_3_receiver_packet_demultiplexing_algorithm">图3：接收方的报文解除复用算法</a></p>
+</div>
+</div>
+<p><strong>新文本结束</strong></p>
+</div>
+</section>
+<section class="page" id="4_Security_Considerations">
+<h1>
+<a href="#4_Security_Considerations">4. 安全性考虑</a>
+</h1>
+<div class="content">
+<p>本文讨论的解决方案可能会引入一些超出<a href="#RFC7983">RFC7983</a>中描述的额外安全问题。这些额外的考虑事项描述如下。</p>
+<p>为了支持QUIC的多路复用，本文向<a href="#RFC7983">RFC7983</a>中定义的方案添加了逻辑。如果实现不当，该逻辑可能会错误分类报文，使协议处理程序暴露于意外输入。</p>
+<p>当QUIC仅用于数据交换时，QUIC内的TLS交换<a href="/RFC9001_Chinese_Simplified">RFC9001</a>推导的密钥仅用于保护QUIC数据报文。如果正确实现，这不应该影响SRTP的传输或通过DTLS-SRTP推导SRTP密钥。然而，如果未来的规范定义使用QUIC内的TLS交换来推导SRTP密钥，那么传输和SRTP密钥推导都可能受到QUIC实现中漏洞的不利影响。</p>
+</div>
+</section>
+<section class="page" id="5_IANA_Considerations">
+<h1>
+<a href="#5_IANA_Considerations">5. IANA考虑</a>
+</h1>
+<div class="content">
+<p>在"TLS ContentType"注册表中，IANA已将对<a href="#RFC7983">RFC7983</a>的引用替换为对本文的引用。</p>
+</div>
+</section>
+<section class="page" id="6_References">
+<h1>
+<a href="#6_References">6. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="6.1_Normative_References">
+<h2>
+<a href="#6.1_Normative_References">6.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC文档中用于指出要求级别的关键字</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, &lt;https://www.rfc-editor.org/info/rfc2119&gt;.</p>
+</div>
+<div class="out_ref" id="RFC3550">
+<p><a href="#RFC3550"><strong>[RFC3550]</strong></a> </p>
+<p>Schulzrinne, H., Casner, S., Frederick, R., and V. Jacobson, “RTP: A Transport Protocol for Real-time Applications”, STD 64, RFC 3550, DOI 10.17487/RFC3550, July 2003, &lt;https://www.rfc-editor.org/info/rfc3550&gt;.</p>
+</div>
+<div class="out_ref" id="RFC3711">
+<p><a href="#RFC3711"><strong>[RFC3711]</strong></a> </p>
+<p>Baugher, M., McGrew, D., Naslund, M., Carrara, E., and K. Norrman, “The Secure Real-time Transport Protocol (SRTP)”, RFC 3711, DOI 10.17487/RFC3711, March 2004, &lt;https://www.rfc-editor.org/info/rfc3711&gt;.</p>
+</div>
+<div class="out_ref" id="RFC5764">
+<p><a href="#RFC5764"><strong>[RFC5764]</strong></a> </p>
+<p>McGrew, D. and E. Rescorla, “Datagram Transport Layer Security (DTLS) Extension to Establish Keys for the Secure Real-time Transport Protocol (SRTP)”, RFC 5764, DOI 10.17487/RFC5764, May 2010, &lt;https://www.rfc-editor.org/info/rfc5764&gt;.</p>
+</div>
+<div class="out_ref" id="RFC7983">
+<p><a href="#RFC7983"><strong>[RFC7983]</strong></a> </p>
+<p>Petit-Huguenin, M. and G. Salgueiro, “Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)”, RFC 7983, DOI 10.17487/RFC7983, September 2016, &lt;https://www.rfc-editor.org/info/rfc7983&gt;.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119中关键字大写与小写的歧义</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, &lt;https://www.rfc-editor.org/info/rfc8174&gt;.</p>
+</div>
+<div class="out_ref" id="RFC8489">
+<p><a href="#RFC8489"><strong>[RFC8489]</strong></a> </p>
+<p>Petit-Huguenin, M., Salgueiro, G., Rosenberg, J., Wing, D., Mahy, R., and P. Matthews, “Session Traversal Utilities for NAT (STUN)”, RFC 8489, DOI 10.17487/RFC8489, February 2020, &lt;https://www.rfc-editor.org/info/rfc8489&gt;.</p>
+</div>
+<div class="out_ref" id="RFC8656">
+<p><a href="#RFC8656"><strong>[RFC8656]</strong></a> </p>
+<p>Reddy, T., Ed., Johnston, A., Ed., Matthews, P., and J. Rosenberg, “Traversal Using Relays around NAT (TURN): Relay Extensions to Session Traversal Utilities for NAT (STUN)”, RFC 8656, DOI 10.17487/RFC8656, February 2020, &lt;https://www.rfc-editor.org/info/rfc8656&gt;.</p>
+</div>
+<div class="out_ref" id="RFC9000">
+<p><a href="#RFC9000"><strong>[RFC9000]</strong></a> </p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, &lt;https://www.rfc-editor.org/info/rfc9000&gt;.</p>
+</div>
+<div class="out_ref" id="RFC9001">
+<p><a href="#RFC9001"><strong>[RFC9001]</strong></a> </p>
+<p>Thomson, M., Ed. and S. Turner, Ed., “Using TLS to Secure QUIC”, RFC 9001, DOI 10.17487/RFC9001, May 2021, &lt;https://www.rfc-editor.org/info/rfc9001&gt;.</p>
+</div>
+<div class="out_ref" id="RFC9147">
+<p><a href="#RFC9147"><strong>[RFC9147]</strong></a> </p>
+<p>Rescorla, E., Tschofenig, H., and N. Modadugu, “The Datagram Transport Layer Security (DTLS) Protocol Version 1.3”, RFC 9147, DOI 10.17487/RFC9147, April 2022, &lt;https://www.rfc-editor.org/info/rfc9147&gt;.</p>
+</div>
+<div class="out_ref" id="RFC9287">
+<p><a href="#RFC9287"><strong>[RFC9287]</strong></a> </p>
+<p>Thomson, M., “Greasing the QUIC Bit”, RFC 9287, DOI 10.17487/RFC9287, August 2022, &lt;https://www.rfc-editor.org/info/rfc9287&gt;.</p>
+</div>
+</div>
+</section>
+<section class="page" id="6.2_Informative_References">
+<h2>
+<a href="#6.2_Informative_References">6.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="P2P-QUIC">
+<p><a href="#P2P-QUIC"><strong>[P2P-QUIC]</strong></a> </p>
+<p>Thatcher, P., Aboba, B., and R. Raymond, “QUIC API For Peer-to-Peer Connections”, W3C Community Group Draft Report, commit 50d79c0, 20 May 2023, &lt;https://www.w3.org/p2p-webtransport/&gt;.</p>
+</div>
+<div class="out_ref" id="P2P-QUIC-TRIAL">
+<p><a href="#P2P-QUIC-TRIAL"><strong>[P2P-QUIC-TRIAL]</strong></a> </p>
+<p>Hampson, S., “RTCQuicTransport Coming to an Origin Trial Near You (Chrome 73)”, January 2019, &lt;https://developer.chrome.com/blog/rtcquictransport-api/&gt;.</p>
+</div>
+<div class="out_ref" id="RFC6189">
+<p><a href="#RFC6189"><strong>[RFC6189]</strong></a> </p>
+<p>Zimmermann, P., Johnston, A., Ed., and J. Callas, “ZRTP: Media Path Key Agreement for Unicast Secure RTP”, RFC 6189, DOI 10.17487/RFC6189, April 2011, &lt;https://www.rfc-editor.org/info/rfc6189&gt;.</p>
+</div>
+<div class="out_ref" id="RFC9369">
+<p><a href="#RFC9369"><strong>[RFC9369]</strong></a> </p>
+<p>Duke, M., “QUIC Version 2”, RFC 9369, DOI 10.17487/RFC9369, May 2023, &lt;https://www.rfc-editor.org/info/rfc9369&gt;.</p>
+</div>
+<div class="out_ref" id="RTP-OVER-QUIC">
+<p><a href="#RTP-OVER-QUIC"><strong>[RTP-OVER-QUIC]</strong></a> </p>
+<p>Ott, J., Engelbart, M., and S. Dawkins, “RTP over QUIC”, Work in Progress, Internet-Draft, draft-ietf-avtcore-rtp-over-quic-04, 10 July 2023, &lt;https://datatracker.ietf.org/doc/html/draft-ietf-avtcore-rtp-over-quic-04&gt;.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">联系作者</a>
+</h1>
+<div class="content">
+<h5 id="bernard-aboba">Bernard Aboba</h5>
+<p>Microsoft Corporation</p>
+<p>One Microsoft Way</p>
+<p>Redmond, WA 98052</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:bernard.aboba@gmail.com">bernard.aboba@gmail.com</a></p>
+<h5 id="gonzalo-salgueiro">Gonzalo Salgueiro</h5>
+<p>Cisco Systems</p>
+<p>7200-12 Kit Creek Road</p>
+<p>Research Triangle Park, NC 27709</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:gsalguei@cisco.com">gsalguei@cisco.com</a></p>
+<h5 id="colin-perkins">Colin Perkins</h5>
+<p>School of Computing Science</p>
+<p>University of Glasgow</p>
+<p>Glasgow</p>
+<p>G12 8QQ</p>
+<p>United Kingdom</p>
+<p>Email: <a href="mailto:csp@csperkins.org">csp@csperkins.org</a></p>
 </div>
 </section>
 </div>

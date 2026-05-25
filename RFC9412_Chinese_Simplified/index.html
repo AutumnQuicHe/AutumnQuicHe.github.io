@@ -133,7 +133,7 @@
 <a href="#Abstract">摘要</a>
 </h2>
 <div class="content">
-<p>HTTP/2的ORIGIN帧同样适用于HTTP/3，但需要重新注册。本文描述了HTTP/3的ORIGIN帧。</p>
+<p>HTTP/2的<strong>ORIGIN</strong>帧同样适用于HTTP/3，但需要重新注册。本文描述了HTTP/3的<strong>ORIGIN</strong>帧。</p>
 </div>
 </section>
 <section class="page" id="Status_of_This_Memo">
@@ -160,8 +160,8 @@
 <a href="#1_Introduction">1. 引言</a>
 </h1>
 <div class="content">
-<p>已有RFC定义了HTTP/2（[HTTP/2]）的扩展，这些扩展在HTTP/3中仍然有用。[HTTP/3]的<a href="https://www.rfc-editor.org/info/rfc9114/#appendix-A.2">附录A.2</a>描述了将HTTP/2帧用于HTTP/3时所需的更新。</p>
-<p>[ORIGIN]定义了HTTP/2的ORIGIN帧，用于指示某个连接上有哪些源站可用。它定义了一种单一的HTTP/2帧类型。</p>
+<p>已有RFC定义了HTTP/2（<a href="#HTTP2">HTTP/2</a>）的扩展，这些扩展在HTTP/3中仍然有用。<a href="#HTTP3">HTTP/3</a>的<a href="/RFC9000_Chinese_Simplified/#Appendix_A_Pseudocode">附录A.2</a>描述了将HTTP/2帧用于HTTP/3时所需的更新。</p>
+<p><a href="#ORIGIN">ORIGIN</a>定义了HTTP/2的<strong>ORIGIN</strong>帧，用于指示某个连接上有哪些源站可用。它定义了一种单一的HTTP/2帧类型。</p>
 </div>
 </section>
 <section class="page" id="1.1_Notational_Conventions">
@@ -169,8 +169,8 @@
 <a href="#1.1_Notational_Conventions">1.1. 符号约定</a>
 </h2>
 <div class="content">
-<p>本文中的关键词“<strong>必须（MUST）</strong>”、“<strong>必须不（MUST NOT）</strong>”、“<strong>必需（REQUIRED）</strong>”、“<strong>应当（SHALL）</strong>”、“<strong>应当不（SHALL NOT）</strong>”、“<strong>应该（SHOULD）</strong>”、“<strong>不应该（SHOULD NOT）</strong>”、“<strong>推荐（RECOMMENDED）</strong>”、“<strong>不推荐（NOT RECOMMENDED）</strong>”、“**可以（MAY）”**以及“<strong>可选（OPTIONAL）</strong>”应按照BCP 14 [RFC2119] [RFC8174]所述进行解释，当且仅当它们以全大写形式出现时，如上所示。</p>
-<p>本文中的帧图示使用[QUIC-TRANSPORT]的<a href="https://www.rfc-editor.org/info/rfc9000/#section-1.3">第1.3章</a>所定义的格式来说明字段的顺序和大小。</p>
+<p>本文中的关键字“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”，以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 《<a href="https://www.rfc-editor.org/info/rfc2119">RFC2119</a>》《<a href="https://www.rfc-editor.org/info/rfc8174">RFC8174</a>》所描述的，当且仅当它们像本段一样以斜体加粗方式出现的时候。</p>
+<p>本文中的帧图示使用<a href="#QUIC-TRANSPORT">QUIC-TRANSPORT</a>的<a href="/RFC9000_Chinese_Simplified/#1.3_Notational_Conventions">第1.3章</a>所定义的格式来说明字段的顺序和大小。</p>
 </div>
 </section>
 <section class="page" id="2_The_ORIGIN_HTTP3_Frame">
@@ -178,9 +178,9 @@
 <a href="#2_The_ORIGIN_HTTP3_Frame">2. ORIGIN HTTP/3帧</a>
 </h1>
 <div class="content">
-<p>ORIGIN HTTP/3帧允许服务器向客户端指示一个或多个源站（origin）[RFC6454]，服务器希望客户端将这些源站视为该连接发生时所处源站集合（Origin Set，[ORIGIN]的<a href="https://www.rfc-editor.org/info/rfc8336/#section-2.3">第2.3章</a>）的成员。</p>
-<p>该帧负载的语义与[ORIGIN]中定义的HTTP/2帧的语义完全相同。HTTP/2将流0预留给与连接状态相关的帧，而HTTP/3为此目的定义了一对单向流，称为“控制流（control streams）”。</p>
-<p>当[ORIGIN]指出ORIGIN帧在流0上发送时，应将其理解为HTTP/3的控制流：即ORIGIN帧由服务器在服务器的控制流上发送给客户端。</p>
+<p>ORIGIN HTTP/3帧允许服务器向客户端指示一个或多个源站（origin）<a href="#RFC6454">RFC6454</a>，服务器希望客户端将这些源站视为该连接发生时所处源站集合（Origin Set，<a href="#ORIGIN">ORIGIN</a>的<a href="https://www.rfc-editor.org/info/rfc8336/#section-2.3">第2.3章</a>）的成员。</p>
+<p>该帧负载的语义与<a href="#ORIGIN">ORIGIN</a>中定义的HTTP/2帧的语义完全相同。HTTP/2将流0预留给与连接状态相关的帧，而HTTP/3为此目的定义了一对单向流，称为“控制流（control streams）”。</p>
+<p>当<a href="#ORIGIN">ORIGIN</a>指出ORIGIN帧在流0上发送时，应将其理解为HTTP/3的控制流：即ORIGIN帧由服务器在服务器的控制流上发送给客户端。</p>
 <p>HTTP/3在通用帧布局中未定义Flags字段。由于尚未为ORIGIN帧定义任何标志位，本规范不在HTTP/3中定义传递此类标志位的机制。</p>
 </div>
 </section>
@@ -190,6 +190,8 @@
 </h2>
 <div class="content">
 <p>ORIGIN帧的布局与HTTP/2中使用的布局几乎相同；为清晰起见，此处重新陈述相关信息。ORIGIN帧类型为<code>0x0c</code>（十进制12），与HTTP/2中一致。负载包含零个或多个Origin-Entry字段的实例。</p>
+<p><a href="#Figure_1_ORIGIN_Frame_Layout">图1</a>展示了ORIGIN帧的布局。</p>
+<div class="block ref" id="Figure_1_ORIGIN_Frame_Layout">
 <pre tabindex="0"><code>HTTP/3 Origin-Entry {
   Origin-Len (16),
   ASCII-Origin (..),
@@ -200,13 +202,14 @@ HTTP/3 ORIGIN Frame {
   Length (i),
   Origin-Entry (..) ...,
 }
-</code></pre><p><strong>图1：ORIGIN帧布局</strong></p>
+</code></pre><p><a href="#Figure_1_ORIGIN_Frame_Layout">图1：ORIGIN帧布局</a></p>
+</div>
 <p>一个Origin-Entry是一个以长度分隔的字符串。具体而言，它包含两个字段：</p>
 <dl>
 <dt>Origin-Len：</dt>
 <dd>一个无符号的16位整数，指示ASCII-Origin字段的长度，以八位字节为单位。</dd>
 <dt>ASCII-Origin：</dt>
-<dd>一个<strong>可选</strong>的字符序列，包含发送方声称此连接对其具有或可能具有权威性的源站的ASCII序列化形式（[RFC6454]的<a href="https://www.rfc-editor.org/info/rfc6454/#section-6.2">第6.2章</a>）。</dd>
+<dd>一个<em><strong>可选</strong></em>的字符序列，包含发送方声称此连接对其具有或可能具有权威性的源站的ASCII序列化形式（<a href="#RFC6454">RFC6454</a>的<a href="https://www.rfc-editor.org/info/rfc6454/#section-6.2">第6.2章</a>）。</dd>
 </dl>
 </div>
 </section>
@@ -215,7 +218,7 @@ HTTP/3 ORIGIN Frame {
 <a href="#3_Security_Considerations">3. 安全性考量</a>
 </h1>
 <div class="content">
-<p>除[ORIGIN]和[HTTP/3]中已讨论的内容外，本文未引入新的安全性考量。</p>
+<p>除<a href="#ORIGIN">ORIGIN</a>和<a href="/RFC9114_Chinese_Simplified/">HTTP/3</a>中已讨论的内容外，本文未引入新的安全性考量。</p>
 </div>
 </section>
 <section class="page" id="4_IANA_Considerations">
@@ -223,7 +226,7 @@ HTTP/3 ORIGIN Frame {
 <a href="#4_IANA_Considerations">4. 关于IANA的考量</a>
 </h1>
 <div class="content">
-<p>本文在[HTTP/3]定义的“HTTP/3 Frame Types”注册表中注册一种帧类型，该注册表位于&lt;<a href="https://www.iana.org/assignments/http3-parameters/">https://www.iana.org/assignments/http3-parameters/</a>&gt;。</p>
+<p>本文在<a href="#HTTP3">HTTP/3</a>定义的“HTTP/3 Frame Types”注册表中注册一种帧类型，该注册表位于&lt;<a href="https://www.iana.org/assignments/http3-parameters/">https://www.iana.org/assignments/http3-parameters/</a>&gt;。</p>
 <dl>
 <dt>值：</dt>
 <dd><code>0x0c</code></dd>
@@ -254,18 +257,26 @@ HTTP/3 ORIGIN Frame {
 <a href="#5.1_Normative_References">5.1. 规范性参考文献</a>
 </h2>
 <div class="content">
-<dl>
-<dt><strong>[HTTP/2]</strong></dt>
-<dd>Thomson, M., Ed. 和 C. Benfield, Ed.，《HTTP/2》，RFC 9113，DOI 10.17487/RFC9113，2022年6月，&lt;<a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>&gt;。</dd>
-<dt><strong>[HTTP/3]</strong></dt>
-<dd>Bishop, M., Ed.，《HTTP/3》，RFC 9114，DOI 10.17487/RFC9114，2022年6月，&lt;<a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>&gt;。</dd>
-<dt><strong>[ORIGIN]</strong></dt>
-<dd>Nottingham, M. 和 E. Nygren，《HTTP/2之ORIGIN帧》，RFC 8336，DOI 10.17487/RFC8336，2018年3月，&lt;<a href="https://www.rfc-editor.org/info/rfc8336">https://www.rfc-editor.org/info/rfc8336</a>&gt;。</dd>
-<dt><strong>[RFC2119]</strong></dt>
-<dd>Bradner, S.，《用于RFC中指示需求等级的关键词》，BCP 14，RFC 2119，DOI 10.17487/RFC2119，1997年3月，&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;。</dd>
-<dt><strong>[RFC8174]</strong></dt>
-<dd>Leiba, B.，《RFC 2119关键词中大写与小写的歧义性》，BCP 14，RFC 8174，DOI 10.17487/RFC8174，2017年5月，&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;。</dd>
-</dl>
+<div class="out_ref" id="HTTP2">
+<p><a href="#HTTP2"><strong>[HTTP2]</strong></a> HTTP/2</p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="HTTP3">
+<p><a href="#HTTP3"><strong>[HTTP3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="ORIGIN">
+<p><a href="#ORIGIN"><strong>[ORIGIN]</strong></a> HTTP/2之ORIGIN帧</p>
+<p>Nottingham, M. and E. Nygren, “The ORIGIN HTTP/2 Frame”, RFC 8336, DOI 10.17487/RFC8336, March 2018, <a href="https://www.rfc-editor.org/info/rfc8336">https://www.rfc-editor.org/info/rfc8336</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> RFC文档中用于指出要求级别的关键字</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119中关键字大写与小写的歧义</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
 </div>
 </section>
 <section class="page" id="5.2_Informative_References">
@@ -273,12 +284,14 @@ HTTP/3 ORIGIN Frame {
 <a href="#5.2_Informative_References">5.2. 资料性参考文献</a>
 </h2>
 <div class="content">
-<dl>
-<dt><strong>[QUIC-TRANSPORT]</strong></dt>
-<dd>Iyengar, J., Ed. 和 M. Thomson, Ed.，《QUIC：一种基于UDP的安全多路复用传输协议》，RFC 9000，DOI 10.17487/RFC9000，2021年5月，&lt;<a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>&gt;。</dd>
-<dt><strong>[RFC6454]</strong></dt>
-<dd>Barth, A.，《Web源站概念》，RFC 6454，DOI 10.17487/RFC6454，2011年12月，&lt;<a href="https://www.rfc-editor.org/info/rfc6454">https://www.rfc-editor.org/info/rfc6454</a>&gt;。</dd>
-</dl>
+<div class="out_ref" id="QUIC-TRANSPORT">
+<p><a href="#QUIC-TRANSPORT"><strong>[QUIC-TRANSPORT]</strong></a> QUIC：一种基于UDP的安全多路复用传输协议</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC6454">
+<p><a href="#RFC6454"><strong>[RFC6454]</strong></a> Web源站概念</p>
+<p>Barth, A., “The Web Origin Concept”, RFC 6454, DOI 10.17487/RFC6454, December 2011, <a href="https://www.rfc-editor.org/info/rfc6454">https://www.rfc-editor.org/info/rfc6454</a>.</p>
+</div>
 </div>
 </section>
 <section class="page" id="Authors_Address">
