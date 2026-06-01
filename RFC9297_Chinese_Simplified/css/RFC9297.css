@@ -1,0 +1,173 @@
+/* Default values */
+/* Blocks*/
+/* content */
+/* block */
+html, body {
+  color: #001100;
+  background-color: #f5fff5;
+  letter-spacing: 0.1px;
+  font-size: 15px;
+}
+
+.sidebar.sidebar-quic {
+  color: #f5fff5;
+  background-color: #001100;
+}
+
+.content {
+  position: inherit;
+}
+
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  background: #002200;
+  width: 4px;
+}
+
+body::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: #f5fff5;
+}
+
+body::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+  background: #002200;
+}
+
+/* Sidebar */
+.sidebar a, .sidebar a:hover, .sidebar a:visited {
+  text-decoration: none;
+  color: #f5fff5;
+}
+.sidebar a:hover {
+  text-decoration: none;
+  color: #66cc66;
+}
+
+section.page h1, section.page h2, section.page h3, section.page h4 {
+  text-shadow: 2px 4px 5px #ccffcc;
+  border-color: #001100;
+}
+section.page h1 a, section.page h1 a:hover, section.page h1 a:visited, section.page h2 a, section.page h2 a:hover, section.page h2 a:visited, section.page h3 a, section.page h3 a:hover, section.page h3 a:visited, section.page h4 a, section.page h4 a:hover, section.page h4 a:visited {
+  color: #002200;
+}
+section.page a, section.page a:hover, section.page a:visited {
+  color: #002200;
+}
+section.page table, section.page th, section.page td {
+  border: 1px solid #002200;
+}
+
+.content code {
+  background: #f5fff5;
+  -webkit-box-shadow: inset 0 1px 10px rgba(141, 182, 150, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.content em strong {
+  text-shadow: 1px 1px 2px #002200;
+  color: #001100;
+}
+.content strong {
+  text-shadow: 0 0 2px #002200;
+  color: #001100;
+}
+.content blockquote {
+  border-left: 0.7em groove dimgray;
+  background: transparent;
+}
+
+.block {
+  margin: 1em 0em 1em 0em;
+  padding: 0 4px 4px 4px;
+  border-top: 33px solid;
+  position: relative;
+  overflow-wrap: break-word;
+  display: block;
+  z-index: -1; /* to ensure under sidebar */
+  background-color: rgb(242, 255, 242);
+  color: #002200;
+}
+.block:before {
+  position: absolute;
+  top: -24px;
+  left: 12px;
+  color: #002200;
+}
+.block.ref {
+  display: inline-block;
+  margin: 1em 0em 1em 1em;
+  padding: 1em;
+  max-width: 800px;
+  position: relative;
+  overflow-wrap: break-word;
+  border-top: 0px solid;
+  background: rgba(0, 34, 0, 0.6392156863);
+  color: snow;
+  border-radius: 2px;
+}
+.block.ref:before {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+}
+.block.ref pre {
+  margin: 0 0 0 0;
+}
+.block.ref p {
+  margin: 10px 0 0 0;
+}
+.block.ref code {
+  background: rgba(0, 34, 0, 0.6392156863);
+  color: snow;
+  -webkit-box-shadow: inset 0 1px 10px rgba(141, 182, 150, 0.3), 0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.block.ref a, .block.ref a:hover, .block.ref a:visited {
+  color: snow;
+}
+.block.ref table, .block.ref th, .block.ref td {
+  border: 1px solid snow;
+}
+.block.ref strong {
+  color: snow;
+  text-shadow: 1px 1px 1px lightgray;
+}
+.block.tip:before {
+  content: "Tip";
+  color: snow;
+}
+.block.tip {
+  background: #ccffcc;
+  border-top-color: #284750;
+}
+.block.note:before {
+  content: "Note";
+  color: snow;
+}
+.block.note {
+  background: #a0ecb2;
+  border-top-color: #070d1d;
+}
+.block.info:before {
+  content: "Info";
+  color: snow;
+}
+.block.info {
+  background: #f3b07a;
+  border-top-color: #271200;
+}
+.block.warn:before {
+  content: "Warn";
+  color: snow;
+}
+.block.warn {
+  background: #dd9b9b;
+  border-top-color: #270000;
+}
+
+.sidebar.sidebar-rfc9297 {
+  color: #f5fff5;
+  background-color: #001100;
+}
+
+/*# sourceMappingURL=RFC9297.css.map */

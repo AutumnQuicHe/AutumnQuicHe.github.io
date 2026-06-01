@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.162.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9297中文：HTTP数据报与Capsule协议</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9297_Chinese_Simplified/css/RFC9297.css" rel="stylesheet"/>
+<link href="/RFC9297_Chinese_Simplified/index.xml" rel="alternate" title="RFC9297中文：HTTP数据报与Capsule协议" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9297">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9297_Chinese_Simplified/">RFC9297中文：HTTP数据报与Capsule协议</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9297_HTTP_Datagrams_and_the_Capsule_Protocol">RFC9297 HTTP数据报与Capsule协议</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Conventions_and_Definitions">1.1. 约定与定义</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_HTTP_Datagrams">2. HTTP数据报</a>
+<ul>
+<li>
+<a href="#2.1_HTTP3_Datagrams">2.1. HTTP/3数据报</a>
+<ul>
+<li><a href="#2.1.1_The_SETTINGS_H3_DATAGRAM_HTTP3_Setting">2.1.1. SETTINGS_H3_DATAGRAM HTTP/3设置</a></li>
+</ul>
+</li>
+<li><a href="#2.2_HTTP_Datagrams_Using_Capsules">2.2. 使用Capsule的HTTP数据报</a></li>
+</ul>
+</li>
+<li>
+<a href="#3_Capsules">3. Capsules</a>
+<ul>
+<li><a href="#3.1_HTTP_Data_Streams">3.1. HTTP数据流</a></li>
+<li><a href="#3.2_The_Capsule_Protocol">3.2. Capsule协议</a></li>
+<li><a href="#3.3_Error_Handling">3.3. 错误处理</a></li>
+<li><a href="#3.4_The_Capsule-Protocol_Header_Field">3.4. Capsule-Protocol头部字段</a></li>
+<li><a href="#3.5_The_DATAGRAM_Capsule">3.5. DATAGRAM Capsule</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Security_Considerations">4. 安全性考量</a>
+</li>
+<li>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+<ul>
+<li><a href="#5.1_HTTP3_Setting">5.1. HTTP/3设置</a></li>
+<li><a href="#5.2_HTTP3_Error_Code">5.2. HTTP/3错误码</a></li>
+<li><a href="#5.3_HTTP_Header_Field_Name">5.3. HTTP头部字段名称</a></li>
+<li><a href="#5.4_Capsule_Types">5.4. Capsule类型</a></li>
+</ul>
+</li>
+<li>
+<a href="#6_References">6. 参考文献</a>
+<ul>
+<li><a href="#6.1_Normative_References">6.1. 规范性参考文献</a></li>
+<li><a href="#6.2_Informative_References">6.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">作者地址</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Jun 1, 2026
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9297_HTTP_Datagrams_and_the_Capsule_Protocol">
+<h1>
+<a href="#RFC9297_HTTP_Datagrams_and_the_Capsule_Protocol">RFC9297 HTTP数据报与Capsule协议</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9297">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9297&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9297">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/info/rfc9297">9297</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2022年8月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>D. Schinazi <br/><i>Google LLC</i></td>
+<td>L. Pardue <br/><i>Cloudflare</i></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于HTTP数据报与Capsule协议的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>本文描述了HTTP数据报（HTTP Datagrams），一种在HTTP连接中传输多路复用且可能不可靠的数据报的约定。</p>
+<p>在HTTP/3中，HTTP数据报可以使用QUIC DATAGRAM扩展以不可靠方式发送。当QUIC DATAGRAM帧不可用或不适用时，HTTP数据报可以使用Capsule协议发送，该协议作为一种更通用的在HTTP连接中传输数据的约定。</p>
+<p>HTTP数据报和Capsule协议旨在供HTTP扩展使用，而非应用程序。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9297">https://www.rfc-editor.org/info/rfc9297</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的修订版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>HTTP扩展（定义见[HTTP]第16章）有时需要访问底层传输协议的功能——例如不可靠传递（如[QUIC-DGRAM]提供的那样）——以实现所需的特性。例如,这可以用于引入CONNECT方法的不可靠版本，以及为WebSocket [WEBSOCKET]增加不可靠传递能力。</p>
+<p>在第2章中，本文描述了HTTP数据报（HTTP Datagrams），一种在HTTP连接中传输双向且可能不可靠的数据报的约定，在可能的情况下支持多路复用。虽然HTTP数据报与HTTP请求相关联，但它们并非消息内容的一部分。相反，它们旨在供HTTP扩展（例如CONNECT方法）使用，并且与所有版本的HTTP兼容。</p>
+<p>当HTTP运行在支持不可靠传递的传输协议之上时（例如，当QUIC DATAGRAM扩展[QUIC-DGRAM]可用于HTTP/3 [HTTP/3]时），HTTP数据报可以利用该能力。</p>
+<p>在第3章中，本文描述了HTTP Capsule协议，该协议允许使用可靠传递方式来传输HTTP数据报。这解决了那些QUIC DATAGRAM帧不可用或不适用的情况，以及传输协议仅提供可靠传递的情况，例如基于TCP [TCP]的HTTP/1.1 [HTTP/1.1]或HTTP/2 [HTTP/2]。</p>
+</div>
+</section>
+<section class="page" id="1.1_Conventions_and_Definitions">
+<h2>
+<a href="#1.1_Conventions_and_Definitions">1.1. 约定与定义</a>
+</h2>
+<div class="content">
+<p>本文中的关键词“<em><strong>必须</strong></em>（<strong>MUST</strong>）”、“<em><strong>必须不</strong></em>（<strong>MUST NOT</strong>）”、“<em><strong>需要</strong></em>（<strong>REQUIRED</strong>）”、“<em><strong>强烈要求</strong></em>（<strong>SHALL</strong>）”、“<em><strong>强烈要求不</strong></em>（<strong>SHALL NOT</strong>）”、“<em><strong>应该</strong></em>（<strong>SHOULD</strong>）”、“<em><strong>不应该</strong></em>（<strong>SHOULD NOT</strong>）”、“<em><strong>推荐</strong></em>（<strong>RECOMMENDED</strong>）”、“<em><strong>不推荐</strong></em>（<strong>NOT RECOMMENDED</strong>）”、“<em><strong>可以</strong></em>（<strong>MAY</strong>）”以及“<em><strong>可选</strong></em>（<strong>OPTIONAL</strong>）”应理解为BCP 14 [RFC2119] [RFC8174]所描述的，当且仅当它们像本段一样以全大写形式出现时。</p>
+<p>本文使用来自[QUIC]的术语。</p>
+<p>在本文定义协议类型的地方，定义的格式使用[QUIC]第1.3章的记法。当类型中的字段是整数时，它们使用[QUIC]第16章的可变长度整数编码进行编码。整数值不需要编码在最少的必需字节数上。</p>
+<p>在本文中，术语“中介（intermediary）”指的是[HTTP]第3.7章中定义的HTTP中介。</p>
+</div>
+</section>
+<section class="page" id="2_HTTP_Datagrams">
+<h1>
+<a href="#2_HTTP_Datagrams">2. HTTP数据报</a>
+</h1>
+<div class="content">
+<p>HTTP数据报（HTTP Datagrams）是一种在HTTP连接内传输双向且可能不可靠的数据报的约定，在可能的情况下支持多路复用。所有HTTP数据报都与一个HTTP请求相关联。</p>
+<p>当HTTP数据报在HTTP/3连接上传输时，QUIC DATAGRAM帧可用于提供解复用和不可靠传递；详见第2.1章。协商QUIC DATAGRAM帧是否用于HTTP数据报是通过交换HTTP/3设置实现的；详见第2.1.1章。</p>
+<p>当运行在HTTP/2之上时，解复用以HTTP/2帧层提供，但不可靠传递是不可用的。HTTP数据报通过Capsule协议协商和传输；详见第3.5章。</p>
+<p>当运行在HTTP/1.x之上时，请求在连接中严格串行化；因此，解复用不可用。同样地，不可靠传递也不可用。HTTP数据报通过Capsule协议协商和传输；详见第3.5章。</p>
+<p>HTTP数据报<em><strong>必须</strong></em>只能在明确支持它们的HTTP请求关联下发送。例如，现有的HTTP方法GET和POST不定义关联HTTP数据报的语义；因此，与GET或POST请求流关联的HTTP数据报不能发送。</p>
+<p>如果收到一个HTTP数据报，且它与一个对HTTP数据报没有已知语义的请求关联，接收方<em><strong>必须</strong></em>终止该请求。如果使用的是HTTP/3，请求流<em><strong>必须</strong></em>以H3_DATAGRAM_ERROR（0x33）中止。HTTP扩展<strong>可以</strong>通过定义HTTP数据报的协商机制和语义来覆盖这些要求。</p>
+</div>
+</section>
+<section class="page" id="2.1_HTTP3_Datagrams">
+<h2>
+<a href="#2.1_HTTP3_Datagrams">2.1. HTTP/3数据报</a>
+</h2>
+<div class="content">
+<p>当与HTTP/3一起使用时，QUIC DATAGRAM帧的Datagram Data字段使用以下格式：</p>
+<pre tabindex="0"><code>HTTP/3 Datagram {
+  Quarter Stream ID (i),
+  HTTP Datagram Payload (..),
+}
+</code></pre><p><strong>图1：HTTP/3数据报格式</strong></p>
+<dl>
+<dt>Quarter Stream ID（四分之一流ID）：</dt>
+<dd>一个变长整数，包含与此数据报关联的客户端发起的双向流的流ID除以四的值（除以四是因为HTTP请求是在客户端发起的双向流上发送的，这些流的流ID可以被四整除）。最大的合法QUIC流ID值为2^62-1，因此Quarter Stream ID字段的最大合法值为2^60-1。收到包含更大值的HTTP/3数据报<em><strong>必须</strong></em>被视为类型为H3_DATAGRAM_ERROR（0x33）的HTTP/3连接错误。</dd>
+<dt>HTTP Datagram Payload（HTTP数据报载荷）：</dt>
+<dd>数据报的有效载荷，其语义由使用HTTP数据报的扩展定义。注意，此字段可以为空。</dd>
+</dl>
+<p>收到一个QUIC DATAGRAM帧且其载荷太短以至于无法解析Quarter Stream ID字段时，<em><strong>必须</strong></em>被视为类型为H3_DATAGRAM_ERROR（0x33）的HTTP/3连接错误。</p>
+<p>除非对应流的发送端是打开的，否则<em><strong>必须不</strong></em>发送HTTP/3数据报。如果数据报在对应流的接收端关闭后收到，收到的数据报<em><strong>必须</strong></em>被静默丢弃。</p>
+<p>如果收到一个HTTP/3数据报，且其Quarter Stream ID字段映射到一个尚未创建的流，那么接收方<em><strong>强烈要求</strong></em>要么静默丢弃该数据报，要么在等待对应流创建期间临时缓存它（大约一个往返时间）。</p>
+<p>如果收到一个HTTP/3数据报，且其Quarter Stream ID字段映射到一个由于客户端发起的双向流限制而无法创建的流，那么它<em><strong>应该</strong></em>被视为类型为H3_ID_ERROR的HTTP/3连接错误。生成错误不是强制性的，因为QUIC流限制可能不为HTTP/3层所知。</p>
+<p>HTTP/3数据报的优先级在本文中未定义。未来的扩展<strong>可以</strong>定义如何对数据报进行优先级排序，并且<strong>可以</strong>定义信令以允许传达优先级偏好。</p>
+</div>
+</section>
+<section class="page" id="2.1.1_The_SETTINGS_H3_DATAGRAM_HTTP3_Setting">
+<h3>
+<a href="#2.1.1_The_SETTINGS_H3_DATAGRAM_HTTP3_Setting">2.1.1. SETTINGS_H3_DATAGRAM HTTP/3设置</a>
+</h3>
+<div class="content">
+<p>终端可以通过发送值为1的SETTINGS_H3_DATAGRAM（0x33）设置来向其对端表明愿意接收HTTP/3数据报。</p>
+<p>SETTINGS_H3_DATAGRAM设置的值<em><strong>必须</strong></em>为0或1。值为0表示该实现不愿意接收HTTP数据报。如果收到的SETTINGS_H3_DATAGRAM设置的值既不是0也不是1，接收方<em><strong>必须</strong></em>以H3_SETTINGS_ERROR错误终止连接。</p>
+<p>只有在SETTINGS_H3_DATAGRAM设置以值1被双向发送和接收后，才能发送QUIC DATAGRAM帧。</p>
+<p>当客户端使用0-RTT时，它<strong>可以</strong>存储服务器的SETTINGS_H3_DATAGRAM设置的值。这样做允许客户端在0-RTT数据包中发送QUIC DATAGRAM帧。当服务器决定接受0-RTT数据时，它<em><strong>必须</strong></em>发送一个SETTINGS_H3_DATAGRAM设置，其值大于等于它在向客户端发送NewSessionTicket消息的连接中发送的值。如果客户端将SETTINGS_H3_DATAGRAM设置的值与其0-RTT状态一起存储，它<em><strong>必须</strong></em>验证服务器在握手中发送的SETTINGS_H3_DATAGRAM设置的新值大于等于存储的值；如果不满足，客户端<em><strong>必须</strong></em>以H3_SETTINGS_ERROR错误终止连接。在所有情况下，SETTINGS_H3_DATAGRAM设置参数的最大允许值为1。</p>
+<p><em><strong>推荐</strong></em>支持接收HTTP/3数据报的实现始终发送值为1的SETTINGS_H3_DATAGRAM设置，即使应用程序不打算使用HTTP/3数据报。这有助于避免“特征外显（sticking out）”；详见第4章。</p>
+</div>
+</section>
+<section class="page" id="2.2_HTTP_Datagrams_Using_Capsules">
+<h2>
+<a href="#2.2_HTTP_Datagrams_Using_Capsules">2.2. 使用Capsule的HTTP数据报</a>
+</h2>
+<div class="content">
+<p>当HTTP/3数据报不可用或不适用时，HTTP数据报可以使用Capsule协议发送；详见第3.5章。</p>
+</div>
+</section>
+<section class="page" id="3_Capsules">
+<h1>
+<a href="#3_Capsules">3. Capsules</a>
+</h1>
+<div class="content">
+<p>扩展HTTP的一种机制是引入新的HTTP升级令牌；参见[HTTP]第16.7章。在HTTP/1.x中，这些令牌通过升级（Upgrade）机制使用；参见[HTTP]第7.8章。在HTTP/2和HTTP/3中，这些令牌通过Extended CONNECT机制使用；参见[EXT-CONNECT2]和[EXT-CONNECT3]。</p>
+<p>本规范引入了Capsule协议。Capsule协议是一个类型—长度—值（type-length-value）元组的序列，新HTTP升级令牌的定义可以选择使用它。它允许终端在HTTP请求流上端到端地可靠传达与请求相关的信息，即使存在HTTP中介。Capsule协议可用于交换HTTP数据报，这在HTTP运行在不支持QUIC DATAGRAM帧的传输层之上时是必需的。即使在HTTP/3数据报正在使用的情况下，Capsule协议也可以用于传达与基于数据报的协议关联的可靠双向控制消息。</p>
+</div>
+</section>
+<section class="page" id="3.1_HTTP_Data_Streams">
+<h2>
+<a href="#3.1_HTTP_Data_Streams">3.1. HTTP数据流</a>
+</h2>
+<div class="content">
+<p>本规范将HTTP请求的“数据流（data stream）”定义为紧跟在请求消息头部段和最终响应消息之后的双向字节流，其中最终响应消息要么是成功的（即2xx），要么是已升级的（即101）。</p>
+<p>在HTTP/1.x中，数据流由连接上紧跟在结束请求头部段或最终响应头部段的空行之后的所有字节组成。因此，只有HTTP/1.x连接上的最后一个HTTP请求才能启动Capsule协议。</p>
+<p>在HTTP/2和HTTP/3中，给定HTTP请求的数据流由所有以相应流ID在DATA帧中发送的字节组成。</p>
+<p>数据流的概念对于像CONNECT这样的方法特别相关，因为在这些方法中，头部之后没有HTTP消息内容。</p>
+<p>数据流可以使用任何适合流或请求优先级排序的方式进行优先级排序。例如，参见[PRIORITY]的第11章。</p>
+<p>数据流受底层层的流量控制机制的约束；示例包括HTTP/2流流量控制、HTTP/2连接流量控制和TCP流量控制。</p>
+</div>
+</section>
+<section class="page" id="3.2_The_Capsule_Protocol">
+<h2>
+<a href="#3.2_The_Capsule_Protocol">3.2. Capsule协议</a>
+</h2>
+<div class="content">
+<p>新HTTP升级令牌的定义可以声明其关联请求的数据流使用Capsule协议。如果这样做，关联请求的数据流内容使用以下格式：</p>
+<pre tabindex="0"><code>Capsule Protocol {
+  Capsule (..) ...,
+}
+</code></pre><p><strong>图2：Capsule协议流格式</strong></p>
+<pre tabindex="0"><code>Capsule {
+  Capsule Type (i),
+  Capsule Length (i),
+  Capsule Value (..),
+}
+</code></pre><p><strong>图3：Capsule格式</strong></p>
+<dl>
+<dt>Capsule Type（Capsule类型）：</dt>
+<dd>一个变长整数，指示Capsule的类型。IANA注册表用于管理Capsule类型的分配；详见第5.4章。</dd>
+<dt>Capsule Length（Capsule长度）：</dt>
+<dd>Capsule Value字段的长度（以字节为单位），紧随此字段之后，编码为变长整数。注意，此字段的值可以为零。</dd>
+<dt>Capsule Value（Capsule值）：</dt>
+<dd>此Capsule的载荷。其语义由Capsule Type字段的值决定。</dd>
+</dl>
+<p>中介可以通过Capsule-Protocol头部字段（第3.4章）的存在或通过理解所选的HTTP升级令牌来识别Capsule协议的使用。</p>
+<p>由于新协议或扩展可能定义新的Capsule类型，希望允许未来扩展性的中介<em><strong>应该</strong></em>在不做修改的情况下转发Capsule，除非所用Capsule类型的定义指定了额外的中介处理。DATAGRAM Capsule（详见第3.5章）就是这样一种Capsule类型。特别地，中介<em><strong>应该</strong></em>在不做修改的情况下转发Capusle类型未知的Capsule。</p>
+<p>收到Capsule类型未知的Capsule的终端<em><strong>必须</strong></em>静默丢弃该Capsule，并跳过它以解析下一个Capsule。</p>
+<p>依据数据流的定义：</p>
+<ul>
+<li>除非响应包含2xx（成功）或101（协议切换）状态码，否则不使用Capsule协议。</li>
+<li>当使用Capsule协议时，关联的HTTP请求和响应不携带HTTP内容。未来的扩展<strong>可以</strong>定义一种新的Capsule类型来携带HTTP内容。</li>
+</ul>
+<p>Capsule协议仅适用于新HTTP升级令牌的定义；因此，在HTTP/2和HTTP/3中，它只能与CONNECT方法一起使用。因此，一旦双方同意使用Capsule协议，流的帧使用要求将按照[HTTP/2]第8.5章和[HTTP/3]第4.4章的规定发生变化。</p>
+<p>Capsule协议<em><strong>必须不</strong></em>用于包含Content-Length、Content-Type或Transfer-Encoding头部字段的消息。此外，HTTP状态码204（No Content）、205（Reset Content）和206（Partial Content）<em><strong>必须不</strong></em>在使用Capsule协议的响应上发送。观察到违反这些要求的接收方<em><strong>必须</strong></em>将该HTTP消息视为格式错误。</p>
+<p>处理Capsule时，接收方可能会倾向于在处理之前先累积数据流中Capsule Value字段的完整长度。<em><strong>应该</strong></em>避免这种做法，因为它会消耗底层层的流量控制，且如果Capsule数据耗尽流量控制窗口，可能导致死锁。</p>
+</div>
+</section>
+<section class="page" id="3.3_Error_Handling">
+<h2>
+<a href="#3.3_Error_Handling">3.3. 错误处理</a>
+</h2>
+<div class="content">
+<p>当接收方在处理Capsule协议时遇到错误，接收方<em><strong>必须</strong></em>将其视为收到了格式错误或不完整的HTTP消息。对于HTTP/3，格式错误消息的处理描述在[HTTP/3]的第4.1.2章。对于HTTP/2，格式错误消息的处理描述在[HTTP/2]的第8.1.1章。对于HTTP/1.x，不完整消息的处理描述在[HTTP/1.1]的第8章。</p>
+<p>每个Capsule的载荷<em><strong>必须</strong></em>恰好包含其描述中标识的字段。Capsule载荷在标识字段之后包含额外字节，或Capsule载荷在标识字段结束之前终止的，<em><strong>必须</strong></em>被视为格式错误或不完整的消息。特别地，冗余长度编码<em><strong>必须</strong></em>被验证为自洽的。</p>
+<p>如果承载Capsule的流的接收端被干净地终止（例如，在HTTP/3中，这定义为接收到一个FIN位被设置的QUIC STREAM帧），且流上的最后一个Capsule被截断了，那么<em><strong>必须</strong></em>将其视为格式错误或不完整的消息。</p>
+</div>
+</section>
+<section class="page" id="3.4_The_Capsule-Protocol_Header_Field">
+<h2>
+<a href="#3.4_The_Capsule-Protocol_Header_Field">3.4. Capsule-Protocol头部字段</a>
+</h2>
+<div class="content">
+<p>“Capsule-Protocol"头部字段是一个Item结构化字段（Structured Field）；参见[STRUCTURED-FIELDS]的第3.3章。其值<em><strong>必须</strong></em>为一个布尔值（Boolean）；接收方对其他类型的值<em><strong>必须</strong></em>视为该字段不存在（例如，如果该字段被包含多次，其类型将变为列表（List），该字段将被忽略）。本文未为Capsule-Protocol头部字段值定义任何参数，但未来的文档可能定义参数。接收方<em><strong>必须</strong></em>忽略未知参数。</p>
+<p>终端通过发送值为true的Capsule-Protocol头部字段来表明数据流上正在使用Capsule协议。值为false的Capsule-Protocol头部字段具有与头部不存在时相同的语义。</p>
+<p>中介<strong>可以</strong>使用此头部字段来允许对未知HTTP升级令牌的HTTP数据报进行处理。注意，这仅适用于HTTP Upgrade或Extended CONNECT。</p>
+<p>Capsule-Protocol头部字段<em><strong>必须不</strong></em>用于状态码既不同于101（协议切换）也不在2xx（成功）范围内的HTTP响应上。</p>
+<p>当使用Capsule协议时，HTTP终端<em><strong>应该</strong></em>发送Capsule-Protocol头部字段以简化中介处理。使用Capsule协议的新HTTP升级令牌的定义<strong>可以</strong>修改此建议。</p>
+</div>
+</section>
+<section class="page" id="3.5_The_DATAGRAM_Capsule">
+<h2>
+<a href="#3.5_The_DATAGRAM_Capsule">3.5. DATAGRAM Capsule</a>
+</h2>
+<div class="content">
+<p>本文定义了DATAGRAM（0x00）Capsule类型。此Capsule允许HTTP数据报使用Capsule协议在流上发送。这在HTTP运行在不支持QUIC DATAGRAM帧的传输层之上时特别有用。</p>
+<pre tabindex="0"><code>Datagram Capsule {
+  Type (i) = 0x00,
+  Length (i),
+  HTTP Datagram Payload (..),
+}
+</code></pre><p><strong>图4：DATAGRAM Capsule格式</strong></p>
+<dl>
+<dt>HTTP Datagram Payload（HTTP数据报载荷）：</dt>
+<dd>数据报的有效载荷，其语义由使用HTTP数据报的扩展定义。注意，此字段可以为空。</dd>
+</dl>
+<p>使用DATAGRAM Capsule发送的HTTP数据报具有与在QUIC DATAGRAM帧中发送的那些相同的语义。特别地，关于何时允许发送HTTP数据报以及如何处理它们的限制（来自第2.1章）同样适用于使用DATAGRAM Capsule发送和接收的HTTP数据报。</p>
+<p>中介可以在转发HTTP数据报时重新编码它们。换句话说，中介<strong>可以</strong>发送DATAGRAM Capsule来转发在QUIC DATAGRAM帧中接收到的HTTP数据报，反之亦然。除非中介已经在相应请求流上识别出Capsule协议的使用，否则<em><strong>必须不</strong></em>执行此重新编码；详见第3.2章。</p>
+<p>注意，虽然DATAGRAM Capsule（在流上发送）是可靠有序传递的，但中介在转发消息时可以将DATAGRAM Capsule重新编码为QUIC DATAGRAM帧，这可能导致丢包或乱序。</p>
+<p>如果中介在QUIC DATAGRAM帧中收到HTTP数据报，并将其转发到支持QUIC DATAGRAM帧的连接上，中介<em><strong>不应该</strong></em>将该HTTP数据报转换为DATAGRAM Capsule。如果HTTP数据报太大而无法放入DATAGRAM帧（例如，因为该QUIC连接的路径MTU（PMTU）太低，或者在该连接上宣告的最大UDP载荷大小太低），中介<em><strong>应该</strong></em>丢弃该HTTP数据报，而不是将其转换为DATAGRAM Capsule。这保留了诸如数据报分组层PMTU发现（DPLPMTUD）等方法所依赖的端到端不可靠特性[DPLPMTUD]。将QUIC DATAGRAM帧转换为DATAGRAM Capsule的中介允许HTTP数据报变得任意大而不遭受任何丢失。这会歪曲真实的路径属性，从而挫败诸如DPLPMTUD之类的方法。</p>
+<p>虽然DATAGRAM Capsule理论上可以携带长度为2^62-1的载荷，但大多数使用HTTP数据报的HTTP扩展都会对何种数据报载荷大小是可行的有自己的限制。实现<em><strong>应该</strong></em>在解析DATAGRAM Capsule时考虑这些限制。如果收到的DATAGRAM Capsule的长度已知过大而无法使用，那么实现<em><strong>应该</strong></em>丢弃该Capsule，而不是将其内容缓存到内存中。</p>
+<p>由于QUIC DATAGRAM帧必须装入一个QUIC数据包，重新编码DATAGRAM Capsule为QUIC DATAGRAM帧的实现可能会倾向于在重新编码之前在流中累积完整的Capsule。<em><strong>应该</strong></em>避免这种做法，因为它可能导致流量控制问题；详见第3.2章。</p>
+<p>注意，HTTP扩展可以不使用Capsule协议而使用HTTP数据报。例如，如果使用HTTP数据报的HTTP扩展仅定义在支持QUIC DATAGRAM帧的传输层之上，那么它可能不需要流编码。此外，HTTP扩展可以使用HTTP数据报及其自己的数据流协议。然而，希望使用HTTP数据报的新HTTP扩展<em><strong>应该</strong></em>使用Capsule协议，因为不这样做会使HTTP扩展更难支持除HTTP/3以外的HTTP版本，并阻碍与仅支持Capsule协议的中介的互操作性。</p>
+</div>
+</section>
+<section class="page" id="4_Security_Considerations">
+<h1>
+<a href="#4_Security_Considerations">4. 安全性考量</a>
+</h1>
+<div class="content">
+<p>由于使用QUIC DATAGRAM帧传输HTTP数据报需要发送HTTP/3 SETTINGS_H3_DATAGRAM设置，它会“特征外显（stick out）”。换句话说，探测客户端可以得知服务器是否支持基于QUIC DATAGRAM帧的HTTP数据报。由于某些服务器可能希望模糊其提供使用HTTP数据报的应用服务这一事实，支持此功能的所有实现最好始终发送此设置；详见第2.1.1章。</p>
+<p>由于Capsule协议的使用仅限于新的HTTP升级令牌，它不能从Web平台API（例如在Web浏览器中通常通过JavaScript访问的那些API）直接访问。</p>
+<p>使用Capsule协议的新HTTP升级令牌的定义需要包含安全分析，在其协议上下文中考虑HTTP数据报和Capsule的影响。</p>
+</div>
+</section>
+<section class="page" id="5_IANA_Considerations">
+<h1>
+<a href="#5_IANA_Considerations">5. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<h2 id="51-http3设置">5.1. HTTP/3设置</h2>
+<p>IANA已在<a href="https://www.iana.org/assignments/http3-parameters">https://www.iana.org/assignments/http3-parameters</a>维护的"HTTP/3 Settings"注册表中注册了以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x33</li>
+<li><strong>设置名称：</strong> SETTINGS_H3_DATAGRAM</li>
+<li><strong>默认值：</strong> 0</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> HTTP_WG; HTTP working group; <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a></li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+<h2 id="52-http3错误码">5.2. HTTP/3错误码</h2>
+<p>IANA已在<a href="https://www.iana.org/assignments/http3-parameters">https://www.iana.org/assignments/http3-parameters</a>维护的"HTTP/3 Error Codes"注册表中注册了以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x33</li>
+<li><strong>名称：</strong> H3_DATAGRAM_ERROR</li>
+<li><strong>描述：</strong> 数据报或Capsule协议解析错误</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> HTTP_WG; HTTP working group; <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a></li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+<h2 id="53-http头部字段名称">5.3. HTTP头部字段名称</h2>
+<p>IANA已在<a href="https://www.iana.org/assignments/http-fields">https://www.iana.org/assignments/http-fields</a>维护的"Hypertext Transfer Protocol (HTTP) Field Name Registry"中注册了以下条目：</p>
+<ul>
+<li><strong>字段名称：</strong> Capsule-Protocol</li>
+<li><strong>模板：</strong> 无</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>注释：</strong> 无</li>
+</ul>
+<h2 id="54-capsule类型">5.4. Capsule类型</h2>
+<p>本文档为HTTP Capsule类型码建立了一个注册表。“HTTP Capsule Types"注册表管理一个62位的空间，并遵循[QUIC]第22.1章中记录的QUIC注册策略。这个新注册表包含了[QUIC]第22.1.1章中列出的通用字段集合。除了这些通用字段外，此注册表中的所有注册条目<em><strong>必须</strong></em>包含一个"Capsule Type"字段，该字段包含Capsule类型的简短名称或标签。</p>
+<p>此注册表中的永久注册条目使用"Specification Required"策略（[IANA-POLICY]第4.6章）分配，但值在0x00到0x3f（十六进制，含）之间的情况除外，这些值使用[IANA-POLICY]第4.9和4.10章中定义的"Standards Action"或"IESG Approval"来分配。</p>
+<p>具有形如0x29 * N + 0x17（N为整数）的值的Capsule类型被保留使用，用于实践未知Capsule类型必须被忽略的要求。这些Capsule没有语义，可以携带任意值。这些值<em><strong>必须不</strong></em>由IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值的列表中。</p>
+<p>此注册表初始包含以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x00</li>
+<li><strong>Capsule类型：</strong> DATAGRAM</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> MASQUE Working Group <a href="mailto:masque@ietf.org">masque@ietf.org</a> (mailto:masque@ietf.org)</li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+</div>
+</section>
+<section class="page" id="5.1_HTTP3_Setting">
+<h2>
+<a href="#5.1_HTTP3_Setting">5.1. HTTP/3设置</a>
+</h2>
+<div class="content">
+<p>IANA已在<a href="https://www.iana.org/assignments/http3-parameters">https://www.iana.org/assignments/http3-parameters</a>维护的"HTTP/3 Settings"注册表中注册了以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x33</li>
+<li><strong>设置名称：</strong> SETTINGS_H3_DATAGRAM</li>
+<li><strong>默认值：</strong> 0</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> HTTP_WG; HTTP working group; <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a></li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+</div>
+</section>
+<section class="page" id="5.2_HTTP3_Error_Code">
+<h2>
+<a href="#5.2_HTTP3_Error_Code">5.2. HTTP/3错误码</a>
+</h2>
+<div class="content">
+<p>IANA已在<a href="https://www.iana.org/assignments/http3-parameters">https://www.iana.org/assignments/http3-parameters</a>维护的"HTTP/3 Error Codes"注册表中注册了以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x33</li>
+<li><strong>名称：</strong> H3_DATAGRAM_ERROR</li>
+<li><strong>描述：</strong> 数据报或Capsule协议解析错误</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> HTTP_WG; HTTP working group; <a href="mailto:ietf-http-wg@w3.org">ietf-http-wg@w3.org</a></li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+</div>
+</section>
+<section class="page" id="5.3_HTTP_Header_Field_Name">
+<h2>
+<a href="#5.3_HTTP_Header_Field_Name">5.3. HTTP头部字段名称</a>
+</h2>
+<div class="content">
+<p>IANA已在<a href="https://www.iana.org/assignments/http-fields">https://www.iana.org/assignments/http-fields</a>维护的"Hypertext Transfer Protocol (HTTP) Field Name Registry"中注册了以下条目：</p>
+<ul>
+<li><strong>字段名称：</strong> Capsule-Protocol</li>
+<li><strong>模板：</strong> 无</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>注释：</strong> 无</li>
+</ul>
+</div>
+</section>
+<section class="page" id="5.4_Capsule_Types">
+<h2>
+<a href="#5.4_Capsule_Types">5.4. Capsule类型</a>
+</h2>
+<div class="content">
+<p>本文档为HTTP Capsule类型码建立了一个注册表。“HTTP Capsule Types"注册表管理一个62位的空间，并遵循[QUIC]第22.1章中记录的QUIC注册策略。这个新注册表包含了[QUIC]第22.1.1章中列出的通用字段集合。除了这些通用字段外，此注册表中的所有注册条目<em><strong>必须</strong></em>包含一个"Capsule Type"字段，该字段包含Capsule类型的简短名称或标签。</p>
+<p>此注册表中的永久注册条目使用"Specification Required"策略（[IANA-POLICY]第4.6章）分配，但值在0x00到0x3f（十六进制，含）之间的情况除外，这些值使用[IANA-POLICY]第4.9和4.10章中定义的"Standards Action"或"IESG Approval"来分配。</p>
+<p>具有形如0x29 * N + 0x17（N为整数）的值的Capsule类型被保留使用，用于实践未知Capsule类型必须被忽略的要求。这些Capsule没有语义，可以携带任意值。这些值<em><strong>必须不</strong></em>由IANA分配，并且<em><strong>必须不</strong></em>出现在已分配值的列表中。</p>
+<p>此注册表初始包含以下条目：</p>
+<ul>
+<li><strong>值：</strong> 0x00</li>
+<li><strong>Capsule类型：</strong> DATAGRAM</li>
+<li><strong>状态：</strong> permanent（永久）</li>
+<li><strong>参考：</strong> RFC 9297</li>
+<li><strong>变更控制者：</strong> IETF</li>
+<li><strong>联系方式：</strong> MASQUE Working Group <a href="mailto:masque@ietf.org">masque@ietf.org</a> (mailto:masque@ietf.org)</li>
+<li><strong>备注：</strong> 无</li>
+</ul>
+</div>
+</section>
+<section class="page" id="6_References">
+<h1>
+<a href="#6_References">6. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="6.1_Normative_References">
+<h2>
+<a href="#6.1_Normative_References">6.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> HTTP语义</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/1.1">
+<p><a href="#HTTP%2f1.1"><strong>[HTTP/1.1]</strong></a> HTTP/1.1</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP/1.1”, STD 99, RFC 9112, DOI 10.17487/RFC9112, June 2022, <a href="https://www.rfc-editor.org/info/rfc9112">https://www.rfc-editor.org/info/rfc9112</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> HTTP/2</p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="IANA-POLICY">
+<p><a href="#IANA-POLICY"><strong>[IANA-POLICY]</strong></a> RFC中IANA考量章节编写指南</p>
+<p>Cotton, M., Leiba, B., and T. Narten, “Guidelines for Writing an IANA Considerations Section in RFCs”, BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017, <a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>.</p>
+</div>
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> QUIC：一种基于UDP的安全多路复用传输协议</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-DGRAM">
+<p><a href="#QUIC-DGRAM"><strong>[QUIC-DGRAM]</strong></a> QUIC不可靠数据报扩展</p>
+<p>Pauly, T., Kinnear, E., and D. Schinazi, “An Unreliable Datagram Extension to QUIC”, RFC 9221, DOI 10.17487/RFC9221, March 2022, <a href="https://www.rfc-editor.org/info/rfc9221">https://www.rfc-editor.org/info/rfc9221</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> 用于RFC中指示需求等级的关键词</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119关键词中大写与小写的歧义性</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="STRUCTURED-FIELDS">
+<p><a href="#STRUCTURED-FIELDS"><strong>[STRUCTURED-FIELDS]</strong></a> HTTP结构化字段值</p>
+<p>Nottingham, M. and P-H. Kamp, “Structured Field Values for HTTP”, RFC 8941, DOI 10.17487/RFC8941, February 2021, <a href="https://www.rfc-editor.org/info/rfc8941">https://www.rfc-editor.org/info/rfc8941</a>.</p>
+</div>
+<div class="out_ref" id="TCP">
+<p><a href="#TCP"><strong>[TCP]</strong></a> 传输控制协议（TCP）</p>
+<p>Eddy, W., Ed., “Transmission Control Protocol (TCP)”, STD 7, RFC 9293, DOI 10.17487/RFC9293, August 2022, <a href="https://www.rfc-editor.org/info/rfc9293">https://www.rfc-editor.org/info/rfc9293</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="6.2_Informative_References">
+<h2>
+<a href="#6.2_Informative_References">6.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="DPLPMTUD">
+<p><a href="#DPLPMTUD"><strong>[DPLPMTUD]</strong></a> 数据报传输的分组层路径MTU发现</p>
+<p>Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, “Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT2">
+<p><a href="#EXT-CONNECT2"><strong>[EXT-CONNECT2]</strong></a> 使用HTTP/2引导WebSocket</p>
+<p>McManus, P., “Bootstrapping WebSockets with HTTP/2”, RFC 8441, DOI 10.17487/RFC8441, September 2018, <a href="https://www.rfc-editor.org/info/rfc8441">https://www.rfc-editor.org/info/rfc8441</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT3">
+<p><a href="#EXT-CONNECT3"><strong>[EXT-CONNECT3]</strong></a> 使用HTTP/3引导WebSocket</p>
+<p>Hamilton, R., “Bootstrapping WebSockets with HTTP/3”, RFC 9220, DOI 10.17487/RFC9220, June 2022, <a href="https://www.rfc-editor.org/info/rfc9220">https://www.rfc-editor.org/info/rfc9220</a>.</p>
+</div>
+<div class="out_ref" id="PRIORITY">
+<p><a href="#PRIORITY"><strong>[PRIORITY]</strong></a> HTTP可扩展优先级方案</p>
+<p>Oku, K. and L. Pardue, “Extensible Prioritization Scheme for HTTP”, RFC 9218, DOI 10.17487/RFC9218, June 2022, <a href="https://www.rfc-editor.org/info/rfc9218">https://www.rfc-editor.org/info/rfc9218</a>.</p>
+</div>
+<div class="out_ref" id="WEBSOCKET">
+<p><a href="#WEBSOCKET"><strong>[WEBSOCKET]</strong></a> WebSocket协议</p>
+<p>Fette, I. and A. Melnikov, “The WebSocket Protocol”, RFC 6455, DOI 10.17487/RFC6455, December 2011, <a href="https://www.rfc-editor.org/info/rfc6455">https://www.rfc-editor.org/info/rfc6455</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>本文档的部分内容此前是QUIC DATAGRAM帧定义本身的一部分；作者希望感谢该文档的作者以及IETF MASQUE工作组成员提出的建议。此外，作者希望感谢Martin Thomson建议使用HTTP/3设置。另外，作者希望感谢Ben Schwartz的实质性贡献。本文档的最终设计出自HTTP数据报设计团队（HTTP Datagrams Design Team），其成员包括Alan Frindell、Alex Chernyakhovsky、Ben Schwartz、Eric Rescorla、Marcus Ihlar、Martin Thomson、Mike Bishop、Tommy Pauly、Victor Vasiliev以及本文作者。作者感谢Mark Nottingham和Philipp Tiesel提出的有帮助的意见。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">作者地址</a>
+</h1>
+<div class="content">
+<h5 id="david-schinazi">David Schinazi</h5>
+<dl>
+<dt>:   Google LLC</dt>
+<dd>1600 Amphitheatre Parkway</dd>
+<dd>Mountain View, CA 94043</dd>
+<dd>United States of America</dd>
+<dd>Email: <a href="mailto:dschinazi.ietf@gmail.com">dschinazi.ietf@gmail.com</a></dd>
+</dl>
+<h5 id="lucas-pardue">Lucas Pardue</h5>
+<dl>
+<dt>:   Cloudflare</dt>
+<dd>Email: <a href="mailto:lucaspardue.24.7@gmail.com">lucaspardue.24.7@gmail.com</a></dd>
+</dl>
+<h2 id="译">译</h2>
+<ul>
+<li><a href="https://github.com/fangqiuhang">方秋航</a>
+<ul>
+<li>Email: <a href="mailto:fangqiuhang@163.com">fangqiuhang@163.com</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</div>
+</body>
+</html>

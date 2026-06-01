@@ -1,0 +1,1382 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.162.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9484中文：HTTP中IP代理</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9484_Chinese_Simplified/css/RFC9484.css" rel="stylesheet"/>
+<link href="/RFC9484_Chinese_Simplified/index.xml" rel="alternate" title="RFC9484中文：HTTP中IP代理" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9484">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9484_Chinese_Simplified/">RFC9484中文：HTTP中IP代理</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9484_Proxying_IP_in_HTTP">RFC9484 HTTP中IP代理</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+</li>
+<li>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</li>
+<li>
+<a href="#3_Configuration_of_Clients">3. 客户端配置</a>
+</li>
+<li>
+<a href="#4_Tunnelling_IP_over_HTTP">4. 基于HTTP的IP隧道</a>
+<ul>
+<li><a href="#4.1_IP_Proxy_Handling">4.1. IP代理处理</a></li>
+<li><a href="#4.2_HTTP1.1_Request">4.2. HTTP/1.1请求</a></li>
+<li><a href="#4.3_HTTP1.1_Response">4.3. HTTP/1.1响应</a></li>
+<li><a href="#4.4_HTTP2_and_HTTP3_Requests">4.4. HTTP/2与HTTP/3请求</a></li>
+<li><a href="#4.5_HTTP2_and_HTTP3_Responses">4.5. HTTP/2与HTTP/3响应</a></li>
+<li><a href="#4.6_Limiting_Request_Scope">4.6. 限制请求范围</a></li>
+<li>
+<a href="#4.7_Capsules">4.7. Capsules</a>
+<ul>
+<li><a href="#4.7.1_ADDRESS_ASSIGN_Capsule">4.7.1. ADDRESS_ASSIGN Capsule</a></li>
+<li><a href="#4.7.2_ADDRESS_REQUEST_Capsule">4.7.2. ADDRESS_REQUEST Capsule</a></li>
+<li><a href="#4.7.3_ROUTE_ADVERTISEMENT_Capsule">4.7.3. ROUTE_ADVERTISEMENT Capsule</a></li>
+</ul>
+</li>
+<li><a href="#4.8_IPv6_Extension_Headers">4.8. IPv6扩展头部</a></li>
+</ul>
+</li>
+<li>
+<a href="#5_Context_Identifiers">5. 上下文标识符</a>
+</li>
+<li>
+<a href="#6_HTTP_Datagram_Payload_Format">6. HTTP数据报载荷格式</a>
+</li>
+<li>
+<a href="#7_IP_Packet_Handling">7. IP数据包处理</a>
+<ul>
+<li><a href="#7.1_Link_Operation">7.1. 链路操作</a></li>
+<li>
+<a href="#7.2_Routing_Operation">7.2. 路由操作</a>
+<ul>
+<li><a href="#7.2.1_Error_Signalling">7.2.1. 错误信令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#8_Examples">8. 示例</a>
+<ul>
+<li><a href="#8.1_Remote_Access_VPN">8.1. 远程访问VPN</a></li>
+<li><a href="#8.2_Site-to-Site_VPN">8.2. 站点到站点VPN</a></li>
+<li><a href="#8.3_IP_Flow_Forwarding">8.3. IP流转发</a></li>
+<li><a href="#8.4_Proxied_Connection_Racing">8.4. 代理连接竞速</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_Extensibility_Considerations">9. 可扩展性考量</a>
+</li>
+<li>
+<a href="#10_Performance_Considerations">10. 性能考量</a>
+<ul>
+<li><a href="#10.1_MTU_Considerations">10.1. MTU考量</a></li>
+<li><a href="#10.2_ECN_Considerations">10.2. ECN考量</a></li>
+<li><a href="#10.3_Differentiated_Services_Considerations">10.3. 差异化服务考量</a></li>
+</ul>
+</li>
+<li>
+<a href="#11_Security_Considerations">11. 安全性考量</a>
+</li>
+<li>
+<a href="#12_IANA_Considerations">12. 关于IANA的考量</a>
+<ul>
+<li><a href="#12.1_HTTP_Upgrade_Token_Registration">12.1. HTTP升级令牌注册</a></li>
+<li><a href="#12.2_MASQUE_URI_Suffixes_Registry_Creation">12.2. MASQUE URI后缀注册表创建</a></li>
+<li><a href="#12.3_Updates_to_masque_Well-Known_URI_Registration">12.3. 对masque Well-Known URI注册的更新</a></li>
+<li><a href="#12.4_HTTP_Capsule_Types_Registrations">12.4. HTTP Capsule类型注册</a></li>
+</ul>
+</li>
+<li>
+<a href="#13_References">13. 参考文献</a>
+<ul>
+<li><a href="#13.1_Normative_References">13.1. 规范性参考文献</a></li>
+<li><a href="#13.2_Informative_References">13.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Addresses">作者地址</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Jun 1, 2026
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9484_Proxying_IP_in_HTTP">
+<h1>
+<a href="#RFC9484_Proxying_IP_in_HTTP">RFC9484 HTTP中IP代理</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9484">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9484&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9484">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/info/rfc9484">9484</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2023年10月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>T. Pauly, Ed. <br/><i>Apple Inc.</i></td>
+<td>D. Schinazi, A. Chernyakhovsky <br/><i>Google LLC</i></td>
+</tr>
+<tr>
+<td></td>
+<td>M. Kühlewind, M. Westerlund <br/><i>Ericsson</i></td>
+<td></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于HTTP中IP代理的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>本文描述了如何在HTTP中代理IP数据包。该协议类似于HTTP中的UDP代理，但允许传输任意IP数据包。更具体地说，本文定义了一种协议，允许HTTP客户端通过充当IP代理的HTTP服务器创建IP隧道。本文更新了RFC 9298。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9484">https://www.rfc-editor.org/info/rfc9484</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2023 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的修订版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<h2 id="1-引言">1. 引言</h2>
+<p>HTTP 提供了 CONNECT 方法（参见 [HTTP] 第 9.3.6 节）用于创建到目标地址的 TCP [TCP] 隧道，以及类似的 UDP 机制 [CONNECT-UDP]。然而，这些机制无法隧道化其他 IP 协议 [IANA-PN]，也无法传递 IP 头部字段。</p>
+<p>本文档描述了一种用于通过 HTTP 隧道化 IP 的协议，该协议通过一个充当 HTTP 上 IP 特定代理的 HTTP 服务器来实现。此协议可用于多种场景，如远程接入 VPN、站点到站点 VPN、安全的点对点通信或通用数据包隧道化。</p>
+<p>IP 代理的操作方式与 UDP 代理 [CONNECT-UDP] 类似，代理本身通过一个绝对 URL 来标识，该 URL 可以包含流量的目的地。客户端使用 URI 模板 [TEMPLATE] 生成这些 URL，详见第 3 节。</p>
+<p>本协议通过使用 HTTP 数据报 [HTTP-DGRAM] 支持所有现有的 HTTP 版本。当使用 HTTP/2 [HTTP/2] 或 HTTP/3 [HTTP/3] 时，它使用 HTTP 扩展 CONNECT，如 [EXT-CONNECT2] 和 [EXT-CONNECT3] 中所述。当使用 HTTP/1.x [HTTP/1.1] 时，它使用 HTTP Upgrade，如 [HTTP] 第 7.8 节所定义。</p>
+<p>本文档更新了 [CONNECT-UDP]，更改了 “masque” well-known URI；参见第 12.3 节。</p>
+</div>
+</section>
+<section class="page" id="2_Conventions_and_Definitions">
+<h1>
+<a href="#2_Conventions_and_Definitions">2. 约定与定义</a>
+</h1>
+<div class="content">
+<h2 id="2-约定与定义">2. 约定与定义</h2>
+<p>本文档中的关键词 “<em><strong>必须</strong></em>”, “<em><strong>必须</strong></em> NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “<em><strong>应该</strong></em>”, “<em><strong>应该</strong></em> NOT”, “<em><strong>推荐</strong></em>”, “NOT <em><strong>推荐</strong></em>”, “<em><strong>可以</strong></em>”, 以及 “OPTIONAL”，当且仅当它们以全部大写字母出现时，应按照 BCP 14 [RFC2119] [RFC8174] 中的描述进行解释。</p>
+<p>在本文档中，我们使用术语"IP 代理"来指代响应 IP 代理请求的 HTTP 服务器。术语"客户端"在 HTTP 意义上使用；客户端构造 IP 代理请求。如果在客户端和 IP 代理之间存在 HTTP 中间人（如 [HTTP] 第 3.7 节所定义），则在本文档中将其称为"中间人"。术语"IP 代理端点"指代客户端和 IP 代理二者。</p>
+<p>本文档使用 [QUIC] 中的术语。本文档定义协议类型时，定义格式使用 [QUIC] 第 1.3 节中的表示法。本规范使用 [QUIC] 第 16 节中的可变长度整数编码。可变长度整数值不需要以最小必要的字节数编码。</p>
+<p>注意，当使用的 HTTP 版本不支持多路复用流时（如 HTTP/1.1），本文档中任何对"流"的引用都代表整个连接。</p>
+</div>
+</section>
+<section class="page" id="3_Configuration_of_Clients">
+<h1>
+<a href="#3_Configuration_of_Clients">3. 客户端配置</a>
+</h1>
+<div class="content">
+<h2 id="3-客户端配置">3. 客户端配置</h2>
+<p>客户端通过 URI 模板 [TEMPLATE] 配置为使用 HTTP 上的 IP 代理。URI 模板 <em><strong>可以</strong></em> 包含两个变量：“target” 和 “ipproto”；参见第 4.6 节。定义模板时需要考虑变量的可选性，使得变量要么自描述，要么可以在语法中排除。</p>
+<p>示例如下所示：</p>
+<pre tabindex="0"><code>https://example.org/.well-known/masque/ip/{target}/{ipproto}/
+https://proxy.example.org:4443/masque/ip?t={target}&amp;i={ipproto}
+https://proxy.example.org:4443/masque/ip{?target,ipproto}
+https://masque.example.org/?user=bob
+</code></pre><p>     图 1: URI 模板示例</p>
+<p>以下要求适用于 URI 模板：</p>
+<ul>
+<li>
+<p>URI 模板 <em><strong>必须</strong></em> 为 level 3 模板或更低。</p>
+</li>
+<li>
+<p>URI 模板 <em><strong>必须</strong></em> 为绝对形式，且 <em><strong>必须</strong></em> 包含非空的 scheme、authority 和 path 组件。</p>
+</li>
+<li>
+<p>URI 模板的 path 组件 <em><strong>必须</strong></em> 以斜杠 “/” 开头。</p>
+</li>
+<li>
+<p>所有模板变量 <em><strong>必须</strong></em> 位于 URI 的 path 或 query 组件中。</p>
+</li>
+<li>
+<p>URI 模板 <em><strong>可以</strong></em> 包含 “target” 和 “ipproto” 两个变量，并 <em><strong>可以</strong></em> 包含其他变量。如果包含 “target” 或 “ipproto” 变量，其值 <em><strong>必须</strong></em> 不得为空。客户端可以使用 “*” 来表示通配符或无偏好值；参见第 4.6 节。</p>
+</li>
+<li>
+<p>URI 模板 <em><strong>必须</strong></em> 不得包含任何非 ASCII Unicode 字符，且 <em><strong>必须</strong></em> 仅包含 0x21-0x7E 范围内（含）的 ASCII 字符（注意，允许百分号编码；参见 [URI] 第 2.1 节）。</p>
+</li>
+<li>
+<p>URI 模板 <em><strong>必须</strong></em> 不得使用保留扩展（"+" 运算符）、片段扩展（"#" 运算符）、带点前缀的标签扩展、带斜杠前缀的路径段扩展，以及带分号前缀的路径样式参数扩展。</p>
+</li>
+</ul>
+<p>客户端 <em><strong>应该</strong></em> 验证上述要求；但是，客户端 <em><strong>可以</strong></em> 使用缺乏此特定验证功能的通用 URI 模板实现。如果客户端检测到 URI 模板不满足上述任何要求，客户端 <em><strong>必须</strong></em> 拒绝其配置，并在未将请求发送到 IP 代理之前中止请求。</p>
+<p>与 UDP 代理一样，某些 IP 代理的客户端配置仅允许用户配置代理主机和代理端口。具有此类限制的客户端 <em><strong>可以</strong></em> 尝试使用默认模板访问 IP 代理功能，该默认模板定义为：“https://$PROXY_HOST:$PROXY_PORT/.well-known/masque/ip/{target}/{ipproto}/"，其中 $PROXY_HOST 和 $PROXY_PORT 分别是 IP 代理的已配置主机和端口。如果 IP 代理部署需要与此类客户端进行互操作，<em><strong>应该</strong></em> 在此位置提供服务。</p>
+</div>
+</section>
+<section class="page" id="4_Tunnelling_IP_over_HTTP">
+<h1>
+<a href="#4_Tunnelling_IP_over_HTTP">4. 基于HTTP的IP隧道</a>
+</h1>
+<div class="content">
+<h2 id="4-基于-http-的-ip-隧道">4. 基于 HTTP 的 IP 隧道</h2>
+<p>为了允许对基于 HTTP 的 IP 隧道进行协商，本文档定义了 “connect-ip” HTTP 升级令牌。所得的 IP 隧道使用 Capsule 协议（参见 [HTTP-DGRAM] 第 3.2 节），HTTP 数据报采用第 6 节中定义的格式。</p>
+<p>要启动与单个 HTTP 流关联的 IP 隧道，客户端发出包含 “connect-ip” 升级令牌的请求。</p>
+<p>在发送其 IP 代理请求时，客户端 SHALL 执行 URI 模板扩展以确定其请求的路径和查询部分；参见第 3 节。</p>
+<p>根据 Capsule 协议的定义（参见 [HTTP-DGRAM] 第 3.2 节），IP 代理请求不携带任何消息内容。同样，成功的 IP 代理响应也不携带任何消息内容。</p>
+<p>基于 HTTP 的 IP 代理 <em><strong>必须</strong></em> 通过 TLS 或 QUIC 加密，或其他等效的加密协议运行，以提供机密性、完整性和认证。</p>
+</div>
+</section>
+<section class="page" id="4.1_IP_Proxy_Handling">
+<h2>
+<a href="#4.1_IP_Proxy_Handling">4.1. IP代理处理</a>
+</h2>
+<div class="content">
+<h2 id="41-ip-代理处理">4.1. IP 代理处理</h2>
+<p>收到 IP 代理请求后：</p>
+<ul>
+<li>
+<p>如果接收方被配置为使用另一个 HTTP 服务器，它将充当中介，将请求转发到另一个 HTTP 服务器。注意，此类中间人可能需要重新编码请求，如果它们使用与接收请求时不同的 HTTP 版本进行转发，因为请求编码因版本而异（见下文）。</p>
+</li>
+<li>
+<p>否则，接收方将充当 IP 代理。IP 代理可以选择拒绝 IP 代理请求。否则，它从从请求头重构出的 URI 中提取可选的 “target” 和 “ipproto” 变量，解码其百分号编码，并建立 IP 隧道。</p>
+</li>
+</ul>
+<p>IP 代理 <em><strong>必须</strong></em> 验证解码后的 “target” 和 “ipproto” 变量是否满足第 4.6 节中的要求。如果不满足，IP 代理 <em><strong>必须</strong></em> 将请求视为格式错误；参见 [HTTP/2] 第 8.1.1 节和 [HTTP/3] 第 4.1.2 节。如果 “target” 变量是一个 DNS 名称，IP 代理 <em><strong>必须</strong></em> 在回复 HTTP 请求之前执行 DNS 解析（通过 A 和/或 AAAA 记录获取相应的 IPv4 和/或 IPv6 地址）。如果在此过程中发生错误，IP 代理 <em><strong>必须</strong></em> 拒绝请求，并 <em><strong>应该</strong></em> 使用适当的 Proxy-Status 头字段 [PROXY-STATUS] 发送详细信息。例如，如果 DNS 解析返回错误，代理可以使用 [PROXY-STATUS] 第 2.3.2 节中的 dns_error 代理错误类型。</p>
+<p>IP 转发隧道的生命周期与 IP 代理请求流绑定。IP 代理 <em><strong>必须</strong></em> 在请求流打开期间维护与 IP 转发隧道关联的所有 IP 地址和路由分配。IP 代理 <em><strong>可以</strong></em> 由于一段时间的无活动状态而选择拆除隧道，但它们在这样做时 <em><strong>必须</strong></em> 关闭请求流。</p>
+<p>成功的 IP 代理响应（如第 4.3 节和第 4.5 节所定义）表示 IP 代理已建立 IP 隧道并愿意代理 IP 载荷。除成功的 IP 代理响应外的任何响应都表示请求已失败；因此，客户端 <em><strong>必须</strong></em> 中止请求。</p>
+<p>除成功的 IP 代理响应外，IP 代理还可以发送 capsules 来分配地址并向客户端通告路由（第 4.7 节）。客户端也可以为网络到网络路由向 IP 代理分配地址并通告路由。</p>
+</div>
+</section>
+<section class="page" id="4.2_HTTP1.1_Request">
+<h2>
+<a href="#4.2_HTTP1.1_Request">4.2. HTTP/1.1请求</a>
+</h2>
+<div class="content">
+<h2 id="42-http11-请求">4.2. HTTP/1.1 请求</h2>
+<p>使用 HTTP/1.1 [HTTP/1.1] 时，IP 代理请求需满足以下要求：</p>
+<ul>
+<li>
+<p>方法 SHALL 为 “GET”。</p>
+</li>
+<li>
+<p>请求 SHALL 包含单个 Host 头字段，其中包含 IP 代理的主机和可选端口。</p>
+</li>
+<li>
+<p>请求 SHALL 包含一个 Connection 头字段，值为 “Upgrade”（注意，此要求不区分大小写，依据 [HTTP] 第 7.6.1 节）。</p>
+</li>
+<li>
+<p>请求 SHALL 包含一个 Upgrade 头字段，值为 “connect-ip”。</p>
+</li>
+</ul>
+<p>不符合这些限制的 IP 代理请求是格式错误的。此类格式错误请求的接收方 <em><strong>必须</strong></em> 以错误响应，并 <em><strong>应该</strong></em> 使用 400（Bad Request）状态码。</p>
+<p>例如，如果客户端配置了 URI 模板 “<a href="https://example.org/.well-known/masque/ip/%7Btarget%7D/%7Bipproto%7D/%22">https://example.org/.well-known/masque/ip/{target}/{ipproto}/"</a> 并希望打开一个无目标或协议限制的 IP 转发隧道，它可以发送以下请求：</p>
+<pre tabindex="0"><code>GET https://example.org/.well-known/masque/ip/*/*/ HTTP/1.1
+Host: example.org
+Connection: Upgrade
+Upgrade: connect-ip
+Capsule-Protocol: ?1
+</code></pre><p>     图 2: HTTP/1.1 请求示例</p>
+</div>
+</section>
+<section class="page" id="4.3_HTTP1.1_Response">
+<h2>
+<a href="#4.3_HTTP1.1_Response">4.3. HTTP/1.1响应</a>
+</h2>
+<div class="content">
+<h2 id="43-http11-响应">4.3. HTTP/1.1 响应</h2>
+<p>服务器通过回复满足以下要求来指示成功的 IP 代理响应：</p>
+<ul>
+<li>
+<p>响应的 HTTP 状态码 SHALL 为 101（Switching Protocols）。</p>
+</li>
+<li>
+<p>响应 SHALL 包含一个 Connection 头字段，值为 “Upgrade”（注意，此要求不区分大小写，依据 [HTTP] 第 7.6.1 节）。</p>
+</li>
+<li>
+<p>响应 SHALL 包含单个 Upgrade 头字段，值为 “connect-ip”。</p>
+</li>
+<li>
+<p>响应 SHALL 满足启动 Capsule 协议的 HTTP 响应的要求；参见 [HTTP-DGRAM] 第 3.2 节。</p>
+</li>
+</ul>
+<p>如果这些要求中有任何一项不满足，客户端 <em><strong>必须</strong></em> 将此代理尝试视为失败并关闭连接。</p>
+<p>例如，服务器可以回复如下：</p>
+<pre tabindex="0"><code>HTTP/1.1 101 Switching Protocols
+Connection: Upgrade
+Upgrade: connect-ip
+Capsule-Protocol: ?1
+</code></pre><p>     图 3: HTTP/1.1 响应示例</p>
+</div>
+</section>
+<section class="page" id="4.4_HTTP2_and_HTTP3_Requests">
+<h2>
+<a href="#4.4_HTTP2_and_HTTP3_Requests">4.4. HTTP/2与HTTP/3请求</a>
+</h2>
+<div class="content">
+<h2 id="44-http2-与-http3-请求">4.4. HTTP/2 与 HTTP/3 请求</h2>
+<p>使用 HTTP/2 [HTTP/2] 或 HTTP/3 [HTTP/3] 时，IP 代理请求使用 HTTP 扩展 CONNECT。这要求服务器发送一个 HTTP Setting，如 [EXT-CONNECT2] 和 [EXT-CONNECT3] 所述，并且请求使用满足以下要求的 HTTP 伪头字段：</p>
+<ul>
+<li>
+<p>:method 伪头字段 SHALL 为 “CONNECT”。</p>
+</li>
+<li>
+<p>:protocol 伪头字段 SHALL 为 “connect-ip”。</p>
+</li>
+<li>
+<p>:authority 伪头字段 SHALL 包含 IP 代理的 authority。</p>
+</li>
+<li>
+<p>:path 和 :scheme 伪头字段 SHALL 不得为空。它们的值 SHALL 包含完成 URI 模板扩展过程后 URI 模板中的 scheme 和 path；参见第 3 节。URI 模板中的变量可以确定请求的范围，例如请求全隧道 IP 数据包转发，或特定的代理流；参见第 4.6 节。</p>
+</li>
+</ul>
+<p>不符合这些限制的 IP 代理请求是格式错误的；参见 [HTTP/2] 第 8.1.1 节和 [HTTP/3] 第 4.1.2 节。</p>
+<p>例如，如果客户端配置了 URI 模板 “<a href="https://example.org/.well-known/masque/ip/%7Btarget%7D/%7Bipproto%7D/%22">https://example.org/.well-known/masque/ip/{target}/{ipproto}/"</a> 并希望打开一个无目标或协议限制的 IP 转发隧道，它可以发送以下请求：</p>
+<pre tabindex="0"><code>HEADERS
+:method = CONNECT
+:protocol = connect-ip
+:scheme = https
+:path = /.well-known/masque/ip/*/*/
+:authority = example.org
+capsule-protocol = ?1
+</code></pre><p>     图 4: HTTP/2 或 HTTP/3 请求示例</p>
+</div>
+</section>
+<section class="page" id="4.5_HTTP2_and_HTTP3_Responses">
+<h2>
+<a href="#4.5_HTTP2_and_HTTP3_Responses">4.5. HTTP/2与HTTP/3响应</a>
+</h2>
+<div class="content">
+<h2 id="45-http2-与-http3-响应">4.5. HTTP/2 与 HTTP/3 响应</h2>
+<p>服务器通过回复满足以下要求来指示成功的 IP 代理响应：</p>
+<ul>
+<li>
+<p>响应的 HTTP 状态码 SHALL 在 2xx（Successful）范围内。</p>
+</li>
+<li>
+<p>响应 SHALL 满足启动 Capsule 协议的 HTTP 响应的要求；参见 [HTTP-DGRAM] 第 3.2 节。</p>
+</li>
+</ul>
+<p>如果这些要求中有任何一项不满足，客户端 <em><strong>必须</strong></em> 将此代理尝试视为失败并中止请求。例如，任何在 3xx 范围内的状态码将被视为失败，导致客户端中止请求。</p>
+<p>例如，服务器可以回复如下：</p>
+<pre tabindex="0"><code>HEADERS
+:status = 200
+capsule-protocol = ?1
+</code></pre><p>     图 5: HTTP/2 或 HTTP/3 响应示例</p>
+</div>
+</section>
+<section class="page" id="4.6_Limiting_Request_Scope">
+<h2>
+<a href="#4.6_Limiting_Request_Scope">4.6. 限制请求范围</a>
+</h2>
+<div class="content">
+<h2 id="46-限制请求范围">4.6. 限制请求范围</h2>
+<p>与 UDP 代理请求不同，UDP 代理请求需要指定目标主机，而 IP 代理请求可以允许端点向任意主机发送任意 IP 数据包。客户端可以选择通过在其请求中添加参数，将给定请求限制为特定的 IP 前缀或 IP 协议。当 IP 代理知道请求被限定到某个目标前缀或协议时，它可以利用此信息来优化其资源分配；例如，IP 代理可以为限定到不同前缀和/或不同协议的两个 IP 代理请求分配相同的公共 IP 地址。</p>
+<p>请求的范围由客户端通过 URI 模板的 “target” 和 “ipproto” 变量指示给 IP 代理；参见第 3 节。“target” 和 “ipproto” 变量都是可选的；如果不包含它们，则认为它们携带通配符值 “*"。</p>
+<dl>
+<dt>target:</dt>
+<dd>变量 “target” 包含客户端希望代理数据包到达的特定主机的主机名或 IP 前缀。如果未指定 “target” 变量或其值为 “*"，则客户端请求与任何允许的主机通信。“target” 支持使用 DNS 名称、IPv6 前缀和 IPv4 前缀。注意，不支持 IPv6 作用域寻址区域标识符 [IPv6-ZONE-ID]。如果目标是 IP 前缀（IP 地址可选地后跟百分号编码的斜杠，再后跟前缀长度（以位为单位）），则该请求仅支持单个 IP 版本。如果目标是主机名，则预期 IP 代理执行 DNS 解析以确定向客户端通告哪些路由。IP 代理 <em><strong>应该</strong></em> 发送一个 ROUTE_ADVERTISEMENT capsule，其中包含为所请求主机名解析到的、IP 代理可访问的、且属于 IP 代理也发送了分配地址的地址族的所有地址的路由。</dd>
+<dt>ipproto:</dt>
+<dd>变量 “ipproto” 包含一个 Internet 协议编号；参见 IANA “Assigned Internet Protocol Numbers” 注册表 [IANA-PN] 中定义的列表。如果存在，它指定客户端仅希望为此请求代理特定的 IP 协议。如果值为 “*"，或者不包含该变量，则客户端请求使用任何 IP 协议。“ipproto” 变量中指示的 IP 协议表示在直接通过 HTTP 数据报发送的 IP 头部中携带的允许的下一个头部值（最外层 IP 头部）。无论此字段的值如何，ICMP 流量始终被允许。</dd>
+</dl>
+<p>使用 [URI] 中的术语 IPv6address、IPv4address 和 reg-name，“target” 和 “ipproto” 变量 <em><strong>必须</strong></em> 遵循图 6 中的格式，使用 [ABNF] 的表示法。此外：</p>
+<ul>
+<li>
+<p>如果 “target” 包含 IPv6 字面量或前缀，冒号（”:"）<em><strong>必须</strong></em> 进行百分号编码。例如，如果目标主机是 “2001:db8::42”，它将在 URI 中被编码为 “2001%3Adb8%3A%3A42”。</p>
+</li>
+<li>
+<p>如果存在，“target” 中的 IP 前缀长度 SHALL 以百分号编码的斜杠（”/"）开头："%2F”。IP 前缀长度 <em><strong>必须</strong></em> 表示一个介于 0 和 IP 地址长度（以位为单位）之间（含）的十进制整数。</p>
+</li>
+<li>
+<p>如果 “target” 包含 IP 前缀且前缀长度严格小于 IP 地址的位长度，则未被前缀长度覆盖的 IP 地址的低位 <em><strong>必须</strong></em> 全部设置为 0。</p>
+</li>
+<li>
+<p>“ipproto” <em><strong>必须</strong></em> 表示一个介于 0 和 255 之间（含）的十进制整数或通配符值 “*"。</p>
+</li>
+</ul>
+<pre tabindex="0"><code>target = IPv6prefix / IPv4prefix / reg-name / "*"
+IPv6prefix = IPv6address ["%2F" 1*3DIGIT]
+IPv4prefix = IPv4address ["%2F" 1*2DIGIT]
+ipproto = 1*3DIGIT / "*"
+</code></pre><p>     图 6: URI 模板变量格式</p>
+<p>IP 代理 <em><strong>可以</strong></em> 使用客户端提供的范围信息执行访问控制，即如果客户端未被授权访问范围中包含的任何目的地，则 IP 代理可以立即拒绝请求。</p>
+</div>
+</section>
+<section class="page" id="4.7_Capsules">
+<h2>
+<a href="#4.7_Capsules">4.7. Capsules</a>
+</h2>
+<div class="content">
+<h2 id="47-capsules">4.7. Capsules</h2>
+<p>本文档定义了多种新的 capsule 类型，允许端点之间交换 IP 配置信息。两个端点 <em><strong>可以</strong></em> 发送任意数量的这些新 capsules。</p>
+</div>
+</section>
+<section class="page" id="4.7.1_ADDRESS_ASSIGN_Capsule">
+<h3>
+<a href="#4.7.1_ADDRESS_ASSIGN_Capsule">4.7.1. ADDRESS_ASSIGN Capsule</a>
+</h3>
+<div class="content">
+<h2 id="471-address_assign-capsule">4.7.1. ADDRESS_ASSIGN Capsule</h2>
+<p>ADDRESS_ASSIGN capsule（capsule 类型 0x01）允许一个端点为其对等方分配一个 IP 地址或前缀列表。每个 capsule 包含当前分配给接收方的完整 IP 前缀列表。这些地址中的任何一个都可以用作此 capsule 接收方发起的 IP 数据包的源地址。</p>
+<pre tabindex="0"><code>ADDRESS_ASSIGN Capsule {
+  Type (i) = 0x01,
+  Length (i),
+  Assigned Address (..) ...,
+}
+</code></pre><p>     图 7: ADDRESS_ASSIGN Capsule 格式</p>
+<p>ADDRESS_ASSIGN capsule 包含零个或多个已分配地址的序列。</p>
+<pre tabindex="0"><code>Assigned Address {
+  Request ID (i),
+  IP Version (8),
+  IP Address (32..128),
+  IP Prefix Length (8),
+}
+</code></pre><p>     图 8: 已分配地址格式</p>
+<p>每个已分配地址包含以下字段：</p>
+<dl>
+<dt>Request ID:</dt>
+<dd>请求标识符，以可变长度整数编码。如果此地址分配是对地址请求（参见第 4.7.2 节）的响应，则此字段 SHALL 包含请求中对应字段的值。否则，此字段 SHALL 为零。</dd>
+<dt>IP Version:</dt>
+<dd>此地址分配的 IP 版本，以无符号 8 位整数编码。它 <em><strong>必须</strong></em> 为 4 或 6。</dd>
+<dt>IP Address:</dt>
+<dd>已分配的 IP 地址。如果 IP Version 字段值为 4，则 IP Address 字段 SHALL 的长度为 32 位。如果 IP Version 字段值为 6，则 IP Address 字段 SHALL 的长度为 128 位。</dd>
+<dt>IP Prefix Length:</dt>
+<dd>IP 地址中用于定义正在分配的前缀的位数，以无符号 8 位整数编码。这 <em><strong>必须</strong></em> 小于或等于 IP Address 字段的位长度。如果前缀长度等于 IP 地址的长度，则此 capsule 的接收方可以从单个源地址发送数据包。如果前缀长度小于 IP 地址的长度，则此 capsule 的接收方可以从属于该前缀的任何源地址发送数据包。如果前缀长度严格小于 IP 地址的位长度，则 IP Address 字段中未被前缀长度覆盖的低位 <em><strong>必须</strong></em> 全部设置为 0。</dd>
+</dl>
+<p>如果接收时任何 capsule 字段是格式错误的，则 capsule 的接收方 <em><strong>必须</strong></em> 遵循 [HTTP-DGRAM] 第 3.3 节中定义的错误处理过程。</p>
+<p>如果 ADDRESS_ASSIGN capsule 不包含先前在另一个 ADDRESS_ASSIGN capsule 中传输的某个地址，则表示该地址已被移除。ADDRESS_ASSIGN capsule 也可以为空，表示所有地址都已移除。</p>
+<p>在基于 HTTP 的 IP 代理的某些部署中，端点需要由其对等方分配一个地址，然后才知道要在其自己的数据包上设置什么源地址。例如，在远程接入 VPN 场景（第 8.1 节）中，客户端在知道要使用什么地址之前无法发送 IP 数据包。在这些部署中，期望获得地址分配的端点 <em><strong>必须</strong></em> 发送一个 ADDRESS_REQUEST capsule。如果端点不需要任何地址分配（例如，通过带外方式配置了静态地址），则这不是必需的。</p>
+<p>虽然 ADDRESS_ASSIGN capsule 通常作为对 ADDRESS_REQUEST capsule 的响应发送，但端点 <em><strong>可以</strong></em> 在没有提示的情况下发送 ADDRESS_ASSIGN capsule。</p>
+</div>
+</section>
+<section class="page" id="4.7.2_ADDRESS_REQUEST_Capsule">
+<h3>
+<a href="#4.7.2_ADDRESS_REQUEST_Capsule">4.7.2. ADDRESS_REQUEST Capsule</a>
+</h3>
+<div class="content">
+<h2 id="472-address_request-capsule">4.7.2. ADDRESS_REQUEST Capsule</h2>
+<p>ADDRESS_REQUEST capsule（capsule 类型 0x02）允许一个端点向其对等方请求分配 IP 地址。该 capsule 允许端点可选地指示其对将要分配到的地址的偏好。</p>
+<pre tabindex="0"><code>ADDRESS_REQUEST Capsule {
+  Type (i) = 0x02,
+  Length (i),
+  Requested Address (..) ...,
+}
+</code></pre><p>     图 9: ADDRESS_REQUEST Capsule 格式</p>
+<p>ADDRESS_REQUEST capsule 包含一个或多个已请求地址的序列。</p>
+<pre tabindex="0"><code>Requested Address {
+  Request ID (i),
+  IP Version (8),
+  IP Address (32..128),
+  IP Prefix Length (8),
+}
+</code></pre><p>     图 10: 已请求地址格式</p>
+<p>每个已请求地址包含以下字段：</p>
+<dl>
+<dt>Request ID:</dt>
+<dd>请求标识符，以可变长度整数编码。这是此特定地址请求的标识符。来自给定端点的每个请求携带不同的标识符。一个端点 <em><strong>必须</strong></em> 不得重用 Request ID，且 <em><strong>必须</strong></em> 不得为零。</dd>
+<dt>IP Version:</dt>
+<dd>此地址请求的 IP 版本，以无符号 8 位整数编码。它 <em><strong>必须</strong></em> 为 4 或 6。</dd>
+<dt>IP Address:</dt>
+<dd>请求的 IP 地址。如果 IP Version 字段值为 4，则 IP Address 字段 SHALL 的长度为 32 位。如果 IP Version 字段值为 6，则 IP Address 字段 SHALL 的长度为 128 位。</dd>
+<dt>IP Prefix Length:</dt>
+<dd>请求的 IP 前缀的长度，以位为单位，以无符号 8 位整数编码。它 <em><strong>必须</strong></em> 小于或等于 IP Address 字段的位长度。如果前缀长度严格小于 IP 地址的位长度，则 IP Address 字段中未被前缀长度覆盖的低位 <em><strong>必须</strong></em> 全部设置为 0。</dd>
+</dl>
+<p>如果 IP 地址是全零（0.0.0.0 或 ::），这表示发送方正在请求该地址族的地址，但对特定地址没有偏好。在这种情况下，前缀长度仍然表示发送方对其所请求前缀长度的偏好。</p>
+<p>如果接收时任何 capsule 字段是格式错误的，则 capsule 的接收方 <em><strong>必须</strong></em> 遵循 [HTTP-DGRAM] 第 3.3 节中定义的错误处理过程。</p>
+<p>收到 ADDRESS_REQUEST capsule 后，端点 <em><strong>应该</strong></em> 为其对等方分配一个或多个 IP 地址，然后用 ADDRESS_ASSIGN capsule 响应以告知对等方分配信息。对于每个已请求地址，ADDRESS_REQUEST capsule 的接收方 SHALL 以具有匹配 Request ID 的已分配地址进行响应。如果请求的地址被分配了，则已分配地址响应中的 IP Address 和 IP Prefix Length 字段 SHALL 设置为分配的值。如果请求的地址未被分配，则 IP 地址 SHALL 为全零，且 IP Prefix Length SHALL 为最大长度（0.0.0.0/32 或 ::/128），以表示未分配任何地址。这些地址拒绝 <em><strong>应该</strong></em> 不包括在后续的 ADDRESS_ASSIGN capsule 中。注意，与任何 Request ID 不对应的其他已分配地址条目也可以包含在同一个 ADDRESS_ASSIGN 响应中。</p>
+<p>如果端点收到包含零个已请求地址的 ADDRESS_REQUEST capsule，它 <em><strong>必须</strong></em> 中止 IP 代理请求流。</p>
+<p>注意，已请求地址的排序不表示任何语义。同样，Request ID 仅用作唯一标识符；它不传达任何优先级或重要性。</p>
+</div>
+</section>
+<section class="page" id="4.7.3_ROUTE_ADVERTISEMENT_Capsule">
+<h3>
+<a href="#4.7.3_ROUTE_ADVERTISEMENT_Capsule">4.7.3. ROUTE_ADVERTISEMENT Capsule</a>
+</h3>
+<div class="content">
+<h2 id="473-route_advertisement-capsule">4.7.3. ROUTE_ADVERTISEMENT Capsule</h2>
+<p>ROUTE_ADVERTISEMENT capsule（capsule 类型 0x03）允许一个端点向其对等方通告它愿意将流量路由到一组 IP 地址范围。这表示发送方对每个地址范围都有现有路由，并通知其对等方：如果 ROUTE_ADVERTISEMENT capsule 的接收方在 HTTP 数据报中发送这些范围之一的 IP 数据包，则 capsule 的发送方将沿其现有路由转发它们。任何在这些地址范围内的地址都可以用作此 capsule 接收方发起的 IP 数据包的目的地地址。</p>
+<pre tabindex="0"><code>ROUTE_ADVERTISEMENT Capsule {
+  Type (i) = 0x03,
+  Length (i),
+  IP Address Range (..) ...,
+}
+</code></pre><p>     图 11: ROUTE_ADVERTISEMENT Capsule 格式</p>
+<p>ROUTE_ADVERTISEMENT capsule 包含零个或多个 IP 地址范围的序列。</p>
+<pre tabindex="0"><code>IP Address Range {
+  IP Version (8),
+  Start IP Address (32..128),
+  End IP Address (32..128),
+  IP Protocol (8),
+}
+</code></pre><p>     图 12: IP 地址范围格式</p>
+<p>每个 IP 地址范围包含以下字段：</p>
+<dl>
+<dt>IP Version:</dt>
+<dd>此范围的 IP 版本，以无符号 8 位整数编码。它 <em><strong>必须</strong></em> 为 4 或 6。</dd>
+<dt>Start IP Address 和 End IP Address:</dt>
+<dd>通告范围的包含性起始 IP 地址和结束 IP 地址。如果 IP Version 字段值为 4，这些字段 SHALL 的长度为 32 位。如果 IP Version 字段值为 6，这些字段 SHALL 的长度为 128 位。Start IP Address <em><strong>必须</strong></em> 小于或等于 End IP Address。</dd>
+<dt>IP Protocol:</dt>
+<dd>可以发送到此范围的流量的 Internet 协议编号，以无符号 8 位整数编码。如果值为 0，则允许所有协议。如果值不为 0，它表示在直接通过 HTTP 数据报发送的 IP 头部中携带的允许的下一个头部值（最外层 IP 头部）。无论此字段的值如何，ICMP 流量始终被允许。</dd>
+</dl>
+<p>如果接收时任何 capsule 字段是格式错误的，则 capsule 的接收方 <em><strong>必须</strong></em> 遵循 [HTTP-DGRAM] 第 3.3 节中定义的错误处理过程。</p>
+<p>收到 ROUTE_ADVERTISEMENT capsule 后，端点 <em><strong>可以</strong></em> 更新其关于对等方愿意路由什么的本地状态（受本地策略约束），例如通过在路由表中安装条目。</p>
+<p>每个 ROUTE_ADVERTISEMENT 包含完整的地址范围列表。如果在一个方向上发送多个 ROUTE_ADVERTISEMENT capsule，则每个 ROUTE_ADVERTISEMENT capsule 都取代之前的。换言之，如果某个地址范围在之前的 capsule 中存在，但最近收到的 ROUTE_ADVERTISEMENT capsule 不包含它，则接收方将认为该范围已被撤回。</p>
+<p>如果使用相同 IP 协议的多个范围发生重叠，某些路由表实现可能会拒绝它们。为防止重叠，范围是有序的；这将负担放在发送方身上，并使接收方的验证更加简单。如果 IP 地址范围 A 在同一个 ROUTE_ADVERTISEMENT capsule 中位于 IP 地址范围 B 之前，它们 <em><strong>必须</strong></em> 遵循以下要求：</p>
+<ul>
+<li>
+<p>A 的 IP Version <em><strong>必须</strong></em> 小于或等于 B 的 IP Version。</p>
+</li>
+<li>
+<p>如果 A 和 B 的 IP Version 相等，则 A 的 IP Protocol <em><strong>必须</strong></em> 小于或等于 B 的 IP Protocol。</p>
+</li>
+<li>
+<p>如果 A 和 B 的 IP Version 和 IP Protocol 都相等，则 A 的 End IP Address <em><strong>必须</strong></em> 严格小于 B 的 Start IP Address。</p>
+</li>
+</ul>
+<p>如果端点收到的 ROUTE_ADVERTISEMENT capsule 不满足这些要求，它 <em><strong>必须</strong></em> 中止 IP 代理请求流。</p>
+<p>由于将 IP 协议设置为零表示允许所有协议，因此当一条路由的 IP 协议设置为零而另一条设置为非零时，以上要求使得两条路由可能重叠。端点 <em><strong>必须</strong></em> 不得发送包含以此方式重叠的路由的 ROUTE_ADVERTISEMENT capsule。验证此要求是 OPTIONAL 的，但如果端点检测到违规，它 <em><strong>必须</strong></em> 中止 IP 代理请求流。</p>
+</div>
+</section>
+<section class="page" id="4.8_IPv6_Extension_Headers">
+<h2>
+<a href="#4.8_IPv6_Extension_Headers">4.8. IPv6扩展头部</a>
+</h2>
+<div class="content">
+<h2 id="48-ipv6-扩展头部">4.8. IPv6 扩展头部</h2>
+<p>请求范围限定（参见第 4.6 节）和 ROUTE_ADVERTISEMENT capsule（参见第 4.7.3 节）都使用 Internet 协议编号。这些编号既表示上层协议（如 [IPv6] 第 2 节所定义，示例包括 TCP 和 UDP），也表示 IPv6 扩展头部（如 [IPv6] 第 4 节所定义，示例包括 Fragment 和 Options 头部）。IP 代理 <em><strong>可以</strong></em> 拒绝将范围限定为用于扩展头部的协议编号的请求。收到数据包后，支持按 Internet 协议编号进行范围限定或路由的实现 <em><strong>必须</strong></em> 遍历扩展链以找到最外层的非扩展 Internet 协议编号，以与范围限定规则进行匹配。注意，ROUTE_ADVERTISEMENT capsule 使用 Internet 协议编号 0 表示允许所有协议；它并不将路由限制为 IPv6 Hop-by-Hop Options 头部（[IPv6] 第 4.3 节）。</p>
+</div>
+</section>
+<section class="page" id="5_Context_Identifiers">
+<h1>
+<a href="#5_Context_Identifiers">5. 上下文标识符</a>
+</h1>
+<div class="content">
+<h2 id="5-上下文标识符">5. 上下文标识符</h2>
+<p>本文档中定义的HTTP中IP代理机制允许未来扩展交换携带与IP载荷不同语义的HTTP数据报。其中一些扩展可以为IP载荷增加额外数据或压缩IP头部字段，而其他扩展则可以交换与IP载荷完全无关的数据。为了实现这一目标，所有与IP代理请求流关联的HTTP数据报都以一个上下文ID字段开头；见<a href="#6_HTTP_Datagram_Payload_Format">第6节</a>。</p>
+<p>上下文ID是62位整数（0到2^62-1）。上下文ID使用变长整数编码；见[QUIC]第16节。上下文ID值0保留用于IP载荷，而非零值则是动态分配的。非零的偶数上下文ID由客户端分配，奇数上下文ID由代理分配。上下文ID命名空间与给定的HTTP请求绑定；在相同数值的上下文ID在不同请求中同时分配是可能的，并且可能具有不同的语义。上下文ID在同一HTTP请求内<em><strong>必须</strong></em>被重新分配，但可以以任何顺序分配。上下文ID分配对偶数和奇数上下文ID的限制是为了避免端点之间需要同步。然而，一旦上下文ID被分配，这些限制不再适用于该上下文ID的使用；无论最初由哪个端点分配，客户端或IP代理都可以使用它。</p>
+<p>注册是端点通知其对等端给定上下文ID的语义和格式的动作。本文档未定义注册如何发生。未来的扩展<em><strong>可以</strong></em>使用HTTP头部字段或胶囊来注册上下文ID。根据使用的方法，有可能在接收到尚未注册的上下文ID的数据报。例如，这可能是由于在传输过程中包含数据报的数据包与包含注册消息的数据包之间发生了重排序。</p>
+</div>
+</section>
+<section class="page" id="6_HTTP_Datagram_Payload_Format">
+<h1>
+<a href="#6_HTTP_Datagram_Payload_Format">6. HTTP数据报载荷格式</a>
+</h1>
+<div class="content">
+<h2 id="6-http数据报载荷格式">6. HTTP数据报载荷格式</h2>
+<p>当与IP代理请求流关联时，HTTP数据报的HTTP数据报载荷字段（见[HTTP-DGRAM]）具有如图13所定义的格式。注意，当HTTP数据报使用QUIC DATAGRAM帧编码时，下文定义的上下文ID字段直接跟在QUIC DATAGRAM帧载荷开头的四分之一流ID字段之后：</p>
+<pre tabindex="0"><code>IP Proxying HTTP Datagram Payload {
+  Context ID (i),
+  Payload (..),
+}
+</code></pre><p>                <strong>图13：IP代理HTTP数据报格式</strong></p>
+<p>IP代理HTTP数据报载荷包含以下字段：</p>
+<p><strong>上下文ID（Context ID）：</strong>    一个变长整数，包含上下文ID的值。如果接收到携带未知上下文ID的HTTP/3数据报，接收方<em><strong>强烈要求</strong></em>要么静默丢弃该数据报，要么在等待相应上下文ID注册期间临时缓冲它（大约一个往返时间）。</p>
+<p><strong>载荷（Payload）：</strong>    数据报的载荷，其语义取决于前一个字段的值。注意，此字段可以为空。</p>
+<p>IP数据包使用上下文ID设置为零的HTTP数据报进行编码。当上下文ID设置为零时，载荷字段包含一个完整的IP数据包（从IP版本字段到IP载荷的最后一个字节）。</p>
+</div>
+</section>
+<section class="page" id="7_IP_Packet_Handling">
+<h1>
+<a href="#7_IP_Packet_Handling">7. IP数据包处理</a>
+</h1>
+<div class="content">
+<h2 id="7-ip数据包处理">7. IP数据包处理</h2>
+<p>本文档定义了一种隧道机制，从概念上讲它是一个IP链路。然而，由于链路附着在IP路由器上，如果实现不将某些IP路由器的职责委托给另一个实现（如内核），则可能需要处理其中一些职责。</p>
+</div>
+</section>
+<section class="page" id="7.1_Link_Operation">
+<h2>
+<a href="#7.1_Link_Operation">7.1. 链路操作</a>
+</h2>
+<div class="content">
+<h3 id="71-链路操作">7.1. 链路操作</h3>
+<p>本文档中描述的IP转发隧道在IPv6寻址体系[IPv6-ADDR]的意义上并非功能完备的"接口"。特别地，它们不一定具有IPv6链路本地地址。此外，此类接口中不使用IPv6无状态自动配置或路由器通告消息，也不使用邻居发现。</p>
+<p>当使用HTTP/2或HTTP/3时，客户端<em><strong>可以</strong></em>在收到其IP代理请求的响应之前乐观地开始发送代理IP数据包，但需注意，如果IP代理以失败响应请求，或者IP代理在收到请求之前接收到这些数据报，则这些数据包可能不会被IP代理处理。由于需要接收地址和路由才能知道数据包可以通过隧道发送，如果IP代理选择提供与客户端假设不同的编址或路由信息，此类乐观数据包可能会被IP代理丢弃。</p>
+<p>请注意，多个代理IP数据包可以被封装在同一个外层数据包中，例如，因为一个QUIC数据包可以携带多个QUIC DATAGRAM帧。同样，一个代理IP数据包也可能跨越多个外层数据包，因为DATAGRAM胶囊可以被分割到多个QUIC或TCP数据包中。</p>
+</div>
+</section>
+<section class="page" id="7.2_Routing_Operation">
+<h2>
+<a href="#7.2_Routing_Operation">7.2. 路由操作</a>
+</h2>
+<div class="content">
+<h3 id="72-路由操作">7.2. 路由操作</h3>
+<p>本节中的要求是对通常适用于IP路由器要求的重复，对于依赖外部软件进行路由的IP代理实现可能不适用。</p>
+<p>当端点接收到包含IP数据包的HTTP数据报时，它将解析该数据包的IP头部，执行任何本地策略检查（例如，源地址验证），检查其路由表以选择出站接口，然后在该接口上发送IP数据包或将其传递给本地应用程序。端点也可以选择丢弃任何收到的数据包而不是转发它们。如果收到的IP数据包未能通过任何正确性或策略检查，就IP代理而言，这是一个转发错误，而非协议违规；见<a href="#7.2.1_Error_Signalling">第7.2.1节</a>。IP代理端点<em><strong>可以</strong></em>对其转发的IP数据包实施额外的过滤策略。</p>
+<p>在另一个方向上，当端点收到IP数据包时，它会检查该数据包是否匹配为IP隧道映射的路由，并在通过HTTP数据报传输数据包之前执行与上述相同的转发检查。</p>
+<p>当IP代理端点在不通链路之间转发IP数据包时，它们将在封装时递减IP跳数（Hop Count或TTL），但解封装时不递减。换句话说，跳数在IP数据包通过HTTP数据报传输之前递减。这可以防止在存在路由环路时出现无限循环，并与IPsec[IPSEC]中的选择一致。这不适用于IP代理端点自身生成的IP数据包。</p>
+<p>实现者需要确保不会将任何链路本地流量转发到接收它的IP代理接口之外。IP代理端点还需要正确回复发往链路本地多播地址的数据包。</p>
+<p>IPv6要求每条链路的MTU至少为1280字节[IPv6]。由于HTTP中的IP代理通过HTTP数据报传输IP数据包，而这些数据报又可能通过无法分片的QUIC DATAGRAM帧[DGRAM]发送，因此IP隧道的MTU可能受到IP代理运行的QUIC连接的MTU限制。这可能导致违反IPv6最小链路MTU的情况。作为路由器运行并支持IPv6的IP代理端点<em><strong>必须</strong></em>确保IP隧道链路MTU至少为1280字节（即，它们可以发送载荷至少为1280字节的HTTP数据报）。这可以通过多种技术实现：</p>
+<ul>
+<li>
+<p>如果两个IP代理端点都明确知道未使用HTTP中介，则端点可以填充IP代理运行的外层QUIC连接的QUIC INITIAL数据包。（假设使用QUIC版本1，开销为：1字节类型，20字节最大连接ID长度，4字节最大数据包编号长度，1字节DATAGRAM帧类型，8字节最大四分之一流ID，1字节零上下文ID，以及16字节AEAD认证标签，共计51字节开销，这对应于将QUIC INITIAL数据包填充到1331字节或更多。）</p>
+</li>
+<li>
+<p>IP代理端点也可以发送带有1232字节数据的ICMPv6回显请求以确定链路MTU，如果未收到响应则拆除隧道。除非端点有带外手段保证前述技术足够，否则它们<em><strong>必须</strong></em>使用此方法。如果端点不知道其对等端的IPv6地址，它可以向链路本地所有节点多播地址（ff02::1）发送ICMPv6回显请求。</p>
+</li>
+</ul>
+<p>如果端点使用QUIC DATAGRAM帧承载IPv6数据包，并且检测到QUIC MTU太低无法发送1280字节，则它<em><strong>必须</strong></em>中止IP代理请求流。</p>
+</div>
+</section>
+<section class="page" id="7.2.1_Error_Signalling">
+<h3>
+<a href="#7.2.1_Error_Signalling">7.2.1. 错误信令</a>
+</h3>
+<div class="content">
+<h4 id="721-错误信令">7.2.1. 错误信令</h4>
+<p>由于IP代理端点通常将IP数据包继续转发到其他网络接口，它们需要处理转发过程中的错误。例如，如果端点没有到达目标地址的路由、如果端点按策略配置拒绝某个目的地前缀，或者如果出站链路的MTU低于要转发的数据包大小，转发可能会失败。在这种情况下，IP代理端点<em><strong>应该</strong></em>使用ICMP[ICMP][ICMPv6]通过生成ICMP数据包并使用HTTP数据报发送来向其對等端信令转发错误。</p>
+<p>端点可以自由选择最合适的ICMP错误来发送。一些与IP代理相关的示例如下：</p>
+<ul>
+<li>
+<p>对于无效的源地址，发送目的地不可达（[ICMPv6]第3.1节），代码为5，“源地址未通过入站/出站策略”。</p>
+</li>
+<li>
+<p>对于不可路由的目的地地址，发送目的地不可达（[ICMPv6]第3.1节），代码为0，“无到达目的地的路由”，或代码为1，“与目的地的通信被管理性禁止”。</p>
+</li>
+<li>
+<p>对于无法适应出站链路MTU的数据包，发送数据包过大（[ICMPv6]第3.2节）。</p>
+</li>
+</ul>
+<p>为了接收这些错误，端点需要准备好接收ICMP数据包。如果端点不发送ROUTE_ADVERTISEMENT胶囊，例如通过IP代理打开IP流的客户端，它<em><strong>应该</strong></em>处理来自其对等端的代理ICMP数据包以接收这些错误。注意，ICMP消息可以源自不同于IP代理对等端的源地址，并且如果使用了作用域（见<a href="#4.6">第4.6节</a>），还可以来自目标之外。</p>
+</div>
+</section>
+<section class="page" id="8_Examples">
+<h1>
+<a href="#8_Examples">8. 示例</a>
+</h1>
+<div class="content">
+<h2 id="8-示例">8. 示例</h2>
+<p>HTTP中的IP代理支持许多可以从IP数据包代理和隧道中受益的不同用例。提供这些示例是为了帮助说明HTTP中IP代理的一些使用方式。</p>
+</div>
+</section>
+<section class="page" id="8.1_Remote_Access_VPN">
+<h2>
+<a href="#8.1_Remote_Access_VPN">8.1. 远程访问VPN</a>
+</h2>
+<div class="content">
+<h3 id="81-远程访问vpn">8.1. 远程访问VPN</h3>
+<p>以下示例展示了一种点对网络VPN设置，其中客户端接收一组本地地址，并可以通过IP代理发送到任何远程主机。此类VPN设置可以是全隧道或分割隧道。</p>
+<pre tabindex="0"><code>+--------+ IP A          IP B +--------+           +---&gt; IP D
+|        +--------------------+   IP   | IP C      |
+| Client | IP Subnet C &lt;--&gt; ? |  Proxy +-----------+---&gt; IP E
+|        +--------------------+        |           |
++--------+                    +--------+           +---&gt; IP ...
+</code></pre><p>                        <strong>图14：VPN隧道设置</strong></p>
+<p>在这种情况下，客户端在其请求中未指定任何作用域。IP代理为客户端分配一个IPv4地址（192.0.2.11）和一个所有IPv4地址（0.0.0.0/0）的全隧道路由。然后客户端可以使用其分配的地址作为源地址发送到任何IPv4主机。</p>
+<pre tabindex="0"><code>[[ 来自客户端 ]]               [[ 来自IP代理 ]]
+
+SETTINGS
+  H3_DATAGRAM = 1
+
+                              SETTINGS
+                                ENABLE_CONNECT_PROTOCOL = 1
+                                H3_DATAGRAM = 1
+
+STREAM(44): HEADERS
+:method = CONNECT
+:protocol = connect-ip
+:scheme = https
+:path = /vpn
+:authority = proxy.example.com
+capsule-protocol = ?1
+
+                              STREAM(44): HEADERS
+                              :status = 200
+                              capsule-protocol = ?1
+
+STREAM(44): DATA
+Capsule Type = ADDRESS_REQUEST
+(Request ID = 1
+ IP Version = 4
+ IP Address = 0.0.0.0
+ IP Prefix Length = 32)
+
+                              STREAM(44): DATA
+                              Capsule Type = ADDRESS_ASSIGN
+                              (Request ID = 1
+                               IP Version = 4
+                               IP Address = 192.0.2.11
+                               IP Prefix Length = 32)
+
+                              STREAM(44): DATA
+                              Capsule Type = ROUTE_ADVERTISEMENT
+                              (IP Version = 4
+                               Start IP Address = 0.0.0.0
+                               End IP Address = 255.255.255.255
+                               IP Protocol = 0) // 任意
+
+DATAGRAM
+Quarter Stream ID = 11
+Context ID = 0
+Payload = Encapsulated IP Packet
+
+                              DATAGRAM
+                              Quarter Stream ID = 11
+                              Context ID = 0
+                              Payload = Encapsulated IP Packet
+</code></pre><p>                    <strong>图15：VPN全隧道示例</strong></p>
+<p>分割隧道VPN（客户端只能访问一组特定私有子网的情况）的设置非常相似。在这种情况下，通告的路由被限制为192.0.2.0/24，而不是0.0.0.0/0。</p>
+<pre tabindex="0"><code>[[ 来自客户端 ]]               [[ 来自IP代理 ]]
+
+                              STREAM(44): DATA
+                              Capsule Type = ADDRESS_ASSIGN
+                              (Request ID = 0
+                               IP Version = 4
+                               IP Address = 192.0.2.42
+                               IP Prefix Length = 32)
+
+                              STREAM(44): DATA
+                              Capsule Type = ROUTE_ADVERTISEMENT
+                              (IP Version = 4
+                               Start IP Address = 192.0.2.0
+                               End IP Address = 192.0.2.41
+                               IP Protocol = 0) // 任意
+                              (IP Version = 4
+                               Start IP Address = 192.0.2.43
+                               End IP Address = 192.0.2.255
+                               IP Protocol = 0) // 任意
+</code></pre><p>                    <strong>图16：VPN分割隧道示例</strong></p>
+</div>
+</section>
+<section class="page" id="8.2_Site-to-Site_VPN">
+<h2>
+<a href="#8.2_Site-to-Site_VPN">8.2. 站点到站点VPN</a>
+</h2>
+<div class="content">
+<h3 id="82-站点到站点vpn">8.2. 站点到站点VPN</h3>
+<p>以下示例展示了如何将分支机构网络连接到公司网络，使得这些网络上的所有机器都可以通信。在此示例中，IP代理客户端连接到分支机构网络192.0.2.0/24，IP代理连接到公司网络203.0.113.0/24。分支机构网络上存在仅允许来自其子网内机器的维护请求的遗留客户端，因此IP代理从该子网中配置了一个IP地址。</p>
+<pre tabindex="0"><code>192.0.2.1 &lt;--+   +--------+             +-------+   +---&gt; 203.0.113.9
+             |   |        +-------------+  IP   |   |
+192.0.2.2 &lt;--+---+ Client | IP Proxying | Proxy +---+---&gt; 203.0.113.8
+             |   |        +-------------+       |   |
+192.0.2.3 &lt;--+   +--------+             +-------+   +---&gt; 203.0.113.7
+</code></pre><p>                    <strong>图17：站点到站点VPN示例</strong></p>
+<p>在这种情况下，客户端在其请求中未指定任何作用域。IP代理为客户端分配一个IPv4地址（203.0.113.100）和一个到公司网络（203.0.113.0/24）的分割隧道路由。客户端为IP代理分配一个IPv4地址（192.0.2.200）和一个到分支机构网络（192.0.2.0/24）的分割隧道路由。这允许两个网络上的主机相互通信，并允许IP代理对分支机构中的遗留主机进行维护。注意，IP代理端点在封装转发的数据包时将递减IP跳数（或TTL），因此要求该字段设置为255的协议将无法正常工作。</p>
+<pre tabindex="0"><code>[[ 来自客户端 ]]               [[ 来自IP代理 ]]
+
+SETTINGS
+  H3_DATAGRAM = 1
+
+                              SETTINGS
+                                ENABLE_CONNECT_PROTOCOL = 1
+                                H3_DATAGRAM = 1
+
+STREAM(44): HEADERS
+:method = CONNECT
+:protocol = connect-ip
+:scheme = https
+:path = /corp
+:authority = proxy.example.com
+capsule-protocol = ?1
+
+                              STREAM(44): HEADERS
+                              :status = 200
+                              capsule-protocol = ?1
+
+STREAM(44): DATA
+Capsule Type = ADDRESS_ASSIGN
+(Request ID = 0
+IP Version = 4
+IP Address = 192.0.2.200
+IP Prefix Length = 32)
+
+STREAM(44): DATA
+Capsule Type = ROUTE_ADVERTISEMENT
+(IP Version = 4
+Start IP Address = 192.0.2.0
+End IP Address = 192.0.2.255
+IP Protocol = 0) // 任意
+
+                              STREAM(44): DATA
+                              Capsule Type = ADDRESS_ASSIGN
+                              (Request ID = 0
+                               IP Version = 4
+                               IP Address = 203.0.113.100
+                               IP Prefix Length = 32)
+
+                              STREAM(44): DATA
+                              Capsule Type = ROUTE_ADVERTISEMENT
+                              (IP Version = 4
+                               Start IP Address = 203.0.113.0
+                               End IP Address = 203.0.113.255
+                               IP Protocol = 0) // 任意
+
+DATAGRAM
+Quarter Stream ID = 11
+Context ID = 0
+Payload = Encapsulated IP Packet
+
+                              DATAGRAM
+                              Quarter Stream ID = 11
+                              Context ID = 0
+                              Payload = Encapsulated IP Packet
+</code></pre><p>                <strong>图18：站点到站点VPN胶囊示例</strong></p>
+</div>
+</section>
+<section class="page" id="8.3_IP_Flow_Forwarding">
+<h2>
+<a href="#8.3_IP_Flow_Forwarding">8.3. IP流转发</a>
+</h2>
+<div class="content">
+<h3 id="83-ip流转发">8.3. IP流转发</h3>
+<p>以下示例展示了一个IP流转发设置，其中客户端请求建立一个到target.example.com的转发隧道，使用流控制传输协议（SCTP）（IP协议132），并接收一个可用于传输数据包的本地地址和远程地址。类似的方法可以用于任何其他不容易用现有HTTP方法代理的IP协议，例如ICMP、封装安全载荷（ESP）等。</p>
+<pre tabindex="0"><code>+--------+ IP A         IP B +--------+
+|        +-------------------+   IP   | IP C
+| Client |    IP C &lt;--&gt; D    |  Proxy +---------&gt; IP D
+|        +-------------------+        |
++--------+                   +--------+
+</code></pre><p>                        <strong>图19：代理流设置</strong></p>
+<p>在这种情况下，客户端在其请求的作用域中同时指定了目标主机名和Internet协议号，表明它只需要与单个主机通信。IP代理能够代表客户端执行DNS解析，并为客户端分配一个特定的出站套接字，而不是为客户端分配整个IP地址。在这方面，该请求类似于常规的CONNECT代理请求。</p>
+<p>IP代理为客户端分配一个单独的IPv6地址（2001:db8:1234::a）和一个作用域为SCTP的到单个IPv6主机（2001:db8:3456::b）的路由。客户端可以向远程主机发送和接收SCTP IP数据包。</p>
+<pre tabindex="0"><code>[[ 来自客户端 ]]               [[ 来自IP代理 ]]
+
+SETTINGS
+  H3_DATAGRAM = 1
+
+                              SETTINGS
+                                ENABLE_CONNECT_PROTOCOL = 1
+                                H3_DATAGRAM = 1
+
+STREAM(44): HEADERS
+:method = CONNECT
+:protocol = connect-ip
+:scheme = https
+:path = /proxy?target=target.example.com&amp;ipproto=132
+:authority = proxy.example.com
+capsule-protocol = ?1
+
+                              STREAM(44): HEADERS
+                              :status = 200
+                              capsule-protocol = ?1
+
+                              STREAM(44): DATA
+                              Capsule Type = ADDRESS_ASSIGN
+                              (Request ID = 0
+                               IP Version = 6
+                               IP Address = 2001:db8:1234::a
+                               IP Prefix Length = 128)
+
+                              STREAM(44): DATA
+                              Capsule Type = ROUTE_ADVERTISEMENT
+                              (IP Version = 6
+                               Start IP Address = 2001:db8:3456::b
+                               End IP Address = 2001:db8:3456::b
+                               IP Protocol = 132)
+
+DATAGRAM
+Quarter Stream ID = 11
+Context ID = 0
+Payload = Encapsulated SCTP/IP Packet
+
+                              DATAGRAM
+                              Quarter Stream ID = 11
+                              Context ID = 0
+                              Payload = Encapsulated SCTP/IP Packet
+</code></pre><p>                    <strong>图20：代理SCTP流示例</strong></p>
+</div>
+</section>
+<section class="page" id="8.4_Proxied_Connection_Racing">
+<h2>
+<a href="#8.4_Proxied_Connection_Racing">8.4. 代理连接竞速</a>
+</h2>
+<div class="content">
+<h3 id="84-代理连接竞速">8.4. 代理连接竞速</h3>
+<p>以下示例展示了一种设置，其中客户端通过IP代理代理UDP数据包以控制连接建立竞速，如Happy Eyeballs[HEv2]所定义。此示例是代理流的变体，但突显了IP级代理如何为TCP和UDP启用新功能。</p>
+<pre tabindex="0"><code>+--------+ IP A         IP B +--------+ IP C
+|        +-------------------+        |&lt;------------&gt; IP E
+| Client |  IP C &lt;--&gt; E      |   IP   |
+|        |     D &lt;--&gt; F      |  Proxy |
+|        +-------------------+        |&lt;------------&gt; IP F
++--------+                   +--------+ IP D
+</code></pre><p>                 <strong>图21：代理连接竞速设置</strong></p>
+<p>与代理流一样，客户端在其请求的作用域中同时指定了目标主机名和Internet协议号。当IP代理代表客户端执行DNS解析时，它可以将各种远程地址选项作为单独的路由发送给客户端。它还可以确保客户端同时分配了IPv4和IPv6地址。</p>
+<p>IP代理为客户端分配一个IPv4地址（192.0.2.3）和一个IPv6地址（2001:db8:1234::a），以及一个IPv4路由（198.51.100.2）和一个IPv6路由（2001:db8:3456::b），这些路由代表目标主机名的解析地址，作用域为UDP。客户端可以向任一个IP代理地址发送和接收UDP IP数据包，以通过IP代理实现Happy Eyeballs。</p>
+<pre tabindex="0"><code>[[ 来自客户端 ]]               [[ 来自IP代理 ]]
+
+SETTINGS
+  H3_DATAGRAM = 1
+
+                              SETTINGS
+                                ENABLE_CONNECT_PROTOCOL = 1
+                                H3_DATAGRAM = 1
+
+STREAM(44): HEADERS
+:method = CONNECT
+:protocol = connect-ip
+:scheme = https
+:path = /proxy?target=target.example.com&amp;ipproto=17
+:authority = proxy.example.com
+capsule-protocol = ?1
+
+                              STREAM(44): HEADERS
+                              :status = 200
+                              capsule-protocol = ?1
+
+                              STREAM(44): DATA
+                              Capsule Type = ADDRESS_ASSIGN
+                              (Request ID = 0
+                               IP Version = 4
+                               IP Address = 192.0.2.3
+                               IP Prefix Length = 32),
+                              (Request ID = 0
+                               IP Version = 6
+                               IP Address = 2001:db8::1234:1234
+                               IP Prefix Length = 128)
+
+                              STREAM(44): DATA
+                              Capsule Type = ROUTE_ADVERTISEMENT
+                              (IP Version = 4
+                               Start IP Address = 198.51.100.2
+                               End IP Address = 198.51.100.2
+                               IP Protocol = 17),
+                              (IP Version = 6
+                               Start IP Address = 2001:db8:3456::b
+                               End IP Address = 2001:db8:3456::b
+                               IP Protocol = 17)
+...
+
+DATAGRAM
+Quarter Stream ID = 11
+Context ID = 0
+Payload = Encapsulated IPv6 Packet
+
+DATAGRAM
+Quarter Stream ID = 11
+Context ID = 0
+Payload = Encapsulated IPv4 Packet
+</code></pre><p>                <strong>图22：代理连接竞速示例</strong></p>
+</div>
+</section>
+<section class="page" id="9_Extensibility_Considerations">
+<h1>
+<a href="#9_Extensibility_Considerations">9. 可扩展性考量</a>
+</h1>
+<div class="content">
+<h2 id="9-可扩展性考量">9. 可扩展性考量</h2>
+<p>HTTP中IP代理的扩展可以定义对此机制的行为变更。此类扩展<em><strong>应该</strong></em>定义新的胶囊类型来交换配置信息（如果需要的话）。对于修改地址分配的扩展，建议（<em><strong>推荐</strong></em>）指定其扩展胶囊在ADDRESS_ASSIGN胶囊之前发送，并且在ADDRESS_ASSIGN胶囊解析完成之前不生效。这允许地址分配的修改以原子方式操作。类似地，修改路由的扩展<em><strong>应该</strong></em>在ROUTE_ADVERTISEMENT胶囊方面表现出类似的行为。</p>
+</div>
+</section>
+<section class="page" id="10_Performance_Considerations">
+<h1>
+<a href="#10_Performance_Considerations">10. 性能考量</a>
+</h1>
+<div class="content">
+<p>突发性流量往往会导致时间上相关的丢包；反过来，这会导致隧道内运行的协议中拥塞控制器的次优响应。为避免这种情况，IP代理端点<em><strong>应该</strong></em>努力避免增加IP流量的突发性；它们<em><strong>应该</strong></em>为增加批处理而排队数据包，除非是为了利用硬件卸载所需的最少数量。</p>
+<p>当隧道内运行的协议使用拥塞控制（例如[TCP]或[QUIC]）时，被代理的流量将至少经历两层嵌套的拥塞控制器。当隧道数据包使用QUIC DATAGRAM帧发送时，外部HTTP连接<em><strong>可以</strong></em>对仅包含封装IP数据包的QUIC DATAGRAM帧禁用拥塞控制。实现者将受益于阅读[UDP-USAGE]第3.1.11节中的指导。</p>
+<p>当隧道内运行的协议使用丢包恢复（例如[TCP]或[QUIC]），且外部HTTP连接运行在TCP之上时，被代理的流量将至少经历两层嵌套的丢包恢复机制。这可能会降低性能，因为两者有时会独立地重传相同的数据。为避免这种情况，IP代理<em><strong>应该</strong></em>通过HTTP/3来执行，以便利用QUIC DATAGRAM帧。</p>
+</div>
+</section>
+<section class="page" id="10.1_MTU_Considerations">
+<h2>
+<a href="#10.1_MTU_Considerations">10.1. MTU考量</a>
+</h2>
+<div class="content">
+<p>当使用HTTP/3配合QUIC数据报扩展[DGRAM]时，IP数据包在QUIC DATAGRAM帧中传输。由于这些帧不能被分片，它们只能承载不超过由QUIC连接配置和路径MTU（PMTU）决定的特定长度的数据包。如果端点正在使用QUIC DATAGRAM帧，并尝试通过隧道路由一个无法放入单个QUIC DATAGRAM帧的IP数据包，则IP代理<em><strong>应该</strong></em>在DATAGRAM胶囊中发送该IP数据包，因为这会破坏数据报分组层路径MTU发现（DPLPMTUD）所依赖的端到端不可靠性特征[DPLPMTUD]。在这种场景下，端点<em><strong>应该</strong></em>丢弃该IP数据包，并向被丢弃数据包的发送方发送ICMP"数据包过大"消息；参见[ICMPv6]第3.2节。</p>
+</div>
+</section>
+<section class="page" id="10.2_ECN_Considerations">
+<h2>
+<a href="#10.2_ECN_Considerations">10.2. ECN考量</a>
+</h2>
+<div class="content">
+<p>如果包含IP代理请求流的连接的IP代理端点禁用了拥塞控制，则它无法在该外部连接上指示显式拥塞通知（ECN）[ECN]支持。也就是说，对于不受拥塞控制的QUIC数据包，QUIC发送方<em><strong>必须</strong></em>将所有IP头标记为"非ECN-capable传输"（Not-ECT）码点。端点仍然可以通过QUIC ACK_ECN帧或TCP ECN-Echo（ECE）位报告ECN反馈，因为对端可能尚未禁用拥塞控制。</p>
+<p>相反，如果外部拥塞控制未被禁用，则[ECN-TUNNEL]中关于在内外部IP头之间传递ECN标记的指导不适用，因为如果外部连接使用ECN，它将正确地对拥塞通知做出响应。内部流量也可以使用ECN，独立于外部连接是否使用ECN。</p>
+</div>
+</section>
+<section class="page" id="10.3_Differentiated_Services_Considerations">
+<h2>
+<a href="#10.3_Differentiated_Services_Considerations">10.3. 差异化服务考量</a>
+</h2>
+<div class="content">
+<p>隧道化的IP数据包可以在流量类别IP头字段中设置差异化服务码点（DSCP）[DSCP]，以请求特定的逐跳行为。如果IP代理端点被配置为差异化服务域的一部分，它<em><strong>可以</strong></em>基于这些标记实现流量差异化处理。然而，HTTP的使用可能会限制在IP代理端点之间路径上对隧道化IP数据包进行差异化处理的可能性。</p>
+<p>当HTTP连接是受拥塞控制的，使用不同DSCP标记数据包可能导致它们之间的重排序，进而可能使得底层传输连接的拥塞控制器表现不佳。如果隧道数据包受到外部连接的拥塞控制，它们需要避免携带在转发行为上不等效的DSCP标记，以防止这种情况发生。在这种场景下，IP代理端点<em><strong>必须</strong></em>将内部IP头的DSCP字段复制到承载该数据包的数据包的外部IP头中。相反，应用程序需要为每个DSCP使用到代理的独立连接。注意，本文档未定义请求限定到特定DSCP值的方法；此类支持留给未来的扩展。</p>
+<p>如果隧道数据包使用QUIC数据报且不受外部连接的拥塞控制，则IP代理端点<em><strong>可以</strong></em>将DSCP字段值从隧道流量转换到外部IP头。IP代理端点<em><strong>必须</strong></em>将多个内部分组聚合到同一个外部分组中，除非它们具有相同的DSCP标记或等效的流量类别。注意，转换DSCP值的能力取决于隧道入口和出口是否属于同一差异化服务域。</p>
+</div>
+</section>
+<section class="page" id="11_Security_Considerations">
+<h1>
+<a href="#11_Security_Considerations">11. 安全性考量</a>
+</h1>
+<div class="content">
+<p>允许任意客户端建立允许向任意主机发送流量的隧道存在显著风险，无论隧道是否限定到特定主机。恶意行为者可能滥用此功能来发送流量，并将其归因于IP代理。支持IP代理的HTTP服务器<em><strong>应该</strong></em>限制其仅供经过身份验证的用户使用。根据部署情况，可能的身份验证机制包括IP代理端点之间的双向TLS、通过HTTP Authorization头的基于HTTP的身份验证[HTTP]，甚至是持有者令牌。代理可以为经过身份验证的用户执行策略，以进一步约束客户端行为或应对可能的滥用。例如，代理可以对通过代理发送过量流量的个别客户端进行速率限制。又如，代理可以基于某些客户端属性（如地理位置）限制分配给客户端的地址（前缀）。</p>
+<p>地址分配可能对端点产生隐私影响。例如，如果代理按经过身份验证的客户端数量划分其地址空间，然后为每个客户端分配不同的地址范围，则目标主机可以利用此信息来确定哪些IP数据包对应于同一客户端。避免此类追踪向量对某些代理部署可能很重要。代理<em><strong>应该</strong></em>尽可能避免持久的每客户端地址（前缀）分配。</p>
+<p>伪造已发送流量中的IP源地址在拒绝服务攻击中很常见。此机制的实现需要确保其不会助长此类攻击。特别地，存在这样的场景：端点知道其对端只允许从给定前缀发送IP数据包。例如，可以通过带外配置信息，或当允许的前缀通过ADDRESS_ASSIGN胶囊共享时发生这种情况。在这些场景中，端点<em><strong>必须</strong></em>遵循[BCP38]的建议以防止源地址欺骗。</p>
+<p>限制请求范围（参见第4.6节）允许两个客户端共享代理的一个外部IP地址，只要它们的请求限定到不同的互联网协议号。如果代理收到发往该外部IP地址的ICMP数据包，它可以选择将其转发回客户端。然而，某些ICMP数据包携带了触发该ICMP响应的原始IP数据包的一部分。转发此类数据包可能意外地将一个客户端的流量信息泄露给另一个客户端。为避免这种情况，在共享外部IP地址上转发ICMP的代理<em><strong>必须</strong></em>检查ICMP数据包中包含的触发数据包，并仅将ICMP数据包转发给其限定范围与触发数据包匹配的客户端。</p>
+<p>实现者将受益于阅读[TUNNEL-SECURITY]中的指导。由于某些IPv6扩展头（例如[ROUTING-HDR]）存在已知风险，实现者需要遵循关于处理IPv6扩展头的最新指导。</p>
+<p>将DSCP标记从内部数据包传递到外部数据包（参见第10.3节）会将端到端流级别的信息暴露给IP代理端点之间的路径观察者。这可能潜在地暴露单个端到端流。因此，<em><strong>错误的关键字</strong></em>在隐私敏感场景中使用此类DSCP。</p>
+<p>在HTTP/1.x中不允许机会性地发送IP数据包（参见第7.1节），因为服务器可能拒绝HTTP升级并尝试将IP数据包解析为后续的HTTP请求，从而允许请求走私攻击；参见[OPTIMISTIC]。特别地，将请求从HTTP/2或3重新编码为HTTP/1.1的中间设备<em><strong>必须</strong></em>转发任何接收到的胶囊，直到它已解析到成功的IP代理响应。</p>
+</div>
+</section>
+<section class="page" id="12_IANA_Considerations">
+<h1>
+<a href="#12_IANA_Considerations">12. 关于IANA的考量</a>
+</h1>
+<div class="content">
+<blockquote>
+<p>本节按照[IANA-POLICY]中规定的指南记录了IANA已执行的操作。</p>
+</blockquote>
+</div>
+</section>
+<section class="page" id="12.1_HTTP_Upgrade_Token_Registration">
+<h2>
+<a href="#12.1_HTTP_Upgrade_Token_Registration">12.1. HTTP升级令牌注册</a>
+</h2>
+<div class="content">
+<p>IANA已在维护于 <a href="https://www.iana.org/assignments/http-upgrade-tokens">https://www.iana.org/assignments/http-upgrade-tokens</a> 的"HTTP Upgrade Tokens"注册表中注册了"connect-ip"。</p>
+<p>值：connect-ip描述：IP载荷代理（Proxying of IP Payloads）期望的版本令牌：无参考文献：RFC 9484</p>
+</div>
+</section>
+<section class="page" id="12.2_MASQUE_URI_Suffixes_Registry_Creation">
+<h2>
+<a href="#12.2_MASQUE_URI_Suffixes_Registry_Creation">12.2. MASQUE URI后缀注册表创建</a>
+</h2>
+<div class="content">
+<p>IANA已创建维护于 <a href="https://www.iana.org/assignments/masque">https://www.iana.org/assignments/masque</a> 的"MASQUE URI Suffixes"注册表。注册策略为专家评审；参见[IANA-POLICY]第4.5节。此新注册表管理以"/.well-known/masque/“开头的路径中紧跟在"masque"之后的路径段；关于在"Well-Known URIs"注册表中注册"masque"的信息，请参见 <a href="https://www.iana.org/assignments/well-known-uris">https://www.iana.org/assignments/well-known-uris</a>。</p>
+<p>此新注册表包含三列：</p>
+<p>路径段（Path Segment）：仅包含token中允许字符的ASCII字符串；参见[HTTP]第5.6.2节。此注册表中的条目<em><strong>必须</strong></em>在此列中均具有不同的条目。描述（Description）：对条目的描述。参考文献（Reference）：定义该条目用途的可选参考文献。</p>
+<p>注册表的初始条目如下：</p>
+<table>
+<thead>
+<tr>
+<th>路径段</th>
+<th>描述</th>
+<th>参考文献</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>udp</td>
+<td>UDP代理（UDP Proxying）</td>
+<td>RFC 9298</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>IP代理（IP Proxying）</td>
+<td>RFC 9484</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表1：MASQUE URI后缀注册表</strong></p>
+<p>此注册表的指定专家应知晓，只要专家认为(1)请求的路径段不会与现有或预期的未来IETF工作冲突，且(2)用例与代理相关，就应当批准所有请求。</p>
+</div>
+</section>
+<section class="page" id="12.3_Updates_to_masque_Well-Known_URI_Registration">
+<h2>
+<a href="#12.3_Updates_to_masque_Well-Known_URI_Registration">12.3. 对masque Well-Known URI注册的更新</a>
+</h2>
+<div class="content">
+<p>IANA已更新维护于 <a href="https://www.iana.org/assignments/well-known-uris">https://www.iana.org/assignments/well-known-uris</a> 的"Well-Known URIs"注册表中"masque" URI后缀条目的信息。</p>
+<p>IANA已将"Reference"字段更新为包含本文档，并将"Related Information"字段替换为"For sub-suffix allocations, see the registry at <a href="https://www.iana.org/assignments/masque">https://www.iana.org/assignments/masque</a>."。</p>
+</div>
+</section>
+<section class="page" id="12.4_HTTP_Capsule_Types_Registrations">
+<h2>
+<a href="#12.4_HTTP_Capsule_Types_Registrations">12.4. HTTP Capsule类型注册</a>
+</h2>
+<div class="content">
+<p>IANA已向维护于 <a href="https://www.iana.org/assignments/masque">https://www.iana.org/assignments/masque</a> 的"HTTP Capsule Types"注册表添加以下值。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>Capsule类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x01</td>
+<td>ADDRESS_ASSIGN</td>
+</tr>
+<tr>
+<td>0x02</td>
+<td>ADDRESS_REQUEST</td>
+</tr>
+<tr>
+<td>0x03</td>
+<td>ROUTE_ADVERTISEMENT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表2：新增Capsule类型</strong></p>
+<p>所有新增条目在以下字段使用相同的值：</p>
+<p>状态（Status）：permanent（永久）参考文献（Reference）：RFC 9484变更控制者（Change Controller）：IETF联系方式（Contact）：masque@ietf.org备注（Notes）：无</p>
+</div>
+</section>
+<section class="page" id="13_References">
+<h1>
+<a href="#13_References">13. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="13.1_Normative_References">
+<h2>
+<a href="#13.1_Normative_References">13.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="ABNF">
+<p><a href="#ABNF"><strong>[ABNF]</strong></a> 用于语法规范的增强型BNF：ABNF</p>
+<p>Crocker, D., Ed. and P. Overell, “Augmented BNF for Syntax Specifications: ABNF”, STD 68, RFC 5234, DOI 10.17487/RFC5234, January 2008, <a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>.</p>
+</div>
+<div class="out_ref" id="BCP38">
+<p><a href="#BCP38"><strong>[BCP38]</strong></a> 网络入口过滤：挫败利用IP源地址欺骗的拒绝服务攻击</p>
+<p>Ferguson, P. and D. Senie, “Network Ingress Filtering: Defeating Denial of Service Attacks which employ IP Source Address Spoofing”, BCP 38, RFC 2827, DOI 10.17487/RFC2827, May 2000, <a href="https://www.rfc-editor.org/info/rfc2827">https://www.rfc-editor.org/info/rfc2827</a>.</p>
+</div>
+<div class="out_ref" id="DGRAM">
+<p><a href="#DGRAM"><strong>[DGRAM]</strong></a> QUIC不可靠数据报扩展</p>
+<p>Pauly, T., Kinnear, E., and D. Schinazi, “An Unreliable Datagram Extension to QUIC”, RFC 9221, DOI 10.17487/RFC9221, March 2022, <a href="https://www.rfc-editor.org/info/rfc9221">https://www.rfc-editor.org/info/rfc9221</a>.</p>
+</div>
+<div class="out_ref" id="DSCP">
+<p><a href="#DSCP"><strong>[DSCP]</strong></a> IPv4和IPv6头中差异化服务字段（DS字段）的定义</p>
+<p>Nichols, K., Blake, S., Baker, F., and D. Black, “Definition of the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers”, RFC 2474, DOI 10.17487/RFC2474, December 1998, <a href="https://www.rfc-editor.org/info/rfc2474">https://www.rfc-editor.org/info/rfc2474</a>.</p>
+</div>
+<div class="out_ref" id="ECN">
+<p><a href="#ECN"><strong>[ECN]</strong></a> 向IP添加显式拥塞通知（ECN）</p>
+<p>Ramakrishnan, K., Floyd, S., and D. Black, “The Addition of Explicit Congestion Notification (ECN) to IP”, RFC 3168, DOI 10.17487/RFC3168, September 2001, <a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT2">
+<p><a href="#EXT-CONNECT2"><strong>[EXT-CONNECT2]</strong></a> 使用HTTP/2引导WebSocket</p>
+<p>McManus, P., “Bootstrapping WebSockets with HTTP/2”, RFC 8441, DOI 10.17487/RFC8441, September 2018, <a href="https://www.rfc-editor.org/info/rfc8441">https://www.rfc-editor.org/info/rfc8441</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT3">
+<p><a href="#EXT-CONNECT3"><strong>[EXT-CONNECT3]</strong></a> 使用HTTP/3引导WebSocket</p>
+<p>Hamilton, R., “Bootstrapping WebSockets with HTTP/3”, RFC 9220, DOI 10.17487/RFC9220, June 2022, <a href="https://www.rfc-editor.org/info/rfc9220">https://www.rfc-editor.org/info/rfc9220</a>.</p>
+</div>
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> HTTP语义</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP-DGRAM">
+<p><a href="#HTTP-DGRAM"><strong>[HTTP-DGRAM]</strong></a> HTTP数据报与胶囊协议</p>
+<p>Schinazi, D. and L. Pardue, “HTTP Datagrams and the Capsule Protocol”, RFC 9297, DOI 10.17487/RFC9297, August 2022, <a href="https://www.rfc-editor.org/info/rfc9297">https://www.rfc-editor.org/info/rfc9297</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/1.1">
+<p><a href="#HTTP%2f1.1"><strong>[HTTP/1.1]</strong></a> HTTP/1.1</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP/1.1”, STD 99, RFC 9112, DOI 10.17487/RFC9112, June 2022, <a href="https://www.rfc-editor.org/info/rfc9112">https://www.rfc-editor.org/info/rfc9112</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> HTTP/2</p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="IANA-POLICY">
+<p><a href="#IANA-POLICY"><strong>[IANA-POLICY]</strong></a> RFC中IANA考量章节编写指南</p>
+<p>Cotton, M., Leiba, B., and T. Narten, “Guidelines for Writing an IANA Considerations Section in RFCs”, BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017, <a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>.</p>
+</div>
+<div class="out_ref" id="ICMP">
+<p><a href="#ICMP"><strong>[ICMP]</strong></a> 互联网控制消息协议</p>
+<p>Postel, J., “Internet Control Message Protocol”, STD 5, RFC 792, DOI 10.17487/RFC0792, September 1981, <a href="https://www.rfc-editor.org/info/rfc792">https://www.rfc-editor.org/info/rfc792</a>.</p>
+</div>
+<div class="out_ref" id="ICMPv6">
+<p><a href="#ICMPv6"><strong>[ICMPv6]</strong></a> 互联网协议版本6（IPv6）规范的互联网控制消息协议（ICMPv6）</p>
+<p>Conta, A., Deering, S., and M. Gupta, Ed., “Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification”, STD 89, RFC 4443, DOI 10.17487/RFC4443, March 2006, <a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>.</p>
+</div>
+<div class="out_ref" id="IPv6">
+<p><a href="#IPv6"><strong>[IPv6]</strong></a> 互联网协议版本6（IPv6）规范</p>
+<p>Deering, S. and R. Hinden, “Internet Protocol, Version 6 (IPv6) Specification”, STD 86, RFC 8200, DOI 10.17487/RFC8200, July 2017, <a href="https://www.rfc-editor.org/info/rfc8200">https://www.rfc-editor.org/info/rfc8200</a>.</p>
+</div>
+<div class="out_ref" id="IPv6-ZONE-ID">
+<p><a href="#IPv6-ZONE-ID"><strong>[IPv6-ZONE-ID]</strong></a> 在地址字面量和统一资源标识符中表示IPv6区域标识符</p>
+<p>Carpenter, B., Cheshire, S., and R. Hinden, “Representing IPv6 Zone Identifiers in Address Literals and Uniform Resource Identifiers”, RFC 6874, DOI 10.17487/RFC6874, February 2013, <a href="https://www.rfc-editor.org/info/rfc6874">https://www.rfc-editor.org/info/rfc6874</a>.</p>
+</div>
+<div class="out_ref" id="PROXY-STATUS">
+<p><a href="#PROXY-STATUS"><strong>[PROXY-STATUS]</strong></a> Proxy-Status HTTP响应头字段</p>
+<p>Nottingham, M. and P. Sikora, “The Proxy-Status HTTP Response Header Field”, RFC 9209, DOI 10.17487/RFC9209, June 2022, <a href="https://www.rfc-editor.org/info/rfc9209">https://www.rfc-editor.org/info/rfc9209</a>.</p>
+</div>
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> QUIC：一种基于UDP的安全多路复用传输协议</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> 用于RFC中指示需求等级的关键词</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC 2119关键词中大写与小写的歧义性</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="TCP">
+<p><a href="#TCP"><strong>[TCP]</strong></a> 传输控制协议（TCP）</p>
+<p>Eddy, W., Ed., “Transmission Control Protocol (TCP)”, STD 7, RFC 9293, DOI 10.17487/RFC9293, August 2022, <a href="https://www.rfc-editor.org/info/rfc9293">https://www.rfc-editor.org/info/rfc9293</a>.</p>
+</div>
+<div class="out_ref" id="TEMPLATE">
+<p><a href="#TEMPLATE"><strong>[TEMPLATE]</strong></a> URI模板</p>
+<p>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, “URI Template”, RFC 6570, DOI 10.17487/RFC6570, March 2012, <a href="https://www.rfc-editor.org/info/rfc6570">https://www.rfc-editor.org/info/rfc6570</a>.</p>
+</div>
+<div class="out_ref" id="URI">
+<p><a href="#URI"><strong>[URI]</strong></a> 统一资源标识符（URI）：通用语法</p>
+<p>Berners-Lee, T., Fielding, R., and L. Masinter, “Uniform Resource Identifier (URI): Generic Syntax”, STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005, <a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="13.2_Informative_References">
+<h2>
+<a href="#13.2_Informative_References">13.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="CONNECT-UDP">
+<p><a href="#CONNECT-UDP"><strong>[CONNECT-UDP]</strong></a> HTTP中的UDP代理</p>
+<p>Schinazi, D., “Proxying UDP in HTTP”, RFC 9298, DOI 10.17487/RFC9298, August 2022, <a href="https://www.rfc-editor.org/info/rfc9298">https://www.rfc-editor.org/info/rfc9298</a>.</p>
+</div>
+<div class="out_ref" id="DPLPMTUD">
+<p><a href="#DPLPMTUD"><strong>[DPLPMTUD]</strong></a> 数据报传输的分组层路径MTU发现</p>
+<p>Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, “Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
+</div>
+<div class="out_ref" id="ECN-TUNNEL">
+<p><a href="#ECN-TUNNEL"><strong>[ECN-TUNNEL]</strong></a> 显式拥塞通知的隧道传输</p>
+<p>Briscoe, B., “Tunnelling of Explicit Congestion Notification”, RFC 6040, DOI 10.17487/RFC6040, November 2010, <a href="https://www.rfc-editor.org/info/rfc6040">https://www.rfc-editor.org/info/rfc6040</a>.</p>
+</div>
+<div class="out_ref" id="HEv2">
+<p><a href="#HEv2"><strong>[HEv2]</strong></a> Happy Eyeballs版本2：利用并发性实现更好的连接性</p>
+<p>Schinazi, D. and T. Pauly, “Happy Eyeballs Version 2: Better Connectivity Using Concurrency”, RFC 8305, DOI 10.17487/RFC8305, December 2017, <a href="https://www.rfc-editor.org/info/rfc8305">https://www.rfc-editor.org/info/rfc8305</a>.</p>
+</div>
+<div class="out_ref" id="IANA-PN">
+<p><a href="#IANA-PN"><strong>[IANA-PN]</strong></a> 协议号</p>
+<p>IANA, “Protocol Numbers”, <a href="https://www.iana.org/assignments/protocol-numbers">https://www.iana.org/assignments/protocol-numbers</a>.</p>
+</div>
+<div class="out_ref" id="IPSEC">
+<p><a href="#IPSEC"><strong>[IPSEC]</strong></a> 互联网协议安全架构</p>
+<p>Kent, S. and K. Seo, “Security Architecture for the Internet Protocol”, RFC 4301, DOI 10.17487/RFC4301, December 2005, <a href="https://www.rfc-editor.org/info/rfc4301">https://www.rfc-editor.org/info/rfc4301</a>.</p>
+</div>
+<div class="out_ref" id="IPv6-ADDR">
+<p><a href="#IPv6-ADDR"><strong>[IPv6-ADDR]</strong></a> IP版本6寻址架构</p>
+<p>Hinden, R. and S. Deering, “IP Version 6 Addressing Architecture”, RFC 4291, DOI 10.17487/RFC4291, February 2006, <a href="https://www.rfc-editor.org/info/rfc4291">https://www.rfc-editor.org/info/rfc4291</a>.</p>
+</div>
+<div class="out_ref" id="OPTIMISTIC">
+<p><a href="#OPTIMISTIC"><strong>[OPTIMISTIC]</strong></a> 乐观使用HTTP升级的安全性考量</p>
+<p>Schwartz, B. M., “Security Considerations for Optimistic Use of HTTP Upgrade”, Work in Progress, Internet-Draft, draft-schwartz-httpbis-optimistic-upgrade-00, 21 August 2023, <a href="https://datatracker.ietf.org/doc/html/draft-schwartz-httpbis-optimistic-upgrade-00">https://datatracker.ietf.org/doc/html/draft-schwartz-httpbis-optimistic-upgrade-00</a>.</p>
+</div>
+<div class="out_ref" id="PROXY-REQS">
+<p><a href="#PROXY-REQS"><strong>[PROXY-REQS]</strong></a> MASQUE协议代理IP流量的需求</p>
+<p>Chernyakhovsky, A., McCall, D., and D. Schinazi, “Requirements for a MASQUE Protocol to Proxy IP Traffic”, Work in Progress, Internet-Draft, draft-ietf-masque-ip-proxy-reqs-03, 27 August 2021, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-masque-ip-proxy-reqs-03">https://datatracker.ietf.org/doc/html/draft-ietf-masque-ip-proxy-reqs-03</a>.</p>
+</div>
+<div class="out_ref" id="ROUTING-HDR">
+<p><a href="#ROUTING-HDR"><strong>[ROUTING-HDR]</strong></a> 废弃IPv6中的类型0路由头</p>
+<p>Abley, J., Savola, P., and G. Neville-Neil, “Deprecation of Type 0 Routing Headers in IPv6”, RFC 5095, DOI 10.17487/RFC5095, December 2007, <a href="https://www.rfc-editor.org/info/rfc5095">https://www.rfc-editor.org/info/rfc5095</a>.</p>
+</div>
+<div class="out_ref" id="TUNNEL-SECURITY">
+<p><a href="#TUNNEL-SECURITY"><strong>[TUNNEL-SECURITY]</strong></a> IP隧道的安全性问题</p>
+<p>Krishnan, S., Thaler, D., and J. Hoagland, “Security Concerns with IP Tunneling”, RFC 6169, DOI 10.17487/RFC6169, April 2011, <a href="https://www.rfc-editor.org/info/rfc6169">https://www.rfc-editor.org/info/rfc6169</a>.</p>
+</div>
+<div class="out_ref" id="UDP-USAGE">
+<p><a href="#UDP-USAGE"><strong>[UDP-USAGE]</strong></a> UDP使用指南</p>
+<p>Eggert, L., Fairhurst, G., and G. Shepherd, “UDP Usage Guidelines”, BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>本方法的设计受到MASQUE工作组围绕[PROXY-REQS]的讨论的启发。作者要感谢参与这些讨论的参与者提供的反馈。此外，Mike Bishop、Lucas Pardue和Alejandro Sedeño对本文档提供了宝贵的反馈。</p>
+<p>关于客户端配置的大部分文本基于[CONNECT-UDP]中的相应内容。</p>
+</div>
+</section>
+<section class="page" id="Authors_Addresses">
+<h1>
+<a href="#Authors_Addresses">作者地址</a>
+</h1>
+<div class="content">
+<p><strong>Tommy Pauly</strong>（编辑）</p>
+<p>Apple Inc.</p>
+<p>Email: <a href="mailto:tpauly@apple.com">tpauly@apple.com</a></p>
+<p><strong>David Schinazi</strong></p>
+<p>Google LLC</p>
+<p>1600 Amphitheatre Parkway</p>
+<p>Mountain View, CA 94043</p>
+<p>United States of America</p>
+<p>Email: <a href="mailto:dschinazi.ietf@gmail.com">dschinazi.ietf@gmail.com</a></p>
+<p><strong>Alex Chernyakhovsky</strong></p>
+<p>Google LLC</p>
+<p>Email: <a href="mailto:achernya@google.com">achernya@google.com</a></p>
+<p><strong>Mirja Kühlewind</strong></p>
+<p>Ericsson</p>
+<p>Email: <a href="mailto:mirja.kuehlewind@ericsson.com">mirja.kuehlewind@ericsson.com</a></p>
+<p><strong>Magnus Westerlund</strong></p>
+<p>Ericsson</p>
+<p>Email: <a href="mailto:magnus.westerlund@ericsson.com">magnus.westerlund@ericsson.com</a></p>
+</div>
+</section>
+</div>
+</body>
+</html>

@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+
+<html lang="cn" xml:lang="cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="Hugo 0.162.0-DEV" name="generator"/>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>RFC9298中文：HTTP中UDP代理</title>
+<link href="https://avatars.githubusercontent.com/u/107357402" rel="shortcut icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+<link href="/css/styles.css" rel="stylesheet"/>
+<link href="/RFC9298_Chinese_Simplified/css/RFC9298.css" rel="stylesheet"/>
+<link href="/RFC9298_Chinese_Simplified/index.xml" rel="alternate" title="RFC9298中文：HTTP中UDP代理" type="application/rss+xml">
+</link></head>
+<body>
+<div class="sidebar sidebar-rfc9298">
+<div class="navigation">
+<div><a href="/">秋愧遲</a></div>
+<h1 class="site-title"><a href="/RFC9298_Chinese_Simplified/">RFC9298中文：HTTP中UDP代理</a></h1>
+<nav class="internal">
+<ul>
+<li>
+<a href="#RFC9298_Proxying_UDP_in_HTTP">RFC9298 HTTP中UDP代理</a>
+<ul>
+<li><a href="#Forword">前言</a></li>
+<li><a href="#Abstract">摘要</a></li>
+<li><a href="#Status_of_This_Memo">备忘状态</a></li>
+<li><a href="#Copyright_Notice">版权声明</a></li>
+</ul>
+</li>
+<li>
+<a href="#1_Introduction">1. 引言</a>
+<ul>
+<li><a href="#1.1_Conventions_and_Definitions">1.1. 约定与定义</a></li>
+</ul>
+</li>
+<li>
+<a href="#2_Client_Configuration">2. 客户端配置</a>
+</li>
+<li>
+<a href="#3_Tunneling_UDP_over_HTTP">3. 基于HTTP的UDP隧道</a>
+<ul>
+<li><a href="#3.1_UDP_Proxy_Handling">3.1. UDP代理处理</a></li>
+<li><a href="#3.2_HTTP1.1_Request">3.2. HTTP/1.1请求</a></li>
+<li><a href="#3.3_HTTP1.1_Response">3.3. HTTP/1.1响应</a></li>
+<li><a href="#3.4_HTTP2_and_HTTP3_Requests">3.4. HTTP/2与HTTP/3请求</a></li>
+<li><a href="#3.5_HTTP2_and_HTTP3_Responses">3.5. HTTP/2与HTTP/3响应</a></li>
+</ul>
+</li>
+<li>
+<a href="#4_Context_Identifiers">4. 上下文标识符</a>
+</li>
+<li>
+<a href="#5_HTTP_Datagram_Payload_Format">5. HTTP数据报载荷格式</a>
+</li>
+<li>
+<a href="#6_Performance_Considerations">6. 性能考量</a>
+<ul>
+<li><a href="#6.1_MTU_Considerations">6.1. MTU考量</a></li>
+<li><a href="#6.2_Tunneling_of_ECN_Marks">6.2. ECN标记的隧道化</a></li>
+</ul>
+</li>
+<li>
+<a href="#7_Security_Considerations">7. 安全性考量</a>
+</li>
+<li>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+<ul>
+<li><a href="#8.1_HTTP_Upgrade_Token">8.1. HTTP升级令牌</a></li>
+<li><a href="#8.2_Well-Known_URI">8.2. Well-Known URI</a></li>
+</ul>
+</li>
+<li>
+<a href="#9_References">9. 参考文献</a>
+<ul>
+<li><a href="#9.1_Normative_References">9.1. 规范性参考文献</a></li>
+<li><a href="#9.2_Informative_References">9.2. 资料性参考文献</a></li>
+</ul>
+</li>
+<li>
+<a href="#Acknowledgments">致谢</a>
+</li>
+<li>
+<a href="#Authors_Address">作者地址</a>
+</li>
+</ul>
+</nav>
+<nav class="external">
+<ul id="shortcuts">
+</ul>
+<br/>
+</nav>
+</div>
+<div class="version">
+            generated on Jun 1, 2026
+    </div>
+</div>
+<div class="content">
+<section class="page" id="RFC9298_Proxying_UDP_in_HTTP">
+<h1>
+<a href="#RFC9298_Proxying_UDP_in_HTTP">RFC9298 HTTP中UDP代理</a>
+</h1>
+<div class="content">
+<br/>
+<br/>
+<table border="3" frame="void" rules="none">
+<tr>
+<td>状态：</td>
+<td colspan="2">建议标准</td>
+</tr>
+<tr>
+<td>更多信息：</td>
+<td colspan="2">
+<a href="https://datatracker.ietf.org/doc/rfc9298">数据追踪</a>|
+      <a href="https://datatracker.ietf.org/ipr/search/?rfc=9298&amp;submit=rfc">知识产权</a>|
+      <a href="https://www.rfc-editor.org/info/rfc9298">信息页</a>
+</td>
+</tr>
+<tr>
+<td>组织：</td>
+<td colspan="2">互联网工程工作组（IETF）</td>
+</tr>
+<tr>
+<td>RFC编号：</td>
+<td colspan="2">
+<a href="https://www.rfc-editor.org/info/rfc9298">9298</a>
+</td>
+</tr>
+<tr>
+<td>分类：</td>
+<td colspan="2">标准追踪</td>
+</tr>
+<tr>
+<td>出版时间：</td>
+<td colspan="2">2022年8月</td>
+</tr>
+<tr>
+<td>国际标准期刊编号：</td>
+<td colspan="2">2070-1721</td>
+</tr>
+<tr>
+<td>作者：</td>
+<td>D. Schinazi <br/><i>Google LLC</i></td>
+<td></td>
+</tr>
+</table>
+</div>
+</section>
+<section class="page" id="Forword">
+<h2>
+<a href="#Forword">前言</a>
+</h2>
+<div class="content">
+<p>本文是关于HTTP中UDP代理的网络规范文档译文，尚未完成翻译，欢迎指正。</p>
+</div>
+</section>
+<section class="page" id="Abstract">
+<h2>
+<a href="#Abstract">摘要</a>
+</h2>
+<div class="content">
+<p>本文描述了如何在HTTP中代理UDP，类似于HTTP CONNECT方法允许在HTTP中代理TCP的方式。更具体地说，本文定义了一种协议，允许HTTP客户端通过充当代理的HTTP服务器为UDP通信创建隧道。</p>
+</div>
+</section>
+<section class="page" id="Status_of_This_Memo">
+<h2>
+<a href="#Status_of_This_Memo">备忘状态</a>
+</h2>
+<div class="content">
+<p>本文是互联网标准追踪文档。</p>
+<p>本文产自互联网工程任务组（IETF），已接受公开审查，并由互联网工程指导委员会（IESG）批准出版。更多互联网标准相关信息详见<a href="https://datatracker.ietf.org/doc/rfc7841/">RFC 7841</a>第2章。</p>
+<p>关于本文当前状态、勘误及反馈方式等相关信息请移步<a href="https://www.rfc-editor.org/info/rfc9298">https://www.rfc-editor.org/info/rfc9298</a>。</p>
+</div>
+</section>
+<section class="page" id="Copyright_Notice">
+<h2>
+<a href="#Copyright_Notice">版权声明</a>
+</h2>
+<div class="content">
+<p>版权所有（c）2022 IETF信托及确认为文档作者的个人。保留所有权利。</p>
+<p>本文遵守BCP 78及在本文发布之日起生效的IETF信托涉及IETF文档的法律条文（<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>）。请仔细阅读相关条文，因为其描述了你对本文所有的权利及限制。从本文中摘录的代码组件必须包含信托法律条文第4.e章的修订版BSD License文件，并且不附带任何该文件所描述的保证。</p>
+</div>
+</section>
+<section class="page" id="1_Introduction">
+<h1>
+<a href="#1_Introduction">1. 引言</a>
+</h1>
+<div class="content">
+<p>尽管HTTP提供了CONNECT方法（参见[HTTP]第9.3.6节）用于创建到代理的TCP [TCP]隧道，但在本规范之前，它缺少为UDP [UDP]流量执行此操作的方法。</p>
+<p>本文档描述了一种协议，用于将UDP隧道传输到充当基于HTTP的UDP特定代理的服务器。UDP隧道通常用于创建端到端虚拟连接，然后可以使用QUIC [QUIC]或运行在UDP上的其他协议对其进行安全保护。与HTTP CONNECT方法不同，UDP代理本身通过包含流量目标地址的绝对URL来标识。客户端使用URI模板[TEMPLATE]生成这些URL，具体描述见第2节。</p>
+<p>本协议通过使用HTTP数据报[HTTP-DGRAM]支持所有现有版本的HTTP。当使用HTTP/2 [HTTP/2]或HTTP/3 [HTTP/3]时，它使用[EXT-CONNECT2]和[EXT-CONNECT3]中描述的HTTP扩展CONNECT。当使用HTTP/1.x [HTTP/1.1]时，它使用[HTTP]第7.8节中定义的HTTP升级机制。</p>
+</div>
+</section>
+<section class="page" id="1.1_Conventions_and_Definitions">
+<h2>
+<a href="#1.1_Conventions_and_Definitions">1.1. 约定与定义</a>
+</h2>
+<div class="content">
+<p>本文档中的关键词"<em><strong>必须</strong></em>"，“<em><strong>必须</strong></em>”，“<em><strong>需要</strong></em>”，“<em><strong>强烈要求</strong></em>”，“<em><strong>强烈要求</strong></em>”，“<em><strong>应该</strong></em>”，“<em><strong>应该</strong></em>”，“<em><strong>推荐</strong></em>”，“<em><strong>错误的关键字</strong></em>”，“<em><strong>可以</strong></em>"和"<em><strong>可选</strong></em>"的解释应遵循BCP 14 [RFC2119] [RFC8174]所述，且仅当它们全部以大写字母出现时（如上所示）才具有相应含义。</p>
+<p>在本文档中，我们使用术语"UDP代理"指代这样的HTTP服务器：它响应客户端的UDP隧道请求，向目标服务器打开UDP套接字，并生成对此请求的响应。如果客户端和UDP代理之间存在HTTP中间人（定义见[HTTP]第3.7节），则本文档将其称为"中间人”。</p>
+<p>注意，当使用的HTTP版本不支持多路复用流（例如HTTP/1.1）时，本文档中对"流"的任何引用均表示整个连接。</p>
+</div>
+</section>
+<section class="page" id="2_Client_Configuration">
+<h1>
+<a href="#2_Client_Configuration">2. 客户端配置</a>
+</h1>
+<div class="content">
+<p>HTTP客户端通过带有变量<code>target_host</code>和<code>target_port</code>的URI模板[TEMPLATE]配置使用UDP代理。示例如下：</p>
+<pre tabindex="0"><code>https://example.org/.well-known/masque/udp/{target_host}/{target_port}/
+https://proxy.example.org:4443/masque?h={target_host}&amp;p={target_port}
+https://proxy.example.org:4443/masque{?target_host,target_port}
+</code></pre><p><em>图1：URI模板示例</em></p>
+<p>以下要求适用于该URI模板：</p>
+<ul>
+<li>
+<p>该URI模板<em><strong>必须</strong></em>是第3级或更低级别的模板。</p>
+</li>
+<li>
+<p>该URI模板<em><strong>必须</strong></em>采用绝对形式，并且<em><strong>必须</strong></em>包含非空的scheme、authority和path组件。</p>
+</li>
+<li>
+<p>该URI模板的path组件<em><strong>必须</strong></em>以斜杠（"/"）开头。</p>
+</li>
+<li>
+<p>所有模板变量<em><strong>必须</strong></em>位于URI的path或query组件内。</p>
+</li>
+<li>
+<p>该URI模板<em><strong>必须</strong></em>包含<code>target_host</code>和<code>target_port</code>这两个变量，并且<em><strong>可以</strong></em>包含其他变量。</p>
+</li>
+<li>
+<p>该URI模板<em><strong>必须</strong></em>包含任何非ASCII Unicode字符，并且<em><strong>必须</strong></em>仅包含范围为0x21-0x7E（含）的ASCII字符（注意允许百分比编码；参见[URI]第2.1节）。</p>
+</li>
+<li>
+<p>该URI模板<em><strong>必须</strong></em>使用保留扩展（"+“操作符）、片段扩展（”#“操作符）、带点前缀的标签扩展、带斜杠前缀的路径段扩展，也不得使用带分号前缀的路径样式参数扩展。</p>
+</li>
+</ul>
+<p>客户端<em><strong>应该</strong></em>验证上述要求；但是，客户端<em><strong>可以</strong></em>使用缺少此特定验证的通用URI模板实现。如果客户端检测到URI模板未满足上述任何要求，则客户端<em><strong>必须</strong></em>拒绝其配置并中止请求，而不将其发送到UDP代理。</p>
+<p>原始的HTTP CONNECT方法允许传递目标主机和端口，但不允许传递scheme、代理authority、path或query。因此，存在仅允许用户配置代理主机和代理端口的代理配置界面的客户端。受此类限制约束的本规范客户端实现<em><strong>可以</strong></em>尝试使用默认模板来访问UDP代理功能，该默认模板定义为<code>https://$PROXY_HOST:$PROXY_PORT/.well-known/masque/udp/{target_host}/{target_port}/</code>，其中<code>$PROXY_HOST</code>和<code>$PROXY_PORT</code>分别是UDP代理的配置主机和端口。如果UDP代理部署需要与此类客户端互操作，则<em><strong>应该</strong></em>在该位置提供服务。</p>
+</div>
+</section>
+<section class="page" id="3_Tunneling_UDP_over_HTTP">
+<h1>
+<a href="#3_Tunneling_UDP_over_HTTP">3. 基于HTTP的UDP隧道</a>
+</h1>
+<div class="content">
+<p>为了允许在HTTP上协商UDP隧道，本文档定义了"connect-udp" HTTP升级令牌。生成的UDP隧道使用胶囊协议（参见[HTTP-DGRAM]第3.2节）以及第5节中定义的HTTP数据报格式。</p>
+<p>为了启动与单个HTTP流关联的UDP隧道，客户端发起包含"connect-udp"升级令牌的请求。客户端通过URI模板的<code>target_host</code>和<code>target_port</code>变量向UDP代理指示隧道目标；参见第2节。</p>
+<p><code>target_host</code>支持使用DNS名称、IPv6字面量和IPv4字面量。注意，不支持IPv6作用域地址区域标识符。使用[URI]中的术语IPv6address、IPv4address、reg-name和port，<code>target_host</code>和<code>target_port</code>变量<em><strong>必须</strong></em>遵循图2中的格式，使用[ABNF]的表示法。此外：</p>
+<ul>
+<li>
+<p><code>target_host</code>和<code>target_port</code>变量均<em><strong>必须</strong></em>为空。</p>
+</li>
+<li>
+<p>如果<code>target_host</code>包含IPv6字面量，则冒号（":"）<em><strong>必须</strong></em>进行百分比编码。例如，如果目标主机是"2001:db8::42"，则将在URI中编码为"2001%3Adb8%3A%3A42"。</p>
+</li>
+<li>
+<p><code>target_port</code> <em><strong>必须</strong></em>表示一个介于1到65535（含）之间的整数。</p>
+</li>
+</ul>
+<pre tabindex="0"><code>target_host = IPv6address / IPv4address / reg-name
+target_port = port
+</code></pre><p><em>图2：URI模板变量格式</em></p>
+<p>在发送其UDP代理请求时，客户端<em><strong>强烈要求</strong></em>执行URI模板扩展以确定其请求的path和query。</p>
+<p>如果请求成功，UDP代理承诺将接收到的HTTP数据报转换为UDP数据包，反之亦然，直到隧道关闭。</p>
+<p>根据胶囊协议的定义（参见[HTTP-DGRAM]第3.2节），UDP代理请求不携带任何消息内容。同样，成功的UDP代理响应也不携带任何消息内容。</p>
+</div>
+</section>
+<section class="page" id="3.1_UDP_Proxy_Handling">
+<h2>
+<a href="#3.1_UDP_Proxy_Handling">3.1. UDP代理处理</a>
+</h2>
+<div class="content">
+<p>在收到UDP代理请求时：</p>
+<ul>
+<li>
+<p>如果接收方被配置为使用另一个HTTP代理，则它将充当中问人，将请求转发到另一个HTTP服务器。注意，如果此类中间人使用不同于接收时所用HTTP版本来转发请求，则可能需要重新编码请求，因为请求编码因版本而异（见下文）。</p>
+</li>
+<li>
+<p>否则，接收方将充当UDP代理。它从根据请求头重建的URI中提取<code>target_host</code>和<code>target_port</code>变量，解码其百分比编码，并通过直接打开到所请求目标的UDP套接字来建立隧道。</p>
+</li>
+</ul>
+<p>与TCP不同，UDP是无连接的。打开UDP套接字的UDP代理无法知道目标是否可达。因此，它需要在不等待来自目标的数据包的情况下响应请求。但是，如果<code>target_host</code>是DNS名称，则UDP代理<em><strong>必须</strong></em>在回复HTTP请求之前执行DNS解析。如果在此过程中发生错误，UDP代理<em><strong>必须</strong></em>拒绝请求，并且<em><strong>应该</strong></em>使用适当的Proxy-Status头字段[PROXY-STATUS]发送详细信息。例如，如果DNS解析返回错误，则代理可以使用[PROXY-STATUS]第2.3.2节中的dns_error代理错误类型。</p>
+<p>如果操作系统支持，UDP代理可以使用已连接的UDP套接字，因为这样UDP代理可以依赖内核仅向其发送匹配正确五元组的UDP数据包。如果UDP代理使用非连接套接字，则它<em><strong>必须</strong></em>验证接收数据包的IP源地址和UDP源端口，以确保它们与客户端的请求匹配。不匹配的数据包<em><strong>必须</strong></em>由UDP代理丢弃。</p>
+<p>套接字的生命周期与请求流绑定。UDP代理<em><strong>必须</strong></em>在请求流打开期间保持套接字打开。如果UDP代理被其操作系统通知其套接字不再可用，则它<em><strong>必须</strong></em>关闭请求流。例如，收到ICMP目标不可达消息时可能发生这种情况；参见[ICMP6]第3.1节。UDP代理<em><strong>可以</strong></em>选择由于一段不活动期而关闭套接字，但它们<em><strong>必须</strong></em>在关闭套接字时关闭请求流。在不活动期后关闭套接字的UDP代理<em><strong>应该</strong></em>使用低于两分钟的时间段；参见[BEHAVE]第4.3节。</p>
+<p>成功响应（定义见第3.3节和第3.5节）表示UDP代理已打开到所请求目标的套接字，并愿意代理UDP载荷。除成功响应外的任何响应均表示请求已失败；因此，客户端<em><strong>必须</strong></em>中止请求。</p>
+<p>UDP代理<em><strong>必须</strong></em>在将HTTP数据报转发到UDP套接字时在IP层引入分片；过大的数据报将被静默丢弃。在IPv4中，如果可能，<em><strong>必须</strong></em>设置不分片（DF）位，以防止路径上的分片。未来的扩展<em><strong>可以</strong></em>移除这些要求。</p>
+<p>UDP代理的实现者将从阅读[UDP-USAGE]中的指导中受益。</p>
+</div>
+</section>
+<section class="page" id="3.2_HTTP1.1_Request">
+<h2>
+<a href="#3.2_HTTP1.1_Request">3.2. HTTP/1.1请求</a>
+</h2>
+<div class="content">
+<p>当使用HTTP/1.1 [HTTP/1.1]时，UDP代理请求应满足以下要求：</p>
+<ul>
+<li>
+<p>方法<em><strong>强烈要求</strong></em>为"GET"。</p>
+</li>
+<li>
+<p>请求<em><strong>强烈要求</strong></em>包含一个单独的Host头字段，其中包含UDP代理的源站。</p>
+</li>
+<li>
+<p>请求<em><strong>强烈要求</strong></em>包含一个Connection头字段，其值为"Upgrade"（注意，根据[HTTP]第7.6.1节，此要求不区分大小写）。</p>
+</li>
+<li>
+<p>请求<em><strong>强烈要求</strong></em>包含一个Upgrade头字段，其值为"connect-udp"。</p>
+</li>
+</ul>
+<p>不符合这些限制的UDP代理请求是畸形的。此类畸形请求的接收方<em><strong>必须</strong></em>以错误响应，并且<em><strong>应该</strong></em>使用400（Bad Request）状态码。</p>
+<p>例如，如果客户端配置了URI模板<code>https://example.org/.well-known/masque/udp/{target_host}/{target_port}/</code>并希望打开到目标192.0.2.6:443的UDP代理隧道，则可以发送以下请求：</p>
+<pre tabindex="0"><code>GET https://example.org/.well-known/masque/udp/192.0.2.6/443/ HTTP/1.1
+Host: example.org
+Connection: Upgrade
+Upgrade: connect-udp
+Capsule-Protocol: ?1
+</code></pre><p><em>图3：HTTP/1.1请求示例</em></p>
+<p>在HTTP/1.1中，本协议使用GET方法来模仿WebSocket协议[WEBSOCKET]的设计。</p>
+</div>
+</section>
+<section class="page" id="3.3_HTTP1.1_Response">
+<h2>
+<a href="#3.3_HTTP1.1_Response">3.3. HTTP/1.1响应</a>
+</h2>
+<div class="content">
+<p>UDP代理<em><strong>强烈要求</strong></em>通过回复满足以下要求来指示成功响应：</p>
+<ul>
+<li>
+<p>响应中的HTTP状态码<em><strong>强烈要求</strong></em>为101（Switching Protocols）。</p>
+</li>
+<li>
+<p>响应<em><strong>强烈要求</strong></em>包含一个Connection头字段，其值为"Upgrade"（注意，根据[HTTP]第7.6.1节，此要求不区分大小写）。</p>
+</li>
+<li>
+<p>响应<em><strong>强烈要求</strong></em>包含一个单独的Upgrade头字段，其值为"connect-udp"。</p>
+</li>
+<li>
+<p>响应<em><strong>强烈要求</strong></em>满足启动胶囊协议的HTTP响应要求；参见[HTTP-DGRAM]第3.2节。</p>
+</li>
+</ul>
+<p>如果这些要求中的任何一项未满足，则客户端<em><strong>必须</strong></em>将此代理尝试视为失败并中止连接。</p>
+<p>例如，UDP代理可以响应如下：</p>
+<pre tabindex="0"><code>HTTP/1.1 101 Switching Protocols
+Connection: Upgrade
+Upgrade: connect-udp
+Capsule-Protocol: ?1
+</code></pre><p><em>图4：HTTP/1.1响应示例</em></p>
+</div>
+</section>
+<section class="page" id="3.4_HTTP2_and_HTTP3_Requests">
+<h2>
+<a href="#3.4_HTTP2_and_HTTP3_Requests">3.4. HTTP/2与HTTP/3请求</a>
+</h2>
+<div class="content">
+<p>当使用HTTP/2 [HTTP/2]或HTTP/3 [HTTP/3]时，UDP代理请求使用HTTP扩展CONNECT。这要求服务器发送[EXT-CONNECT2]和[EXT-CONNECT3]中指定的HTTP Setting，并且请求使用HTTP伪头字段，满足以下要求：</p>
+<ul>
+<li>
+<p>:method伪头字段<em><strong>强烈要求</strong></em>为"CONNECT"。</p>
+</li>
+<li>
+<p>:protocol伪头字段<em><strong>强烈要求</strong></em>为"connect-udp"。</p>
+</li>
+<li>
+<p>:authority伪头字段<em><strong>强烈要求</strong></em>包含UDP代理的authority。</p>
+</li>
+<li>
+<p>:path和:scheme伪头字段<em><strong>强烈要求</strong></em>为空。它们的值<em><strong>强烈要求</strong></em>包含URI模板扩展过程完成后的scheme和path。</p>
+</li>
+</ul>
+<p>不符合这些限制的UDP代理请求是畸形的（参见[HTTP/2]第8.1.1节和[HTTP/3]第4.1.2节）。</p>
+<p>例如，如果客户端配置了URI模板<code>https://example.org/.well-known/masque/udp/{target_host}/{target_port}/</code>并希望打开到目标192.0.2.6:443的UDP代理隧道，则可以发送以下请求：</p>
+<pre tabindex="0"><code>HEADERS
+:method = CONNECT
+:protocol = connect-udp
+:scheme = https
+:path = /.well-known/masque/udp/192.0.2.6/443/
+:authority = example.org
+capsule-protocol = ?1
+</code></pre><p><em>图5：HTTP/2请求示例</em></p>
+</div>
+</section>
+<section class="page" id="3.5_HTTP2_and_HTTP3_Responses">
+<h2>
+<a href="#3.5_HTTP2_and_HTTP3_Responses">3.5. HTTP/2与HTTP/3响应</a>
+</h2>
+<div class="content">
+<p>UDP代理<em><strong>强烈要求</strong></em>通过回复满足以下要求来指示成功响应：</p>
+<ul>
+<li>
+<p>响应中的HTTP状态码<em><strong>强烈要求</strong></em>位于2xx（成功）范围内。</p>
+</li>
+<li>
+<p>响应<em><strong>强烈要求</strong></em>满足启动胶囊协议的HTTP响应要求；参见[HTTP-DGRAM]第3.2节。</p>
+</li>
+</ul>
+<p>如果这些要求中的任何一项未满足，则客户端<em><strong>必须</strong></em>将此代理尝试视为失败并中止请求。</p>
+<p>例如，UDP代理可以响应如下：</p>
+<pre tabindex="0"><code>HEADERS
+:status = 200
+capsule-protocol = ?1
+</code></pre><p><em>图6：HTTP/2响应示例</em></p>
+</div>
+</section>
+<section class="page" id="4_Context_Identifiers">
+<h1>
+<a href="#4_Context_Identifiers">4. 上下文标识符</a>
+</h1>
+<div class="content">
+<p>本文档中定义的基于HTTP代理UDP的机制允许未来的扩展交换携带与UDP载荷不同语义的HTTP数据报。其中一些扩展可以用额外数据增强UDP载荷，而其他扩展则可以交换与UDP载荷完全分离的数据。为了实现这一点，与UDP代理请求流关联的所有HTTP数据报都以上下文ID字段开头；参见第5节。</p>
+<p>上下文ID是62位整数（0到2^62-1）。上下文ID编码为变长整数；参见[QUIC]第16节。上下文ID值0保留用于UDP载荷，而非零值是动态分配的。非零偶数上下文ID由客户端分配，奇数上下文ID由代理分配。上下文ID命名空间与给定的HTTP请求绑定；具有相同数值的上下文ID可能同时在不同的请求中分配，并可能具有不同的语义。上下文ID<em><strong>必须</strong></em>在给定的HTTP命名空间内重新分配，但<em><strong>可以</strong></em>以任何顺序分配。偶数编号和奇数编号上下文ID使用限制的存在是为了避免端点之间同步的需要。但是，一旦上下文ID已被分配，这些限制不适用于该上下文ID的使用；它可以由任何客户端或UDP代理使用，与最初分配它的端点无关。</p>
+<p>注册是指端点告知其对等端给定上下文ID的语义和格式的操作。本文档未定义注册如何发生。未来的扩展<em><strong>可以</strong></em>使用HTTP头字段或胶囊来注册上下文ID。根据所使用的方法，可能会在收到尚未注册的上下文ID的数据报。例如，这可能是由于包含数据报的数据包和包含注册消息的数据包在传输过程中的重排序所致。</p>
+</div>
+</section>
+<section class="page" id="5_HTTP_Datagram_Payload_Format">
+<h1>
+<a href="#5_HTTP_Datagram_Payload_Format">5. HTTP数据报载荷格式</a>
+</h1>
+<div class="content">
+<p>当HTTP数据报（参见[HTTP-DGRAM]第2节）与UDP代理请求流关联时，HTTP数据报载荷字段具有图7中定义的格式，使用[QUIC]第1.3节的表示法。注意，当HTTP数据报使用QUIC DATAGRAM帧[QUIC-DGRAM]编码时，下面定义的上下文ID字段直接紧跟在四分之一流ID字段之后，该字段位于QUIC DATAGRAM帧载荷的开头；参见[HTTP-DGRAM]第2.1节。</p>
+<pre tabindex="0"><code>UDP Proxying HTTP Datagram Payload {
+  Context ID (i),
+  UDP Proxying Payload (..),
+}
+</code></pre><p><em>图7：UDP代理HTTP数据报格式</em></p>
+<p><strong>上下文ID（Context ID）：</strong></p>
+<p>一个变长整数（参见[QUIC]第16节），包含上下文ID的值。如果收到携带未知上下文ID的HTTP/3数据报，则接收方<em><strong>强烈要求</strong></em>要么静默丢弃该数据报，要么在等待相应上下文ID注册的同时临时缓冲它（大约一个往返时间）。</p>
+<p><strong>UDP代理载荷（UDP Proxying Payload）：</strong></p>
+<p>数据报的载荷，其语义取决于前一个字段的值。注意，此字段可以为空。</p>
+<p>UDP数据包使用上下文ID字段设置为零的HTTP数据报进行编码。当上下文ID字段设置为零时，UDP代理载荷字段包含UDP数据包的未修改载荷（在[UDP]中称为数据八位字节）。</p>
+<p>根据UDP头[UDP]的定义，不可能对长度超过65527字节的UDP载荷进行编码。因此，端点<em><strong>必须</strong></em>使用上下文ID零发送UDP代理载荷字段长度超过65527的HTTP数据报。收到使用上下文ID零且其UDP代理载荷字段长度超过65527的HTTP数据报的端点<em><strong>必须</strong></em>中止相应流。如果UDP代理知道由于其底层链路MTU的限制，它只能发送特定长度的UDP数据包，则它别无选择，只能丢弃使用上下文ID零且其UDP代理载荷字段长度超过该限制的传入HTTP数据报。如果被丢弃的HTTP数据报是由DATAGRAM胶囊传输的，接收方<em><strong>应该</strong></em>丢弃该胶囊而不缓冲胶囊内容。</p>
+<p>如果UDP代理在收到相应请求之前收到HTTP数据报，则它<em><strong>强烈要求</strong></em>要么静默丢弃该HTTP数据报，要么在等待相应请求的同时临时缓冲它（大约一个往返时间）。</p>
+<p>注意，缓冲数据报（因为请求尚未收到或上下文ID尚未知）会消耗资源。缓冲数据报的接收方<em><strong>应该</strong></em>应用缓冲限制，以减少资源耗尽的风险。例如，接收方可以在每个流、每个上下文或每个连接的基础上限制缓冲数据报的总数或缓冲数据报的累计大小。</p>
+<p>客户端<em><strong>可以</strong></em>在收到对其UDP代理请求的响应之前乐观地开始在HTTP数据报中发送UDP数据包。但是，实现者应注意，如果UDP代理以失败响应请求，或者代理数据包在UDP代理收到请求之前到达且UDP代理选择不缓冲它们，则此类代理数据包可能不会被UDP代理处理。</p>
+</div>
+</section>
+<section class="page" id="6_Performance_Considerations">
+<h1>
+<a href="#6_Performance_Considerations">6. 性能考量</a>
+</h1>
+<div class="content">
+<p>突发流量常常会导致时间相关的数据包丢失（temporally correlated packet losses）；进而，这可能导致运行在UDP之上的协议中的拥塞控制器产生次优的响应。为了避免这种情况，UDP代理<em><strong>应该</strong></em>努力避免增加UDP流量的突发性（burstiness）；代理<em><strong>应该</strong></em> NOT为了增加批处理（batching）而对数据包进行排队。</p>
+<p>当被代理运行在UDP之上的协议使用了拥塞控制（例如，<em><strong>错误的关键字</strong></em>），被代理的流量将至少经历两层嵌套的拥塞控制器。底层的HTTP连接<em><strong>必须</strong></em> NOT禁用拥塞控制，除非其能够通过带外方式（out-of-band）确切地知道内部流量已经进行了拥塞控制。</p>
+<p>如果客户端或UDP代理在一个包含UDP代理请求流的连接上禁用了拥塞控制，则其<em><strong>必须</strong></em> NOT在该连接上发送显式拥塞通知（Explicit Congestion Notification，ECN）<em><strong>错误的关键字</strong></em>支持信号。也就是说，其<em><strong>必须</strong></em>将所有IP头部标记为Not-ECT码点。其<em><strong>可以</strong></em>继续通过QUIC ACK_ECN帧或TCP ECE位报告ECN反馈，因为对端可能并未禁用拥塞控制。</p>
+<p>当被代理运行在UDP之上的协议使用了丢包恢复（loss recovery）（例如，<em><strong>错误的关键字</strong></em>），并且底层HTTP连接运行在TCP之上时，被代理的流量将至少经历两层嵌套的丢包恢复机制。这会降低性能，因为两者有时可能独立地重传相同的数据。为了避免这种情况，UDP代理<em><strong>应该</strong></em>在HTTP/3上执行，以便能够利用QUIC DATAGRAM帧。</p>
+</div>
+</section>
+<section class="page" id="6.1_MTU_Considerations">
+<h2>
+<a href="#6.1_MTU_Considerations">6.1. MTU考量</a>
+</h2>
+<div class="content">
+<p>当使用HTTP/3配合QUIC Datagram扩展<em><strong>错误的关键字</strong></em>时，UDP负载通过QUIC DATAGRAM帧进行传输。由于这些帧不可分片，它们只能承载不超过由QUIC连接配置和路径MTU（Path MTU，PMTU）决定的某个长度的负载。如果UDP代理正在使用QUIC DATAGRAM帧，并且从目标接收到一个无法装入QUIC DATAGRAM帧的UDP负载，则UDP代理<em><strong>应该</strong></em> NOT在DATAGRAM胶囊中发送该UDP负载，因为这会破坏诸如数据包化层PMTU发现（Datagram Packetization Layer PMTU Discovery，DPLPMTUD）等方法所依赖的端到端不可靠性特性<em><strong>错误的关键字</strong></em>。在此场景下，UDP代理<em><strong>应该</strong></em>丢弃该UDP负载，并向目标发送一条ICMP Packet Too Big消息；参见<em><strong>错误的关键字</strong></em>第3.2节。</p>
+</div>
+</section>
+<section class="page" id="6.2_Tunneling_of_ECN_Marks">
+<h2>
+<a href="#6.2_Tunneling_of_ECN_Marks">6.2. ECN标记的隧道化</a>
+</h2>
+<div class="content">
+<p>UDP代理不会创建IP-in-IP隧道，因此<em><strong>错误的关键字</strong></em>中关于在内外层IP头部之间传递ECN标记的指导并不适用。UDP代理隧道中不存在内层IP头部。</p>
+<p>在本规范中，需要注意的是，UDP代理客户端无法控制UDP代理向目标发送的UDP数据包上的ECN码点，UDP代理也无法将每个UDP数据包从目标到UDP代理的标记情况传达给客户端。</p>
+<p>UDP代理<em><strong>必须</strong></em>忽略从目标接收到的UDP数据包IP头部中的ECN位，并且其<em><strong>必须</strong></em>将发送给目标的UDP数据包上的ECN位设置为Not-ECT。这些与客户端和UDP代理之间发送的数据包的ECN标记没有任何关系。</p>
+</div>
+</section>
+<section class="page" id="7_Security_Considerations">
+<h1>
+<a href="#7_Security_Considerations">7. 安全性考量</a>
+</h1>
+<div class="content">
+<p>允许任意客户端建立到任意目标的隧道存在重大风险，因为这可能使恶意行为者发送流量并使其归属到UDP代理名下。支持UDP代理的HTTP服务器应当（ought to）将其使用限制在经过认证的用户范围内。</p>
+<p>存在一些基于传入请求的源IP地址执行访问控制检查的软件和网络部署。例如，某些软件允许来自127.0.0.1的未经认证的配置更改。此类软件可能与UDP代理运行在同一主机上或同一广播域中。代理后的UDP流量将以属于UDP代理的源IP地址被接收。如果该源地址被用于访问控制，则UDP代理客户端可以利用UDP代理将其访问权限提升到其原本可能不具备的水平。这可能导致UDP代理客户端的未授权访问，除非UDP代理禁止对易受攻击的目标（例如UDP代理自身的地址以及本地回环地址（localhost）、链路本地（link-local）地址、多播（multicast）地址和广播（broadcast）地址）的UDP代理请求。UDP代理在拒绝此类请求时可以使用<em><strong>错误的关键字</strong></em>第2.3.5节中的<code>destination_ip_prohibited</code>代理错误类型。</p>
+<p>在将UDP代理和TCP CONNECT代理视为实施拒绝服务（Denial-of-Service，DoS）攻击的滥用基础设施时，二者有许多相似之处。两者都能隐藏攻击者的源地址，使其不被攻击目标察觉。在无状态大流量攻击（例如TCP SYN洪泛或UDP洪泛）的情况下，两种类型的代理都会将流量传递给目标主机。对于通过TCP CONNECT代理发送的有状态大流量攻击（例如HTTP洪泛），代理只有在目标通过TCP SYN-ACK响应表明愿意接受数据时才会发送数据。一旦通向目标的路径被淹没，TCP CONNECT代理将不再从目标收到回复，并将停止发送数据。由于UDP在UDP代理和目标之间不建立共享状态，UDP代理在此情况下可能会继续向目标发送数据。虽然UDP代理可以在观察到目标的响应之前限制其愿意转发的UDP数据包数量，但这只能在攻击针对开放UDP端口且运行在UDP之上的协议会做出响应（并且该响应会被UDP代理解释为愿意接受UDP）时才提供有限的DoS攻击防护。这样的数据包限制也可能对合法流量造成问题。</p>
+<p><em><strong>错误的关键字</strong></em>第4节中描述的安全性考量同样适用于此处。由于可以通过UDP隧道传输IP数据包，<em><strong>错误的关键字</strong></em>中的指导也可能适用。</p>
+</div>
+</section>
+<section class="page" id="8_IANA_Considerations">
+<h1>
+<a href="#8_IANA_Considerations">8. 关于IANA的考量</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="8.1_HTTP_Upgrade_Token">
+<h2>
+<a href="#8.1_HTTP_Upgrade_Token">8.1. HTTP升级令牌</a>
+</h2>
+<div class="content">
+<p>IANA已在由<code>&lt;https://www.iana.org/assignments/http-upgrade-tokens&gt;</code>维护的"HTTP Upgrade Tokens"注册表中注册了"connect-udp"。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Value（值）</td>
+<td><code>connect-udp</code></td>
+</tr>
+<tr>
+<td>Description（描述）</td>
+<td>Proxying of UDP Payloads（UDP负载的代理）</td>
+</tr>
+<tr>
+<td>Expected Version Tokens（期望的版本令牌）</td>
+<td>None（无）</td>
+</tr>
+<tr>
+<td>Reference（参考文献）</td>
+<td>RFC 9298</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="page" id="8.2_Well-Known_URI">
+<h2>
+<a href="#8.2_Well-Known_URI">8.2. Well-Known URI</a>
+</h2>
+<div class="content">
+<p>IANA已在由<code>&lt;https://www.iana.org/assignments/well-known-uris&gt;</code>维护的"Well-Known URIs"注册表中注册了"masque"。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>URI Suffix（URI后缀）</td>
+<td><code>masque</code></td>
+</tr>
+<tr>
+<td>Change Controller（变更控制者）</td>
+<td>IETF</td>
+</tr>
+<tr>
+<td>Reference（参考文献）</td>
+<td>RFC 9298</td>
+</tr>
+<tr>
+<td>Status（状态）</td>
+<td>permanent（永久）</td>
+</tr>
+<tr>
+<td>Related Information（相关信息）</td>
+<td>包含所有以路径前缀<code>/.well-known/masque/udp/</code>标识的资源</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="page" id="9_References">
+<h1>
+<a href="#9_References">9. 参考文献</a>
+</h1>
+<div class="content">
+</div>
+</section>
+<section class="page" id="9.1_Normative_References">
+<h2>
+<a href="#9.1_Normative_References">9.1. 规范性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="ABNF">
+<p><a href="#ABNF"><strong>[ABNF]</strong></a> 用于语法规范的增强BNF</p>
+<p>Crocker, D., Ed. and P. Overell, “Augmented BNF for Syntax Specifications: ABNF”, RFC 2234, DOI 10.17487/RFC2234, November 1997, <a href="https://www.rfc-editor.org/info/rfc2234">https://www.rfc-editor.org/info/rfc2234</a>.</p>
+</div>
+<div class="out_ref" id="ECN">
+<p><a href="#ECN"><strong>[ECN]</strong></a> 在IP中添加显式拥塞通知（ECN）</p>
+<p>Ramakrishnan, K., Floyd, S., and D. Black, “The Addition of Explicit Congestion Notification (ECN) to IP”, RFC 3168, DOI 10.17487/RFC3168, September 2001, <a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT2">
+<p><a href="#EXT-CONNECT2"><strong>[EXT-CONNECT2]</strong></a> 使用HTTP/2引导WebSocket</p>
+<p>McManus, P., “Bootstrapping WebSockets with HTTP/2”, RFC 8441, DOI 10.17487/RFC8441, September 2018, <a href="https://www.rfc-editor.org/info/rfc8441">https://www.rfc-editor.org/info/rfc8441</a>.</p>
+</div>
+<div class="out_ref" id="EXT-CONNECT3">
+<p><a href="#EXT-CONNECT3"><strong>[EXT-CONNECT3]</strong></a> 使用HTTP/3引导WebSocket</p>
+<p>Hamilton, R., “Bootstrapping WebSockets with HTTP/3”, RFC 9220, DOI 10.17487/RFC9220, June 2022, <a href="https://www.rfc-editor.org/info/rfc9220">https://www.rfc-editor.org/info/rfc9220</a>.</p>
+</div>
+<div class="out_ref" id="HTTP">
+<p><a href="#HTTP"><strong>[HTTP]</strong></a> HTTP语义</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP Semantics”, STD 97, RFC 9110, DOI 10.17487/RFC9110, June 2022, <a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>.</p>
+</div>
+<div class="out_ref" id="HTTP-DGRAM">
+<p><a href="#HTTP-DGRAM"><strong>[HTTP-DGRAM]</strong></a> HTTP数据报和胶囊协议</p>
+<p>Schinazi, D. and L. Pardue, “HTTP Datagrams and the Capsule Protocol”, RFC 9297, DOI 10.17487/RFC9297, August 2022, <a href="https://www.rfc-editor.org/info/rfc9297">https://www.rfc-editor.org/info/rfc9297</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/1.1">
+<p><a href="#HTTP%2f1.1"><strong>[HTTP/1.1]</strong></a> HTTP/1.1</p>
+<p>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “HTTP/1.1”, STD 99, RFC 9112, DOI 10.17487/RFC9112, June 2022, <a href="https://www.rfc-editor.org/info/rfc9112">https://www.rfc-editor.org/info/rfc9112</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/2">
+<p><a href="#HTTP%2f2"><strong>[HTTP/2]</strong></a> HTTP/2</p>
+<p>Thomson, M., Ed. and C. Benfield, Ed., “HTTP/2”, RFC 9113, DOI 10.17487/RFC9113, June 2022, <a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>.</p>
+</div>
+<div class="out_ref" id="HTTP/3">
+<p><a href="#HTTP%2f3"><strong>[HTTP/3]</strong></a> HTTP/3</p>
+<p>Bishop, M., Ed., “HTTP/3”, RFC 9114, DOI 10.17487/RFC9114, June 2022, <a href="https://www.rfc-editor.org/info/rfc9114">https://www.rfc-editor.org/info/rfc9114</a>.</p>
+</div>
+<div class="out_ref" id="PROXY-STATUS">
+<p><a href="#PROXY-STATUS"><strong>[PROXY-STATUS]</strong></a> Proxy-Status HTTP响应头字段</p>
+<p>Nottingham, M. and P. Sikora, “The Proxy-Status HTTP Response Header Field”, RFC 9209, DOI 10.17487/RFC9209, June 2022, <a href="https://www.rfc-editor.org/info/rfc9209">https://www.rfc-editor.org/info/rfc9209</a>.</p>
+</div>
+<div class="out_ref" id="QUIC">
+<p><a href="#QUIC"><strong>[QUIC]</strong></a> QUIC：一种基于UDP的安全多路复用传输协议</p>
+<p>Iyengar, J., Ed. and M. Thomson, Ed., “QUIC: A UDP-Based Multiplexed and Secure Transport”, RFC 9000, DOI 10.17487/RFC9000, May 2021, <a href="https://www.rfc-editor.org/info/rfc9000">https://www.rfc-editor.org/info/rfc9000</a>.</p>
+</div>
+<div class="out_ref" id="QUIC-DGRAM">
+<p><a href="#QUIC-DGRAM"><strong>[QUIC-DGRAM]</strong></a> QUIC不可靠数据报扩展</p>
+<p>Pauly, T., Kinnear, E., and D. Schinazi, “An Unreliable Datagram Extension to QUIC”, RFC 9221, DOI 10.17487/RFC9221, March 2022, <a href="https://www.rfc-editor.org/info/rfc9221">https://www.rfc-editor.org/info/rfc9221</a>.</p>
+</div>
+<div class="out_ref" id="RFC2119">
+<p><a href="#RFC2119"><strong>[RFC2119]</strong></a> 用于RFC中指示需求等级的关键词</p>
+<p>Bradner, S., “Key words for use in RFCs to Indicate Requirement Levels”, BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>.</p>
+</div>
+<div class="out_ref" id="RFC8174">
+<p><a href="#RFC8174"><strong>[RFC8174]</strong></a> RFC2119关键词中大写与小写的歧义性</p>
+<p>Leiba, B., “Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words”, BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>.</p>
+</div>
+<div class="out_ref" id="TCP">
+<p><a href="#TCP"><strong>[TCP]</strong></a> 传输控制协议（TCP）</p>
+<p>Eddy, W., Ed., “Transmission Control Protocol (TCP)”, STD 7, RFC 9293, DOI 10.17487/RFC9293, August 2022, <a href="https://www.rfc-editor.org/info/rfc9293">https://www.rfc-editor.org/info/rfc9293</a>.</p>
+</div>
+<div class="out_ref" id="TEMPLATE">
+<p><a href="#TEMPLATE"><strong>[TEMPLATE]</strong></a> URI模板</p>
+<p>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, “URI Template”, RFC 6570, DOI 10.17487/RFC6570, March 2012, <a href="https://www.rfc-editor.org/info/rfc6570">https://www.rfc-editor.org/info/rfc6570</a>.</p>
+</div>
+<div class="out_ref" id="UDP">
+<p><a href="#UDP"><strong>[UDP]</strong></a> 用户数据报协议</p>
+<p>Postel, J., “User Datagram Protocol”, STD 6, RFC 768, DOI 10.17487/RFC0768, August 1980, <a href="https://www.rfc-editor.org/info/rfc768">https://www.rfc-editor.org/info/rfc768</a>.</p>
+</div>
+<div class="out_ref" id="URI">
+<p><a href="#URI"><strong>[URI]</strong></a> 统一资源标识符（URI）：通用语法</p>
+<p>Berners-Lee, T., Fielding, R., and L. Masinter, “Uniform Resource Identifier (URI): Generic Syntax”, STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005, <a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="9.2_Informative_References">
+<h2>
+<a href="#9.2_Informative_References">9.2. 资料性参考文献</a>
+</h2>
+<div class="content">
+<div class="out_ref" id="BEHAVE">
+<p><a href="#BEHAVE"><strong>[BEHAVE]</strong></a> 网络地址转换（NAT）对单播UDP的行为要求</p>
+<p>Audet, F., Ed. and C. Jennings, “Network Address Translation (NAT) Behavioral Requirements for Unicast UDP”, BCP 127, RFC 4787, DOI 10.17487/RFC4787, January 2007, <a href="https://www.rfc-editor.org/info/rfc4787">https://www.rfc-editor.org/info/rfc4787</a>.</p>
+</div>
+<div class="out_ref" id="DPLPMTUD">
+<p><a href="#DPLPMTUD"><strong>[DPLPMTUD]</strong></a> 数据报传输的分组层路径MTU发现</p>
+<p>Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T. Völker, “Packetization Layer Path MTU Discovery for Datagram Transports”, RFC 8899, DOI 10.17487/RFC8899, September 2020, <a href="https://www.rfc-editor.org/info/rfc8899">https://www.rfc-editor.org/info/rfc8899</a>.</p>
+</div>
+<div class="out_ref" id="ECN-TUNNEL">
+<p><a href="#ECN-TUNNEL"><strong>[ECN-TUNNEL]</strong></a> 显式拥塞通知的隧道传输</p>
+<p>Briscoe, B., “Tunnelling of Explicit Congestion Notification”, RFC 6040, DOI 10.17487/RFC6040, November 2010, <a href="https://www.rfc-editor.org/info/rfc6040">https://www.rfc-editor.org/info/rfc6040</a>.</p>
+</div>
+<div class="out_ref" id="HELIUM">
+<p><a href="#HELIUM"><strong>[HELIUM]</strong></a> IP和UDP消息的混合封装层（HELIUM）</p>
+<p>Schwartz, B. M., “Hybrid Encapsulation Layer for IP and UDP Messages (HELIUM)”, Work in Progress, Internet-Draft, draft-schwartz-httpbis-helium-00, 25 June 2018, <a href="https://datatracker.ietf.org/doc/html/draft-schwartz-httpbis-helium-00">https://datatracker.ietf.org/doc/html/draft-schwartz-httpbis-helium-00</a>.</p>
+</div>
+<div class="out_ref" id="HiNT">
+<p><a href="#HiNT"><strong>[HiNT]</strong></a> HTTP发起的网络隧道（HiNT）</p>
+<p>Pardue, L., “HTTP-initiated Network Tunnelling (HiNT)”, Work in Progress, Internet-Draft, draft-pardue-httpbis-http-network-tunnelling-00, 2 July 2018, <a href="https://datatracker.ietf.org/doc/html/draft-pardue-httpbis-http-network-tunnelling-00">https://datatracker.ietf.org/doc/html/draft-pardue-httpbis-http-network-tunnelling-00</a>.</p>
+</div>
+<div class="out_ref" id="ICMP6">
+<p><a href="#ICMP6"><strong>[ICMP6]</strong></a> 互联网协议版本6（IPv6）规范的互联网控制消息协议（ICMPv6）</p>
+<p>Conta, A., Deering, S., and M. Gupta, Ed., “Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification”, STD 89, RFC 4443, DOI 10.17487/RFC4443, March 2006, <a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>.</p>
+</div>
+<div class="out_ref" id="MASQUE-ORIGINAL">
+<p><a href="#MASQUE-ORIGINAL"><strong>[MASQUE-ORIGINAL]</strong></a> MASQUE协议</p>
+<p>Schinazi, D., “The MASQUE Protocol”, Work in Progress, Internet-Draft, draft-schinazi-masque-00, 28 February 2019, <a href="https://datatracker.ietf.org/doc/html/draft-schinazi-masque-00">https://datatracker.ietf.org/doc/html/draft-schinazi-masque-00</a>.</p>
+</div>
+<div class="out_ref" id="TUNNEL-SECURITY">
+<p><a href="#TUNNEL-SECURITY"><strong>[TUNNEL-SECURITY]</strong></a> IP隧道的安全考虑</p>
+<p>Krishnan, S., Thaler, D., and J. Hoagland, “Security Concerns with IP Tunneling”, RFC 6169, DOI 10.17487/RFC6169, April 2011, <a href="https://www.rfc-editor.org/info/rfc6169">https://www.rfc-editor.org/info/rfc6169</a>.</p>
+</div>
+<div class="out_ref" id="UDP-USAGE">
+<p><a href="#UDP-USAGE"><strong>[UDP-USAGE]</strong></a> UDP使用指南</p>
+<p>Eggert, L., Fairhurst, G., and G. Shepherd, “UDP Usage Guidelines”, BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>.</p>
+</div>
+<div class="out_ref" id="WEBSOCKET">
+<p><a href="#WEBSOCKET"><strong>[WEBSOCKET]</strong></a> WebSocket协议</p>
+<p>Fette, I. and A. Melnikov, “The WebSocket Protocol”, RFC 6455, DOI 10.17487/RFC6455, December 2011, <a href="https://www.rfc-editor.org/info/rfc6455">https://www.rfc-editor.org/info/rfc6455</a>.</p>
+</div>
+</div>
+</section>
+<section class="page" id="Acknowledgments">
+<h1>
+<a href="#Acknowledgments">致谢</a>
+</h1>
+<div class="content">
+<p>本文档是MASQUE工作组的产物，作者感谢所有MASQUE爱好者们做出的贡献。本提案直接或间接地受到了许多人先前工作的启发，特别是Ben Schwartz的<em><strong>错误的关键字</strong></em>、Lucas Pardue的<em><strong>错误的关键字</strong></em>，以及由本文档作者编写的原始MASQUE协议<em><strong>错误的关键字</strong></em>。</p>
+<p>作者要感谢Eric Rescorla建议使用HTTP方法来代理UDP。作者深深感谢Mark Nottingham和Lucas Pardue对本文档贡献的诸多改进。本文档的扩展性设计源自HTTP Datagrams设计团队（HTTP Datagrams Design Team），其成员包括Alan Frindell、Alex Chernyakhovsky、Ben Schwartz、Eric Rescorla、Lucas Pardue、Marcus Ihlar、Martin Thomson、Mike Bishop、Tommy Pauly、Victor Vasiliev以及本文档作者。</p>
+</div>
+</section>
+<section class="page" id="Authors_Address">
+<h1>
+<a href="#Authors_Address">作者地址</a>
+</h1>
+<div class="content">
+<p><strong>David Schinazi</strong>Google LLC1600 Amphitheatre ParkwayMountain View, CA 94043United States of AmericaEmail: <a href="mailto:dschinazi.ietf@gmail.com">dschinazi.ietf@gmail.com</a></p>
+</div>
+</section>
+</div>
+</body>
+</html>
