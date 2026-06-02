@@ -289,16 +289,20 @@
 </h2>
 <div class="content">
 <p>新HTTP升级令牌的定义可以声明其关联请求的数据流使用Capsule协议。如果这样做，关联请求的数据流内容使用以下格式：</p>
+<div class="block ref" id="Figure_2_Capsule_Protocol_Stream_Format">
 <pre tabindex="0"><code>Capsule Protocol {
   Capsule (..) ...,
 }
-</code></pre><p><strong>图2：Capsule协议流格式</strong></p>
+</code></pre><p><a href="#Figure_2_Capsule_Protocol_Stream_Format">图2：Capsule协议流格式</a></p>
+</div>
+<div class="block ref" id="Figure_3_Capsule_Format">
 <pre tabindex="0"><code>Capsule {
   Capsule Type (i),
   Capsule Length (i),
   Capsule Value (..),
 }
-</code></pre><p><strong>图3：Capsule格式</strong></p>
+</code></pre><p><a href="#Figure_3_Capsule_Format">图3：Capsule格式</a></p>
+</div>
 <dl>
 <dt>Capsule Type（Capsule类型）：</dt>
 <dd>一个变长整数，指示Capsule的类型。IANA注册表用于管理Capsule类型的分配；详见第5.4章。</dd>
@@ -308,12 +312,13 @@
 <dd>此Capsule的载荷。其语义由Capsule Type字段的值决定。</dd>
 </dl>
 <p>中介可以通过Capsule-Protocol头部字段（第3.4章）的存在或通过理解所选的HTTP升级令牌来识别Capsule协议的使用。</p>
-<p>由于新协议或扩展可能定义新的Capsule类型，希望允许未来扩展性的中介<em><strong>应该</strong></em>在不做修改的情况下转发Capsule，除非所用Capsule类型的定义指定了额外的中介处理。DATAGRAM Capsule（详见第3.5章）就是这样一种Capsule类型。特别地，中介<em><strong>应该</strong></em>在不做修改的情况下转发Capusle类型未知的Capsule。</p>
+<p>由于新协议或扩展可能定义新的Capsule类型，希望允许未来扩展性的中介<em><strong>应该</strong></em>在不做修改的情况下转发Capsule，除非所用Capsule类型的定义指定了额外的中介处理。DATAGRAM Capsule（详见<a href="#3.5_Capsule_Types">第3.5章</a>）就是这样一种Capsule类型。特别地，中介<em><strong>应该</strong></em>在不做修改的情况下转发Capsule类型未知的Capsule。</p>
 <p>收到Capsule类型未知的Capsule的终端<em><strong>必须</strong></em>静默丢弃该Capsule，并跳过它以解析下一个Capsule。</p>
 <p>依据数据流的定义：</p>
 <ul>
 <li>除非响应包含2xx（成功）或101（协议切换）状态码，否则不使用Capsule协议。</li>
-<li>当使用Capsule协议时，关联的HTTP请求和响应不携带HTTP内容。未来的扩展<strong>可以</strong>定义一种新的Capsule类型来携带HTTP内容。</li>
+<li>当使用Capsule协议时，关联的HTTP请求和响应不携带HTTP内容。
+未来的扩展<em><strong>可以</strong></em>可以定义一种新的Capsule类型来携带HTTP内容。</li>
 </ul>
 <p>Capsule协议仅适用于新HTTP升级令牌的定义；因此，在HTTP/2和HTTP/3中，它只能与CONNECT方法一起使用。因此，一旦双方同意使用Capsule协议，流的帧使用要求将按照[HTTP/2]第8.5章和[HTTP/3]第4.4章的规定发生变化。</p>
 <p>Capsule协议<em><strong>必须不</strong></em>用于包含Content-Length、Content-Type或Transfer-Encoding头部字段的消息。此外，HTTP状态码204（No Content）、205（Reset Content）和206（Partial Content）<em><strong>必须不</strong></em>在使用Capsule协议的响应上发送。观察到违反这些要求的接收方<em><strong>必须</strong></em>将该HTTP消息视为格式错误。</p>
@@ -337,9 +342,9 @@
 <div class="content">
 <p>“Capsule-Protocol"头部字段是一个Item结构化字段（Structured Field）；参见[STRUCTURED-FIELDS]的第3.3章。其值<em><strong>必须</strong></em>为一个布尔值（Boolean）；接收方对其他类型的值<em><strong>必须</strong></em>视为该字段不存在（例如，如果该字段被包含多次，其类型将变为列表（List），该字段将被忽略）。本文未为Capsule-Protocol头部字段值定义任何参数，但未来的文档可能定义参数。接收方<em><strong>必须</strong></em>忽略未知参数。</p>
 <p>终端通过发送值为true的Capsule-Protocol头部字段来表明数据流上正在使用Capsule协议。值为false的Capsule-Protocol头部字段具有与头部不存在时相同的语义。</p>
-<p>中介<strong>可以</strong>使用此头部字段来允许对未知HTTP升级令牌的HTTP数据报进行处理。注意，这仅适用于HTTP Upgrade或Extended CONNECT。</p>
+<p>中介<em><strong>可以</strong></em>使用此头部字段来允许对未知HTTP升级令牌的HTTP数据报进行处理。注意，这仅适用于HTTP Upgrade或Extended CONNECT。</p>
 <p>Capsule-Protocol头部字段<em><strong>必须不</strong></em>用于状态码既不同于101（协议切换）也不在2xx（成功）范围内的HTTP响应上。</p>
-<p>当使用Capsule协议时，HTTP终端<em><strong>应该</strong></em>发送Capsule-Protocol头部字段以简化中介处理。使用Capsule协议的新HTTP升级令牌的定义<strong>可以</strong>修改此建议。</p>
+<p>当使用Capsule协议时，HTTP终端<em><strong>应该</strong></em>发送Capsule-Protocol头部字段以简化中介处理。使用Capsule协议的新HTTP升级令牌的定义<em><strong>可以</strong></em>修改此建议。</p>
 </div>
 </section>
 <section class="page" id="3.5_The_DATAGRAM_Capsule">
@@ -348,18 +353,20 @@
 </h2>
 <div class="content">
 <p>本文定义了DATAGRAM（0x00）Capsule类型。此Capsule允许HTTP数据报使用Capsule协议在流上发送。这在HTTP运行在不支持QUIC DATAGRAM帧的传输层之上时特别有用。</p>
+<div class="block ref" id="Datagram_Capsule_Format">
 <pre tabindex="0"><code>Datagram Capsule {
   Type (i) = 0x00,
   Length (i),
   HTTP Datagram Payload (..),
 }
-</code></pre><p><strong>图4：DATAGRAM Capsule格式</strong></p>
+</code></pre><p><a href="#Datagram_Capsule_Format">图4：DATAGRAM Capsule格式</a></p>
+</div>
 <dl>
 <dt>HTTP Datagram Payload（HTTP数据报载荷）：</dt>
 <dd>数据报的有效载荷，其语义由使用HTTP数据报的扩展定义。注意，此字段可以为空。</dd>
 </dl>
 <p>使用DATAGRAM Capsule发送的HTTP数据报具有与在QUIC DATAGRAM帧中发送的那些相同的语义。特别地，关于何时允许发送HTTP数据报以及如何处理它们的限制（来自第2.1章）同样适用于使用DATAGRAM Capsule发送和接收的HTTP数据报。</p>
-<p>中介可以在转发HTTP数据报时重新编码它们。换句话说，中介<strong>可以</strong>发送DATAGRAM Capsule来转发在QUIC DATAGRAM帧中接收到的HTTP数据报，反之亦然。除非中介已经在相应请求流上识别出Capsule协议的使用，否则<em><strong>必须不</strong></em>执行此重新编码；详见第3.2章。</p>
+<p>中介可以在转发HTTP数据报时重新编码它们。换句话说，中介<em><strong>可以</strong></em>发送DATAGRAM Capsule来转发在QUIC DATAGRAM帧中接收到的HTTP数据报，反之亦然。除非中介已经在相应请求流上识别出Capsule协议的使用，否则<em><strong>必须不</strong></em>执行此重新编码；详见第3.2章。</p>
 <p>注意，虽然DATAGRAM Capsule（在流上发送）是可靠有序传递的，但中介在转发消息时可以将DATAGRAM Capsule重新编码为QUIC DATAGRAM帧，这可能导致丢包或乱序。</p>
 <p>如果中介在QUIC DATAGRAM帧中收到HTTP数据报，并将其转发到支持QUIC DATAGRAM帧的连接上，中介<em><strong>不应该</strong></em>将该HTTP数据报转换为DATAGRAM Capsule。如果HTTP数据报太大而无法放入DATAGRAM帧（例如，因为该QUIC连接的路径MTU（PMTU）太低，或者在该连接上宣告的最大UDP载荷大小太低），中介<em><strong>应该</strong></em>丢弃该HTTP数据报，而不是将其转换为DATAGRAM Capsule。这保留了诸如数据报分组层PMTU发现（DPLPMTUD）等方法所依赖的端到端不可靠特性[DPLPMTUD]。将QUIC DATAGRAM帧转换为DATAGRAM Capsule的中介允许HTTP数据报变得任意大而不遭受任何丢失。这会歪曲真实的路径属性，从而挫败诸如DPLPMTUD之类的方法。</p>
 <p>虽然DATAGRAM Capsule理论上可以携带长度为2^62-1的载荷，但大多数使用HTTP数据报的HTTP扩展都会对何种数据报载荷大小是可行的有自己的限制。实现<em><strong>应该</strong></em>在解析DATAGRAM Capsule时考虑这些限制。如果收到的DATAGRAM Capsule的长度已知过大而无法使用，那么实现<em><strong>应该</strong></em>丢弃该Capsule，而不是将其内容缓存到内存中。</p>

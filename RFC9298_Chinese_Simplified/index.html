@@ -247,7 +247,7 @@ https://proxy.example.org:4443/masque{?target_host,target_port}
 <div class="content">
 <p>为了允许在HTTP上协商UDP隧道，本文档定义了"connect-udp" HTTP升级令牌。生成的UDP隧道使用胶囊协议（参见[HTTP-DGRAM]第3.2节）以及第5节中定义的HTTP数据报格式。</p>
 <p>为了启动与单个HTTP流关联的UDP隧道，客户端发起包含"connect-udp"升级令牌的请求。客户端通过URI模板的<code>target_host</code>和<code>target_port</code>变量向UDP代理指示隧道目标；参见第2节。</p>
-<p><code>target_host</code>支持使用DNS名称、IPv6字面量和IPv4字面量。注意，不支持IPv6作用域地址区域标识符。使用[URI]中的术语IPv6address、IPv4address、reg-name和port，<code>target_host</code>和<code>target_port</code>变量<em><strong>必须</strong></em>遵循图2中的格式，使用[ABNF]的表示法。此外：</p>
+<p><code>target_host</code>支持使用DNS名称、IPv6字面量和IPv4字面量。注意，不支持IPv6作用域地址区域标识符。使用[URI]中的术语IPv6address、IPv4address、reg-name和port，<code>target_host</code>和<code>target_port</code>变量<em><strong>必须</strong></em>遵循<a href="#Figure_2_URI_Template_Variables">图2</a>中的格式，使用[ABNF]的表示法。此外：</p>
 <ul>
 <li>
 <p><code>target_host</code>和<code>target_port</code>变量均<em><strong>必须</strong></em>为空。</p>
@@ -259,9 +259,11 @@ https://proxy.example.org:4443/masque{?target_host,target_port}
 <p><code>target_port</code> <em><strong>必须</strong></em>表示一个介于1到65535（含）之间的整数。</p>
 </li>
 </ul>
+<div class="block ref" id="Figure_2_URI_Template_Variables">
 <pre tabindex="0"><code>target_host = IPv6address / IPv4address / reg-name
 target_port = port
-</code></pre><p><em>图2：URI模板变量格式</em></p>
+</code></pre><p><a href="#Figure_2_URI_Template_Variables">图2：URI模板变量格式</a></p>
+</div>
 <p>在发送其UDP代理请求时，客户端<em><strong>强烈要求</strong></em>执行URI模板扩展以确定其请求的path和query。</p>
 <p>如果请求成功，UDP代理承诺将接收到的HTTP数据报转换为UDP数据包，反之亦然，直到隧道关闭。</p>
 <p>根据胶囊协议的定义（参见[HTTP-DGRAM]第3.2节），UDP代理请求不携带任何消息内容。同样，成功的UDP代理响应也不携带任何消息内容。</p>
@@ -311,12 +313,14 @@ target_port = port
 </ul>
 <p>不符合这些限制的UDP代理请求是畸形的。此类畸形请求的接收方<em><strong>必须</strong></em>以错误响应，并且<em><strong>应该</strong></em>使用400（Bad Request）状态码。</p>
 <p>例如，如果客户端配置了URI模板<code>https://example.org/.well-known/masque/udp/{target_host}/{target_port}/</code>并希望打开到目标192.0.2.6:443的UDP代理隧道，则可以发送以下请求：</p>
+<div class="block ref" id="Figure_3_HTTP1.1_Request">
 <pre tabindex="0"><code>GET https://example.org/.well-known/masque/udp/192.0.2.6/443/ HTTP/1.1
 Host: example.org
 Connection: Upgrade
 Upgrade: connect-udp
 Capsule-Protocol: ?1
-</code></pre><p><em>图3：HTTP/1.1请求示例</em></p>
+</code></pre><p><a href="#Figure_3_HTTP1.1_Request">图3：HTTP/1.1请求示例</a></p>
+</div>
 <p>在HTTP/1.1中，本协议使用GET方法来模仿WebSocket协议[WEBSOCKET]的设计。</p>
 </div>
 </section>
@@ -342,11 +346,13 @@ Capsule-Protocol: ?1
 </ul>
 <p>如果这些要求中的任何一项未满足，则客户端<em><strong>必须</strong></em>将此代理尝试视为失败并中止连接。</p>
 <p>例如，UDP代理可以响应如下：</p>
+<div class="block ref" id="Figure_4_HTTP1.1_Response">
 <pre tabindex="0"><code>HTTP/1.1 101 Switching Protocols
 Connection: Upgrade
 Upgrade: connect-udp
 Capsule-Protocol: ?1
-</code></pre><p><em>图4：HTTP/1.1响应示例</em></p>
+</code></pre><p><a href="#Figure_4_HTTP1.1_Response">图4：HTTP/1.1响应示例</a></p>
+</div>
 </div>
 </section>
 <section class="page" id="3.4_HTTP2_and_HTTP3_Requests">
@@ -371,6 +377,7 @@ Capsule-Protocol: ?1
 </ul>
 <p>不符合这些限制的UDP代理请求是畸形的（参见[HTTP/2]第8.1.1节和[HTTP/3]第4.1.2节）。</p>
 <p>例如，如果客户端配置了URI模板<code>https://example.org/.well-known/masque/udp/{target_host}/{target_port}/</code>并希望打开到目标192.0.2.6:443的UDP代理隧道，则可以发送以下请求：</p>
+<div class="block ref" id="Figure_5_HTTP2_and_HTTP3_Requests">
 <pre tabindex="0"><code>HEADERS
 :method = CONNECT
 :protocol = connect-udp
@@ -378,7 +385,8 @@ Capsule-Protocol: ?1
 :path = /.well-known/masque/udp/192.0.2.6/443/
 :authority = example.org
 capsule-protocol = ?1
-</code></pre><p><em>图5：HTTP/2请求示例</em></p>
+</code></pre><p><a href="#Figure_5_HTTP2_and_HTTP3_Requests">图5：HTTP/2和HTTP/3请求示例</a></p>
+</div>
 </div>
 </section>
 <section class="page" id="3.5_HTTP2_and_HTTP3_Responses">
@@ -397,10 +405,12 @@ capsule-protocol = ?1
 </ul>
 <p>如果这些要求中的任何一项未满足，则客户端<em><strong>必须</strong></em>将此代理尝试视为失败并中止请求。</p>
 <p>例如，UDP代理可以响应如下：</p>
+<div class="block ref" id="Figure_6_HTTP2_and_HTTP3_Responses">
 <pre tabindex="0"><code>HEADERS
 :status = 200
 capsule-protocol = ?1
-</code></pre><p><em>图6：HTTP/2响应示例</em></p>
+</code></pre><p><a href="#Figure_6_HTTP2_and_HTTP3_Responses">图6：HTTP/2和HTTP/3响应示例</a></p>
+</div>
 </div>
 </section>
 <section class="page" id="4_Context_Identifiers">
@@ -419,11 +429,13 @@ capsule-protocol = ?1
 </h1>
 <div class="content">
 <p>当HTTP数据报（参见[HTTP-DGRAM]第2节）与UDP代理请求流关联时，HTTP数据报载荷字段具有图7中定义的格式，使用[QUIC]第1.3节的表示法。注意，当HTTP数据报使用QUIC DATAGRAM帧[QUIC-DGRAM]编码时，下面定义的上下文ID字段直接紧跟在四分之一流ID字段之后，该字段位于QUIC DATAGRAM帧载荷的开头；参见[HTTP-DGRAM]第2.1节。</p>
+<div class="block ref" id="Figure_7_UDP_Proxying_HTTP_Datagram_Payload_Format">
 <pre tabindex="0"><code>UDP Proxying HTTP Datagram Payload {
   Context ID (i),
   UDP Proxying Payload (..),
 }
-</code></pre><p><em>图7：UDP代理HTTP数据报格式</em></p>
+</code></pre><p><a href="#Figure_7_UDP_Proxying_HTTP_Datagram_Payload_Format">图7：UDP代理HTTP数据报格式</a></p>
+</div>
 <p><strong>上下文ID（Context ID）：</strong></p>
 <p>一个变长整数（参见[QUIC]第16节），包含上下文ID的值。如果收到携带未知上下文ID的HTTP/3数据报，则接收方<em><strong>强烈要求</strong></em>要么静默丢弃该数据报，要么在等待相应上下文ID注册的同时临时缓冲它（大约一个往返时间）。</p>
 <p><strong>UDP代理载荷（UDP Proxying Payload）：</strong></p>
