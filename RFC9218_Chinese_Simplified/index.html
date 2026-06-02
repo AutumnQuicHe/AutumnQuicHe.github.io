@@ -244,8 +244,8 @@
 <p>本文使用 [STRUCTURED-FIELDS] 第3章中的以下术语来指定语法和解析： “Boolean”、“Dictionary” 和 “Integer”。</p>
 <p>示例中的HTTP请求和响应采用 [HTTP/2] 的HTTP/2风格格式。</p>
 <p>本文使用 [QUIC] 的可变长度整数编码。</p>
-<p>术语"控制流"用于描述流标识符为0x0的HTTP/2流以及HTTP/3控制流；参见 [HTTP/3] 第6.2.1章。</p>
-<p>术语"HTTP/2优先级信号"用于描述在HTTP/2帧中从客户端发送到服务器的优先级信息；参见 [HTTP/2] 第5.3.2章。</p>
+<p>术语"控制流"用于描述流标识符为0x0的HTTP/2流以及HTTP/3控制流；参见[HTTP/3] 第6.2.1章。</p>
+<p>术语"HTTP/2优先级信号"用于描述在HTTP/2帧中从客户端发送到服务器的优先级信息；参见[HTTP/2] 第5.3.2章。</p>
 </div>
 </section>
 <section class="page" id="2_Motivation_for_Replacing_RFC_7540_Stream_Priorities">
@@ -253,7 +253,7 @@
 <a href="#2_Motivation_for_Replacing_RFC_7540_Stream_Priorities">2. 替代RFC 7540流优先级的动机</a>
 </h1>
 <div class="content">
-<p>RFC 7540流优先级（参见 [RFC7540] 第5.3章）是一个复杂的系统，客户端通过发送流依赖关系和权重来描绘一棵非平衡树。它在部署和互操作性方面表现有限，并已在HTTP/2的修订版 [HTTP/2] 中被弃用。HTTP/2保留了这些协议元素以维持线缆兼容性（参见 [HTTP/2] 第5.3.2章），这意味着即使存在替代信号机制（例如本文所述的方案），它们仍可能被使用。</p>
+<p>RFC 7540流优先级（参见[RFC7540] 第5.3章）是一个复杂的系统，客户端通过发送流依赖关系和权重来描绘一棵非平衡树。它在部署和互操作性方面表现有限，并已在HTTP/2的修订版 [HTTP/2] 中被弃用。HTTP/2保留了这些协议元素以维持线缆兼容性（参见[HTTP/2] 第5.3.2章），这意味着即使存在替代信号机制（例如本文所述的方案），它们仍可能被使用。</p>
 <p>许多RFC 7540服务器实现不会对HTTP/2优先级信号采取行动。</p>
 <p>优先级排序可以利用服务器拥有的关于资源的信息或请求生成的顺序。例如，了解HTML文档结构的服务器可能希望将那些对用户体验至关重要的图片的交付优先级排在其他图片之上。在RFC 7540中，服务器很难解释来自客户端的优先级信号，因为相同的条件可能导致来自不同客户端的截然不同的信号。本文描述的是一种更简单、更受约束的信号机制，需要的解释更少，产生的变化也更少。</p>
 <p>RFC 7540没有定义可供服务器向中介提供优先级信号的方法。</p>
@@ -266,8 +266,8 @@
 <a href="#2.1_Disabling_RFC_7540_Stream_Priorities">2.1. 禁用RFC 7540流优先级</a>
 </h2>
 <div class="content">
-<p>上述问题和见解为替代RFC 7540流优先级提供了动机（参见 [HTTP/2] 第5.3章）。</p>
-<p>本文定义了SETTINGS_NO_RFC7540_PRIORITIES这一HTTP/2设置参数，以允许端点省略或忽略HTTP/2优先级信号（参见 [HTTP/2] 第5.3.2章），如下所述。SETTINGS_NO_RFC7540_PRIORITIES的值<em><strong>必须</strong></em>为0或1。任何0或1之外的值<em><strong>必须</strong></em>被视作类型为PROTOCOL_ERROR的连接错误（参见 [HTTP/2] 第5.4.1章）。初始值为0。</p>
+<p>上述问题和见解为替代RFC 7540流优先级提供了动机（参见[HTTP/2] 第5.3章）。</p>
+<p>本文定义了SETTINGS_NO_RFC7540_PRIORITIES这一HTTP/2设置参数，以允许端点省略或忽略HTTP/2优先级信号（参见[HTTP/2] 第5.3.2章），如下所述。SETTINGS_NO_RFC7540_PRIORITIES的值<em><strong>必须</strong></em>为0或1。任何0或1之外的值<em><strong>必须</strong></em>被视作类型为PROTOCOL_ERROR的连接错误（参见[HTTP/2] 第5.4.1章）。初始值为0。</p>
 <p>如果端点使用SETTINGS_NO_RFC7540_PRIORITIES，它们<em><strong>必须</strong></em>在首个SETTINGS帧中发送它。发送方<em><strong>必须不</strong></em>在首个SETTINGS帧之后更改SETTINGS_NO_RFC7540_PRIORITIES的值。检测到发生变化的接收方<em><strong>可以</strong></em>将其视作类型为PROTOCOL_ERROR的连接错误。</p>
 <p>客户端可以发送值为1的SETTINGS_NO_RFC7540_PRIORITIES来表明它们未使用HTTP/2优先级信号。SETTINGS帧先于来自客户端的任何HTTP/2优先级信号发送，因此服务器可以在信号到达之前决定是否需要分配任何资源来处理信号。接收到值为1的SETTINGS_NO_RFC7540_PRIORITIES的服务器<em><strong>必须</strong></em>忽略HTTP/2优先级信号。</p>
 <p>服务器可以发送值为1的SETTINGS_NO_RFC7540_PRIORITIES来表明它们将忽略来自客户端的HTTP/2优先级信号。</p>
@@ -289,8 +289,8 @@
 <a href="#3_Applicability_of_the_Extensible_Priority_Scheme">3. 可扩展优先级方案适用范围</a>
 </h1>
 <div class="content">
-<p>本文定义的优先级方案主要关注HTTP响应消息的优先级排序（参见 [HTTP] 第3.4章）。它定义了新的优先级参数（<a href="#4_Priority_Parameters">第4章</a>）以及传递这些参数的方式（<a href="#5_The_Priority_HTTP_Header_Field">第5章</a>和<a href="#7_The_PRIORITY_UPDATE_Frame">第7章</a>），其目的是将响应的优先级传达给负责对它们进行优先级排序的服务器。<a href="#10_Server_Scheduling">第10章</a>为服务器如何结合其他输入和因素来根据这些信号采取行动提供了考虑因素。</p>
-<p>CONNECT方法（参见 [HTTP] 第9.3.6章）可用于建立隧道。信号机制同样适用于隧道；针对服务器优先级排序的额外考虑因素参见<a href="#11_Scheduling_and_the_CONNECT_Method">第11章</a>。</p>
+<p>本文定义的优先级方案主要关注HTTP响应消息的优先级排序（参见[HTTP] 第3.4章）。它定义了新的优先级参数（<a href="#4_Priority_Parameters">第4章</a>）以及传递这些参数的方式（<a href="#5_The_Priority_HTTP_Header_Field">第5章</a>和<a href="#7_The_PRIORITY_UPDATE_Frame">第7章</a>），其目的是将响应的优先级传达给负责对它们进行优先级排序的服务器。<a href="#10_Server_Scheduling">第10章</a>为服务器如何结合其他输入和因素来根据这些信号采取行动提供了考虑因素。</p>
+<p>CONNECT方法（参见[HTTP] 第9.3.6章）可用于建立隧道。信号机制同样适用于隧道；针对服务器优先级排序的额外考虑因素参见<a href="#11_Scheduling_and_the_CONNECT_Method">第11章</a>。</p>
 <p><a href="#9_Client_Scheduling">第9章</a>描述了客户端如何选择性地将本方案的要素应用于它们生成的请求消息的本地处理。</p>
 <p>某些形式的HTTP扩展可能会改变HTTP/2或HTTP/3流的行为，或定义新的数据承载机制。此类扩展可以自行定义如何应用此优先级方案。</p>
 </div>
@@ -303,7 +303,7 @@
 <p>优先级信息是一组键值对序列，为未来的扩展留出了空间。每个键值对代表一个优先级参数。</p>
 <p>Priority HTTP头部字段（<a href="#5_The_Priority_HTTP_Header_Field">第5章</a>）是一种端到端的方式，用于在请求或响应发出时传递这组优先级参数。发送请求后，客户端可以通过发送HTTP版本特定的PRIORITY_UPDATE帧来改变其对响应优先级的看法（<a href="#6_Reprioritization">第6章</a>），这些帧分别在<a href="#7.1_HTTP2_PRIORITY_UPDATE_Frame">第7.1章</a>和<a href="#7.2_HTTP3_PRIORITY_UPDATE_Frame">第7.2章</a>中定义。帧仅在一个跳段上传输优先级参数。</p>
 <p>中介服务器可以在PRIORITY_UPDATE帧或Priority头部字段中消费并产生优先级信号。仅将Priority请求头部字段传递给下一跳的中介服务器保留了来自客户端的最初的端到端信号；参见<a href="#14_Why_Use_an_End_to_End_Header_Field">第14章</a>。中介服务器可以传递Priority头部字段并另外发送一个PRIORITY_UPDATE帧。这样做的效果是保留初始的客户端端到端信号，同时根据<a href="#7_The_PRIORITY_UPDATE_Frame">第7章</a>的指导，指示下一跳使用不同的优先级。替换或添加了Priority请求头部字段的中介服务器会覆盖初始的客户端端到端信号，这可能影响该请求之后所有接收者的优先级排序。</p>
-<p>对于Priority头部字段和PRIORITY_UPDATE帧，这组优先级参数都被编码为一个Dictionary（参见 [STRUCTURED-FIELDS] 第3.2章）。</p>
+<p>对于Priority头部字段和PRIORITY_UPDATE帧，这组优先级参数都被编码为一个Dictionary（参见[STRUCTURED-FIELDS] 第3.2章）。</p>
 <p>本文定义了urgency（u）和incremental（i）优先级参数。当接收到未携带这些优先级参数的HTTP请求时，服务器<em><strong>应该</strong></em>表现得如同指定了它们的默认值一样。</p>
 <p>中介服务器可以合并来自它所转发的请求和响应的信号。请注意，响应中优先级参数的省略与请求中的省略处理方式不同；参见<a href="#8_Merging_Client_and_Server_Driven_Priority_Parameters">第8章</a>。</p>
 <p>接收方按照 [STRUCTURED-FIELDS] 第4.2章所述解析Dictionary。在Dictionary成功解析的情况下，本文附加要求未知的优先级参数、值超出范围的优先级参数或类型不符合预期的值<em><strong>必须</strong></em>被忽略。</p>
@@ -314,7 +314,7 @@
 <a href="#4.1_Urgency">4.1. 紧迫性</a>
 </h2>
 <div class="content">
-<p>紧迫性（urgency，u）参数值为Integer（参见 [STRUCTURED-FIELDS] 第3.3.1章），取值范围为0到7（含），以数值递减的顺序表示优先级高低。默认值为3。</p>
+<p>紧迫性（urgency，u）参数值为Integer（参见[STRUCTURED-FIELDS] 第3.3.1章），取值范围为0到7（含），以数值递减的顺序表示优先级高低。默认值为3。</p>
 <p>端点使用此参数来传达其对HTTP响应优先性的看法。选择的紧迫性值可以基于以下预期：服务器可能会利用此信息按照紧迫性的顺序来传输HTTP响应。值越小，优先性越高。</p>
 <p>以下示例展示了一个紧迫性设置为0的CSS文件请求：</p>
 <pre tabindex="0"><code>:method = GET
@@ -331,7 +331,7 @@ priority = u=0
 <a href="#4.2_Incremental">4.2. 增量</a>
 </h2>
 <div class="content">
-<p>增量（incremental，i）参数值为Boolean（参见 [STRUCTURED-FIELDS] 第3.3.6章）。它指示一个HTTP响应是否可以被增量地处理，即随着响应的数据块到达而提供一些有意义的输出。</p>
+<p>增量（incremental，i）参数值为Boolean（参见[STRUCTURED-FIELDS] 第3.3.6章）。它指示一个HTTP响应是否可以被增量地处理，即随着响应的数据块到达而提供一些有意义的输出。</p>
 <p>增量参数的默认值为false（0）。</p>
 <p>如果客户端发出的并发请求将增量参数设置为false，那么以并发方式提供相同紧迫性的响应并无益处，因为客户端并不会增量地处理这些响应。按照这些请求生成的顺序，一个接一个地提供具有相同紧迫性的非增量响应被认为是最佳策略。</p>
 <p>如果客户端发出的并发请求将增量参数设置为true，那么以并发方式提供相同紧迫性的请求可能是有益的。这样做会分散连接带宽，意味着每个响应需要更长时间才能完成。在多个部分响应可能为客户端提供一些价值而无需等待完整响应就绪的情况下，增量交付最为有用。</p>
@@ -360,7 +360,7 @@ priority = u=5, i
 <a href="#4.3.1_Registration">4.3.1. 注册</a>
 </h3>
 <div class="content">
-<p>新的优先级参数可以通过在 “HTTP Priority” 注册表中注册来定义。该注册表管理Dictionary（参见 [STRUCTURED-FIELDS] 第3.2章）中使用的键（短文本字符串）。由于每个HTTP请求都可以有与其关联的优先级信号，使用短键长（尤其是单字符字符串）是有价值的。为了在鼓励扩展的同时避免在具有吸引力的键值上产生意外冲突，“HTTP Priority” 注册表根据键长采用两种注册策略。</p>
+<p>新的优先级参数可以通过在 “HTTP Priority” 注册表中注册来定义。该注册表管理Dictionary（参见[STRUCTURED-FIELDS] 第3.2章）中使用的键（短文本字符串）。由于每个HTTP请求都可以有与其关联的优先级信号，使用短键长（尤其是单字符字符串）是有价值的。为了在鼓励扩展的同时避免在具有吸引力的键值上产生意外冲突，“HTTP Priority” 注册表根据键长采用两种注册策略。</p>
 <ul>
 <li>
 <p>键长为一的优先级参数的注册请求使用第4.6章 [RFC8126] 中规定的"Specification Required"策略。</p>
@@ -383,7 +383,7 @@ priority = u=5, i
 </h1>
 <div class="content">
 <p>Priority HTTP头部字段是一个携带优先级参数（参见<a href="#4_Priority_Parameters">第4章</a>）的Dictionary。它可以出现在请求和响应中。它是一种端到端信号，指示端点对于HTTP响应应当如何被优先级排序的看法。<a href="#8_Merging_Client_and_Server_Driven_Priority_Parameters">第8章</a>描述了中介服务器可以如何合并来自客户端和服务器的优先级信息。客户端不能将Priority响应头部字段的出现或缺失解释为已发生任何优先级排序操作的确认。关于端点如何根据Priority头部字段的值采取行动的指导参见<a href="#9_Client_Scheduling">第9章</a>和<a href="#10_Server_Scheduling">第10章</a>。</p>
-<p>携带Priority头部字段的HTTP请求可能被缓存并重用于后续请求；参见 [CACHING]。当原始服务器基于其所接收的HTTP请求的属性生成Priority响应头部字段时，服务器应通过使用控制缓存行为的头部字段（例如Cache-Control、Vary）来控制缓存响应的可缓存性或适用性。</p>
+<p>携带Priority头部字段的HTTP请求可能被缓存并重用于后续请求；参见[CACHING]。当原始服务器基于其所接收的HTTP请求的属性生成Priority响应头部字段时，服务器应通过使用控制缓存行为的头部字段（例如Cache-Control、Vary）来控制缓存响应的可缓存性或适用性。</p>
 </div>
 </section>
 <section class="page" id="6_Reprioritization">
@@ -411,7 +411,7 @@ priority = u=5, i
 </h2>
 <div class="content">
 <p>HTTP/2 PRIORITY_UPDATE帧（type=0x10）被客户端用来发出响应的初始优先级信号，或重新指定一个响应或推送流的优先级。它携带响应的流ID以及以ASCII文本表示的优先级，使用与Priority头部字段值相同的表示方式。</p>
-<p>PRIORITY_UPDATE帧头部中的Stream Identifier字段（参见 [HTTP/2] 第5.1.1章）<em><strong>必须</strong></em>为零（0x0）。接收到该字段为任何其他值的PRIORITY_UPDATE帧<em><strong>必须</strong></em>被视作类型为PROTOCOL_ERROR的连接错误。</p>
+<p>PRIORITY_UPDATE帧头部中的Stream Identifier字段（参见[HTTP/2] 第5.1.1章）<em><strong>必须</strong></em>为零（0x0）。接收到该字段为任何其他值的PRIORITY_UPDATE帧<em><strong>必须</strong></em>被视作类型为PROTOCOL_ERROR的连接错误。</p>
 <div class="block ref" id="Figure_1_HTTP2_PRIORITY_UPDATE_Frame_Formats">
 <pre tabindex="0"><code>HTTP/2 PRIORITY_UPDATE Frame {
   Length (24),
@@ -431,7 +431,7 @@ priority = u=5, i
 <p>Length、Type、Unused Flag(s)、Reserved和Stream Identifier字段在 [HTTP/2] 第4章中描述。PRIORITY_UPDATE帧负载包含以下附加字段：</p>
 <p>Prioritized Stream ID:  一个31位的流标识符，指向作为优先级更新目标的流。</p>
 <p>Priority Field Value:  以ASCII文本表示的优先级更新值，使用Structured Fields编码。这与Priority头部字段值的表示方式相同。</p>
-<p>当PRIORITY_UPDATE帧适用于请求流时，客户端<em><strong>应该</strong></em>提供一个引用处于 “open”、“half-closed (local)” 或 “idle” 状态（即仍可能接收数据的流）的流的Prioritized Stream ID。如果Prioritized Stream ID引用的是处于 “half-closed (local)” 或 “closed” 状态（即不再发送更多数据的流）的流，服务器可以丢弃该帧。已被指定优先级但处于 “idle” 状态的流的数量加上活跃流（处于 “open” 状态或任一 “half-closed” 状态的流；参见 [HTTP/2] 第5.1.2章）的数量<em><strong>必须不</strong></em>超过SETTINGS_MAX_CONCURRENT_STREAMS参数的值。接收到此种PRIORITY_UPDATE的服务器<em><strong>必须</strong></em>以类型为PROTOCOL_ERROR的连接错误响应。</p>
+<p>当PRIORITY_UPDATE帧适用于请求流时，客户端<em><strong>应该</strong></em>提供一个引用处于 “open”、“half-closed (local)” 或 “idle” 状态（即仍可能接收数据的流）的流的Prioritized Stream ID。如果Prioritized Stream ID引用的是处于 “half-closed (local)” 或 “closed” 状态（即不再发送更多数据的流）的流，服务器可以丢弃该帧。已被指定优先级但处于 “idle” 状态的流的数量加上活跃流（处于 “open” 状态或任一 “half-closed” 状态的流；参见[HTTP/2] 第5.1.2章）的数量<em><strong>必须不</strong></em>超过SETTINGS_MAX_CONCURRENT_STREAMS参数的值。接收到此种PRIORITY_UPDATE的服务器<em><strong>必须</strong></em>以类型为PROTOCOL_ERROR的连接错误响应。</p>
 <p>当PRIORITY_UPDATE帧适用于推送流时，客户端<em><strong>应该</strong></em>提供一个引用处于 “reserved (remote)” 或 “half-closed (local)” 状态的流的Prioritized Stream ID。如果Prioritized Stream ID引用的是处于 “closed” 状态的流，服务器可以丢弃该帧。客户端<em><strong>必须不</strong></em>提供一个引用处于 “idle” 状态的推送流的Prioritized Stream ID。接收到针对处于 “idle” 状态的推送流的PRIORITY_UPDATE的服务器<em><strong>必须</strong></em>以类型为PROTOCOL_ERROR的连接错误响应。</p>
 <p>如果接收到的PRIORITY_UPDATE帧的Prioritized Stream ID为0x0，接收方<em><strong>必须</strong></em>以类型为PROTOCOL_ERROR的连接错误响应。</p>
 <p>服务器<em><strong>必须不</strong></em>发送PRIORITY_UPDATE帧。如果客户端接收到一个PRIORITY_UPDATE帧，它<em><strong>必须</strong></em>以类型为PROTOCOL_ERROR的连接错误响应。</p>
@@ -443,7 +443,7 @@ priority = u=5, i
 </h2>
 <div class="content">
 <p>HTTP/3 PRIORITY_UPDATE帧（type=0xF0700或0xF0701）被客户端用来发出响应的初始优先级信号，或重新指定一个响应或推送流的优先级。它携带被优先级化的元素的标识符以及以ASCII文本表示的更新后的优先级，使用与Priority头部字段值相同的表示方式。帧类型为0xF0700的PRIORITY_UPDATE用于请求流，而帧类型为0xF0701的PRIORITY_UPDATE用于推送流。</p>
-<p>PRIORITY_UPDATE帧<em><strong>必须</strong></em>在客户端控制流（参见 [HTTP/3] 第6.2.1章）上发送。在客户端控制流以外的流上接收到PRIORITY_UPDATE帧<em><strong>必须</strong></em>被视作类型为H3_FRAME_UNEXPECTED的连接错误。</p>
+<p>PRIORITY_UPDATE帧<em><strong>必须</strong></em>在客户端控制流（参见[HTTP/3] 第6.2.1章）上发送。在客户端控制流以外的流上接收到PRIORITY_UPDATE帧<em><strong>必须</strong></em>被视作类型为H3_FRAME_UNEXPECTED的连接错误。</p>
 <div class="block ref" id="Figure_2_HTTP3_PRIORITY_UPDATE_Frame_Formats">
 <pre tabindex="0"><code>HTTP/3 PRIORITY_UPDATE Frame {
   Type (i) = 0xF0700..0xF0701,
